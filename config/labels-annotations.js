@@ -112,6 +112,10 @@ export const ANNOTATIONS_TO_FOLD = [
 ];
 
 export const HCI = {
-  CLUSTER_ID: 'harvesterhci.io/clusterId',
-  CLOUD_INIT: 'harvesterhci.io/cloud-init-template'
+  CLUSTER_ID:               'harvesterhci.io/clusterId',
+  CLOUD_INIT:               'harvesterhci.io/cloud-init-template',
+  HOST_CUSTOM_NAME:         'harvesterhci.io/host-custom-name',
+  NODE_ROLE_MASTER:         'node-role.kubernetes.io/master',
+  NODE_ROLE_CONTROL_PLANE:  'node-role.kubernetes.io/control-plane',
+  HARVESTER_PROMOTE_STATUS: 'harvesterhci.io/promote-status',
 };
