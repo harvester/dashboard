@@ -330,4 +330,7 @@ export default {
     };
   },
 
+  nodes() {
+    return this.$getters['all'](MANAGEMENT.NODE).filter(node => node.id.startsWith(this.id));
+  },
 };
