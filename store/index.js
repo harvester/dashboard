@@ -519,11 +519,11 @@ export const actions = {
 
   async loadCluster({
     state, commit, dispatch, getters
-  }, id) {
+  }, { id, oldProduct }) {
     const isMultiCluster = getters['isMultiCluster'];
     const isRancher = getters['isRancher'];
 
-    if ( state.clusterId && state.clusterId === id ) {
+    if ( state.clusterId && state.clusterId === id && oldProduct !== VIRTUAL) {
       // Do nothing, we're already connected/connecting to this cluster
       return;
     }
@@ -609,7 +609,7 @@ export const actions = {
 
   async loadVirtual({
     state, commit, dispatch, getters
-  }, { id, product, oldProduct }) {
+  }, { id, oldProduct }) {
     const isMultiCluster = getters['isMultiCluster'];
 
     if (isMultiCluster && id === 'local') {
