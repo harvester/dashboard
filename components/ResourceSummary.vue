@@ -50,7 +50,12 @@ export default {
     spoofedCounts: {
       type:    Object,
       default: null
-    }
+    },
+
+    spoofedLocation: {
+      type: [Object, null],
+      default: null,
+    },
   },
 
   computed: {
@@ -65,6 +70,10 @@ export default {
     location() {
       if (this.spoofedCounts) {
         return this.spoofedCounts.location;
+      }
+
+      if (this.spoofedLocation) {
+        return this.spoofedLocation
       }
 
       return {
