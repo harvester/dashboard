@@ -2,7 +2,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import randomstring from 'randomstring';
 import { safeLoad, safeDump } from 'js-yaml';
 
-import { allHash } from '@/utils/promise';
+import { allSettled } from '@/utils/promise';
 import { HCI as HCI_ANNOTATIONS } from '@/config/labels-annotations';
 import { SOURCE_TYPE } from '@/config/map';
 import {
@@ -38,7 +38,7 @@ export default {
   },
 
   async fetch() {
-    const hash = await allHash({
+    const hash = await allSettled({
       pods:               this.$store.dispatch('virtual/findAll', { type: POD }),
       nodes:              this.$store.dispatch('virtual/findAll', { type: NODE }),
       pvcs:               this.$store.dispatch('virtual/findAll', { type: PVC }),

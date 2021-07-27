@@ -5,7 +5,7 @@ import ResourceTable from '@/components/ResourceTable';
 import { STATE, AGE, NAME, NAMESPACE } from '@/config/table-headers';
 import { HCI, NODE } from '@/config/types';
 
-import { allHash } from '@/utils/promise';
+import { allSettled } from '@/utils/promise';
 import Loading from '@/components/Loading';
 import BackupModal from './backupModal';
 import RestoreModal from './restoreModal';
@@ -34,7 +34,7 @@ export default {
   },
 
   async fetch() {
-    const hash = await allHash({
+    const hash = await allSettled({
       nodes:             this.$store.dispatch('virtual/findAll', { type: NODE }),
       vms:               this.$store.dispatch('virtual/findAll', { type: HCI.VM }),
       vmis:              this.$store.dispatch('virtual/findAll', { type: HCI.VMI }),
