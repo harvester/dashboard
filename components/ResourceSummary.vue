@@ -53,7 +53,7 @@ export default {
     },
 
     spoofedLocation: {
-      type: [Object, null],
+      type:    [Object, null],
       default: null,
     },
   },
@@ -73,7 +73,7 @@ export default {
       }
 
       if (this.spoofedLocation) {
-        return this.spoofedLocation
+        return this.spoofedLocation;
       }
 
       return {
