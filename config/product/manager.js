@@ -1,5 +1,5 @@
 import { AGE, NAME as NAME_COL, STATE } from '@/config/table-headers';
-import { CAPI } from '@/config/types';
+import { CAPI, HCI } from '@/config/types';
 import { MULTI_CLUSTER } from '@/store/features';
 import { DSL } from '@/store/type-map';
 
@@ -24,7 +24,11 @@ export function init(store) {
     showClusterSwitcher: false,
   });
 
-  configureType(CAPI.RANCHER_CLUSTER, { showListMasthead: false, namespaced: false });
+  configureType(CAPI.RANCHER_CLUSTER, {
+    showListMasthead: false,
+    namespaced:       false,
+    alias:            [HCI.CLUSTER],
+  });
   weightType(CAPI.RANCHER_CLUSTER, 100, true);
 
   virtualType({
