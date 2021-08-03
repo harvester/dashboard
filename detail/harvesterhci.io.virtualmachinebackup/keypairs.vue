@@ -11,10 +11,6 @@ export default {
     }
   },
 
-  // async fetch() {
-  //   await allHash({ ssh: this.$store.dispatch('cluster/findAll', { type: HCI.SSH }) });
-  // },
-
   data() {
     return {
       visible: false,
@@ -24,7 +20,7 @@ export default {
   },
 
   created() {
-    const ssh = this.$store.getters['cluster/all'](HCI.SSH);
+    const ssh = this.$store.getters['virtual/all'](HCI.SSH);
 
     this.allssh = ssh || [];
     this.getKey();
@@ -117,11 +113,11 @@ export default {
           <div v-if="ssh.showKey" class="key-display">
             {{ ssh.spec.publicKey }}
             <button class="btn btn-sm role-link hide-bar" @click="hideKey(index)">
-              <i class="icon icon-x"></i>
+              <i class="icon icon-x" />
             </button>
           </div>
           <button v-else class="btn btn-sm role-link" @click="viewKey(index)">
-            *******<i class="icons icon-h-eye"></i>
+            *******<i class="icons icon-h-eye" />
           </button>
         </div>
       </div>
