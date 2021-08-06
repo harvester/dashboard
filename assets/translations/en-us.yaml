@@ -2421,7 +2421,7 @@ nameNsDescription:
     placeholder: 'A unique name'
   namespace:
     label: Namespace
-    placeholder:
+    placeholder: ''
   workspace:
     label: Workspace
     placeholder:
@@ -5269,7 +5269,7 @@ typeLabel:
       one { Network }
       other { Networks }
     }
-  cdi.kubevirt.io.datavolume: |-
+  volume: |-
     {count, plural,
       one { Volume }
       other { Volumes }
