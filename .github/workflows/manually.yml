@@ -1,0 +1,32 @@
+# workflow的名称，会显示在工作流运行页面
+name: Manually
+
+# 工作流执行的契机：push表示每次push代码之后都会执行
+on: workflow_dispatch
+
+jobs:
+  # build job 我们用来做持续构建
+  build:
+    # 构建运行的环境
+    runs-on: ubuntu-latest
+    # 构建步骤
+    steps:
+    # 复用 actions/checkout@v1 action，拉取最新代码
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: "12.16.3"
+    - name: Build UI
+      run: |
+        ./scripts/build-hosted
+      env:
+        BASE: https://harvester-dev.oss-cn-hangzhou.aliyuncs.com/${DIR}
+    - uses: manyuanrong/setup-ossutil@v2.0
+      with:
+        # endpoint 可以去oss控制台上查看
+        endpoint: "oss-cn-hangzhou.aliyuncs.com"
+        # 使用我们之前配置在secrets里面的accesskeys来配置ossutil
+        access-key-id: ${{ secrets.ACCESS_KEY_ID }}
+        access-key-secret: ${{ secrets.ACCESS_KEY_SECRET }}
+    - name: Deply To OSS
+      run: ossutil cp dist oss://harvester-dev/ -rf
