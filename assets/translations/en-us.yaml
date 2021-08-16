@@ -4666,7 +4666,7 @@ harvester:
       versionLabel: AVAILABLE COMPATIBLE VERSIONS
       upgradeNode: Upgrading Nodes
       upgradeSysService: Upgrading System Services
-    version: version
+    version: Version
   host:
     label: Hosts
     promote:
