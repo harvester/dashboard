@@ -261,7 +261,6 @@ export default {
 
     async saveSingle(buttonCb) {
       this.parseVM();
-
       if (!this.value.spec.template.spec.hostname) {
         this.$set(this.value.spec.template.spec, 'hostname', this.value.metadata.name);
       }

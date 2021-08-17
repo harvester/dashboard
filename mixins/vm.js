@@ -223,7 +223,7 @@ export default {
             // If the DVT can be found, it cannot be an existing volume
             if (DVT) {
               // has annotation (HCI_ANNOTATIONS.IMAGE_ID) => SOURCE_TYPE.IMAGE
-              if (!!DVT.metadata?.annotations?.[HCI_ANNOTATIONS.IMAGE_ID]) {
+              if (DVT.metadata?.annotations?.[HCI_ANNOTATIONS.IMAGE_ID] !== undefined) {
                 image = DVT.metadata?.annotations?.[HCI_ANNOTATIONS.IMAGE_ID];
                 source = SOURCE_TYPE.IMAGE;
               } else {
@@ -305,7 +305,11 @@ export default {
     },
 
     parseOther() {
-      this.$set(this.spec.template.spec.domain.machine, 'type', this.machineType);
+      if (!this.spec.template.spec.domain.machine) {
+        this.$set(this.spec.template.spec.domain, 'machine', { type: this.machineType });
+      } else {
+        this.$set(this.spec.template.spec.domain.machine, 'type', this.machineType);
+      }
 
       if (!this.spec.template.spec.domain.resources.limits) {
         this.spec.template.spec.domain.resources.limits = {
@@ -313,6 +317,7 @@ export default {
           cpu:    ''
         };
       }
+
       this.spec.template.spec.domain.resources.requests.cpu = this.spec.template.spec.domain.cpu.cores;
       this.spec.template.spec.domain.resources.limits.memory = this.spec.template.spec.domain.resources.requests.memory;
       this.spec.template.spec.domain.resources.limits.cpu = this.spec.template.spec.domain.cpu.cores;
