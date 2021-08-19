@@ -13,7 +13,9 @@ import Group from '@/components/nav/Group';
 import Header from '@/components/nav/Header';
 import Brand from '@/mixins/brand';
 import FixedBanner from '@/components/FixedBanner';
-import { COUNT, SCHEMA, MANAGEMENT, UI, HCI } from '@/config/types';
+import {
+  COUNT, SCHEMA, MANAGEMENT, UI, HCI
+} from '@/config/types';
 import { BASIC, FAVORITE, USED } from '@/store/type-map';
 import { addObjects, replaceWith, clear, addObject } from '@/utils/array';
 import { NAME as EXPLORER } from '@/config/product/explorer';
@@ -132,10 +134,11 @@ export default {
 
       if (this.$store.getters['currentProduct'].name === 'virtual') {
         const setting = this.$store.getters['virtual/byId'](HCI.SETTING, 'server-version');
+
         displayVersion = setting?.value || 'unknown';
       }
 
-      return displayVersion
+      return displayVersion;
     },
   },
 
