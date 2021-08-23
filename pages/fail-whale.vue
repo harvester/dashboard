@@ -17,7 +17,9 @@ export default {
       this.$router.replace('/');
     }
 
-    return { home };
+    const isSingleVirtualCluster = store.getters.isSingleVirtualCluster;
+
+    return { home: isSingleVirtualCluster ? 'c/local/virtual/harvesterhci.io.dashboard' : home };
   },
 
   computed: {
