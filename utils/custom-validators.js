@@ -9,7 +9,7 @@ import { podAffinity } from '@/utils/validators/pod-affinity';
 import { roleTemplateRules } from '@/utils/validators/role-template';
 import { clusterName } from '@/utils/validators/cluster-name';
 import { backupTarget } from '@/utils/validators/setting';
-import { imageUrl } from '@/utils/validators/vm-image';
+import { imageUrl, fileRequired } from '@/utils/validators/vm-image';
 import { vmNetworks, vmDisks } from '@/utils/validators/vm';
 import { dataVolumeSize } from '@/utils/validators/vm-datavolumes';
 
@@ -38,4 +38,5 @@ export default {
   dataVolumeSize,
   vmNetworks,
   vmDisks,
+  fileRequired,
 };
