@@ -807,7 +807,7 @@ export const getters = {
             continue;
           }
 
-          if (item.showMenuFun && typeof item.showMenuFun === 'function' && !item.showMenuFun(state, getters, rootState, rootGetters)) {
+          if (item.showMenuFun && typeof item.showMenuFun === 'function' && !item.showMenuFun(state, getters, rootState, rootGetters, out)) {
             continue;
           }
 
