@@ -8,15 +8,6 @@ export function options(issues, hideRancher, product) {
     return { 'footer.issue': issues };
   }
 
-  if (product === 'harvester') {
-    return {
-      'footer.docs':   'https://github.com/harvester/harvester/tree/master/docs',
-      'footer.forums': 'https://forums.rancher.com/',
-      'footer.slack':  'https://slack.rancher.io',
-      'footer.issue':  'https://github.com/harvester/harvester/issues/new/choose',
-    };
-  }
-
   return {
     'footer.docs':   'https://rancher.com/docs/rancher/v2.x/en/',
     'footer.forums': 'https://forums.rancher.com/',
