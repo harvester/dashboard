@@ -255,7 +255,7 @@ export const HCI = {
   VM_VERSION:         'harvesterhci.io.virtualmachinetemplateversion',
   IMAGE:              'harvesterhci.io.virtualmachineimage',
   SSH:                'harvesterhci.io.keypair',
-  VOLUME:             'volume',
+  VOLUME:             'harvesterhci.io.volume',
   USER:               'harvesterhci.io.user',
   SETTING:            'harvesterhci.io.setting',
   UPGRADE:            'harvesterhci.io.upgrade',
@@ -268,6 +268,8 @@ export const HCI = {
   CLUSTER:            'harvesterhci.io.management.cluster',
   DASHBOARD:          'harvesterhci.io.dashboard',
   BLOCK_DEVICE:       'harvesterhci.io.blockdevice',
+  CLOUD_TEMPLATE:     'harvesterhci.io.cloudtemplate',
+  HOST:               'harvesterhci.io.host',
 };
 
 export const VIRTUAL_HARVESTER_PROVIDER = 'harvester';
