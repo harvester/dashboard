@@ -4823,6 +4823,9 @@ harvester:
         label: template
       version:
         label: version
+    console:
+      novnc: Open in Web VNC
+      serial: Open in Serial Console
     promptRemove:
       title: 'Select the volume you want to delete:'
       deleteAll: Delete All
