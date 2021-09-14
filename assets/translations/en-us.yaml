@@ -5050,6 +5050,8 @@ harvester:
   cloudTemplate:
     label: Cloud Config Templates
     templateType: Template Type
+    userData: User Data
+    networkData: Network Data
 
   manager:
     cluster:
