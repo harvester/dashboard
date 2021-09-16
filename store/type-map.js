@@ -1187,8 +1187,14 @@ export const getters = {
         }
       }
 
-      if ( p.ifFeature && !rootGetters['features/get'](p.ifFeature) ) {
-        return false;
+      if ( p.ifFeature) {
+        const features = Array.isArray(p.ifFeature) ? p.ifFeature : [p.ifFeature];
+
+        for (const f of features) {
+          if (!rootGetters['features/get'](f)) {
+            return false;
+          }
+        }
       }
 
       if ( p.ifHave && !ifHave(rootGetters, p.ifHave)) {
