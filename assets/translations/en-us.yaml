@@ -4841,6 +4841,9 @@ harvester:
       evictionRequested:
         label: Eviction Requested
 
+  virtualizationManagement:
+    manage: Manage
+
   virtualMachine:
     label: Virtual Machines
     instance:
