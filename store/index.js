@@ -1,6 +1,6 @@
 import Steve from '@/plugins/steve';
 import {
-  COUNT, NAMESPACE, NORMAN, MANAGEMENT, FLEET, UI, VIRTUAL_HARVESTER_PROVIDER, HCI
+  COUNT, NAMESPACE, NORMAN, MANAGEMENT, FLEET, UI, VIRTUAL_HARVESTER_PROVIDER, HCI, SCHEMA
 } from '@/config/types';
 import { CLUSTER as CLUSTER_PREF, NAMESPACE_FILTERS, LAST_NAMESPACE, WORKSPACE } from '@/store/prefs';
 import { allHash, allHashSettled } from '@/utils/promise';
@@ -732,7 +732,12 @@ export const actions = {
   }, { id, store }) {
     if ( state.clusterId && id && store) {
       await dispatch(`${ store }/unsubscribe`);
-      commit(`${ store }/reset`);
+
+      const schema = getters['cluster/typeEntry'](SCHEMA);
+
+      if (schema?.haveAll) {
+        commit(`${ store }/reset`);
+      }
     }
   },
 
