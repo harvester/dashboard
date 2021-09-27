@@ -34,6 +34,7 @@ import { ANNOTATIONS_TO_IGNORE_REGEX, DESCRIPTION, LABELS_TO_IGNORE_REGEX, NORMA
 import {
   AS, _YAML, MODE, _CLONE, _EDIT, _VIEW, _UNFLAG, _CONFIG
 } from '@/config/query-params';
+import SYSTEM_NAMESPACES from '@/config/system-namespaces';
 
 import { SELF } from '@/plugins/steve/resource-proxy';
 import { cleanForNew, normalizeType } from './normalize';
@@ -605,6 +606,18 @@ export default {
     return (condition) => {
       return this.isCondition(condition, null);
     };
+  },
+
+  isSystemResource() {
+    if ( SYSTEM_NAMESPACES.includes(this.metadata?.namespace) ) {
+      return true;
+    }
+
+    if ( this.metadata?.namespace?.endsWith('-system') ) {
+      return true;
+    }
+
+    return false;
   },
 
   isCondition() {

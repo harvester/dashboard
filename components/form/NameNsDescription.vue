@@ -1,8 +1,9 @@
 <script>
+import { mapGetters } from 'vuex';
 import { get, set } from '@/utils/object';
 import { sortBy } from '@/utils/sort';
 import { NAMESPACE } from '@/config/types';
-import { DESCRIPTION } from '@/config/labels-annotations';
+import { DESCRIPTION, FLEET } from '@/config/labels-annotations';
 import { _VIEW, _EDIT } from '@/config/query-params';
 import LabeledInput from '@/components/form/LabeledInput';
 import InputWithSelect from '@/components/form/InputWithSelect';
@@ -170,6 +171,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['isVirtualCluster']),
     namespaceReallyDisabled() {
       return (
         !!this.forceNamespace || this.namespaceDisabled || this.mode === _EDIT
@@ -185,7 +187,11 @@ export default {
       const choices = this.$store.getters[`${ inStore }/all`](this.namespaceType);
 
       const out = sortBy(
-        choices.map((obj) => {
+        choices.filter( (N) => {
+          const isFleets = get(N, `metadata.labels."${ FLEET.MANAGED }"`) === 'true';
+
+          return this.isVirtualCluster ? !N.isSystem && !isFleets : true;
+        }).map((obj) => {
           return {
             label: obj.nameDisplay,
             value: obj.id,
