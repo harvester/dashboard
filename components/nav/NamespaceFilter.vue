@@ -3,8 +3,10 @@ import { mapGetters } from 'vuex';
 import { NAMESPACE_FILTERS } from '@/store/prefs';
 import { NAMESPACE, MANAGEMENT } from '@/config/types';
 import { sortBy } from '@/utils/sort';
+import { get } from '@/utils/object';
 import { isArray, addObjects, findBy, filterBy } from '@/utils/array';
 import Select from '@/components/form/Select';
+import { FLEET } from '@/config/labels-annotations';
 
 export default {
   components: { Select },
@@ -76,7 +78,11 @@ export default {
       const namespaces = sortBy(
         this.$store.getters[`${ inStore }/all`](NAMESPACE),
         ['nameDisplay']
-      ).filter( N => this.isVirtualCluster ? !N.isSystem : true);
+      ).filter( (N) => {
+        const isFleets = get(N, `metadata.labels."${ FLEET.MANAGED }"`) === 'true';
+
+        return this.isVirtualCluster ? !N.isSystem && !isFleets : true;
+      });
 
       if (this.$store.getters['isRancher'] || this.isMultiVirtualCluster) {
         const cluster = this.$store.getters['currentCluster'];

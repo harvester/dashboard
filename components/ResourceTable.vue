@@ -1,4 +1,5 @@
 <script>
+import { mapGetters } from 'vuex';
 import { get } from '@/utils/object';
 import { mapPref, GROUP_RESOURCES } from '@/store/prefs';
 import ButtonGroup from '@/components/ButtonGroup';
@@ -64,6 +65,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['isVirtualCluster']),
     isNamespaced() {
       if ( this.namespaced !== null ) {
         return this.namespaced;
@@ -129,7 +131,11 @@ export default {
       }
 
       return this.rows.filter((row) => {
-        return !!includedNamespaces[row.metadata.namespace];
+        if (this.isVirtualCluster && this.isNamespaced) {
+          return !!includedNamespaces[row.metadata.namespace] && !row.isSystemResource;
+        } else {
+          return !!includedNamespaces[row.metadata.namespace];
+        }
       });
     },
 
