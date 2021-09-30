@@ -132,6 +132,12 @@ export default {
       this.update();
       this.$refs['yamlNetwork'].updateValue(neu);
     },
+    userData() {
+      this.update();
+    },
+    networkData() {
+      this.update();
+    }
   },
 
   methods: {
@@ -196,7 +202,7 @@ export default {
       <div class="resource-yaml">
         <YamlEditor
           ref="yamlNetwork"
-          :value="networkData"
+          v-model="networkData"
           class="yaml-editor"
           :editor-mode="editorMode"
           @onInput="valuesChanged($event, 'networkData')"
