@@ -424,6 +424,7 @@ export default {
             :namespace="value.metadata.namespace"
             :mode="mode"
             @update:sshKey="updateSSHKey"
+            @register-after-hook="registerAfterHook"
           />
         </Tab>
 
