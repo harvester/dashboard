@@ -277,14 +277,18 @@ export default {
         this.$set(this.value.spec.template.spec, 'hostname', hostname);
 
         this.parseVM();
+        const basicValue = await this.$store.dispatch('harvester/create', clone(this.value));
 
         try {
-          await this.save(buttonCb);
+          if (i === 1) {
+            await this.save();
+          } else {
+            basicValue.save();
+          }
         } catch (err) {
           return Promise.reject(new Error(err));
         }
       }
-      this.value.id = '';
     },
 
     restartVM() {
@@ -424,7 +428,6 @@ export default {
             :namespace="value.metadata.namespace"
             :mode="mode"
             @update:sshKey="updateSSHKey"
-            @register-after-hook="registerAfterHook"
           />
         </Tab>
 
