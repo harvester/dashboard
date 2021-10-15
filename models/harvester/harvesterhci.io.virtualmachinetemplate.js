@@ -15,16 +15,23 @@ export default {
       }
     });
 
+    const schema = this.$getters['schemaFor'](HCI.VM);
+    let canCreateVM = true;
+
+    if ( schema && !schema?.collectionMethods.find(x => ['post'].includes(x.toLowerCase())) ) {
+      canCreateVM = false;
+    }
+
     return [
       {
         action:     'createFromTemplate',
-        enabled:    true,
+        enabled:    canCreateVM,
         icon:       'icon plus',
         label:      this.t('harvester.action.createVM'),
       },
       {
         action:     'addVersion',
-        enabled:    true,
+        enabled:    this.canCreate,
         icon:       'icon icon-fw icon-circle-plus',
         label:      this.t('harvester.action.addTemplateVersion'),
       },

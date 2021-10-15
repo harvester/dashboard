@@ -17,10 +17,17 @@ export default {
 
     out = out.filter( A => !toFilter.includes(A.action));
 
+    const schema = this.$getters['schemaFor'](HCI.VM);
+    let canCreateVM = true;
+
+    if ( schema && !schema?.collectionMethods.find(x => ['post'].includes(x.toLowerCase())) ) {
+      canCreateVM = false;
+    }
+
     return [
       {
         action:     'createFromImage',
-        enabled:    this.isReady,
+        enabled:    canCreateVM && this.isReady,
         icon:       'icon icon-fw icon-spinner',
         label:      this.t('harvester.action.createVM'),
       },

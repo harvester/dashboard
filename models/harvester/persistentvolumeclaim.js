@@ -24,7 +24,7 @@ export default {
     return [
       {
         action:     'exportImage',
-        enabled:    true,
+        enabled:    this.hasAction('export'),
         icon:       'icon icon-copy',
         label:      this.t('harvester.action.exportImage'),
       },
