@@ -4221,6 +4221,7 @@ tableHeaders:
   storage: Storage Size
   defaultVersion: Default version
   ipAddress: IP Address
+  diskState: Disk State
 
 target:
   router:
@@ -5113,6 +5114,7 @@ harvester:
         info: The disk has already been force-formatted
       notification:
         success: 'Update host "{name}" configurations successfully.'
+      error: Host has unready or unschedulable disks.
 
   virtualizationManagement:
     manage: Manage
