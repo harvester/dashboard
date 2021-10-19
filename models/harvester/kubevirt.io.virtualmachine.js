@@ -226,6 +226,18 @@ export default {
     };
   },
 
+  unplugVolume() {
+    const resources = this;
+
+    return (diskName) => {
+      this.$dispatch('promptModal', {
+        resources,
+        diskName,
+        component: 'harvester/UnplugVolume'
+      });
+    };
+  },
+
   restoreVM() {
     return (resources = this) => {
       this.$dispatch('promptModal', {
