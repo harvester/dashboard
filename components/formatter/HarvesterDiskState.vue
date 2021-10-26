@@ -2,7 +2,7 @@
 import BadgeState from '@/components/BadgeState';
 import { stateDisplay } from '@/plugins/steve/resource-instance';
 
-const ACTIVE = 'active';
+const ACTIVE = 'healthy';
 const WARNING = 'warning';
 
 export default {
