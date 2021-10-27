@@ -189,18 +189,26 @@ export default {
   },
 
   uploadImage() {
-    return (file) => {
+    return async(file) => {
       const formData = new FormData();
 
       formData.append('chunk', file);
 
-      this.doAction('upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'File-Size':    file.size,
-        },
-        params: { size: file.size },
-      });
+      try {
+        this.$commit('harvester-common/uploadStart', this.metadata.name, { root: true });
+
+        await this.doAction('upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'File-Size':    file.size,
+          },
+          params: { size: file.size },
+        });
+      } catch (err) {
+        return Promise.reject(err);
+      }
+
+      this.$commit('harvester-common/uploadEnd', this.metadata.name, { root: true });
     };
   }
 };

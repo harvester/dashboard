@@ -5216,6 +5216,12 @@ harvester:
     sourceType:
       download: URL
       upload: File
+    warning:
+      uploading: |-
+        {count, plural,
+        =1 {1 image is uploading, please do not refresh or close current page.}
+        other {{count} images are uploading, please do not refresh or close current page.}
+        }
 
   vmTemplate:
     label: Templates
