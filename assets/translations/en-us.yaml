@@ -5037,6 +5037,7 @@ harvester:
 
   virtualMachine:
     label: Virtual Machines
+    osType: OS Type
     instance:
       singleInstance: 
       multipleInstance: 

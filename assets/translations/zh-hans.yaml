@@ -3989,6 +3989,7 @@ harvester:
 
   virtualMachine:
     label: 虚拟机
+    osType: 系统类型
     instance:
       single:
         label: 单个实例
