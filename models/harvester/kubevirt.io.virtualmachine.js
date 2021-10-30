@@ -707,7 +707,7 @@ export default {
       {
         nullable:       false,
         path:           'spec.template.spec.domain.resources.requests.memory',
-        required:       false,
+        required:       true,
         translationKey: 'harvester.fields.memory',
       },
       {
