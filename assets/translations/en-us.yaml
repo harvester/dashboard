@@ -5513,9 +5513,19 @@ harvester:
       label: Namespace
     cidr:
       label: CIDR
-      invalid: '"CIRD" is invalid.'
+      placeholder: e.g 172.16.10.0/24,172.16.20.0/24
     add:
       label: Add IP Pools
+    type:
+      label: Type
+      range: Range
+      pool: Pool
+    startIP:
+      label: Start IP
+      placeholder: e.g 172.16.10.0
+    endIP:
+      label: End IP
+      placeholder: e.g 172.16.20.0
 ##############################
 # Model Properties
 ##############################

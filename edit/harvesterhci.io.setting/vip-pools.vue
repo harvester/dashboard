@@ -1,12 +1,14 @@
 <script>
 import LabeledInput from '@/components/form/LabeledInput';
-import LabeledSelect from '@/components/form/Select';
+import LabeledSelect from '@/components/form/LabeledSelect';
 import ArrayList from '@/components/form/ArrayList';
 import { NAMESPACE } from '@/config/types';
 import { _EDIT } from '@/config/query-params';
 import { uniq } from '@/utils/array';
 
 const OPTION_GLOBAL = 'global';
+const POOL = 'pool';
+const RANGE = 'range';
 
 export default {
   name: 'HarvesterEditVip',
@@ -56,8 +58,11 @@ export default {
       errors:          [],
       vips,
       defaultAddValue: {
-        key:   '',
-        value: '',
+        key:     '',
+        value:   '',
+        type:    POOL,
+        startIP: '',
+        endIP:   '',
       },
     };
   },
@@ -95,6 +100,16 @@ export default {
     filteredNamespaces() {
       return this.namespaces.filter(n => !this.selectedNamespaces.includes(n.value));
     },
+
+    typeOptions() {
+      return [{
+        label: this.t('harvester.vip.type.pool'),
+        value: POOL,
+      }, {
+        label: this.t('harvester.vip.type.range'),
+        value: RANGE,
+      }];
+    },
   },
 
   methods: {
@@ -102,7 +117,11 @@ export default {
       const map = {};
 
       this.vips.map((v) => {
-        map[`${ v.key }`] = v.value;
+        if (v.type === POOL) {
+          map[`${ v.key }`] = v.value;
+        } else {
+          map[`${ v.key }`] = `${ v.startIP }-${ v.endIP }`;
+        }
       });
 
       const value = JSON.stringify(map);
@@ -118,13 +137,16 @@ export default {
           errors.push(this.t('validation.required', { key: this.t('harvester.vip.namespace.label') }, true));
         }
 
-        if (!v.value) {
-          errors.push(this.t('validation.required', { key: this.t('harvester.vip.cidr.label') }, true));
+        if (v.type === POOL) {
+          if (!v.value) {
+            errors.push(this.t('validation.required', { key: this.t('harvester.vip.cidr.label') }, true));
+          }
         } else {
-          const isCidr = !!/^(?:(?:[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}(?:[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\/([1-9]|[1-2]\d|3[0-2])$/.test(v.value);
-
-          if (!isCidr) {
-            errors.push(this.t('harvester.vip.cidr.invalid', null, true));
+          if (!v.startIP) {
+            errors.push(this.t('validation.required', { key: this.t('harvester.vip.startIP.label') }, true));
+          }
+          if (!v.endIP) {
+            errors.push(this.t('validation.required', { key: this.t('harvester.vip.endIP.label') }, true));
           }
         }
       });
@@ -151,10 +173,27 @@ export default {
         }
 
         const vips = Object.keys(parsedDefaultValue).map((key) => {
-          return {
-            key,
-            value: parsedDefaultValue[key],
-          };
+          const value = parsedDefaultValue[key] || '';
+
+          if (value.includes('-')) {
+            const [startIP, endIP] = value.split('-');
+
+            return {
+              key,
+              value: '',
+              startIP,
+              endIP,
+              type:  RANGE,
+            };
+          } else {
+            return {
+              key,
+              value,
+              type:    POOL,
+              startIP: '',
+              endIP:   '',
+            };
+          }
         }) || [];
 
         this.$set(this, 'vips', vips);
@@ -162,7 +201,7 @@ export default {
       },
       deep: true,
     }
-  }
+  },
 };
 </script>
 
@@ -182,14 +221,9 @@ export default {
     >
       <template v-slot:column-headers>
         <div class="box">
-          <div class="key">
-            {{ t('harvester.vip.namespace.label') }}
-            <span class="required">*</span>
-          </div>
-          <div class="value">
-            {{ t('harvester.vip.cidr.label') }}
-            <span class="required">*</span>
-          </div>
+          <div class="key" />
+          <div class="type" />
+          <div class="value" />
           <div />
         </div>
       </template>
@@ -199,15 +233,53 @@ export default {
             v-model="scope.row.value.key"
             :mode="mode"
             :options="filteredNamespaces"
+            :label="t('harvester.vip.namespace.label')"
+            required
+            @input="update"
+          />
+        </div>
+        <div class="type">
+          <LabeledSelect
+            v-model="scope.row.value.type"
+            :mode="mode"
+            :options="typeOptions"
+            :label="t('harvester.vip.type.label')"
             @input="update"
           />
         </div>
         <div class="value">
-          <LabeledInput
-            v-model="scope.row.value.value"
-            :mode="mode"
-            @input="update"
-          />
+          <div v-if="scope.row.value.type === 'pool'">
+            <LabeledInput
+              v-model="scope.row.value.value"
+              :mode="mode"
+              :placeholder="t('harvester.vip.cidr.placeholder')"
+              :label="t('harvester.vip.cidr.label')"
+              required
+              @input="update"
+            />
+          </div>
+          <div v-else class="row">
+            <div class="span-6 col">
+              <LabeledInput
+                v-model="scope.row.value.startIP"
+                :mode="mode"
+                :placeholder="t('harvester.vip.startIP.placeholder')"
+                :label="t('harvester.vip.startIP.label')"
+                required
+                @input="update"
+              />
+            </div>
+            <div class="span-6 col">
+              <LabeledInput
+                v-model="scope.row.value.endIP"
+                :mode="mode"
+                :placeholder="t('harvester.vip.endIP.placeholder')"
+                :label="t('harvester.vip.endIP.label')"
+                required
+                @input="update"
+              />
+            </div>
+          </div>
         </div>
       </template>
     </ArrayList>
@@ -222,18 +294,19 @@ export default {
 
   ::v-deep .box {
     display: grid;
-    grid-template-columns: 42% 42% 10%;
+    grid-template-columns: 35% 10% 35% 8%;
     column-gap: 1.75%;
     align-items: center;
     margin-bottom: 10px;
 
     .key,
-    .value {
+    .value,
+    .type {
       height: 100%;
     }
   }
 
-  .unlabeled-select {
+  .labeled-select {
     height: 100%;
   }
 

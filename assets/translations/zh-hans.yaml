@@ -4587,7 +4587,8 @@ harvester:
     namespace:
       label: 命名空间
     cidr:
-      invalid: '"CIRD" 不合法.'
+      label: CIDR
+      placeholder: "例如: 172.16.10.0/24,172.16.20.0/24"
     add:
       label: 添加IP池
 ##############################
