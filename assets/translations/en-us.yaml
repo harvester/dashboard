@@ -5077,6 +5077,7 @@ harvester:
     memory: Memory
     cpu: CPU
     storage: Storage
+    noFileChosen: No file chosen
   
   validation:
     custom:

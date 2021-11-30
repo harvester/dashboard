@@ -4196,6 +4196,7 @@ harvester:
     memory: 内存
     cpu: CPU
     storage: 存储
+    noFileChosen: 没有选择任何文件
 
   validation:
     custom:
