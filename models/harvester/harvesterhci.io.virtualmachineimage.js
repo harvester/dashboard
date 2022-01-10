@@ -100,8 +100,9 @@ export default class HciVmImage extends SteveModel {
     const conditions = this?.status?.conditions || [];
     const initialized = conditions.find( cond => cond.type === 'Initialized');
     const imported = conditions.find( cond => cond.type === 'Imported');
+    const message = initialized?.message || imported?.message;
 
-    return initialized?.message || imported?.message;
+    return ucFirst(message);
   }
 
   get stateBackground() {
@@ -203,12 +204,7 @@ export default class HciVmImage extends SteveModel {
   }
 
   get stateDescription() {
-    const imported = this.getStatusConditionOfType('Imported');
-
-    const status = imported?.status;
-    const message = imported?.message;
-
-    return status === 'False' ? ucFirst(message) : '';
+    return this.imageMessage;
   }
 
   get uploadImage() {
