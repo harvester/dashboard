@@ -104,4 +104,24 @@ export default class HciSetting extends SteveModel {
   get isNFS() {
     return this.parseValue.type === 'nfs';
   }
+
+  get customValidationRules() {
+    const id = this.id;
+
+    const out = [];
+
+    switch (id) {
+    case 'backup-target':
+      out.push( {
+        nullable:       false,
+        path:           'value',
+        required:       true,
+        type:           'string',
+        validators:     ['backupTarget'],
+      });
+      break;
+    }
+
+    return out;
+  }
 }
