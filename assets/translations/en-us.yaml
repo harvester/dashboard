@@ -6282,3 +6282,7 @@ legacy:
 serverUpgrade:
   title: "{vendor} Server Changed"
   message: "The page reloaded because the version of {vendor} running on your server changed."
+
+vncConsole:
+  error:
+    message: Web VNC console connection is disconnected
