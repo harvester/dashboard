@@ -149,7 +149,7 @@ export default {
           <h2 v-html="t(setting.description, {}, true)">
           </h2>
         </div>
-        <div class="action">
+        <div :id="setting.id" class="action">
           <button aria-haspopup="true" aria-expanded="false" type="button" class="btn btn-sm role-multi-action actions" @click="showActionMenu($event, setting)">
             <i class="icon icon-actions" />
           </button>
