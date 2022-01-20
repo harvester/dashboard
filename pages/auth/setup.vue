@@ -288,7 +288,7 @@ export default {
             <!-- For password managers... -->
             <input type="hidden" name="username" autocomplete="username" :value="username" />
             <div class="mb-20">
-              <RadioGroup v-model="useRandom" name="password-mode" :options="[{label: t('setup.useRandom'), value: true}, {id: 'password-manual', label: t('setup.useManual'), value: false}]" />
+              <RadioGroup v-model="useRandom" name="password-mode" :options="[{label: t('setup.useRandom'), value: true}, {label: t('setup.useManual'), value: false}]" />
             </div>
             <div class="mb-20">
               <LabeledInput
