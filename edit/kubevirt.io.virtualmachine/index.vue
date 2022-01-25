@@ -72,6 +72,7 @@ export default {
       count:                 2,
       templateId:            '',
       templateVersionId:     '',
+      namePrefix:            '',
       isSingle:              true,
       isRunning:             true,
       useTemplate:           false,
@@ -247,6 +248,8 @@ export default {
     async saveMultiple(buttonCb) {
       const originName = this.value?.metadata?.name;
       const namePrefix = this.value.metadata.name || '';
+
+      this.namePrefix = namePrefix;
       const baseHostname = this.hostname ? this.hostname : this.value.metadata.name;
       const join = namePrefix.endsWith('-') ? '' : '-';
 

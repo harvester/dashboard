@@ -14,7 +14,7 @@ import { _CLONE } from '@/config/query-params';
 import {
   PVC, HCI, STORAGE_CLASS, NODE, SECRET
 } from '@/config/types';
-import { HCI as HCI_ANNOTATIONS } from '@/config/labels-annotations';
+import { HCI as HCI_ANNOTATIONS, HOSTNAME } from '@/config/labels-annotations';
 import impl, { QGA_JSON, USB_TABLET } from '@/mixins/harvester-vm/impl';
 
 const OS = [{
@@ -502,7 +502,7 @@ export default {
 
       const isRunVM = this.isCreate ? this.isRunning : this.isRestartImmediately ? true : this.value.spec.running;
 
-      const spec = {
+      let spec = {
         ...this.spec,
         running:  isRunVM,
         template: {
@@ -532,6 +532,8 @@ export default {
         }
       };
 
+      spec = this.multiVMScheduler(spec);
+
       if (volumes.length === 0) {
         delete spec.template.spec.volumes;
       }
@@ -557,6 +559,42 @@ export default {
         this.$set(this.value.spec.vm.metadata, 'labels', { [HCI_ANNOTATIONS.OS]: this.osType });
         this.$set(this, 'spec', spec);
       }
+    },
+
+    multiVMScheduler(spec) {
+      if (!this.isSingle) {
+        spec.template.metadata.labels[HCI_ANNOTATIONS.VM_NAME_PREFIX] = this.namePrefix;
+
+        const rule = {
+          weight:          1,
+          podAffinityTerm: {
+            topologyKey:   HOSTNAME,
+            labelSelector: { matchLabels: { [HCI_ANNOTATIONS.VM_NAME_PREFIX]: this.namePrefix } }
+          }
+        };
+
+        return {
+          ...spec,
+          template: {
+            ...spec.template,
+            spec: {
+              ...spec.template.spec,
+              affinity: {
+                ...spec.template.spec.affinity,
+                podAntiAffinity: {
+                  ...spec.template.spec?.affinity?.podAntiAffinity,
+                  preferredDuringSchedulingIgnoredDuringExecution: [
+                    ...(spec.template.spec?.affinity?.podAntiAffinity?.preferredDuringSchedulingIgnoredDuringExecution || []),
+                    rule
+                  ]
+                }
+              }
+            }
+          }
+        };
+      }
+
+      return spec;
     },
 
     parseNetworkRows(networkRow) {
