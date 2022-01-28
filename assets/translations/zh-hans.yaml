@@ -5593,6 +5593,8 @@ harvester:
       ca: CA
     vmForceDeletionPolicy:
       period: 周期
+    supportBundleImage:
+      imagePullPolicy: 镜像拉取策略
 
   cloudTemplate:
     label: Cloud Config 模板
