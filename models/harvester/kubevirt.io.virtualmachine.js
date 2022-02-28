@@ -225,8 +225,15 @@ export default class VirtVm extends SteveModel {
     }
   }
 
-  restartVM() {
-    this.doAction('restart', {});
+  async restartVM() {
+    try {
+      await this.doAction('restart', {});
+    } catch (err) {
+      this.$dispatch('growl/fromError', {
+        title: this.$rootGetters['i18n/t']('harvester.notification.title.error'),
+        err,
+      }, { root: true });
+    }
   }
 
   openLogs() {
@@ -291,8 +298,15 @@ export default class VirtVm extends SteveModel {
     this.doAction('unpause', {});
   }
 
-  stopVM() {
-    this.doAction('stop', {});
+  async stopVM() {
+    try {
+      await this.doAction('stop', {});
+    } catch (err) {
+      this.$dispatch('growl/fromError', {
+        title: this.$rootGetters['i18n/t']('harvester.notification.title.error'),
+        err,
+      }, { root: true });
+    }
   }
 
   startVM() {
