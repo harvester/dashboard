@@ -165,7 +165,6 @@ export default class VirtVm extends SteveModel {
 
   applyDefaults(resources = this, realMode) {
     const spec = {
-      running:              true,
       template:             {
         metadata: { annotations: {} },
         spec:     {
@@ -362,11 +361,7 @@ export default class VirtVm extends SteveModel {
     if (!this?.spec) {
       return false;
     }
-    const { running = null, runStrategy = null } = this.spec;
-
-    if (running !== null) {
-      return running;
-    }
+    const { runStrategy = null } = this.spec;
 
     if (runStrategy !== null) {
       let changeRequests;
@@ -376,6 +371,8 @@ export default class VirtVm extends SteveModel {
         return false;
       case RunStrategy.Always:
       case RunStrategy.RerunOnFailure:
+        // TODO
+
         return true;
       case RunStrategy.Manual:
       default:
@@ -463,6 +460,7 @@ export default class VirtVm extends SteveModel {
     const conditions = get(this.vmi, 'status.conditions');
     const isVMIReady = findBy(conditions, 'type', 'Ready')?.status === 'True';
 
+    console.log('---this.vmi?.status?.phase', this.metadata.name, this.vmi?.status?.phase, findBy(conditions, 'type', 'Ready'));
     if (this.vmi?.status?.phase === VMIPhase.Running && isVMIReady) {
       return { status: VMIPhase.Running };
     }
@@ -481,7 +479,7 @@ export default class VirtVm extends SteveModel {
     return null;
   }
 
-  get isBeingStopped() {
+  get isBeingStopped() { // TODO
     if (this && !this.isVMExpectedRunning && this.isVMCreated) {
       return { status: STOPPING };
     }
