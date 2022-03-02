@@ -32,6 +32,8 @@ import { BEFORE_SAVE_HOOKS, AFTER_SAVE_HOOKS } from '@/mixins/child-hook';
 import VM_MIXIN from '@/mixins/harvester-vm';
 import CreateEditView from '@/mixins/create-edit-view';
 
+export const RunStrategys = ['Always', 'RerunOnFailure', 'Manual', 'Halted'];
+
 export default {
   name: 'HarvesterEditVM',
 
@@ -76,10 +78,10 @@ export default {
       templateVersionId:     '',
       namePrefix:            '',
       isSingle:              true,
-      isRunning:             true,
       useTemplate:           false,
       hostname,
       isRestartImmediately,
+      RunStrategys,
     };
   },
 
@@ -139,10 +141,6 @@ export default {
 
     secretNamePrefix() {
       return this.value?.metadata?.name;
-    },
-
-    showRunning() {
-      return !(this.isEdit || this.isView);
     },
 
     isQemuInstalled() {
@@ -304,7 +302,7 @@ export default {
     },
 
     restartVM() {
-      if ( this.mode === 'edit' && this.value.hasAction('restart')) {
+      if ( this.mode === 'edit' && (this.value.hasAction('restart') || this.value.hasAction('start'))) {
         const cloneDeepNewVM = clone(this.value);
 
         delete cloneDeepNewVM?.metadata;
@@ -314,7 +312,11 @@ export default {
         const newVM = JSON.parse(JSON.stringify(cloneDeepNewVM));
 
         if (!isEqual(oldVM, newVM) && this.isRestartImmediately) {
-          this.value.doAction('restart', {});
+          if (this.value.hasAction('restart')) {
+            this.value.doAction('restart', {});
+          } else {
+            this.value.doAction('start', {});
+          }
         }
       }
     },
@@ -483,19 +485,19 @@ export default {
           <div class="row mb-20">
             <div class="col span-6">
               <LabeledSelect
-                v-model="osType"
-                label-key="harvester.virtualMachine.osType"
-                :options="OS"
-                :disabled="!isCreate"
+                v-model="spec.runStrategy"
+                label-key="harvester.virtualMachine.runStrategy"
+                :options="RunStrategys"
+                :mode="mode"
               />
             </div>
 
             <div class="col span-6">
               <LabeledSelect
-                v-model="machineType"
-                label-key="harvester.virtualMachine.input.MachineType"
-                :options="machineTypeOptions"
-                :mode="mode"
+                v-model="osType"
+                label-key="harvester.virtualMachine.osType"
+                :options="OS"
+                :disabled="!isCreate"
               />
             </div>
           </div>
@@ -506,13 +508,24 @@ export default {
           </div>
 
           <div v-if="showAdvanced" class="mb-20">
-            <div class="col span-6">
-              <LabeledInput
-                v-model="hostname"
-                :label-key="hostnameLabel"
-                :placeholder="hostPlaceholder"
-                :mode="mode"
-              />
+            <div class="row">
+              <div class="col span-6">
+                <LabeledInput
+                  v-model="hostname"
+                  :label-key="hostnameLabel"
+                  :placeholder="hostPlaceholder"
+                  :mode="mode"
+                />
+              </div>
+
+              <div class="col span-6">
+                <LabeledSelect
+                  v-model="machineType"
+                  label-key="harvester.virtualMachine.input.MachineType"
+                  :options="machineTypeOptions"
+                  :mode="mode"
+                />
+              </div>
             </div>
           </div>
 
@@ -548,15 +561,6 @@ export default {
       </Tabbed>
 
       <div class="mt-20">
-        <Checkbox
-          v-if="showRunning"
-          v-model="isRunning"
-          class="check mb-20"
-          type="checkbox"
-          label-key="harvester.virtualMachine.createRunning"
-          :mode="mode"
-        />
-
         <span v-if="isEdit" class="restart">
           <Banner color="warning" class="banner-right">
             {{ t('harvester.virtualMachine.restartTip') }}

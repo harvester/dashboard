@@ -263,6 +263,11 @@ export default {
       const secretRef = this.getSecret(spec);
       const accessCredentials = this.getAccessCredentials(spec);
 
+      if (Object.prototype.hasOwnProperty.call(spec, 'running')) {
+        delete spec.running;
+        spec.runStrategy = 'RerunOnFailure';
+      }
+
       this.$set(this, 'spec', spec);
       this.$set(this, 'secretRef', secretRef);
       this.$set(this, 'accessCredentials', accessCredentials);
@@ -500,11 +505,8 @@ export default {
         }
       }
 
-      const isRunVM = this.isCreate ? this.isRunning : this.isRestartImmediately ? true : this.value.spec.running;
-
       let spec = {
         ...this.spec,
-        running:  isRunVM,
         template: {
           ...this.spec.template,
           metadata: {
