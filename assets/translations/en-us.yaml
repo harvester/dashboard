@@ -5130,6 +5130,7 @@ harvester:
     addHotplug: Add Volume
     exportImage: Export Image
     viewlogs: View Logs
+    cancelExpand: Cancel Expand
   tableHeaders:
     size: Size
     progress: Progress
