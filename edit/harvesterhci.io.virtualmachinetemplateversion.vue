@@ -15,6 +15,7 @@ import SSHKey from '@/edit/kubevirt.io.virtualmachine/VirtualMachineSSHKey';
 
 import { HCI } from '@/config/types';
 import { randomStr } from '@/utils/string';
+import { RunStrategys } from '@/config/harvester-map';
 import { _CONFIG, _EDIT, _VIEW } from '@/config/query-params';
 import { HCI as HCI_ANNOTATIONS } from '@/config/labels-annotations';
 import { cleanForNew } from '@/plugins/steve/normalize';
@@ -63,6 +64,7 @@ export default {
       description:      '',
       defaultVersion:   null,
       isDefaultVersion: false,
+      RunStrategys,
     };
   },
 
@@ -232,13 +234,25 @@ export default {
       </Tab>
 
       <Tab name="advanced" :label="t('harvester.tab.advanced')" :weight="-3">
-        <LabeledSelect
-          v-model="osType"
-          label-key="harvester.virtualMachine.osType"
-          :mode="mode"
-          :options="OS"
-          class="mb-20"
-        />
+        <div class="row mb-20">
+          <div class="col span-6">
+            <LabeledSelect
+              v-model="runStrategy"
+              label-key="harvester.virtualMachine.runStrategy"
+              :options="RunStrategys"
+              :mode="mode"
+            />
+          </div>
+
+          <div class="col span-6">
+            <LabeledSelect
+              v-model="osType"
+              label-key="harvester.virtualMachine.osType"
+              :mode="mode"
+              :options="OS"
+            />
+          </div>
+        </div>
 
         <CloudConfig
           ref="yamlEditor"

@@ -23,6 +23,7 @@ import AccessCredentials from '@/edit/kubevirt.io.virtualmachine/VirtualMachineA
 import { clear } from '@/utils/array';
 import { clone } from '@/utils/object';
 import { HCI } from '@/config/types';
+import { RunStrategys } from '@/config/harvester-map';
 import { saferDump } from '@/utils/create-yaml';
 import { exceptionToErrorsArray } from '@/utils/error';
 import { cleanForNew } from '@/plugins/steve/normalize';
@@ -31,8 +32,6 @@ import { BEFORE_SAVE_HOOKS, AFTER_SAVE_HOOKS } from '@/mixins/child-hook';
 
 import VM_MIXIN from '@/mixins/harvester-vm';
 import CreateEditView from '@/mixins/create-edit-view';
-
-export const RunStrategys = ['Always', 'RerunOnFailure', 'Manual', 'Halted'];
 
 export default {
   name: 'HarvesterEditVM',
@@ -485,7 +484,7 @@ export default {
           <div class="row mb-20">
             <div class="col span-6">
               <LabeledSelect
-                v-model="spec.runStrategy"
+                v-model="runStrategy"
                 label-key="harvester.virtualMachine.runStrategy"
                 :options="RunStrategys"
                 :mode="mode"

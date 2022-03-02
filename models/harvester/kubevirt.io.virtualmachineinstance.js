@@ -23,9 +23,7 @@ export default class VirtVmInstance extends SteveModel {
       return O.action === 'promptRemove';
     });
 
-    // TODO
-    // return [actions];
-    return out;
+    return [actions];
   }
 
   get stateDisplay() {

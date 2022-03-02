@@ -110,6 +110,7 @@ export default {
       spec:               null,
       osType:             'linux',
       sshKey:             [],
+      runStrategy:        'RerunOnFailure',
       installAgent:       true,
       hasCreateVolumes:   [],
       installUSBTablet:   true,
@@ -216,7 +217,6 @@ export default {
       if (!spec) {
         return;
       }
-
       const resources = spec.template.spec.domain.resources;
 
       // If the user is created via yaml, there may be no "resources.limits": kubectl apply -f https://kubevirt.io/labs/manifests/vm.yaml
@@ -229,7 +229,8 @@ export default {
           }
         };
       }
-
+      console.log('---spec 2', spec);
+      const runStrategy = spec.runStrategy;
       const machineType = value.machineType;
       const cpu = spec.template.spec.domain?.cpu?.cores;
       const memory = spec.template.spec.domain.resources.limits.memory;
@@ -269,6 +270,7 @@ export default {
       }
 
       this.$set(this, 'spec', spec);
+      this.$set(this, 'runStrategy', runStrategy);
       this.$set(this, 'secretRef', secretRef);
       this.$set(this, 'accessCredentials', accessCredentials);
       this.$set(this, 'userScript', userData);
@@ -507,7 +509,8 @@ export default {
 
       let spec = {
         ...this.spec,
-        template: {
+        runStrategy: this.runStrategy,
+        template:    {
           ...this.spec.template,
           metadata: {
             ...this.spec?.template?.metadata,
