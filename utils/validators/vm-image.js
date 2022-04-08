@@ -10,9 +10,9 @@ export function imageUrl(url, getters, errors, validatorArgs, type) {
   }
 
   const suffixName = url.split('/').pop();
-  const fileSuffiic = suffixName.split('.').pop().toLowerCase();
+  const fileSuffix = suffixName.split('.').pop().toLowerCase();
 
-  if (!VM_IMAGE_FILE_FORMAT.includes(fileSuffiic)) {
+  if (!VM_IMAGE_FILE_FORMAT.includes(fileSuffix)) {
     const tipString = type === 'file' ? 'harvester.validation.image.ruleFileTip' : 'harvester.validation.image.ruleTip';
 
     errors.push(t(tipString));
@@ -26,6 +26,20 @@ export function fileRequired(annotaions = {}, getters, errors, validatorArgs, ty
 
   if (!annotaions[HCI.IMAGE_NAME]) {
     errors.push(t('validation.required', { key: t('harvester.image.fileName') }));
+  }
+
+  return errors;
+}
+
+export function labelsRequired(labels = {}, getters, errors, validatorArgs, type) {
+  const t = getters['i18n/t'];
+
+  if (!labels[HCI.OS_TYPE]) {
+    errors.push(t('validation.required', { key: HCI.OS }));
+  }
+
+  if (!labels[HCI.IMAGE_SUFFIX]) {
+    errors.push(t('validation.required', { key: HCI.IMAGE_SUFFIX }));
   }
 
   return errors;
