@@ -33,6 +33,10 @@ export default class HciVmImage extends SteveModel {
     let out = super._availableActions;
     const toFilter = ['goToEditYaml'];
 
+    if (this.spec.sourceType === 'upload') {
+      toFilter.push('goToClone');
+    }
+
     out = out.filter( A => !toFilter.includes(A.action));
 
     const schema = this.$getters['schemaFor'](HCI.VM);
