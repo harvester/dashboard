@@ -3,10 +3,13 @@ import { get } from '@/utils/object';
 import { findBy } from '@/utils/array';
 import { colorForState } from '@/plugins/steve/resource-class';
 import SteveModel from '@/plugins/steve/steve-class';
+import { _CREATE } from '@/config/query-params';
 
 export default class HciVmBackup extends SteveModel {
-  detailPageHeaderActionOverride() {
-    return this.t('harvester.backup.title');
+  detailPageHeaderActionOverride(realMode) {
+    if (realMode === _CREATE) {
+      return this.t('harvester.backup.title');
+    }
   }
 
   get _availableActions() {
