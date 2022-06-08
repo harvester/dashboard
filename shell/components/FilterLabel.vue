@@ -11,10 +11,6 @@ export default {
   },
 
   props:      {
-    searchLables: {
-      type:     Object,
-      required: true,
-    },
     rows: {
       type:     Array,
       required: true,
@@ -38,6 +34,39 @@ export default {
       });
 
       return Array.from(new Set(labels.flat()));
+    },
+  },
+
+  methods: {
+    update() {
+      const map = {};
+
+      this.searchLabels.map((v) => {
+        map[`${ v.key }`] = v.value;
+      });
+
+      this.filterRows();
+    },
+
+    calcValueOptions(key) {
+      const valueOptions = [];
+
+      this.rows.map((row) => {
+        const isExistValue = valueOptions.find(value => value.label === row.labels[key]);
+
+        if (Object.keys(row.labels).includes(key) && key && row.labels[key] && !isExistValue) {
+          valueOptions.push({
+            value: row.labels[key],
+            label: row.labels[key]
+          });
+        }
+      });
+
+      return valueOptions;
+    },
+
+    removeAll() {
+      this.$set(this, 'searchLabels', []);
     },
 
     filterRows() {
@@ -66,39 +95,18 @@ export default {
         });
       });
 
-      return rows;
+      this.$emit('changeRows', rows, this.searchLabels);
     }
   },
 
-  methods: {
-    update() {
-      const map = {};
-
-      this.searchLabels.map((v) => {
-        map[`${ v.key }`] = v.value;
-      });
-    },
-
-    calcValueOptions(key) {
-      const valueOptions = [];
-
-      this.rows.map((row) => {
-        const isExistValue = valueOptions.find(value => value.label === row.labels[key]);
-
-        if (Object.keys(row.labels).includes(key) && key && row.labels[key] && !isExistValue) {
-          valueOptions.push({
-            value: row.labels[key],
-            label: row.labels[key]
-          });
-        }
-      });
-
-      return valueOptions;
-    },
-
-    removeAll() {
-      this.$set(this, 'searchLabels', []);
-    },
+  watch: {
+    rows: {
+      deep:      true,
+      immediate: true,
+      handler() {
+        this.filterRows();
+      }
+    }
   }
 };
 </script>

@@ -62,8 +62,9 @@ export default {
     return {
       VOLUME_TYPE,
       InterfaceOption,
-      loading: false,
-      images:  [],
+      loading:         false,
+      images:          [],
+      filterImageRows: []
     };
   },
 
@@ -73,7 +74,7 @@ export default {
 
   computed: {
     imagesOption() {
-      return this.images.filter(c => c.isReady).map( (I) => {
+      return this.filterImageRows.filter(c => c.isReady).map( (I) => {
         return {
           label: `${ I.metadata.namespace }/${ I.spec.displayName }`,
           value: I.id
@@ -151,6 +152,10 @@ export default {
     onOpen() {
       this.images = this.$store.getters['harvester/all'](HCI.IMAGE);
     },
+
+    changeRows(filterRows) {
+      this.$set(this, 'filterImageRows', filterRows);
+    },
   }
 };
 </script>
@@ -181,7 +186,7 @@ export default {
       <div class="col span-6">
         <InputOrDisplay :name="t('harvester.fields.image')" :value="imageName" :mode="mode">
           <div class="image-container">
-            <FilterLabel class="filter">
+            <FilterLabel class="filter" :rows="images" @changeRows="changeRows">
               <template #header>
                 <i class="icon icon-search" />
               </template>
