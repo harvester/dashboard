@@ -27,5 +27,5 @@ export function getWidth(el) {
     return;
   }
 
-  return parseFloat(getComputedStyle(el).width.replace('px', ''));
+  return parseFloat(getComputedStyle(el[0]).width.replace('px', ''));
 }
