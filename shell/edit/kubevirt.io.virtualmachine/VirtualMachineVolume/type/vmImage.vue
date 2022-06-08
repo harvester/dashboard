@@ -3,6 +3,7 @@ import UnitInput from '@shell/components/form/UnitInput';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import InputOrDisplay from '@shell/components/InputOrDisplay';
+import FilterLabel from '@shell/components/FilterLabel';
 import { HCI, PVC } from '@shell/config/types';
 import { formatSi, parseSi } from '@shell/utils/units';
 import { VOLUME_TYPE, InterfaceOption } from '@shell/config/harvester-map';
@@ -11,7 +12,7 @@ export default {
   name: 'HarvesterEditVMImage',
 
   components: {
-    UnitInput, LabeledInput, LabeledSelect, InputOrDisplay
+    UnitInput, LabeledInput, LabeledSelect, InputOrDisplay, FilterLabel
   },
 
   props:  {
@@ -179,15 +180,22 @@ export default {
     <div class="row mb-20">
       <div class="col span-6">
         <InputOrDisplay :name="t('harvester.fields.image')" :value="imageName" :mode="mode">
-          <LabeledSelect
-            v-model="value.image"
-            :disabled="idx === 0 && !isCreate && !value.newCreateId && isVirtualType"
-            :label="t('harvester.fields.image')"
-            :options="imagesOption"
-            :mode="mode"
-            :required="validateRequired"
-            @input="onImageChange"
-          />
+          <div class="image-container">
+            <FilterLabel class="filter">
+              <template #header>
+                <i class="icon icon-search" />
+              </template>
+            </FilterLabel>
+            <LabeledSelect
+              v-model="value.image"
+              :disabled="idx === 0 && !isCreate && !value.newCreateId && isVirtualType"
+              :label="t('harvester.fields.image')"
+              :options="imagesOption"
+              :mode="mode"
+              :required="validateRequired"
+              @input="onImageChange"
+            />
+          </div>
         </InputOrDisplay>
       </div>
 
@@ -223,3 +231,20 @@ export default {
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.image-container {
+  position: relative;
+
+  .filter {
+    position: absolute;
+    top: 4px;
+    z-index: 100;
+    right: 10px;
+  }
+
+  .icon-search {
+    color: var(--primary);
+  }
+}
+</style>
