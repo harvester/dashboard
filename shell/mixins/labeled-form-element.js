@@ -98,12 +98,12 @@ export default {
     resizeHandler(e) {
       // since the DD is positioned there is no way to 'inherit' the size of the input, this calcs the size of the parent and set the dd width if it is smaller. If not let it grow with the regular styles
       this.$nextTick(() => {
-        const DD = this.$refs.select.querySelectorAll('ul.vs__dropdown-menu');
-        const selectWidth = getWidth(this.$refs.select);
+        const DD = this.$refs.select.querySelectorAll('ul.vs__dropdown-menu') || [];
+        const selectWidth = getWidth([this.$refs.select]);
         const dropWidth = getWidth(DD);
 
         if (dropWidth < selectWidth) {
-          setWidth(DD, selectWidth);
+          setWidth(DD[0], selectWidth);
         }
       });
     },

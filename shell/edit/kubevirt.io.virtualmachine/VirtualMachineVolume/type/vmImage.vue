@@ -62,8 +62,8 @@ export default {
     return {
       VOLUME_TYPE,
       InterfaceOption,
-      loading: false,
-      images:  [],
+      loading:         false,
+      images:          [],
     };
   },
 
@@ -73,7 +73,7 @@ export default {
 
   computed: {
     imagesOption() {
-      return this.images.filter(c => c.isReady).map( (I) => {
+      return this.images.filter(c => c.isReady).sort((a, b) => a.creationTimestamp > b.creationTimestamp ? -1 : 1).map( (I) => {
         return {
           label: `${ I.metadata.namespace }/${ I.spec.displayName }`,
           value: I.id
@@ -200,15 +200,18 @@ export default {
     <div class="row mb-20">
       <div class="col span-6">
         <InputOrDisplay :name="t('harvester.fields.image')" :value="imageName" :mode="mode">
-          <LabeledSelect
-            v-model="value.image"
-            :disabled="idx === 0 && !isCreate && !value.newCreateId && isVirtualType"
-            :label="t('harvester.fields.image')"
-            :options="imagesOption"
-            :mode="mode"
-            :required="validateRequired"
-            @input="onImageChange"
-          />
+          <div class="image-container">
+            <LabeledSelect
+              v-model="value.image"
+              :disabled="idx === 0 && !isCreate && !value.newCreateId && isVirtualType"
+              :label="t('harvester.fields.image')"
+              :options="imagesOption"
+              :searchable="true"
+              :mode="mode"
+              :required="validateRequired"
+              @input="onImageChange"
+            />
+          </div>
         </InputOrDisplay>
       </div>
 
