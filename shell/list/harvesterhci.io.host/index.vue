@@ -90,13 +90,15 @@ export default {
             value:         'id',
             width:         '230',
             formatter:     'HarvesterCPUUsed',
+            formatterOpts: { showUsed: true },
           },
           {
             name:          'memory',
             labelKey:      'node.detail.glance.consumptionGauge.memory',
             value:         'id',
             width:         '230',
-            formatter:     'HarvesterMemoryUsed'
+            formatter:     'HarvesterMemoryUsed',
+            formatterOpts: { showUsed: true },
           },
           {
             name:          'storage',
@@ -104,6 +106,7 @@ export default {
             value:         'id',
             width:         '230',
             formatter:     'HarvesterStorageUsed',
+            formatterOpts: { showReserved: true },
           }
         ];
 
