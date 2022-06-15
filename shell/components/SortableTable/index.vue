@@ -1337,6 +1337,12 @@ $spacing: 10px;
         }
       }
     }
+
+    .bulk-action  {
+      .icon {
+        vertical-align: -10%;
+      }
+    }
   }
 
   .middle {
