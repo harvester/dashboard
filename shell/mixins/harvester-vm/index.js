@@ -289,6 +289,7 @@ export default {
       this.$set(this, 'installAgent', installAgent);
 
       this.$set(this, 'cpu', cpu);
+      this.$set(this, 'cpu', cpu);
       this.$set(this, 'memory', memory);
       this.$set(this, 'reservedMemory', reservedMemory);
       this.$set(this, 'machineType', machineType);
