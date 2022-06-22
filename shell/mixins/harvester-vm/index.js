@@ -5,7 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 import difference from 'lodash/difference';
 
 import { sortBy } from '@shell/utils/sort';
-import { set, clone } from '@shell/utils/object';
+import { set } from '@shell/utils/object';
 import { allHash } from '@shell/utils/promise';
 import { randomStr } from '@shell/utils/string';
 import { base64Decode } from '@shell/utils/crypto';
