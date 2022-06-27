@@ -79,6 +79,19 @@ export default class VirtVm extends SteveModel {
   get availableActions() {
     const out = super._availableActions;
 
+    const shallowClone = out.find(action => action.action === 'goToClone');
+
+    if (shallowClone) {
+      shallowClone.label = this.t('harvester.action.shallowClone');
+    }
+
+    out.splice(3, 0, {
+      action:     'deepCloneVM',
+      enabled:    !!this.actions?.clone,
+      icon:       'icon icon-copy',
+      label:      this.t('harvester.action.deepClone'),
+    });
+
     return [
       {
         action:     'stopVM',
@@ -234,6 +247,19 @@ export default class VirtVm extends SteveModel {
         interfaces[i].macAddress = '';
       }
     }
+
+    // delete, spec?.dataSource:  The original data should not be saved when clone template
+    const volumeClaimTemplate = JSON.parse(this.metadata.annotations[HCI_ANNOTATIONS.VOLUME_CLAIM_TEMPLATE]);
+
+    const deleteDataSource = volumeClaimTemplate.map((volume) => {
+      if (volume?.spec?.dataSource) {
+        delete volume.spec.dataSource;
+      }
+
+      return volume;
+    });
+
+    this.metadata.annotations[HCI_ANNOTATIONS.VOLUME_CLAIM_TEMPLATE] = JSON.stringify(deleteDataSource);
   }
 
   restartVM() {
@@ -300,6 +326,13 @@ export default class VirtVm extends SteveModel {
 
   pauseVM() {
     this.doActionGrowl('pause', {});
+  }
+
+  deepCloneVM(resources = this) {
+    this.$dispatch('promptModal', {
+      resources,
+      component: 'harvester/DeepCloneVmDialog'
+    });
   }
 
   unpauseVM() {
