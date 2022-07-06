@@ -329,7 +329,7 @@ export default {
     <div class="spacer"></div>
 
     <div class="rd-header-right">
-      <HarvesterUpgrade v-if="isVirtualCluster" />
+      <HarvesterUpgrade v-if="isVirtualCluster && currentProduct.name === VIRTUAL" />
       <div
         v-if="currentCluster && !simple && (currentProduct.showNamespaceFilter || currentProduct.showWorkspaceSwitcher)"
         class="top"
