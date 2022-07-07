@@ -4,17 +4,25 @@
  * @param {function | string | number} val - The desired width represented as a Number
  */
 export function setWidth(el, val) {
+  let nodeList = [];
+
+  if ('length' in el) {
+    nodeList = Array.from(el);
+  }
+
+  const _el = nodeList.length ? nodeList[0] : el;
+
   if (typeof val === 'function') {
     val = val();
   }
 
   if (typeof val === 'string') {
-    el.style.width = val;
+    _el.style.width = val;
 
     return;
   }
-
-  el.style.width = `${ val }px`;
+  console.log('---wj', _el, el);
+  _el.style.width = `${ val }px`;
 }
 
 /**
@@ -23,9 +31,12 @@ export function setWidth(el, val) {
  * @returns Number representing the width for the provided element
  */
 export function getWidth(el) {
-  if (!el.length) {
-    return;
+  console.log('---nodeList', el, 'length' in el, Array.from(el));
+  if ('length' in el) {
+    const nodeList = Array.from(el);
+
+    return nodeList.length ? parseFloat(getComputedStyle(el[0]).width.replace('px', '')) : 0;
   }
 
-  return parseFloat(getComputedStyle(el[0]).width.replace('px', ''));
+  return parseFloat(getComputedStyle(el).width.replace('px', ''));
 }

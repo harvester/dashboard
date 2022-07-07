@@ -116,11 +116,12 @@ export default Vue.extend({
       // since the DD is positioned there is no way to 'inherit' the size of the input, this calcs the size of the parent and set the dd width if it is smaller. If not let it grow with the regular styles
       this.$nextTick(() => {
         const DD = (this.$refs.select as HTMLElement).querySelectorAll('ul.vs__dropdown-menu');
-        const selectWidth = getWidth([this.$refs.select] as Array<Element>) || 0;
+
+        const selectWidth = getWidth(this.$refs.select as Element) || 0;
         const dropWidth = getWidth(DD) || 0;
 
         if (dropWidth < selectWidth) {
-          setWidth(DD[0], selectWidth);
+          setWidth(DD, selectWidth);
         }
       });
     },
