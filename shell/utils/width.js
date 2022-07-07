@@ -21,7 +21,7 @@ export function setWidth(el, val) {
 
     return;
   }
-  console.log('---wj', _el, el);
+
   _el.style.width = `${ val }px`;
 }
 
@@ -31,7 +31,6 @@ export function setWidth(el, val) {
  * @returns Number representing the width for the provided element
  */
 export function getWidth(el) {
-  console.log('---nodeList', el, 'length' in el, Array.from(el));
   if ('length' in el) {
     const nodeList = Array.from(el);
 

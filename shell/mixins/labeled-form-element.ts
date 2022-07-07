@@ -120,7 +120,7 @@ export default Vue.extend({
         const selectWidth = getWidth(this.$refs.select as Element) || 0;
         const dropWidth = getWidth(DD) || 0;
 
-        if (dropWidth < selectWidth) {
+        if (dropWidth < selectWidth && DD.length) {
           setWidth(DD, selectWidth);
         }
       });
