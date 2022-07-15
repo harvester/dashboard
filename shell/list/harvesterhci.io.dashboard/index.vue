@@ -23,6 +23,7 @@ import metricPoller from '@shell/mixins/metric-poller';
 import { allDashboardsExist } from '@shell/utils/grafana';
 import { isEmpty } from '@shell/utils/object';
 import HarvesterUpgrade from './HarvesterUpgrade';
+import { findBy } from '@shell/utils/array';
 
 dayjs.extend(utc);
 dayjs.extend(minMax);
@@ -298,7 +299,10 @@ export default {
         const diskStatus = node?.status?.diskStatus || {};
 
         Object.values(diskStatus).map((disk) => {
-          if (disk?.conditions?.Schedulable?.status === 'True' && disk?.storageAvailable && disk?.storageMaximum) {
+          const conditions = disk?.conditions || [];
+          const schedulableCondition = findBy(conditions, 'type', 'Schedulable') || {};
+
+          if (schedulableCondition?.status === 'True' && disk?.storageAvailable && disk?.storageMaximum) {
             out += (disk.storageMaximum - disk.storageAvailable);
           }
         });
