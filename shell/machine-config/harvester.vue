@@ -205,18 +205,23 @@ export default {
       return this.disabled || !!(this.isEdit && this.value.id);
     },
 
-    imageOptions() {
-      return (this.images || []).filter( (O) => {
-        return !O.spec.url.endsWith('.iso') && isReady.call(O);
-      }).sort((a, b) => a.metadata.creationTimestamp > b.metadata.creationTimestamp ? -1 : 1).map( (O) => {
-        const value = O.id;
-        const label = `${ O.spec.displayName } (${ value })`;
+    imageOptions: {
+      get() {
+        return (this.images || []).filter( (O) => {
+          return !O.spec.url.endsWith('.iso') && isReady.call(O);
+        }).sort((a, b) => a.metadata.creationTimestamp > b.metadata.creationTimestamp ? -1 : 1).map( (O) => {
+          const value = O.id;
+          const label = `${ O.spec.displayName } (${ value })`;
 
-        return {
-          label,
-          value
-        };
-      });
+          return {
+            label,
+            value
+          };
+        });
+      },
+      set() {
+        this.images = [];
+      }
     },
   },
 
@@ -507,7 +512,7 @@ export default {
         <h3 class="mt-20">
           {{ t("workload.container.titles.podScheduling") }}
         </h3>
-        <PodAffinity :mode="mode" :value="vmAffinity" :nodes="allNodeObjects" @update="updateScheduling" />
+        <PodAffinity :mode="mode" :value="vmAffinity" :nodes="allNodeObjects" :has-nodes-and-ns="isImportCluster" @update="updateScheduling" />
 
         <h3 class="mt-20">
           {{ t("cluster.credential.harvester.userData.title") }}
