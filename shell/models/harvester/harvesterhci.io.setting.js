@@ -58,15 +58,15 @@ export default class HciSetting extends SteveModel {
   }
 
   get errMessage() {
+    const configuredCondition = findBy((this?.status?.conditions || []), 'type', 'configured') || {};
+
     if (this.metadata?.state?.error === true) {
       return this.metadata.state.message;
+    } else if (configuredCondition?.status === 'False') {
+      return configuredCondition.message;
     } else {
       return false;
     }
-  }
-
-  get configuredCondition() {
-    return findBy((this?.status?.conditions || []), 'type', 'configured') || {};
   }
 
   get valueOrDefaultValue() {
