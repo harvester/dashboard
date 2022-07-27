@@ -935,6 +935,8 @@ export const actions = {
 
     const filters = getters['prefs/get'](NAMESPACE_FILTERS)?.[id];
 
+    commit('setProduct', VIRTUAL);
+
     commit('updateNamespaces', {
       filters: filters || [ALL_USER],
       all:     res.virtualNamespaces
