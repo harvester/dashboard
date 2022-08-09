@@ -99,11 +99,11 @@ export default class HciManagedChart extends SteveModel {
         resources: {
           limits: {
             cpu:    '200m',
-            memory: '180Mi'
+            memory: '500Mi'
           },
           requests: {
             cpu:    '100m',
-            memory: '30Mi'
+            memory: '200Mi'
           }
         }
       }
