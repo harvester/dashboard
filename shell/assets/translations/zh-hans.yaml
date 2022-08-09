@@ -3800,6 +3800,7 @@ promptRemove:
   attemptingToRemove: "你正在试图删除 {type}"
   protip: "提示：按住 {alternateLabel} 键的同时单击删除，以绕过此确认。"
   confirmName: "在下方输入 <b>{nameToMatch}</b> 以确认："
+  confirmRelatedResource: "删除 {type} 将删除这个特定 {type} 上的所有资源，这是不可恢复的，您确定要继续删除 {names} 吗？"
 
 promptRemoveApp:
   removeCrd: "删除与此应用关联的 CRD"
