@@ -239,7 +239,9 @@ export default {
       let forceFormatted = true;
       const systems = ['ext4', 'XFS'];
 
-      if (lastFormattedAt) {
+      if (disk.childParts?.length > 0) {
+        forceFormatted = true;
+      } else if (lastFormattedAt) {
         forceFormatted = false;
       } else if (systems.includes(disk?.status?.deviceStatus?.fileSystem?.type)) {
         forceFormatted = false;
@@ -359,7 +361,7 @@ export default {
             value:    d.id,
             action:   this.addDisk,
             kind:     !parentDevice ? 'group' : '',
-            disabled: !!(d.childParts.length > 0 || isChildAdded),
+            disabled: !!isChildAdded,
             group:    parentDevice || devPath,
             isParent: !!parentDevice,
           };
