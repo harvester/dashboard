@@ -7031,3 +7031,6 @@ auth:
 vncConsole:
   error:
     message: Web VNC console connection is disconnected
+serialConsole:
+  error:
+    message: Serial Console connection is disconnected

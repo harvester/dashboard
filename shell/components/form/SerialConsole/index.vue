@@ -1,6 +1,7 @@
 <script>
 import { allHash } from '@shell/utils/promise';
 import debounce from 'lodash/debounce';
+import { Banner } from '@components/Banner';
 
 import Socket, {
   EVENT_CONNECTED,
@@ -11,6 +12,7 @@ import Socket, {
 } from '@shell/utils/socket';
 
 export default {
+  components: { Banner },
   props:      {
     value: {
       type:     Object,
@@ -20,16 +22,18 @@ export default {
 
   data() {
     return {
-      socket:      null,
-      terminal:    null,
-      fitAddon:    null,
-      searchAddon: null,
-      webglAddon:  null,
-      isOpen:      false,
-      isOpening:   false,
-      backlog:     [],
-      firstTime:   true,
-      queue:       []
+      socket:         null,
+      terminal:       null,
+      fitAddon:       null,
+      searchAddon:    null,
+      webglAddon:     null,
+      isOpen:         false,
+      isOpening:      false,
+      backlog:        [],
+      firstTime:      true,
+      queue:          [],
+      url:            '',
+      displayWarning: false
     };
   },
 
@@ -41,6 +45,10 @@ export default {
         fontSize:     12,
       };
     },
+
+    warningLabel() {
+      return !this.value ? 'serial console is temporarily unavailable, please check if vm is in running state' : this.t('serialConsole.error.message');
+    }
   },
 
   watch: {
@@ -58,7 +66,7 @@ export default {
 
         this.queue = [];
       }, 5)
-    }
+    },
   },
 
   beforeDestroy() {
@@ -151,15 +159,15 @@ export default {
         this.terminal.reset();
       }
 
-      const url = this.getSocketUrl();
-
-      if ( !url ) {
+      this.url = this.getSocketUrl();
+      if ( !this.url || !this.value) {
         return;
       }
 
-      this.socket = new Socket(url);
+      this.socket = new Socket(this.url, true, 0);
 
       this.socket.addEventListener(EVENT_CONNECTING, (e) => {
+        this.displayWarning = (this.isOpening || !this.value) && this.socket?.tries;
         this.isOpen = false;
         this.isOpening = true;
       });
@@ -171,6 +179,7 @@ export default {
       });
 
       this.socket.addEventListener(EVENT_CONNECTED, (e) => {
+        this.displayWarning = false;
         this.isOpen = true;
         this.isOpening = false;
         if (this.show) {
@@ -208,7 +217,7 @@ export default {
       }
     },
 
-    fit(arg) {
+    fit() {
       if ( !this.fitAddon ) {
         return;
       }
@@ -238,16 +247,25 @@ export default {
         this.terminal.dispose();
       }
     },
-  }
+  },
 };
 </script>
 
 <template>
   <div class="harvester-shell-container">
+    <Banner v-if="displayWarning" color="error" :label="warningLabel" />
     <div ref="xterm" class="shell-body" />
     <resize-observer @notify="fit" />
   </div>
 </template>
+
+<style lang="scss" scoped>
+  ::v-deep .banner.error {
+    margin: 0px;
+    border-left: 0px;
+    text-align: center;
+  }
+</style>
 
 <style lang="scss">
   @import '@/node_modules/xterm/css/xterm.css';
