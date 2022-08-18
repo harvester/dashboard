@@ -176,7 +176,7 @@ export default class HciNode extends SteveModel {
   }
 
   cordon() {
-    this.doAction('cordon', {});
+    this.doActionGrowl('cordon', {});
   }
 
   uncordon() {
