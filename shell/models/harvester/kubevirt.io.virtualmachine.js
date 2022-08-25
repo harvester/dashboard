@@ -79,18 +79,11 @@ export default class VirtVm extends SteveModel {
   get availableActions() {
     const out = super._availableActions;
 
-    const shallowClone = out.find(action => action.action === 'goToClone');
+    const clone = out.find(action => action.action === 'goToClone');
 
-    if (shallowClone) {
-      shallowClone.label = this.t('harvester.action.shallowClone');
+    if (clone) {
+      clone.action = 'goToCloneVM';
     }
-
-    out.splice(3, 0, {
-      action:     'deepCloneVM',
-      enabled:    !!this.actions?.clone,
-      icon:       'icon icon-copy',
-      label:      this.t('harvester.action.deepClone'),
-    });
 
     return [
       {
@@ -332,10 +325,10 @@ export default class VirtVm extends SteveModel {
     this.doActionGrowl('pause', {});
   }
 
-  deepCloneVM(resources = this) {
+  goToCloneVM(resources = this) {
     this.$dispatch('promptModal', {
       resources,
-      component: 'harvester/DeepCloneVmDialog'
+      component: 'harvester/CloneVmDialog'
     });
   }
 
