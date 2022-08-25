@@ -4,14 +4,15 @@ import { mapGetters } from 'vuex';
 
 import { Card } from '@components/Card';
 import { Banner } from '@components/Banner';
+import { Checkbox } from '@components/Form/Checkbox';
 import AsyncButton from '@shell/components/AsyncButton';
 import { LabeledInput } from '@components/Form/LabeledInput';
 
 export default {
-  name: 'CloneTemplateModal',
+  name: 'CloneVMModal',
 
   components: {
-    AsyncButton, Banner, Card, LabeledInput
+    AsyncButton, Banner, Checkbox, Card, LabeledInput
   },
 
   props:      {
@@ -23,8 +24,9 @@ export default {
 
   data() {
     return {
-      name:   '',
-      errors:       []
+      name:      '',
+      cloneData: true,
+      errors:    []
     };
   },
 
@@ -42,14 +44,24 @@ export default {
       this.$emit('close');
     },
 
-    async saveRestore(buttonCb) {
+    async create(buttonCb) {
+      // shadow clone
+      if (!this.cloneData) {
+        this.resources[0].goToClone();
+        buttonCb(false);
+        this.close();
+
+        return;
+      }
+
+      // deep clone
       try {
         const res = await this.actionResource.doAction('clone', { targetVm: this.name }, {}, false);
 
         if (res._status === 200 || res._status === 204) {
           this.$store.dispatch('growl/success', {
             title:   this.t('harvester.notification.title.succeed'),
-            message: this.t('harvester.modal.deepCloneVM.message.success', { name: this.name })
+            message: this.t('harvester.modal.cloneVM.message.success', { name: this.name })
           }, { root: true });
 
           this.close();
@@ -75,14 +87,17 @@ export default {
 <template>
   <Card :show-highlight-border="false">
     <template #title>
-      {{ t('harvester.modal.deepCloneVM.title') }}
+      {{ t('harvester.modal.cloneVM.title') }}
     </template>
 
     <template #body>
+      <Checkbox v-model="cloneData" class="mb-10" label-key="harvester.modal.cloneVM.type" />
+
       <LabeledInput
+        v-show="cloneData"
         v-model="name"
         class="mb-20"
-        :label="t('harvester.modal.deepCloneVM.name')"
+        :label="t('harvester.modal.cloneVM.name')"
         required
       />
     </template>
@@ -95,8 +110,9 @@ export default {
 
         <AsyncButton
           mode="create"
-          :disabled="!name"
-          @click="saveRestore"
+          :action-label="cloneData ? t('harvester.modal.cloneVM.action.create') : t('harvester.modal.cloneVM.action.clone')"
+          :disabled="cloneData && !name"
+          @click="create"
         />
       </div>
 
