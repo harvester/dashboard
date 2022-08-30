@@ -552,7 +552,7 @@ export default {
         </label>
         <span>
           <span v-tooltip="{content: currentVersion}">
-            {{ currentVersion }}
+            This is v11.1.0 version
           </span>
         </span>
       </div>

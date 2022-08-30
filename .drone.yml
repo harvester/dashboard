@@ -5,7 +5,6 @@ name: test
 trigger:
   event:
   - push
-  - pull_request
   - tag
 
 platform:
@@ -50,7 +49,7 @@ steps:
   settings:
     dockerfile: Dockerfile
     tag: ${DRONE_BRANCH}
-    repo: rancherlabs/dashboard
+    repo: rancher/harvester-ui
     username:
       from_secret: docker_username
     password:
@@ -77,7 +76,7 @@ steps:
   settings:
     dockerfile: Dockerfile
     tag: ${DRONE_TAG}
-    repo: rancherlabs/dashboard
+    repo: rancher/harvester-ui
     username:
       from_secret: docker_username
     password:
@@ -121,7 +120,7 @@ steps:
     - allUsers:READER
     cache_control: "no-cache,must-revalidate"
     source: dist/latest
-    target: releases.rancher.com/dashboard/latest
+    target: releases.rancher.com/harvester-ui/dashboard/latest
     token:
       from_secret: google_auth_key
 
@@ -158,7 +157,7 @@ steps:
     - allUsers:READER
     cache_control: "no-cache,must-revalidate"
     source: dist/${DRONE_BRANCH}
-    target: releases.rancher.com/dashboard/${DRONE_BRANCH}
+    target: releases.rancher.com/harvester-ui/dashboard/${DRONE_BRANCH}
     token:
       from_secret: google_auth_key
 
@@ -192,7 +191,7 @@ steps:
     - allUsers:READER
     cache_control: "no-cache,must-revalidate"
     source: dist/${DRONE_TAG}
-    target: releases.rancher.com/dashboard/${DRONE_TAG}
+    target: releases.rancher.com/harvester-ui/dashboard/${DRONE_TAG}
     token:
       from_secret: google_auth_key
 
@@ -245,7 +244,7 @@ steps:
     - allUsers:READER
     cache_control: "no-cache,must-revalidate"
     source: dist/${DRONE_BRANCH}.tar.gz
-    target: releases.rancher.com/dashboard/latest.tar.gz
+    target: releases.rancher.com/harvester-ui/dashboard/latest.tar.gz
     token:
       from_secret: google_auth_key
 
@@ -282,7 +281,7 @@ steps:
     - allUsers:READER
     cache_control: "no-cache,must-revalidate"
     source: dist/${DRONE_BRANCH}.tar.gz
-    target: releases.rancher.com/dashboard/${DRONE_BRANCH}.tar.gz
+    target: releases.rancher.com/harvester-ui/dashboard/${DRONE_BRANCH}.tar.gz
     token:
       from_secret: google_auth_key
 
@@ -316,7 +315,7 @@ steps:
     - allUsers:READER
     cache_control: "no-cache,must-revalidate"
     source: dist/${DRONE_TAG}.tar.gz
-    target: releases.rancher.com/dashboard/${DRONE_TAG}.tar.gz
+    target: releases.rancher.com/harvester-ui/dashboard/${DRONE_TAG}.tar.gz
     token:
       from_secret: google_auth_key
 
@@ -328,6 +327,7 @@ name: fossa
 steps:
 - name: fossa
   image: rancher/drone-fossa:latest
+  failure: ignore
   settings:
     api_key:
       from_secret: FOSSA_API_KEY
@@ -335,3 +335,50 @@ steps:
     instance:
       - drone-publish.rancher.io
 
+---
+kind: pipeline
+name: harvester-plugin-master
+
+depends_on:
+- test
+
+trigger:
+  ref:
+  - "refs/heads/harvester-plugin-*"
+  event:
+  - push
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: build
+  pull: default
+  image: node:14
+  commands:
+  - ./scripts/build-hosted
+
+- name: build-pkg
+  pull: default
+  image: node:14
+  commands:
+  - ./shell/scripts/build-pkg.sh harvester
+
+- name: upload-gate
+  pull: default
+  image: node:14
+  commands:
+  - ./scripts/build-upload-gate
+
+- name: upload
+  pull: default
+  image: plugins/gcs
+  settings:
+    acl:
+    - allUsers:READER
+    cache_control: "no-cache,must-revalidate"
+    source: dist-pkg/harvester-11.1.0
+    target: releases.rancher.com/harvester-ui/dashboard/plugin
+    token:
+      from_secret: google_auth_key

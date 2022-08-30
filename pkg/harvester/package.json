@@ -1,7 +1,7 @@
 {
   "name": "harvester",
   "description": "harvester plugin",
-  "version": "0.1.0",
+  "version": "11.1.0",
   "private": false,
   "rancher": true,
   "publishConfig": {
