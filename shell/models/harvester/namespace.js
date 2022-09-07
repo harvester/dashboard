@@ -1,7 +1,7 @@
 import { insertAt } from '@shell/utils/array';
-import SteveModel from '@shell/plugins/steve/steve-class';
+import NamespaceModel from '@shell/models/namespace';
 
-export default class HciNamespace extends SteveModel {
+export default class HciNamespace extends NamespaceModel {
   get _availableActions() {
     const out = super._availableActions;
     const remove = out.findIndex(a => a.action === 'promptRemove');
