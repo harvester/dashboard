@@ -172,7 +172,11 @@ export default {
       return acc;
     }, {});
 
-    return { listGroups, listGroupMapped };
+    return {
+      options,
+      listGroups,
+      listGroupMapped
+    };
   },
 
   computed: {
@@ -328,7 +332,7 @@ export default {
         }
       ];
 
-      if (this.isNamespaced) {
+      if (!this.options?.hiddenNamespaceGroupButton) {
         standard.push( {
           tooltipKey: this.groupTooltip,
           icon:       'icon-folder',
