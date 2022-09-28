@@ -2,7 +2,13 @@ nav:
   group:
     networks: Networks
     backupAndSnapshot: Backup & Snapshot
-    
+
+asyncButton:
+  restart:
+    action: Save & Restart
+    success: Restarted
+    waiting: Restarting&hellip;
+
 harvester:
   productLabel: 'Harvester'
   modal:
@@ -548,6 +554,8 @@ harvester:
       new: New
       vmImage: VM Image
     image: Image
+    promptRemove:
+      tips: "Warn: The snapshots of volume will be deleted with volume."
 
   image:
     label: Images
@@ -1001,4 +1009,9 @@ typeLabel:
     {count, plural,
       one { PCI Device }
       other { PCI Devices }
+    }
+  persistentvolumeclaim: |-
+    {count, plural,
+      one { Volume }
+      other { Volumes }
     }
