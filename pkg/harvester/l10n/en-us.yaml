@@ -152,6 +152,7 @@ harvester:
       vlan: Vlan ID
     snapshotTargetVolume: Original Volume
     volumeSnapshotCounts: Snapshot Counts
+    networkState: Network State
   tab:
     volume: Volumes
     network: Networks
@@ -852,7 +853,7 @@ harvester:
         label: Migratable
 
   vlanConfig:
-    title: Networks Configs
+    title: Network Configs
     groupBy:
       clusterNetwork: Group by Cluster Network
     createNetworkConfig: Create Network Config
@@ -860,6 +861,8 @@ harvester:
       nodeSelector: Node Selector
       uplink: Uplink
       bondOptions: Bond Options
+      attributes: Attributes
+      host: Selected Hosts
     scheduling:
       affinity:
         allNodes: Select all nodes
@@ -887,6 +890,8 @@ harvester:
     create:
       button:
         label: Create Cluster Network
+    clusterNetwork: There are no network configs defined.
+    mgmt: mgmt is a built-in cluster network and does not support creating/updating network configs.
 
 advancedSettings:
   descriptions:
