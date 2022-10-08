@@ -165,8 +165,13 @@
     }
 
     .vs__selected {
-      flex-basis: 0%;
       white-space: nowrap;
+    }
+  }
+
+  .vs--multiple {
+    .vs__selected {
+      flex-basis: 0%;
     }
   }
 
