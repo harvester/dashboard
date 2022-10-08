@@ -44,6 +44,7 @@ generic:
       warning: 警告
       error: 错误
   overview: 概述
+  ok: 确定
   plusMore: "+ {n} 更多"
   readFromFile: 从文件读取
   readFromFolder: 从文件夹读取

@@ -45,6 +45,7 @@ generic:
       warning: Warning
       error: Error
   overview: Overview
+  ok: OK
   plusMore: "+ {n} more"
   readFromFile: Read from File
   readFromFolder: Read from Folder
