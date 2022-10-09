@@ -261,7 +261,7 @@ harvester:
       basics: Basics
       instance: Virtual Machines
       monitor: Monitor Data
-      disk: Storage
+      storage: Storage
       labels: Labels
       ksmtuned: Ksmtuned
     detail:
