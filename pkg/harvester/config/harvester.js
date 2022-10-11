@@ -625,7 +625,7 @@ export function init($plugin, store) {
     labelKey:   'harvester.setting.label',
     name:       HCI.SETTING,
     namespaced: true,
-    weight:     -1,
+    weight:     -1000,
     route:      {
       name:   `${ PRODUCT_NAME }-c-cluster-resource`,
       params: { resource: HCI.SETTING }
@@ -691,7 +691,6 @@ export function init($plugin, store) {
   });
 
   configureType(HCI.ADD_ONS, {
-    hiddenNamespaceGroupButton: true,
     isCreatable:                false,
     isRemovable:                false,
     showState:                  false,
@@ -704,7 +703,8 @@ export function init($plugin, store) {
     group:      'advanced',
     name:       HCI.ADD_ONS,
     ifHaveType: HCI.ADD_ONS,
-    namespaced: true,
+    weight:     -900,
+    namespaced: false,
     route:      {
       name:     `${ PRODUCT_NAME }-c-cluster-resource`,
       params:   { resource: HCI.ADD_ONS }
