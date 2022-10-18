@@ -47,7 +47,23 @@ export default class NetworkAttachmentDef extends SteveModel {
   get vlanType() {
     const type = this.parseConfig.type;
 
+    if (this.isUntaggedNetwork) {
+      return 'UntaggedNetwork';
+    }
+
     return type === 'bridge' ? 'L2VlanNetwork' : type;
+  }
+
+  get isUntaggedNetwork() {
+    return this.metadata.name === 'untagged-network' && this.metadata.namespace === 'harvester-public';
+  }
+
+  get canDelete() {
+    if (this.isUntaggedNetwork) {
+      return false;
+    }
+
+    return this._canDelete;
   }
 
   get vlanId() {
