@@ -1345,9 +1345,17 @@ export default {
        */
       handler(neu) {
         if (this.deleteAgent) {
-          const out = this.getUserData({
+          let out = this.getUserData({
             installAgent: neu, osType: this.osType, deletePackage: this.deletePackage
           });
+
+          if (neu) {
+            const hasCloudComment = this.hasCloudConfigComment(out);
+
+            if (!hasCloudComment) {
+              out = `#cloud-config\n${ out }`;
+            }
+          }
 
           this.$set(this, 'userScript', out);
           this.refreshYamlEditor();
