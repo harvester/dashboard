@@ -141,6 +141,7 @@ export const HCI = {
   CREATOR:                      'harvesterhci.io/creator',
   OS:                           'harvesterhci.io/os',
   NETWORK_TYPE:                 'network.harvesterhci.io/type',
+  CLUSTER_NETWORK:              'network.harvesterhci.io/clusternetwork',
   VM_NAME:                      'harvesterhci.io/vmName',
   VM_NAME_PREFIX:               'harvesterhci.io/vmNamePrefix',
   VM_RESERVED_MEMORY:           'harvesterhci.io/reservedMemory',
