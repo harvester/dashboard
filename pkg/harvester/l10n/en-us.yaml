@@ -194,6 +194,7 @@ harvester:
       prefix: pcidevices-controller addon is not enabled, click
       middle: here
       suffix: to enable it to manage your PCI devices.
+    noPCIPermission: Please contact system admin to enable the PCI devices first.
   generic:
     close: Close
     open: Open
