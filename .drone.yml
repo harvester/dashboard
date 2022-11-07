@@ -350,7 +350,7 @@ depends_on:
 
 trigger:
   ref:
-  - "refs/heads/release-harvester-plugin-v*"
+  - "refs/heads/release-harvester-v*"
   - "refs/heads/master"
   event:
   - push
