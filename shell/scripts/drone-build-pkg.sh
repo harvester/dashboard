@@ -20,13 +20,11 @@ echo "COMMIT_BRANCH: ${COMMIT_BRANCH}"
 echo "VERSION: ${VERSION}"
 
 if [ -n "$GIT_TAG" ]; then
-  TAG_VERSION=$(cd pkg/$1; node -p -e "require('./package.json').version")
-  COMMIT=$COMMIT COMMIT_BRANCH=$COMMIT_BRANCH VERSION=$TAG_VERSION ./shell/scripts/build-pkg.sh ${1} "true"
+  COMMIT=$COMMIT COMMIT_BRANCH=$COMMIT_BRANCH VERSION=$DRONE_TAG ./shell/scripts/build-pkg.sh ${1} "true"
+else
+  COMMIT=$COMMIT COMMIT_BRANCH=$COMMIT_BRANCH VERSION=$VERSION ./shell/scripts/build-pkg.sh ${1} "true"
 fi
 
-# package, override version, commit for file in pkg root
-# Note - in the future env vars should be moved to args and build-pkg should use getopts
-COMMIT=$COMMIT COMMIT_BRANCH=$COMMIT_BRANCH VERSION=$VERSION ./shell/scripts/build-pkg.sh ${1} "true"
 EXIT_CODE=$?
 
 export PKG_NAME=${1}-${VERSION}
