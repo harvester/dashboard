@@ -167,12 +167,12 @@ export const HCI = {
   REAY_MESSAGE:                 'harvesterhci.io/read-message',
   DYNAMIC_SSHKEYS_NAMES:        'harvesterhci.io/dynamic-ssh-key-names',
   DYNAMIC_SSHKEYS_USERS:        'harvesterhci.io/dynamic-ssh-key-users',
-  VM_VOLUME_STATUS:             'harvesterhci.io/volume-status',
   IMAGE_SUFFIX:                 'harvesterhci.io/image-type',
   OS_TYPE:                      'harvesterhci.io/os-type',
   HOST_REQUEST:                 'management.cattle.io/pod-requests',
   STORAGE_CLASS:                'harvesterhci.io/storageClassName',
   PCI_DEVICE:                   'pcidevices.harvesterhci.io',
+  VOLUME_ERROR:                 'longhorn.io/volume-scheduling-error',
 };
 
 // Annotations that can be on management.cattle.io.cluster to configure a custom badge
