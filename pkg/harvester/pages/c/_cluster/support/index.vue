@@ -150,10 +150,4 @@ export default {
     opacity: 0.8;
   }
 }
-
-.role-secondary {
-  &:focus {
-    background-color: transparent;
-  }
-}
 </style>

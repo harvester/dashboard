@@ -295,7 +295,7 @@ export default {
         > H6 {
           font-size: 14px;
           text-transform: none;
-          padding-left: 10px;
+          padding-left: 12px;
         }
 
         > I {
@@ -310,6 +310,10 @@ export default {
       > .body {
         margin-left: 0;
       }
+    }
+
+    .depth-0:not(.root) {
+      padding-left: 4px;
     }
 
     &.depth-1 {
