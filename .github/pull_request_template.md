@@ -1,5 +1,14 @@
 <!-- This template is for Devs to give QA details before moving the issue To-Test -->
 ### Summary
+
+#### PR Checklist
+- Is this a multi-tenancy feature/bug?
+    - [ ] Yes, the relevant RBAC changes are at:
+- Do we need to backport changes to the [old Rancher UI](https://github.com/rancher/u), such as RKE1?
+    - [ ] Yes, the relevant PR is at:
+- Are backend engineers aware of UI changes?
+    - [ ] Yes, the backend owner is:
+
 Fixes #
 <!-- Define findings related to the feature or bug issue. -->
 
