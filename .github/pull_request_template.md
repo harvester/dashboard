@@ -1,5 +1,14 @@
 <!-- This template is for Devs to give QA details before moving the issue To-Test -->
 ### Summary
+#### Pre Create PR Checklist
+You need to check the following checklist before creating this pr
+- Whether to check RBAC related functions
+    - [ ] Yes, The PR-related RBAC functionality has been tested.
+    - [ ] No, The PR not involving RBAC.
+- Whether it is related to RKE1
+    - [ ] Yes, RKE1 related pr has been submitted.
+    - [ ] No, This change does not involve RKE1 related changes.
+
 Fixes #
 <!-- Define findings related to the feature or bug issue. -->
 
