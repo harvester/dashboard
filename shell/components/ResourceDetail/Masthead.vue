@@ -392,7 +392,16 @@ export default {
             <span v-if="value.detailPageHeaderActionOverride && value.detailPageHeaderActionOverride(realMode)">{{ value.detailPageHeaderActionOverride(realMode) }}</span>
             <t v-else :k="'resourceDetail.header.' + realMode" :subtype="resourceSubtype" :name="displayName" :escapehtml="false" />
             <BadgeState v-if="!isCreate && parent.showState" class="masthead-state" :value="value" />
-            <a v-if="dev && !!resourceExternalLink" class="resource-external" rel="nofollow noopener noreferrer" target="_blank" :href="resourceExternalLink"><i class="icon icon-external-link" /></a>
+            <a
+              v-if="dev && !!resourceExternalLink"
+              v-tooltip="t(resourceExternalLink.tipsKey || 'generic.resourceExternalLinkTips')"
+              class="resource-external"
+              rel="nofollow noopener noreferrer"
+              target="_blank"
+              :href="resourceExternalLink.url"
+            >
+              <i class="icon icon-external-link" />
+            </a>
           </h1>
         </div>
         <div v-if="!isCreate" class="subheader">
