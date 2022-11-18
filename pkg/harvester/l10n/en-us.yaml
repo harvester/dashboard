@@ -1,5 +1,6 @@
 generic:
   tip: Tip
+  resourceExternalLinkTips: 'External Link'
 
 nav:
   group:
@@ -572,6 +573,8 @@ harvester:
     image: Image
     promptRemove:
       tips: "Warn: The snapshots of volume will be deleted with volume."
+    externalLink:
+      tips: Check volume details
 
   image:
     label: Images

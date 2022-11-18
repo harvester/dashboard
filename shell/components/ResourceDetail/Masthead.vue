@@ -430,7 +430,8 @@ export default {
               :value="value"
             />
             <a 
-              v-if="dev && !!resourceExternalLink" 
+              v-if="dev && !!resourceExternalLink"
+              v-tooltip="t(resourceExternalLink.tipsKey || 'generic.resourceExternalLinkTips')"
               class="resource-external" 
               rel="nofollow noopener noreferrer" 
               target="_blank" 
