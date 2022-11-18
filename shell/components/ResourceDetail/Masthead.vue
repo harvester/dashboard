@@ -6,7 +6,7 @@ import { BadgeState } from '@components/BadgeState';
 import { Banner } from '@components/Banner';
 import { get } from '@shell/utils/object';
 import { NAME as FLEET_NAME } from '@shell/config/product/fleet';
-import { HIDE_SENSITIVE } from '@shell/store/prefs';
+import { mapPref, DEV, HIDE_SENSITIVE } from '@shell/store/prefs';
 import {
   AS, _DETAIL, _CONFIG, _YAML, MODE, _CREATE, _EDIT, _VIEW, _UNFLAG, _GRAPH
 } from '@shell/config/query-params';
@@ -83,6 +83,8 @@ export default {
   },
 
   computed: {
+    dev: mapPref(DEV),
+
     schema() {
       const inStore = this.storeOverride || this.$store.getters['currentStore'](this.resource);
 
@@ -354,6 +356,10 @@ export default {
 
       return parent?.location;
     },
+
+    resourceExternalLink() {
+      return this.value.resourceExternalLink;
+    }
   },
 
   methods: {
@@ -386,6 +392,7 @@ export default {
             <span v-if="value.detailPageHeaderActionOverride && value.detailPageHeaderActionOverride(realMode)">{{ value.detailPageHeaderActionOverride(realMode) }}</span>
             <t v-else :k="'resourceDetail.header.' + realMode" :subtype="resourceSubtype" :name="displayName" :escapehtml="false" />
             <BadgeState v-if="!isCreate && parent.showState" class="masthead-state" :value="value" />
+            <a v-if="dev && !!resourceExternalLink" class="resource-external" rel="nofollow noopener noreferrer" target="_blank" :href="resourceExternalLink"><i class="icon icon-external-link" /></a>
           </h1>
         </div>
         <div v-if="!isCreate" class="subheader">
@@ -496,6 +503,10 @@ export default {
     .right-half {
       grid-column: 2;
     }
+  }
+
+  .resource-external {
+    font-size: 18px;
   }
 
 </style>
