@@ -183,6 +183,8 @@ harvester:
     promiscuous: Promiscuous
     ipv4Address: IPv4 Address
     filterLabels: Filter Labels
+    storageClass: Storage Class
+    dockerImage: Docker Image
   pci:
     available: Available Devices
     compatibleNodes: Compatible Nodes
@@ -219,29 +221,20 @@ harvester:
     noSchema: "Can not find the custom resource definition: {schema}."
 
   validation:
-    custom:
-      tooLongName: '"Name" cannot be more than {max} characters.'
+    generic:
+      hasDelete: '"{name}" has been deleted.'
+      maxLength: '"{key}" cannot be more than {max} characters'
+      tabError:  '{prefix}: {message}'
+      maximumSize: "Exceed maximum size {max}!"
     vm:
-      name: 'name is required'
+      name: 'name is required!'
       memory: '"Memory" is required!'
       network:
-        error: 'network {prefix}: {message}'
-        name: 'Network Name is required'
         macFormat: 'Invalid MAC address format.'
-        duplicatedName: 'network with this name already exists!.'
-        duplicatedPortName: 'Duplicate name of the port.'
-        duplicatedPortNumber: 'Duplicate number of the port'
+        duplicatedName: 'network with this name already exists!'
       volume:
-        error: 'volume {prefix}: {message}'
-        duplicatedName: 'volume with this name already exists!.'
-        type: '"Type" is required!'
-        size: '"Size" is required!'
-        image: '"Image" is required!'
-        volume: '"Volume" is required!'
-        docker: '"Docker Image" is required!'
-        storageClass: '"Storage Class" is required!'
+        duplicatedName: 'volume with this name already exists!'
         needImageOrExisting: 'At least an image volume or an existing root-disk volume is required!'
-        maximumSize: Exceed maximum size 999999999 Gi!
     image:
       ruleTip: 'The URL you have entered ends in an extension that we do not support. We only accept image files that end in .img, .iso, .qcow, .qcow2, .raw.'
       ruleFileTip: 'The file you have chosen ends in an extension that we do not support. We only accept image files that end in .img, .iso, .qcow, .qcow2, .raw.'
@@ -403,6 +396,7 @@ harvester:
     promptRemove:
       title: 'Select the volume you want to delete:'
       deleteAll: Delete All
+      tips: "Warn: The snapshots of vm will be deleted with VM and the snapshots of volume will be deleted with volume."
     unplug:
       title: 'Are you sure that you want to detach volume {name} ?'
       actionLabel: Detach

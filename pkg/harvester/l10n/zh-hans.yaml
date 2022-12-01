@@ -214,29 +214,15 @@ harvester:
     noSchema: "找不到自定义资源定义：{schema}。"
 
   validation:
-    custom:
-      tooLongName: '"Name" 的长度不能超过{max}个字符。'
     vm:
       name: '"名称"是必填项。'
       memory: '"内存"是必填项。'
       network:
-        error: '网络 {prefix}：{message}'
-        name: '"网络名称"是必填项。'
         macFormat: 'MAC 地址格式不正确。'
         duplicatedName: '网络名称重复。'
-        duplicatedPortName: '端口名重复。'
-        duplicatedPortNumber: '端口号重复。'
       volume:
-        error: '卷 {prefix}：{message}'
         duplicatedName: '卷名称重复。'
-        type: '"类型"是必填项。'
-        size: '"大小"是必填项。'
-        image: '"镜像"是必填项。'
-        volume: '"卷"是必填项。'
-        docker: '"Docker 镜像"是必填项。'
-        storageClass: '“存储类”是必填项。'
         needImageOrExisting: '至少需要一个镜像卷或已存在的根磁盘卷。'
-        maximumSize: 超过最大大小 999999999 Gi！
     image:
       ruleTip: 'URL 后缀不支持。仅支持后缀为 .img，.iso，.qcow，.qcow2或.raw的镜像文件。'
       ruleFileTip: '文件后缀不支持。仅支持后缀为 .img，.iso，.qcow，.qcow2或.raw的镜像文件。'
