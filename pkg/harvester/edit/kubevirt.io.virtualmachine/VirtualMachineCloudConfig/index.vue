@@ -143,6 +143,24 @@ export default {
     },
 
     async save(buttonCb) {
+      this.errors = [];
+
+      if (!this.cloudTemplateName) {
+        this.errors.push(this.t('validation.required', { key: this.t('harvester.virtualMachine.input.name') }, true));
+        buttonCb(false);
+
+        return;
+      }
+
+      if (!this.cloudTemplate) {
+        const keyLabel = this.templateType === 'user' ? 'harvester.cloudTemplate.userData' : 'harvester.cloudTemplate.networkData';
+
+        this.errors.push(this.t('validation.required', { key: this.t(keyLabel) }, true));
+        buttonCb(false);
+
+        return;
+      }
+
       const templateValue = await this.$store.dispatch('harvester/create', {
         type:     CONFIG_MAP,
         metadata: {
