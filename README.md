@@ -1,17 +1,7 @@
-# Rancher Dashboard
-[![Build Status](http://drone-publish.rancher.io/api/badges/rancher/dashboard/status.svg)](http://drone-publish.rancher.io/rancher/dashboard)
+# Harvester Dashboard
+[![Build Status](http://drone-publish.rancher.io/api/badges/harvester/dashboard/status.svg)](http://drone-publish.rancher.io/harvester/dashboard)
 
-Rancher Dashboard UI, a.k.a Cluster Explorer.
-For the other Rancher UI (Cluster Manager) see [rancher/ui](https://github.com/rancher/ui).
-
-## Plugins
-During the transition to the new folder structured in 2.6.5 required by the plugin work ...
-- Run the script `./scripts/rejig` to move folders to their new location in the `shell` folder and update the appropriate import statements
-  Use this to convert older PRs to the new format
-- Run the script `./scripts/rejig -d` to move folders to their old location and update imports again
-  Use this to convert newer branches to the old format (possibly useful for branches)
-
-For more information on plugins see [Plugins](https://rancher.github.io/dashboard/plugins/introduction).
+Harvester Dashboard UI, Harvester is an open-source hyper-converged infrastructure (HCI) software built on Kubernetes.
 
 ## Running for Development
 This is what you probably want to get started.
@@ -20,25 +10,27 @@ This is what you probably want to get started.
 yarn install
 
 # For development, serve with hot reload at https://localhost:8005
-# using the endpoint for your Rancher API
-API=https://your-rancher yarn dev
+# using the endpoint for your Harvester API
+API=https://your-harvester yarn dev
 # or put the variable into a .env file
 # Goto https://localhost:8005
 ```
 
+```
+# build harvester plugin
+yarn build-pkg harvester && yarn serve-pkgs
+
+# Open another terminal
+HARVESTER_PKG_URL=http://127.0.0.1:4500/harvester-${version}/harvester-${version}.umd.min.js API=https://your-harvester yarn mem-dev
+```
 
 ## Other Building Modes
 ```bash
-# Build for standalone use within Rancher
+# Build for standalone use within Harvester
 # (These are done on commit/tag via Drone)
-./scripts/build-embedded # for embedding into rancher builds
-./scripts/build-hosted # for hosting on a static file webserver and pointing Rancher's ui-dashboard-index at it
+./scripts/build-embedded # for embedding into harvester builds
+./scripts/build-hosted # for hosting on a static file webserver and pointing Harvester's ui-index at it
 # Output in dist/
-
-# Build and run with server-side-rendering
-# (This method and SSR are not currently used, but should be maintained for future)
-yarn build
-yarn start
 
 # Develop via Docker instead of a local nodejs
 docker build -f Dockerfile.dev -t dashboard:dev .
@@ -68,11 +60,7 @@ docker run -v $(pwd):/src \
 
 # What is it?
 
-Dashboard is "stateless" client for the Rancher APIs built with [Vue.js](https://vuejs.org/) and [NuxtJS](https://nuxtjs.org/).  It is normally built and packaged as a folder of static HTML/CSS/JS files which are bundled into a Rancher release, with the index.html returned by the API server as the "fallback" case for any request that looks like it came from a browser and does not match an API URL.
-
-Every k8s type, namespace, and operation that the logged in user has been granted access to is shown to them.  The default view for everything is the raw YAML from the k8s API for detail pages, and the `Table` view column data for list pages (i.e. what you get from `kubectl get <type> -o wide`).
-
-From there we can customize anything from what columns are shown and in what format to complete custom forms for graphically editing that resource instead of editing YAML.
+Dashboard is "stateless" client for the Harvester APIs built with [Vue.js](https://vuejs.org/) and [NuxtJS](https://nuxtjs.org/).  It is normally built and packaged as a folder of static HTML/CSS/JS files which are bundled into a Harvester release, with the index.html returned by the API server as the "fallback" case for any request that looks like it came from a browser and does not match an API URL.
 
 ## Developer Docs
 
