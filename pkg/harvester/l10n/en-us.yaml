@@ -183,6 +183,8 @@ harvester:
     promiscuous: Promiscuous
     ipv4Address: IPv4 Address
     filterLabels: Filter Labels
+    storageClass: Storage Class
+    dockerImage: Docker Image
   pci:
     available: Available Devices
     compatibleNodes: Compatible Nodes
@@ -216,27 +218,24 @@ harvester:
   validation:
     custom:
       tooLongName: '"Name" cannot be more than {max} characters.'
+    generic:
+      hasDelete: '{type} "{name}" has been deleted.'
+      maxLength: '"{key}" cannot be more than {max} characters'
+      tabError:  '{prefix}: {message}'
+      maximumSize: "Exceed maximum size {max}!"
+      regex: 'Invalid {lowerType} "{name}": {upperType} must match the regex "{regex}"'
     vm:
-      name: 'name is required'
+      name: 'name is required!'
       memory: '"Memory" is required!'
+      duplicatedName: 'duplicate {type} name: "{name}"'
       network:
-        error: 'network {prefix}: {message}'
-        name: 'Network Name is required'
         macFormat: 'Invalid MAC address format.'
-        duplicatedName: 'network with this name already exists!.'
-        duplicatedPortName: 'Duplicate name of the port.'
-        duplicatedPortNumber: 'Duplicate number of the port'
+        upperType: Network name
+        lowerType: network name
       volume:
-        error: 'volume {prefix}: {message}'
-        duplicatedName: 'volume with this name already exists!.'
-        type: '"Type" is required!'
-        size: '"Size" is required!'
-        image: '"Image" is required!'
-        volume: '"Volume" is required!'
-        docker: '"Docker Image" is required!'
-        storageClass: '"Storage Class" is required!'
+        upperType: Volume name
+        lowerType: volume name
         needImageOrExisting: 'At least an image volume or an existing root-disk volume is required!'
-        maximumSize: Exceed maximum size 999999999 Gi!
     image:
       ruleTip: 'The URL you have entered ends in an extension that we do not support. We only accept image files that end in .img, .iso, .qcow, .qcow2, .raw.'
       ruleFileTip: 'The file you have chosen ends in an extension that we do not support. We only accept image files that end in .img, .iso, .qcow, .qcow2, .raw.'
