@@ -26,41 +26,41 @@ env:
   CYPRESS_coverage: true
 
 jobs:
-  e2e-test:
-    if: "!contains( github.event.pull_request.labels.*.name, 'ci/skip-e2e')"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 1
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '14.x'
-      
-      - name: Install packages
-        run: yarn install:ci
-      
-      - name: Prepare build
-        run: yarn e2e:pre-prod
-      
-      - name: Run tests
-        run: |
-          yarn e2e:prod
-          mkdir -p coverage-artifacts/coverage
-          cp coverage/e2e/coverage-final.json coverage-artifacts/coverage/coverage-e2e.json
+  # e2e-test:
+  #   if: "!contains( github.event.pull_request.labels.*.name, 'ci/skip-e2e')"
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #       with:
+  #         fetch-depth: 1
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: '14.x'
 
-      - name: Upload coverage
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{github.run_number}}-${{github.run_attempt}}-coverage
-          path: coverage-artifacts/**/*
-          
-      - name: Upload screenshots
-        uses: actions/upload-artifact@v2
-        if: ${{ failure() }}
-        with:
-          name: ${{github.run_number}}-${{github.run_attempt}}-screenshots
-          path: cypress/screenshots
+  #     - name: Install packages
+  #       run: yarn install:ci
+
+  #     - name: Prepare build
+  #       run: yarn e2e:pre-prod
+
+  #     - name: Run tests
+  #       run: |
+  #         yarn e2e:prod
+  #         mkdir -p coverage-artifacts/coverage
+  #         cp coverage/e2e/coverage-final.json coverage-artifacts/coverage/coverage-e2e.json
+
+  #     - name: Upload coverage
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         name: ${{github.run_number}}-${{github.run_attempt}}-coverage
+  #         path: coverage-artifacts/**/*
+
+  #     - name: Upload screenshots
+  #       uses: actions/upload-artifact@v2
+  #       if: ${{ failure() }}
+  #       with:
+  #         name: ${{github.run_number}}-${{github.run_attempt}}-screenshots
+  #         path: cypress/screenshots
 
   unit-test:
     runs-on: ubuntu-latest
