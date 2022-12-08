@@ -349,7 +349,7 @@ export default {
           let hotpluggable = false;
           let dataSource = null;
 
-          const type = DISK?.cdrom ? CD_ROM : HARD_DISK;
+          const type = DISK?.cdrom ? CD_ROM : DISK?.disk ? HARD_DISK : '';
 
           if (volume?.containerDisk) { // SOURCE_TYPE.CONTAINER
             source = SOURCE_TYPE.CONTAINER;

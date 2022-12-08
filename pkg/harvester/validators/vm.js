@@ -1,70 +1,41 @@
 import { PVC } from '@shell/config/types';
-import { SOURCE_TYPE } from '../config/harvester-map';
-import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
+import { isValidMac, isValidDNSLabelName } from '@pkg/utils/regular';
+import { SOURCE_TYPE } from '@pkg/config/harvester-map';
+import { parseVolumeClaimTemplates } from '@pkg/utils/vm.js';
+
+const maxNameLength = 20;
 
 export function vmNetworks(spec, getters, errors, validatorArgs) {
   const { domain: { devices: { interfaces } }, networks } = spec;
-  const allNames = new Set();
+
+  const networkNames = [];
 
   interfaces.map( (I, index) => {
-    allNames.add(I.name);
     const N = networks.find( N => I.name === N.name);
-    const prefix = (I.name || N.name) || index + 1;
+    const prefix = (I.name || N.name) || `Network ${ index + 1 }`;
 
-    if (I.name.length > 20) {
-      const message = getters['i18n/t']('harvester.validation.custom.tooLongName', { max: 20 });
+    const type = getters['i18n/t']('harvester.fields.network');
 
-      errors.push(getters['i18n/t']('harvester.validation.vm.network.error', { prefix, message }));
-    }
+    const lowerType = getters['i18n/t']('harvester.validation.vm.network.lowerType');
+    const upperType = getters['i18n/t']('harvester.validation.vm.network.upperType');
 
-    if (!I.name || !N.name) {
-      const message = getters['i18n/t']('harvester.validation.vm.name');
-
-      errors.push(getters['i18n/t']('harvester.validation.vm.network.error', { prefix, message }));
-    }
+    validName(getters, errors, I.name, networkNames, prefix, type, lowerType, upperType);
 
     if (N.multus) {
       if (!N.multus.networkName) {
-        const message = getters['i18n/t']('harvester.validation.vm.network.name');
+        const key = getters['i18n/t']('harvester.fields.network');
+        const message = getters['i18n/t']('validation.required', { key });
 
-        errors.push(getters['i18n/t']('harvester.validation.vm.network.error', { prefix, message }));
+        errors.push(getters['i18n/t']('harvester.validation.generic.tabError', { prefix, message }));
       }
     }
 
     if (I.macAddress && !isValidMac(I.macAddress) && !N.pod) {
       const message = getters['i18n/t']('harvester.validation.vm.network.macFormat');
 
-      errors.push(getters['i18n/t']('harvester.validation.vm.network.error', { prefix, message }));
-    }
-
-    const portsName = new Set();
-    const portsNumber = new Set();
-
-    if (I.masquerade && I.ports) {
-      const ports = I?.ports || [];
-
-      ports.forEach((P) => {
-        portsName.add(P.name);
-        portsNumber.add(P.port);
-      });
-
-      if (portsName.size !== I.ports.length) {
-        const message = getters['i18n/t']('harvester.validation.vm.network.duplicatedPortName');
-
-        errors.push(getters['i18n/t']('harvester.validation.vm.network.error', { prefix, message }));
-      }
-
-      if (portsNumber.size !== I.ports.length) {
-        const message = getters['i18n/t']('harvester.validation.vm.network.duplicatedPortNumber');
-
-        errors.push(getters['i18n/t']('harvester.validation.vm.network.error', { prefix, message }));
-      }
+      errors.push(getters['i18n/t']('harvester.validation.generic.tabError', { prefix, message }));
     }
   });
-
-  if (allNames.size !== interfaces.length) {
-    errors.push(getters['i18n/t']('harvester.validation.vm.network.duplicatedName'));
-  }
 
   return errors;
 }
@@ -73,126 +44,108 @@ export function vmDisks(spec, getters, errors, validatorArgs, displayKey, value)
   const isVMTemplate = validatorArgs.includes('isVMTemplate');
   const data = isVMTemplate ? this.value.spec.vm : value;
 
-  let _volumeClaimTemplates = [];
-  const volumeClaimTemplateString = data.metadata.annotations[HCI_ANNOTATIONS.VOLUME_CLAIM_TEMPLATE];
-
-  try {
-    _volumeClaimTemplates = JSON.parse(volumeClaimTemplateString);
-  } catch (e) {}
+  const _volumeClaimTemplates = parseVolumeClaimTemplates(data);
 
   const _volumes = spec.template.spec.volumes || [];
   const _disks = spec.template.spec.domain.devices.disks || [];
 
-  const allNames = new Set();
+  const diskNames = [];
 
   _disks.forEach((D, idx) => {
-    const prefix = D.name || _volumes[idx]?.name || idx + 1;
+    const prefix = D.name || _volumes[idx]?.name || `Volume ${ idx + 1 }`;
 
     if (!D.disk && !D.cdrom) {
-      const message = getters['i18n/t']('harvester.validation.vm.volume.type');
+      const key = getters['i18n/t']('harvester.fields.type');
+      const message = getters['i18n/t']('validation.required', { key });
 
-      errors.push(getters['i18n/t']('harvester.validation.vm.volume.error', { prefix, message }));
-
-      return allNames.add(D.name);
+      errors.push(getters['i18n/t']('harvester.validation.generic.tabError', { prefix, message }));
     }
 
-    if (D.name?.length > 63) {
-      const message = getters['i18n/t']('harvester.validation.custom.tooLongName', { max: 63 });
+    const type = getters['i18n/t']('harvester.fields.volume');
+    const lowerType = getters['i18n/t']('harvester.validation.vm.volume.lowerType');
+    const upperType = getters['i18n/t']('harvester.validation.vm.volume.upperType');
 
-      errors.push(getters['i18n/t']('harvester.validation.vm.volume.error', { prefix, message }));
-    }
-
-    if (!D.name) {
-      const message = getters['i18n/t']('harvester.validation.vm.name');
-
-      errors.push(getters['i18n/t']('harvester.validation.vm.volume.error', { prefix, message }));
-    }
-
-    allNames.add(D.name);
+    validName(getters, errors, D.name, diskNames, prefix, type, lowerType, upperType);
   });
-
-  if (allNames.size !== _disks.length) {
-    errors.push(getters['i18n/t']('harvester.validation.vm.volume.duplicatedName'));
-  }
-
-  if (_volumes.length === 0) {
-    errors.push(getters['i18n/t']('harvester.validation.vm.volume.needImageOrExisting'));
-  }
 
   let requiredVolume = false;
 
   _volumes.forEach((V, idx) => {
     const { type, typeValue } = getVolumeType(V, _volumeClaimTemplates);
+
     const prefix = V.name || idx + 1;
 
-    if ([SOURCE_TYPE.IMAGE, SOURCE_TYPE.ATTACH_VOLUME, SOURCE_TYPE.CONTAINER].includes(type)) { // root image
-      // const message = getters['i18n/t']('harvester.validation.vm.volume.needImageOrExisting');
+    if ([SOURCE_TYPE.IMAGE, SOURCE_TYPE.ATTACH_VOLUME, SOURCE_TYPE.CONTAINER].includes(type)) {
       requiredVolume = true;
-      // errors.push(message);
     }
 
     if (type === SOURCE_TYPE.NEW || type === SOURCE_TYPE.IMAGE) {
       if (!/([1-9]|[1-9][0-9]+)[a-zA-Z]+/.test(typeValue?.spec?.resources?.requests?.storage)) {
-        const message = getters['i18n/t']('harvester.validation.vm.volume.size');
+        const key = getters['i18n/t']('harvester.fields.size');
+        const message = getters['i18n/t']('validation.required', { key });
 
-        errors.push(getters['i18n/t']('harvester.validation.vm.volume.error', { prefix, message }));
+        errors.push(getters['i18n/t']('harvester.validation.generic.tabError', { prefix, message }));
       }
 
-      if (!/^([1-9][0-9]{0,8})[a-zA-Z]+$/.test(typeValue?.spec?.resources?.requests?.storage)) {
-        const message = getters['i18n/t']('harvester.validation.vm.volume.maximumSize');
+      if (typeValue?.spec?.resources?.requests?.storage && !/^([1-9][0-9]{0,8})[a-zA-Z]+$/.test(typeValue?.spec?.resources?.requests?.storage)) {
+        const message = getters['i18n/t']('harvester.validation.generic.maximumSize', { max: '999999999 GiB' });
 
-        errors.push(getters['i18n/t']('harvester.validation.vm.volume.error', { prefix, message }));
+        errors.push(getters['i18n/t']('harvester.validation.generic.tabError', { prefix, message }));
       }
 
       if (type === SOURCE_TYPE.IMAGE && !typeValue?.spec?.storageClassName && !isVMTemplate) { // type === SOURCE_TYPE.IMAGE
-        const message = getters['i18n/t']('harvester.validation.vm.volume.image');
+        const key = getters['i18n/t']('harvester.fields.image');
+        const message = getters['i18n/t']('validation.required', { key });
 
-        if (idx === 0) {
-          errors.push(message);
-        } else {
-          errors.push(getters['i18n/t']('harvester.validation.vm.volume.error', { prefix, message }));
-        }
+        errors.push(getters['i18n/t']('harvester.validation.generic.tabError', { prefix, message }));
       }
 
       if (type === SOURCE_TYPE.NEW && !typeValue?.spec?.storageClassName) {
-        const message = getters['i18n/t']('harvester.validation.vm.volume.storageClass');
+        const key = getters['i18n/t']('harvester.fields.storageClass');
+        const message = getters['i18n/t']('validation.required', { key });
 
-        errors.push(getters['i18n/t']('harvester.validation.vm.volume.error', { prefix, message }));
+        errors.push(getters['i18n/t']('harvester.validation.generic.tabError', { prefix, message }));
       }
     }
 
     if (type === SOURCE_TYPE.ATTACH_VOLUME) {
       const allPVCs = getters['harvester/all'](PVC);
-      const hasExistingVolume = allPVCs.find(P => P.metadata.name === V?.persistentVolumeClaim?.claimName);
 
-      if (!hasExistingVolume) {
-        const message = getters['i18n/t']('harvester.validation.vm.volume.volume');
+      const selectedVolumeName = V?.persistentVolumeClaim?.claimName;
+      const hasExistingVolume = allPVCs.find(P => P.metadata.name === selectedVolumeName);
 
-        errors.push(getters['i18n/t']('harvester.validation.vm.volume.error', { prefix, message }));
+      if (!hasExistingVolume && selectedVolumeName) { // selected volume may have been deleted. e.g: use template
+        const type = getters['i18n/t']('harvester.fields.volume');
+
+        errors.push(getters['i18n/t']('harvester.validation.generic.hasDelete', { type, name: selectedVolumeName }));
+      }
+
+      if (!selectedVolumeName) { // volume is not selected.
+        const key = getters['i18n/t']('harvester.virtualMachine.volume.volume');
+
+        errors.push(getters['i18n/t']('validation.required', { key }));
       }
     }
 
     if (type === SOURCE_TYPE.CONTAINER && !V.containerDisk.image) {
-      const message = getters['i18n/t']('harvester.validation.vm.volume.docker');
+      const key = getters['i18n/t']('harvester.fields.dockerImage');
+      const message = getters['i18n/t']('validation.required', { key });
 
-      errors.push(getters['i18n/t']('harvester.validation.vm.volume.error', { prefix, message }));
+      errors.push(getters['i18n/t']('harvester.validation.generic.tabError', { prefix, message }));
     }
   });
 
-  if (!requiredVolume && !value.links) {
-    const message = getters['i18n/t']('harvester.validation.vm.volume.needImageOrExisting');
-
-    errors.push(message);
+  /**
+   *  At least one volume must be create.  (Verify only when create.)
+   */
+  if ((!requiredVolume || _volumes.length === 0) && !value.links) {
+    errors.push(getters['i18n/t']('harvester.validation.vm.volume.needImageOrExisting'));
   }
 
   return errors;
 }
 
-export function isValidMac(value) {
-  return /^[A-Fa-f0-9]{2}(-[A-Fa-f0-9]{2}){5}$|^[A-Fa-f0-9]{2}(:[A-Fa-f0-9]{2}){5}$/.test(value);
-}
-
-export function getVolumeType(V, DVTS) {
+function getVolumeType(V, DVTS) {
   let outValue = null;
 
   if (V.persistentVolumeClaim) {
@@ -232,4 +185,38 @@ export function getVolumeType(V, DVTS) {
   }
 
   return {};
+}
+
+function validName(getters, errors, name, names = [], prefix, type, lowerType, upperType) {
+  // Verify that the name is duplicate
+  if (names.findIndex( N => name === N) !== -1) {
+    errors.push(getters['i18n/t']('harvester.validation.vm.duplicatedName', { type, name }));
+  }
+
+  names.push(name);
+
+  // The maximum length of volume name is 20 characters.
+  if (name && name?.length > maxNameLength) {
+    const key = getters['i18n/t']('harvester.fields.name');
+    const message = getters['i18n/t']('harvester.validation.generic.maxLength', { key, max: maxNameLength });
+
+    errors.push(getters['i18n/t']('harvester.validation.generic.tabError', { prefix, message }));
+  }
+
+  // name required
+  if (!name) {
+    const key = getters['i18n/t']('harvester.fields.name');
+    const message = getters['i18n/t']('validation.required', { key });
+
+    errors.push(getters['i18n/t']('harvester.validation.generic.tabError', { prefix, message }));
+  }
+
+  // valid RFC 1123
+  if (!isValidDNSLabelName(name)) {
+    const regex = '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$';
+
+    errors.push(getters['i18n/t']('harvester.validation.generic.regex', {
+      lowerType, name, regex, upperType
+    }));
+  }
 }
