@@ -35,7 +35,6 @@ export const HCI = {
   OS_TYPE:                      'harvesterhci.io/os-type',
   HOST_REQUEST:                 'management.cattle.io/pod-requests',
   STORAGE_CLASS:                'harvesterhci.io/storageClassName',
-  PCI_DEVICE:                   'pcidevices.harvesterhci.io',
   STORAGE_NETWORK:              'storage-network.settings.harvesterhci.io',
   ADDON_EXPERIMENTAL:           'addon.harvesterhci.io/experimental',
   VOLUME_ERROR:                 'longhorn.io/volume-scheduling-error',
