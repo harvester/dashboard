@@ -148,14 +148,6 @@ export default {
     isQemuInstalled() {
       return this.value.isQemuInstalled;
     },
-
-    hasRestartAction() {
-      return this.value.hasAction('restart');
-    },
-
-    hasStartAction() {
-      return this.value.hasAction('start');
-    },
   },
 
   watch: {
@@ -200,8 +192,6 @@ export default {
 
         this.getInitConfig({ value: cloneVersionVM, existUserData: true });
         this.$set(this, 'hasCreateVolumes', []); // When using the template, all volume names need to be newly created
-        // const claimTemplate = this.getVolumeClaimTemplates(cloneVersionVM);
-        // this.value.metadata.annotations[HCI_ANNOTATIONS.VOLUME_CLAIM_TEMPLATE] = JSON.stringify(claimTemplate);
       }
     },
 
@@ -269,7 +259,7 @@ export default {
     async saveSingle(buttonCb) {
       this.parseVM();
       this.value.spec.template.spec.hostname = this.hostname ? this.hostname : this.value.metadata.name;
-      await this._save(this.value, buttonCb);
+      await this._save(null, buttonCb);
       if (!this.errors.length) {
         buttonCb(true);
       } else {
@@ -319,7 +309,11 @@ export default {
     async _save(value, buttonCb) {
       try {
         await this.applyHooks(BEFORE_SAVE_HOOKS);
-        await value.save();
+        if (value) {
+          await value.save();
+        } else {
+          await this.save();
+        }
         await this.applyHooks(AFTER_SAVE_HOOKS);
       } catch (e) {
         this.errors.push(...exceptionToErrorsArray(e));
