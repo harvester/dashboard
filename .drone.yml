@@ -49,7 +49,7 @@ steps:
   settings:
     dockerfile: Dockerfile
     tag: ${DRONE_BRANCH}
-    repo: rancherlabs/dashboard
+    repo: rancher/harvester-ui
     username:
       from_secret: docker_username
     password:
@@ -76,7 +76,7 @@ steps:
   settings:
     dockerfile: Dockerfile
     tag: ${DRONE_TAG}
-    repo: rancherlabs/dashboard
+    repo: rancher/harvester-ui
     username:
       from_secret: docker_username
     password:
@@ -120,7 +120,7 @@ steps:
     - allUsers:READER
     cache_control: "no-cache,must-revalidate"
     source: dist/latest
-    target: releases.rancher.com/dashboard/latest
+    target: releases.rancher.com/harvester-ui/dashboard/latest
     token:
       from_secret: google_auth_key
 
@@ -157,7 +157,7 @@ steps:
     - allUsers:READER
     cache_control: "no-cache,must-revalidate"
     source: dist/${DRONE_BRANCH}
-    target: releases.rancher.com/dashboard/${DRONE_BRANCH}
+    target: releases.rancher.com/harvester-ui/dashboard/${DRONE_BRANCH}
     token:
       from_secret: google_auth_key
 
@@ -191,7 +191,7 @@ steps:
     - allUsers:READER
     cache_control: "no-cache,must-revalidate"
     source: dist/${DRONE_TAG}
-    target: releases.rancher.com/dashboard/${DRONE_TAG}
+    target: releases.rancher.com/harvester-ui/dashboard/${DRONE_TAG}
     token:
       from_secret: google_auth_key
 
@@ -228,7 +228,7 @@ steps:
   pull: default
   image: node:14
   environment:
-    EMBED_PKG: https://releases.rancher.com/harvester-ui/plugin/harvester-1.0.3.tar.gz
+    DISABLED_EMBED_PKG: https://releases.rancher.com/harvester-ui/plugin/harvester-1.0.3.tar.gz
   commands:
   - ./scripts/build-embedded
 
@@ -246,7 +246,7 @@ steps:
     - allUsers:READER
     cache_control: "no-cache,must-revalidate"
     source: dist/${DRONE_BRANCH}.tar.gz
-    target: releases.rancher.com/dashboard/latest.tar.gz
+    target: releases.rancher.com/harvester-ui/dashboard/latest.tar.gz
     token:
       from_secret: google_auth_key
 
@@ -273,7 +273,7 @@ steps:
   pull: default
   image: node:14
   environment:
-    EMBED_PKG: https://releases.rancher.com/harvester-ui/plugin/harvester-1.0.3.tar.gz
+    DISABLED_EMBED_PKG: https://releases.rancher.com/harvester-ui/plugin/harvester-1.0.3.tar.gz
   commands:
   - ./scripts/build-embedded
 
@@ -285,7 +285,7 @@ steps:
     - allUsers:READER
     cache_control: "no-cache,must-revalidate"
     source: dist/${DRONE_BRANCH}.tar.gz
-    target: releases.rancher.com/dashboard/${DRONE_BRANCH}.tar.gz
+    target: releases.rancher.com/harvester-ui/dashboard/${DRONE_BRANCH}.tar.gz
     token:
       from_secret: google_auth_key
 
@@ -309,7 +309,7 @@ steps:
   pull: default
   image: node:14
   environment:
-    EMBED_PKG: https://releases.rancher.com/harvester-ui/plugin/harvester-1.0.3.tar.gz
+    DISABLED_EMBED_PKG: https://releases.rancher.com/harvester-ui/plugin/harvester-1.0.3.tar.gz
   commands:
   - ./scripts/build-embedded
 
@@ -321,7 +321,7 @@ steps:
     - allUsers:READER
     cache_control: "no-cache,must-revalidate"
     source: dist/${DRONE_TAG}.tar.gz
-    target: releases.rancher.com/dashboard/${DRONE_TAG}.tar.gz
+    target: releases.rancher.com/harvester-ui/dashboard/${DRONE_TAG}.tar.gz
     token:
       from_secret: google_auth_key
 
@@ -340,3 +340,110 @@ steps:
 #   when:
 #     instance:
 #       - drone-publish.rancher.io
+
+---
+kind: pipeline
+name: harvester-plugin
+
+depends_on:
+- test
+
+trigger:
+  ref:
+  - "refs/heads/release-harvester-plugin-v*"
+  - "refs/heads/master"
+  event:
+  - push
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: build-pkg
+  pull: default
+  image: node:14
+  commands:
+  - ./shell/scripts/drone-build-pkg.sh harvester
+
+- name: upload-gate
+  pull: default
+  image: node:14
+  commands:
+  - ./scripts/build-upload-gate
+
+- name: upload-plugin-tarball
+  pull: default
+  image: plugins/gcs
+  settings:
+    acl:
+    - allUsers:READER
+    cache_control: "no-cache,must-revalidate"
+    source: dist-pkg/${PKG_TARBALL}
+    target: releases.rancher.com/harvester-ui/plugin/${PKG_TARBALL}
+    token:
+      from_secret: google_auth_key
+
+- name: upload-plugin-directory
+  pull: default
+  image: plugins/gcs
+  settings:
+    acl:
+    - allUsers:READER
+    cache_control: "no-cache,must-revalidate"
+    source: dist-pkg/${PKG_NAME}
+    target: releases.rancher.com/harvester-ui/plugin/${PKG_NAME}
+    token:
+      from_secret: google_auth_key
+
+---
+kind: pipeline
+name: harvester-plugin-tag
+
+depends_on:
+- test
+
+trigger:
+  event:
+  - tag
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: build-pkg
+  pull: default
+  image: node:14
+  commands:
+  - ./shell/scripts/drone-build-pkg.sh harvester
+
+- name: upload-gate
+  pull: default
+  image: node:14
+  commands:
+  - ./scripts/build-upload-gate
+
+- name: upload-plugin-tarball
+  pull: default
+  image: plugins/gcs
+  settings:
+    acl:
+    - allUsers:READER
+    cache_control: "no-cache,must-revalidate"
+    source: dist-pkg/${PKG_TAG_TARBALL}
+    target: releases.rancher.com/harvester-ui/plugin/${PKG_TAG_TARBALL}
+    token:
+      from_secret: google_auth_key
+
+- name: upload-plugin-directory
+  pull: default
+  image: plugins/gcs
+  settings:
+    acl:
+    - allUsers:READER
+    cache_control: "no-cache,must-revalidate"
+    source: dist-pkg/${PKG_TAG_VERSION}
+    target: releases.rancher.com/harvester-ui/plugin/${PKG_TAG_VERSION}
+    token:
+      from_secret: google_auth_key
