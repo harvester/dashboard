@@ -226,14 +226,18 @@ harvester:
       maxLength: '"{key}" cannot be more than {max} characters'
       tabError:  '{prefix}: {message}'
       maximumSize: "Exceed maximum size {max}!"
+      regex: 'Invalid {lowerType} "{name}": {upperType} must match the regex "{regex}"'
     vm:
       name: 'name is required!'
       memory: '"Memory" is required!'
+      duplicatedName: 'duplicate {type} name: "{name}"'
       network:
         macFormat: 'Invalid MAC address format.'
-        duplicatedName: 'network with this name already exists!'
+        upperType: Network name
+        lowerType: network name
       volume:
-        duplicatedName: 'volume with this name already exists!'
+        upperType: Volume name
+        lowerType: volume name
         needImageOrExisting: 'At least an image volume or an existing root-disk volume is required!'
     image:
       ruleTip: 'The URL you have entered ends in an extension that we do not support. We only accept image files that end in .img, .iso, .qcow, .qcow2, .raw.'

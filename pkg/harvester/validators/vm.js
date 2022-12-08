@@ -1,5 +1,5 @@
 import { PVC } from '@shell/config/types';
-import { isValidMac } from '@pkg/utils/regular';
+import { isValidMac, isValidDNSLabelName } from '@pkg/utils/regular';
 import { SOURCE_TYPE } from '@pkg/config/harvester-map';
 import { parseVolumeClaimTemplates } from '@pkg/utils/vm.js';
 
@@ -8,27 +8,18 @@ const maxNameLength = 20;
 export function vmNetworks(spec, getters, errors, validatorArgs) {
   const { domain: { devices: { interfaces } }, networks } = spec;
 
-  const allNames = new Set(); // duplicate name do not count
+  const networkNames = [];
 
   interfaces.map( (I, index) => {
-    allNames.add(I.name);
     const N = networks.find( N => I.name === N.name);
     const prefix = (I.name || N.name) || `Network ${ index + 1 }`;
 
-    // The maximum length of volume name is 20 characters.
-    if (I.name.length > maxNameLength) {
-      const key = getters['i18n/t']('harvester.fields.name');
-      const message = getters['i18n/t']('harvester.validation.generic.maxLength', { key, max: maxNameLength });
+    const type = getters['i18n/t']('harvester.fields.network');
 
-      errors.push(getters['i18n/t']('harvester.validation.generic.tabError', { prefix, message }));
-    }
+    const lowerType = getters['i18n/t']('harvester.validation.vm.network.lowerType');
+    const upperType = getters['i18n/t']('harvester.validation.vm.network.upperType');
 
-    if (!I.name || !N.name) {
-      const key = getters['i18n/t']('generic.name');
-      const message = getters['i18n/t']('validation.required', { key });
-
-      errors.push(getters['i18n/t']('harvester.validation.generic.tabError', { prefix, message }));
-    }
+    validName(getters, errors, I.name, networkNames, prefix, type, lowerType, upperType);
 
     if (N.multus) {
       if (!N.multus.networkName) {
@@ -46,10 +37,6 @@ export function vmNetworks(spec, getters, errors, validatorArgs) {
     }
   });
 
-  if (allNames.size !== interfaces.length) {
-    errors.push(getters['i18n/t']('harvester.validation.vm.network.duplicatedName'));
-  }
-
   return errors;
 }
 
@@ -62,12 +49,10 @@ export function vmDisks(spec, getters, errors, validatorArgs, displayKey, value)
   const _volumes = spec.template.spec.volumes || [];
   const _disks = spec.template.spec.domain.devices.disks || [];
 
-  const allNames = new Set(); // duplicate name do not count
+  const diskNames = [];
 
   _disks.forEach((D, idx) => {
     const prefix = D.name || _volumes[idx]?.name || `Volume ${ idx + 1 }`;
-
-    allNames.add(D.name);
 
     if (!D.disk && !D.cdrom) {
       const key = getters['i18n/t']('harvester.fields.type');
@@ -76,25 +61,12 @@ export function vmDisks(spec, getters, errors, validatorArgs, displayKey, value)
       errors.push(getters['i18n/t']('harvester.validation.generic.tabError', { prefix, message }));
     }
 
-    // The maximum length of volume name is 20 characters.
-    if (D.name?.length > maxNameLength) {
-      const key = getters['i18n/t']('harvester.fields.name');
-      const message = getters['i18n/t']('harvester.validation.generic.maxLength', { key, max: maxNameLength });
+    const type = getters['i18n/t']('harvester.fields.volume');
+    const lowerType = getters['i18n/t']('harvester.validation.vm.volume.lowerType');
+    const upperType = getters['i18n/t']('harvester.validation.vm.volume.upperType');
 
-      errors.push(getters['i18n/t']('harvester.validation.generic.tabError', { prefix, message }));
-    }
-
-    if (!D.name) {
-      const key = getters['i18n/t']('generic.name');
-      const message = getters['i18n/t']('validation.required', { key });
-
-      errors.push(getters['i18n/t']('harvester.validation.generic.tabError', { prefix, message }));
-    }
+    validName(getters, errors, D.name, diskNames, prefix, type, lowerType, upperType);
   });
-
-  if (allNames.size !== _disks.length) {
-    errors.push(getters['i18n/t']('harvester.validation.vm.volume.duplicatedName'));
-  }
 
   let requiredVolume = false;
 
@@ -211,4 +183,38 @@ function getVolumeType(V, DVTS) {
   }
 
   return {};
+}
+
+function validName(getters, errors, name, names = [], prefix, type, lowerType, upperType) {
+  // Verify that the name is duplicate
+  if (names.findIndex( N => name === N) !== -1) {
+    errors.push(getters['i18n/t']('harvester.validation.vm.duplicatedName', { type, name }));
+  }
+
+  names.push(name);
+
+  // The maximum length of volume name is 20 characters.
+  if (name && name?.length > maxNameLength) {
+    const key = getters['i18n/t']('harvester.fields.name');
+    const message = getters['i18n/t']('harvester.validation.generic.maxLength', { key, max: maxNameLength });
+
+    errors.push(getters['i18n/t']('harvester.validation.generic.tabError', { prefix, message }));
+  }
+
+  // name required
+  if (!name) {
+    const key = getters['i18n/t']('harvester.fields.name');
+    const message = getters['i18n/t']('validation.required', { key });
+
+    errors.push(getters['i18n/t']('harvester.validation.generic.tabError', { prefix, message }));
+  }
+
+  // valid RFC 1123
+  if (!isValidDNSLabelName(name)) {
+    const regex = '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$';
+
+    errors.push(getters['i18n/t']('harvester.validation.generic.regex', {
+      lowerType, name, regex, upperType
+    }));
+  }
 }
