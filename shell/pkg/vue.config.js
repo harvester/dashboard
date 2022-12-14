@@ -5,7 +5,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const VirtualModulesPlugin = require('webpack-virtual-modules');
 const { generateTypeImport } = require('./auto-import');
 
-module.exports = function(dir) {
+module.exports = function(dir, pkgName) {
   const maindir = path.resolve(dir, '..', '..');
   // The shell code must be sym-linked into the .shell folder
   const SHELL = path.join(dir, '.shell');
@@ -53,6 +53,7 @@ module.exports = function(dir) {
       config.resolve.alias['./node_modules'] = path.join(maindir, 'node_modules');
       config.resolve.alias['@pkg'] = dir;
       config.resolve.alias['~pkg'] = dir;
+      config.resolve.alias[`@/pkg/${ pkgName }`] = dir;
       delete config.resolve.alias['@'];
 
       // Prevent the dynamic importer and the model-loader-require from importing anything dynamically - we don't want all of the
