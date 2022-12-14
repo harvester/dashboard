@@ -93,7 +93,8 @@ export function init($plugin, store) {
         product:  PRODUCT_NAME,
         resource: HCI.DASHBOARD
       }
-    }
+    },
+    hideNamespaceLocation: true,
   });
 
   basicType([HCI.DASHBOARD]);
