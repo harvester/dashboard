@@ -1,1 +1,1 @@
-module.exports = require('./.shell/pkg/vue.config')(__dirname);
+module.exports = require('./.shell/pkg/vue.config')(__dirname, 'harvester');
