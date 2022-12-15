@@ -3,8 +3,7 @@ import { SETTING } from '@shell/config/settings';
 import { COUNT, NAMESPACE, MANAGEMENT } from '@shell/config/types';
 import { HCI } from '../../types';
 import { allHash } from '@shell/utils/promise';
-import { NAMESPACE_FILTERS, DEV } from '@shell/store/prefs';
-import { NAMESPACE_FILTER_ALL_USER as ALL_USER } from '@shell/utils/namespace-filter';
+import { DEV } from '@shell/store/prefs';
 
 export default {
   async loadCluster({
@@ -91,15 +90,13 @@ export default {
       hash.upgrades = dispatch('findAll', { type: HCI.UPGRADE });
     }
 
-    const res: { [key: string]: any} = await allHash(hash);
+    await allHash(hash);
 
     await dispatch('cleanNamespaces', null, { root: true });
 
-    const filters = rootGetters['prefs/get'](NAMESPACE_FILTERS)?.[id];
-
     commit('updateNamespaces', {
-      filters: filters || [ALL_USER],
-      all:     res.virtualNamespaces,
+      filters: [],
+      all:     getters.filterNamespace(),
     }, { root: true });
 
     // Solve compatibility with Rancher v2.6.x, fell remove these codes after not support v2.6.x

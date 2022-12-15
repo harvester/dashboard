@@ -104,14 +104,29 @@ export default {
     options() {
       const t = this.$store.getters['i18n/t'];
       let out = [];
+      const inStore = this.$store.getters['currentStore'](NAMESPACE);
+
+      const params = { ...this.$route.params };
+      const resource = params.resource;
+
+      // Sometimes, different pages may have different namespaces to filter
+      const notFilterNamespaces = this.$store.getters[`type-map/optionsFor`](resource).notFilterNamespace || [];
 
       // TODO: Add return info
       if (this.currentProduct?.customNamespaceFilter && this.currentProduct?.inStore) {
         // Sometimes the component can show before the 'currentProduct' has caught up, so access the product via the getter rather
         // than caching it in the `fetch`
+
+        if (this.$store.getters[`${ this.currentProduct.inStore }/filterNamespace`]) {
+          const allNamespaces = this.$store.getters[`${ this.currentProduct.inStore }/filterNamespace`](notFilterNamespaces);
+
+          this.$store.commit('changeAllNamespaces', allNamespaces);
+        }
+
         return this.$store.getters[`${ this.currentProduct.inStore }/namespaceFilterOptions`]({
           addNamespace,
-          divider
+          divider,
+          notFilterNamespaces
         });
       }
 
@@ -147,8 +162,6 @@ export default {
 
         divider(out);
       }
-
-      const inStore = this.$store.getters['currentStore'](NAMESPACE);
 
       if (!inStore) {
         return out;
@@ -371,17 +384,7 @@ export default {
         return namespaces;
       }
 
-      const isVirtualCluster = this.$store.getters['isVirtualCluster'];
-
       return namespaces.filter((namespace) => {
-        const isSettingSystemNamespace = this.$store.getters['systemNamespaces'].includes(namespace.metadata.name);
-        const systemNS = namespace.isSystem || namespace.isFleetManaged || isSettingSystemNamespace;
-
-        // For Harvester, filter out system namespaces AND obscure namespaces.
-        if (isVirtualCluster) {
-          return !systemNS && !namespace.isObscure;
-        }
-
         // Otherwise only filter out obscure namespaces, such as namespaces
         // that Rancher uses to manage RBAC for projects, which should not be
         // edited or deleted by Rancher users.
