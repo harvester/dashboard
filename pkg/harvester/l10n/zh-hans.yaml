@@ -2,6 +2,11 @@ generic:
   tip: 提示
   resourceExternalLinkTips: '外部链接'
 
+nav:
+  group:
+    networks: 网络
+    backupAndSnapshot: 备份 & 快照
+
 asyncButton:
   restart:
     action: 保存并重启
@@ -195,11 +200,6 @@ harvester:
       prefix: pcidevices-controller 插件未启用，单击
       middle: 此处
       suffix: 使它能够管理你的 PCI 设备。
-    tooltip: |-
-        {numVMs, plural,
-        =0 {有另外 {numVMs} 个 VM 正在使用该设备。}
-        =1 {有另外 {numVMs} 个 VM 正在使用该设备。}
-        }
     noPCIPermission: 请联系系统管理员启用 PCI 设备。
     enablePassthroughWarning: 请不要使用宿主机专用的 PCI 设备（例如，管理网络和 VLAN 网络的网卡）。错误的设备分配可能会损坏你的集群（包括节点故障）。
   generic:
@@ -398,6 +398,7 @@ harvester:
     promptRemove:
       title: '选择要删除的卷：'
       deleteAll: 删除全部
+      tips: "警告：删除 VM 将同时删除 VM 快照，而删除卷则会同时删除卷快照。"
     unplug:
       title: '是否确认要拔出卷 {name} ？'
       actionLabel: 拔出
