@@ -75,15 +75,16 @@ export function init($plugin, store) {
   }
 
   product({
-    inStore:             PRODUCT_NAME,
-    removable:           false,
-    showNamespaceFilter: true,
-    hideKubeShell:       true,
-    hideKubeConfig:      true,
-    showClusterSwitcher: true,
-    hideCopyConfig:      true,
-    hideSystemResources: true,
-    typeStoreMap:        {
+    inStore:               PRODUCT_NAME,
+    removable:             false,
+    showNamespaceFilter:   true,
+    hideKubeShell:         true,
+    hideKubeConfig:        true,
+    showClusterSwitcher:   true,
+    hideCopyConfig:        true,
+    hideSystemResources:   true,
+    customNamespaceFilter: true,
+    typeStoreMap:          {
       [MANAGEMENT.PROJECT]:                       'management',
       [MANAGEMENT.CLUSTER_ROLE_TEMPLATE_BINDING]: 'management',
       [MANAGEMENT.PROJECT_ROLE_TEMPLATE_BINDING]: 'management'
@@ -639,9 +640,10 @@ export function init($plugin, store) {
       name:   `${ PRODUCT_NAME }-c-cluster-resource`,
       params: { resource: HCI.SECRET }
     },
-    resource:       SECRET,
-    resourceDetail: HCI.SECRET,
-    resourceEdit:   HCI.SECRET
+    resource:           SECRET,
+    resourceDetail:     HCI.SECRET,
+    resourceEdit:       HCI.SECRET,
+    notFilterNamespace: ['cattle-monitoring-system']
   });
 
   virtualType({

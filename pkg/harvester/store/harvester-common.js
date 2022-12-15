@@ -9,7 +9,7 @@ const state = function() {
     bundlePending:    false,
     showBundleModal:  false,
     bundlePercentage: 0,
-    uploadingImages:  []
+    uploadingImages:  [],
   };
 };
 
