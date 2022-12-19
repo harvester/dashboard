@@ -6,6 +6,8 @@ import { Banner } from '@components/Banner';
 import { RadioGroup, RadioButton } from '@components/Form/Radio';
 import HarvesterDisk from '../../mixins/harvester-disk';
 import Tags from '../../components/DiskTags';
+import { HCI } from '../../types';
+import { LONGHORN_SYSTEM } from './index'
 
 export default {
   components: {
@@ -63,7 +65,7 @@ export default {
     },
 
     mountedMessage() {
-      const state = this.value?.blockDevice?.metadata?.state || {};
+      const state = this.blockDevice?.metadata?.state || {};
 
       if (state?.error) {
         return state?.message;
@@ -73,16 +75,16 @@ export default {
     },
 
     isProvisioned() {
-      return this.value?.blockDevice?.spec.fileSystem.provisioned;
+      return this.blockDevice?.spec.fileSystem.provisioned;
     },
 
     forceFormattedDisabled() {
-      const lastFormattedAt = this.value?.blockDevice?.status?.deviceStatus?.fileSystem?.LastFormattedAt;
-      const fileSystem = this.value?.blockDevice?.status?.deviceStatus?.fileSystem.type;
+      const lastFormattedAt = this.blockDevice?.status?.deviceStatus?.fileSystem?.LastFormattedAt;
+      const fileSystem = this.blockDevice?.status?.deviceStatus?.fileSystem.type;
 
       const systems = ['ext4', 'XFS'];
 
-      if (lastFormattedAt || this.value?.blockDevice?.childParts?.length > 0) {
+      if (lastFormattedAt || this.blockDevice?.childParts?.length > 0) {
         return true;
       } else if (systems.includes(fileSystem)) {
         return false;
@@ -106,11 +108,11 @@ export default {
     },
 
     isFormatted() {
-      return !!this.value?.blockDevice?.status?.deviceStatus?.fileSystem?.LastFormattedAt;
+      return !!this.blockDevice?.status?.deviceStatus?.fileSystem?.LastFormattedAt;
     },
 
     formattedBannerLabel() {
-      const system = this.value?.blockDevice?.status?.deviceStatus?.fileSystem?.type;
+      const system = this.blockDevice?.status?.deviceStatus?.fileSystem?.type;
 
       const label = this.t('harvester.host.disk.lastFormattedAt.info');
 
@@ -122,7 +124,14 @@ export default {
     },
 
     provisionPhase() {
-      return this.value?.blockDevice?.provisionPhase || {};
+      return this.blockDevice?.provisionPhase || {};
+    },
+
+    blockDevice() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const name = this.value?.name
+
+      return this.$store.getters[`${ inStore }/byId`](HCI.BLOCK_DEVICE, `${ LONGHORN_SYSTEM }/${ name }`) || {};
     },
   },
   methods: {
