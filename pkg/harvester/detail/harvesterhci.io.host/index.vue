@@ -254,6 +254,7 @@ export default {
           v-model="newDisks"
           :mode="mode"
           :can-remove="false"
+          :initial-empty-row="false"
         >
           <template #default="props">
             <Disk
