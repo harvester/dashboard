@@ -17,6 +17,7 @@ import { findBy } from '@shell/utils/array';
 import { clone } from '@shell/utils/object';
 import { exceptionToErrorsArray } from '@shell/utils/error';
 import KeyValue from '@shell/components/form/KeyValue';
+import Loading from '@shell/components/Loading.vue';
 
 import { sortBy } from '@shell/utils/sort';
 import { Banner } from '@components/Banner';
@@ -24,7 +25,7 @@ import HarvesterDisk from './HarvesterDisk';
 import HarvesterKsmtuned from './HarvesterKsmtuned';
 import Tags from '../../components/DiskTags';
 
-const LONGHORN_SYSTEM = 'longhorn-system';
+export const LONGHORN_SYSTEM = 'longhorn-system';
 
 export default {
   name:       'HarvesterEditNode',
@@ -41,6 +42,7 @@ export default {
     KeyValue,
     Banner,
     Tags,
+    Loading,
   },
   mixins: [CreateEditView],
   props:  {
@@ -74,6 +76,7 @@ export default {
           blockDevice:    d,
           displayName:    d?.displayName,
           forceFormatted: d?.spec?.fileSystem?.forceFormatted || false,
+          $ctx:           d.$ctx,
         };
       });
 
@@ -375,7 +378,8 @@ export default {
 };
 </script>
 <template>
-  <div class="node">
+  <Loading v-if="$fetchState.pending" />
+  <div v-else class="node">
     <NameNsDescription
       :value="value"
       :namespaced="false"
