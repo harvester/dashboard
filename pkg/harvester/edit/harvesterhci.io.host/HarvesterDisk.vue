@@ -5,7 +5,7 @@ import { BadgeState } from '@components/BadgeState';
 import { Banner } from '@components/Banner';
 import { RadioGroup, RadioButton } from '@components/Form/Radio';
 import HarvesterDisk from '../../mixins/harvester-disk';
-import LabeledSelect from '@shell/components/form/LabeledSelect';
+import Tags from '../../components/DiskTags';
 
 export default {
   components: {
@@ -15,7 +15,7 @@ export default {
     Banner,
     RadioGroup,
     RadioButton,
-    LabeledSelect,
+    Tags,
   },
 
   mixins: [
@@ -135,7 +135,7 @@ export default {
 
 <template>
   <div class="disk" @input="update">
-    <div class="mt-30" />
+    <div class="mt-10" />
     <Banner
       v-if="mountedMessage && isProvisioned"
       color="error"
@@ -149,14 +149,11 @@ export default {
     <div v-if="!value.isNew">
       <div class="row">
         <div class="col span-12">
-          <LabeledSelect
+          <Tags
             v-model="value.tags"
-            :mode="mode"
-            :multiple="true"
-            :taggable="true"
-            :options="[]"
             :label="t('harvester.host.disk.tags.label')"
-            :searchable="true"
+            :add-label="t('harvester.host.disk.tags.addLabel')"
+            :mode="mode"
           />
         </div>
       </div>

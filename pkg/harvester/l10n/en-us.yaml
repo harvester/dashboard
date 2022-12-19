@@ -361,8 +361,10 @@ harvester:
         info: Current file system is {system}, You can format it manually.
       tags:
         label: Disk Tags
+        addLabel: Add Disk Tag
     tags:
       label: Host Tags
+      addLabel: Add Host Tag
 
   virtualMachine:
     label: Virtual Machines
