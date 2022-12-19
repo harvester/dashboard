@@ -17,12 +17,12 @@ import { findBy } from '@shell/utils/array';
 import { clone } from '@shell/utils/object';
 import { exceptionToErrorsArray } from '@shell/utils/error';
 import KeyValue from '@shell/components/form/KeyValue';
-import LabeledSelect from '@shell/components/form/LabeledSelect';
 
 import { sortBy } from '@shell/utils/sort';
 import { Banner } from '@components/Banner';
 import HarvesterDisk from './HarvesterDisk';
 import HarvesterKsmtuned from './HarvesterKsmtuned';
+import Tags from '../../components/DiskTags';
 
 const LONGHORN_SYSTEM = 'longhorn-system';
 
@@ -40,7 +40,7 @@ export default {
     ButtonDropdown,
     KeyValue,
     Banner,
-    LabeledSelect,
+    Tags,
   },
   mixins: [CreateEditView],
   props:  {
@@ -408,20 +408,18 @@ export default {
           class="row mb-20"
         >
           <div class="col span-12">
-            <LabeledSelect
+            <Tags
               v-model="longhornNode.spec.tags"
-              :mode="mode"
-              :multiple="true"
-              :taggable="true"
-              :options="[]"
               :label="t('harvester.host.tags.label')"
-              :searchable="true"
+              :add-label="t('harvester.host.tags.addLabel')"
+              :mode="mode"
             />
           </div>
         </div>
         <ArrayListGrouped
           v-model="newDisks"
           :mode="mode"
+          :initial-empty-row="false"
         >
           <template #default="props">
             <HarvesterDisk
