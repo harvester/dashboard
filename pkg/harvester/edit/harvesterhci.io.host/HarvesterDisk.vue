@@ -7,7 +7,7 @@ import { RadioGroup, RadioButton } from '@components/Form/Radio';
 import HarvesterDisk from '../../mixins/harvester-disk';
 import Tags from '../../components/DiskTags';
 import { HCI } from '../../types';
-import { LONGHORN_SYSTEM } from './index'
+import { LONGHORN_SYSTEM } from './index';
 
 export default {
   components: {
@@ -129,7 +129,7 @@ export default {
 
     blockDevice() {
       const inStore = this.$store.getters['currentProduct'].inStore;
-      const name = this.value?.name
+      const name = this.value?.name;
 
       return this.$store.getters[`${ inStore }/byId`](HCI.BLOCK_DEVICE, `${ LONGHORN_SYSTEM }/${ name }`) || {};
     },

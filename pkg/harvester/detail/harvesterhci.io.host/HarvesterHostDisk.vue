@@ -93,7 +93,6 @@ export default {
 
 <template>
   <div class="disk" @input="update">
-    <div class="mt-30" />
     <Banner
       v-if="mountedMessage"
       color="error"

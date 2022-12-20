@@ -5,6 +5,7 @@ import Tab from '@shell/components/Tabbed/Tab';
 import InfoBox from '@shell/components/InfoBox';
 import LabelValue from '@shell/components/LabelValue';
 import ArrayListGrouped from '@shell/components/form/ArrayListGrouped';
+import Loading from '@shell/components/Loading.vue';
 
 import metricPoller from '@shell/mixins/metric-poller';
 import { METRIC, NODE, LONGHORN, POD } from '@shell/config/types';
@@ -37,6 +38,7 @@ export default {
     VlanStatus,
     LabelValue,
     HarvesterKsmtuned,
+    Loading,
   },
   mixins: [metricPoller],
 
@@ -146,6 +148,7 @@ export default {
           blockDevice,
           displayName:      blockDevice?.displayName || key,
           forceFormatted:   blockDevice?.spec?.fileSystem?.forceFormatted || false,
+          tags:             diskSpec?.[key]?.tags || [],
         };
       });
 
@@ -196,7 +199,8 @@ export default {
 </script>
 
 <template>
-  <div>
+  <Loading v-if="$fetchState.pending" />
+  <div v-else>
     <Tabbed v-bind="$attrs" class="mt-15" :side-tabs="true">
       <Tab name="basics" :label="t('harvester.host.tabs.basics')" :weight="4" class="bordered-table">
         <Basic
