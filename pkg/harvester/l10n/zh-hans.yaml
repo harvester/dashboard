@@ -945,6 +945,9 @@ harvester:
       titles:
         basic: 基本信息
         pvc: 卷
+  
+  secret:
+    label: 密文
 
 advancedSettings:
   descriptions:
@@ -1086,4 +1089,9 @@ typeLabel:
     {count, plural,
       one { 集群网络 }
       other { 集群网络 }
+    }
+  harvesterhci.io.secret: |-
+    {count, plural,
+      one { 密文 }
+      other { 密文 }
     }

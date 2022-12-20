@@ -10,6 +10,7 @@ import {
   MONITORING,
   LOGGING,
   STORAGE_CLASS,
+  SECRET
 } from '@shell/config/types';
 import { HCI, VOLUME_SNAPSHOT } from '../types';
 import {
@@ -21,7 +22,8 @@ import {
   LOGGING_OUTPUT_PROVIDERS,
   OUTPUT,
   CLUSTER_OUTPUT,
-  CONFIGURED_PROVIDERS
+  CONFIGURED_PROVIDERS,
+  SUB_TYPE
 } from '@shell/config/table-headers';
 
 import {
@@ -449,6 +451,7 @@ export function init($plugin, store) {
       HCI.SSH,
       HCI.CLOUD_TEMPLATE,
       HCI.STORAGE,
+      HCI.SECRET,
       HCI.SETTING
     ],
     'advanced'
@@ -613,6 +616,42 @@ export function init($plugin, store) {
     route:      {
       name:   `${ PRODUCT_NAME }-c-cluster-resource`,
       params: { resource: HCI.CLOUD_TEMPLATE }
+    },
+    exact: false
+  });
+
+  headers(HCI.SECRET, [
+    STATE,
+    NAME_COL,
+    NAMESPACE_COL,
+    SUB_TYPE,
+    {
+      name:      'data',
+      labelKey:  'tableHeaders.data',
+      value:     'dataPreview',
+      formatter: 'SecretData'
+    },
+    AGE
+  ]);
+
+  configureType(HCI.SECRET, {
+    location: {
+      name:   `${ PRODUCT_NAME }-c-cluster-resource`,
+      params: { resource: HCI.SECRET }
+    },
+    resource:       SECRET,
+    resourceDetail: HCI.SECRET,
+    resourceEdit:   HCI.SECRET
+  });
+
+  virtualType({
+    labelKey:   'harvester.secret.label',
+    name:       HCI.SECRET,
+    namespaced: true,
+    weight:     -999,
+    route:      {
+      name:   `${ PRODUCT_NAME }-c-cluster-resource`,
+      params: { resource: HCI.SECRET }
     },
     exact: false
   });

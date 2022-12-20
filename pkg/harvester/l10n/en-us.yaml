@@ -945,6 +945,9 @@ harvester:
       titles:
         basic: Basic
         pvc: Volume
+  
+  secret:
+    label: Secrets
 
 advancedSettings:
   descriptions:
@@ -1086,4 +1089,9 @@ typeLabel:
     {count, plural,
       one { Cluster Network }
       other { Cluster Networks }
+    }
+  harvesterhci.io.secret: |-
+    {count, plural,
+      one { Secret }
+      other { Secrets }
     }
