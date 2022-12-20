@@ -38,6 +38,7 @@ export const HCI = {
   VLAN_STATUS:        'network.harvesterhci.io.vlanstatus',
   ADD_ONS:            'harvesterhci.io.addon',
   LINK_MONITOR:       'network.harvesterhci.io.linkmonitor',
+  SECRET:             'harvesterhci.io.secret',
 };
 
 export const VOLUME_SNAPSHOT = 'snapshot.storage.k8s.io.volumesnapshot';
