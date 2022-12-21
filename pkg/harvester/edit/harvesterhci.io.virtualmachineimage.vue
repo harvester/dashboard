@@ -6,7 +6,6 @@ import { LabeledInput } from '@components/Form/LabeledInput';
 import KeyValue from '@shell/components/form/KeyValue';
 import NameNsDescription from '@shell/components/form/NameNsDescription';
 import { RadioGroup } from '@components/Form/Radio';
-import LabelValue from '@shell/components/LabelValue';
 import Select from '@shell/components/form/Select';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 
@@ -35,7 +34,6 @@ export default {
     LabeledInput,
     NameNsDescription,
     RadioGroup,
-    LabelValue,
     LabeledSelect,
   },
 
@@ -310,9 +308,9 @@ export default {
           :mode="mode"
         />
         <div class="row mb-20 mt-20">
-          <div v-if="isCreateEdit" class="col span-12">
+          <div class="col span-12">
             <LabeledInput
-              v-if="isEdit"
+              v-if="!isCreate"
               v-model="value.spec.sourceType"
               :mode="mode"
               class="mb-20"
@@ -332,6 +330,14 @@ export default {
             />
 
             <div v-else>
+              <LabeledInput
+                v-if="isView"
+                v-model="imageName"
+                :mode="mode"
+                class="mt-20"
+                label-key="harvester.image.fileName"
+              />
+
               <button
                 v-if="isCreate"
                 type="button"
@@ -359,15 +365,6 @@ export default {
                 {{ uploadFileName }}
               </div>
             </div>
-          </div>
-          <div
-            v-else
-            class="col span-12"
-          >
-            <LabelValue
-              :name="t('harvester.image.fileName')"
-              :value="imageName"
-            />
           </div>
         </div>
       </Tab>
