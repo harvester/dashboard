@@ -3,6 +3,7 @@ import LabelValue from '@shell/components/LabelValue';
 import { formatSi, exponentNeeded, UNITS } from '@shell/utils/units';
 import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 import { LONGHORN, METRIC } from '@shell/config/types';
+import { Banner } from '@components/Banner';
 import HarvesterCPUUsed from '../../formatters/HarvesterCPUUsed';
 import HarvesterMemoryUsed from '../../formatters/HarvesterMemoryUsed';
 import HarvesterStorageUsed from '../../formatters/HarvesterStorageUsed';
@@ -16,6 +17,7 @@ export default {
   name: 'BasicNode',
 
   components: {
+    Banner,
     LabelValue,
     HarvesterCPUUsed,
     HarvesterMemoryUsed,
@@ -168,6 +170,11 @@ export default {
 
 <template>
   <div class="host-detail">
+    <Banner
+      v-if="value.isKVMDisable"
+      color="error"
+      label-key="harvester.host.detail.kvm.disableMessage"
+    />
     <h3>{{ t('harvester.host.tabs.overview') }}</h3>
     <div class="row mb-20">
       <div class="col span-6">

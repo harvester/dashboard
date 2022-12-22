@@ -104,6 +104,10 @@ export default class HciNode extends HarvesterResource {
     );
   }
 
+  get isKVMDisable() {
+    return this.metadata?.labels?.[HCI_ANNOTATIONS.KVM_DISABLE] === 'true';
+  }
+
   get stateDisplay() {
     if (this.isEnteringMaintenance) {
       return 'Entering maintenance mode';
