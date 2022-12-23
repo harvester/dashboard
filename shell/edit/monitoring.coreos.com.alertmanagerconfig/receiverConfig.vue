@@ -237,6 +237,19 @@ export default {
     createAddOptions(receiverType) {
       return receiverType.addOptions.map();
     },
+
+    saveReceiver(buttonDone) {
+      this.errors = [];
+
+      if (!this.value.name) {
+        this.errors.push(this.$store.getters['i18n/t']('validation.required', { key: 'Name' }));
+        buttonDone(false);
+
+        return;
+      }
+
+      this.saveOverride(buttonDone);
+    }
   }
 };
 </script>
@@ -252,7 +265,7 @@ export default {
     :errors="errors"
     :cancel-event="true"
     @error="e=>errors = e"
-    @finish="saveOverride()"
+    @finish="saveReceiver"
     @cancel="redirectAfterCancel"
   >
     <div class="row mb-10">
@@ -261,6 +274,7 @@ export default {
           v-model="value.name"
           :is-disabled="receiverNameDisabled"
           :label="t('generic.name')"
+          :required="true"
           :mode="mode"
         />
       </div>
