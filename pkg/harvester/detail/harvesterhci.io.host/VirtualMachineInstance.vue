@@ -60,16 +60,16 @@ export default {
         {
           name:     'vmCPU',
           labelKey: 'tableHeaders.cpu',
-          sort:     'vmCPU',
           search:   false,
+          sort:     ['spec.template.spec.domain.cpu.cores'],
           value:    'spec.template.spec.domain.cpu.cores',
           width:    120
         },
         {
           name:     'vmRAM',
           labelKey: 'glance.memory',
-          sort:     'vmRAM',
           search:   false,
+          sort:     ['memorySort'],
           value:    'spec.template.spec.domain.resources.limits.memory',
           width:    120
         },
