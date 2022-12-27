@@ -50,7 +50,7 @@ export default {
     :click-to-close="false"
     @closed="close"
   >
-    <Card class="prompt-restore" :show-highlight-border="false">
+    <Card class="prompt-restart" :show-highlight-border="false">
       <h4 slot="title" class="text-default-text" v-html="t('harvester.modal.restart.title')" />
 
       <template slot="body">
@@ -77,7 +77,10 @@ export default {
   </modal>
 </template>
 <style lang='scss' scoped>
-  .prompt-restore {
+  .restart-modal {
+    z-index: 45;
+  }
+  .prompt-restart {
     margin: 0;
   }
   .bottom {
