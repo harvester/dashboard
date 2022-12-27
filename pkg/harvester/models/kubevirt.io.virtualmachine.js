@@ -178,7 +178,7 @@ export default class VirtVm extends HarvesterResource {
       },
       {
         action:  'openLogs',
-        enabled: (this.podResource || []).length > 0,
+        enabled: !!this.podResource,
         icon:    'icon icon-fw icon-chevron-right',
         label:   this.t('harvester.action.viewlogs'),
         total:   1
