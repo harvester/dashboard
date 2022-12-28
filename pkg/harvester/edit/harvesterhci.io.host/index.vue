@@ -254,10 +254,31 @@ export default {
           return blockDevice.save();
         }));
 
-        this.$store.dispatch('growl/success', {
-          title:   this.t('generic.notification.title.succeed'),
-          message: this.t('harvester.host.disk.notification.success', { name: this.value.metadata?.name || '' }),
-        }, { root: true });
+        const errors = [];
+
+        addDisks.map((d) => {
+          const blockDevice = this.$store.getters[`${ inStore }/byId`](HCI.BLOCK_DEVICE, `${ LONGHORN_SYSTEM }/${ d.name }`);
+
+          if (blockDevice.metadata.state.error) {
+            errors.push(blockDevice.metadata.state.message);
+          }
+        });
+
+        if (errors.length > 0) {
+          errors.map((err) => {
+            this.$store.dispatch('growl/error', {
+              title:   this.t('generic.notification.title.error'),
+              message: err,
+            }, { root: true });
+          });
+
+          return Promise.reject(new Error('Failed to add disks'));
+        } else {
+          this.$store.dispatch('growl/success', {
+            title:   this.t('generic.notification.title.succeed'),
+            message: this.t('harvester.host.disk.notification.success', { name: this.value.metadata?.name || '' }),
+          }, { root: true });
+        }
       } catch (err) {
         return Promise.reject(exceptionToErrorsArray(err));
       }
