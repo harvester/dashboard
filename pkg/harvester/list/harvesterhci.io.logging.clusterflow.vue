@@ -22,11 +22,13 @@ export default {
   },
 
   async fetch() {
-    this.listSchema = this.$store.getters['harvester/schemaFor'](LOGGING.CLUSTER_FLOW);
+    const inStore = this.$store.getters['currentProduct'].inStore;
+
+    this.listSchema = this.$store.getters[`${ inStore }/schemaFor`](LOGGING.CLUSTER_FLOW);
 
     if (this.listSchema) {
-      await this.$store.dispatch('harvester/findAll', { type: LOGGING.CLUSTER_OUTPUT });
-      this.rows = await this.$store.dispatch('harvester/findAll', { type: LOGGING.CLUSTER_FLOW });
+      await this.$store.dispatch(`${ inStore }/findAll`, { type: LOGGING.CLUSTER_OUTPUT });
+      this.rows = await this.$store.dispatch(`${ inStore }/findAll`, { type: LOGGING.CLUSTER_FLOW });
     }
 
     this.$store.dispatch('type-map/configureType', { match: HCI.CLUSTER_FLOW, isCreatable: this.listSchema && this.listSchema?.collectionMethods.find(x => x.toLowerCase() === 'post') });

@@ -19,9 +19,11 @@ export default {
   components: { ResourceTable, Loading },
 
   async fetch() {
-    this.rows = await this.$store.dispatch('harvester/findAll', { type: SECRET });
+    const inStore = this.$store.getters['currentProduct'].inStore;
 
-    const configSchema = this.$store.getters['harvester/schemaFor'](SECRET);
+    this.rows = await this.$store.dispatch(`${ inStore }/findAll`, { type: SECRET });
+
+    const configSchema = this.$store.getters[`${ inStore }/schemaFor`](SECRET);
 
     if (!configSchema?.collectionMethods.find(x => x.toLowerCase() === 'post')) {
       this.$store.dispatch('type-map/configureType', { match: HCI.SECRET, isCreatable: false });

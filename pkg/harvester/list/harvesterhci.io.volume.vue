@@ -25,22 +25,23 @@ export default {
   },
 
   async fetch() {
+    const inStore = this.$store.getters['currentProduct'].inStore;
     const _hash = {
-      pvcs:            this.$store.dispatch('harvester/findAll', { type: PVC }),
-      pvs:             this.$store.dispatch('harvester/findAll', { type: PV }),
-      vms:             this.$store.dispatch('harvester/findAll', { type: HCI.VM }),
-      longhornVolumes: this.$store.dispatch('harvester/findAll', { type: LONGHORN.VOLUMES }),
+      pvcs:            this.$store.dispatch(`${ inStore }/findAll`, { type: PVC }),
+      pvs:             this.$store.dispatch(`${ inStore }/findAll`, { type: PV }),
+      vms:             this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VM }),
+      longhornVolumes: this.$store.dispatch(`${ inStore }/findAll`, { type: LONGHORN.VOLUMES }),
     };
 
-    const volumeSnapshotSchema = this.$store.getters['harvester/schemaFor'](VOLUME_SNAPSHOT);
+    const volumeSnapshotSchema = this.$store.getters[`${ inStore }/schemaFor`](VOLUME_SNAPSHOT);
 
     if (volumeSnapshotSchema) {
-      _hash.snapshots = this.$store.dispatch('harvester/findAll', { type: VOLUME_SNAPSHOT });
+      _hash.snapshots = this.$store.dispatch(`${ inStore }/findAll`, { type: VOLUME_SNAPSHOT });
     }
 
     const hash = await allHash(_hash);
 
-    const pvcSchema = this.$store.getters['harvester/schemaFor'](PVC);
+    const pvcSchema = this.$store.getters[`${ inStore }/schemaFor`](PVC);
 
     if (!pvcSchema?.collectionMethods.find(x => x.toLowerCase() === 'post')) {
       this.$store.dispatch('type-map/configureType', { match: HCI.VOLUME, isCreatable: false });

@@ -25,10 +25,11 @@ export default {
   },
 
   async fetch() {
-    const _hash = { rows: this.$store.dispatch('harvester/findAll', { type: MONITORING.ALERTMANAGERCONFIG }) };
+    const inStore = this.$store.getters['currentProduct'].inStore;
+    const _hash = { rows: this.$store.dispatch(`${ inStore }/findAll`, { type: MONITORING.ALERTMANAGERCONFIG }) };
 
-    if (this.$store.getters['harvester/schemaFor'](MANAGEMENT.MANAGED_CHART)) {
-      _hash.monitoring = this.$store.dispatch('harvester/find', { type: MANAGEMENT.MANAGED_CHART, id: 'fleet-local/rancher-monitoring' });
+    if (this.$store.getters[`${ inStore }/schemaFor`](MANAGEMENT.MANAGED_CHART)) {
+      _hash.monitoring = this.$store.dispatch(`${ inStore }/find`, { type: MANAGEMENT.MANAGED_CHART, id: 'fleet-local/rancher-monitoring' });
     }
 
     const hash = await allHash(_hash);
@@ -36,7 +37,7 @@ export default {
     this.rows = hash.rows;
     this.alertingEnabled = hash.monitoring?.spec?.values?.alertmanager?.enabled;
 
-    const configSchema = this.$store.getters['harvester/schemaFor'](MONITORING.ALERTMANAGERCONFIG);
+    const configSchema = this.$store.getters[`${ inStore }/schemaFor`](MONITORING.ALERTMANAGERCONFIG);
 
     this.$store.dispatch('type-map/configureType', { match: HCI.ALERTMANAGERCONFIG, isCreatable: configSchema?.collectionMethods.find(x => x.toLowerCase() === 'post') && this.alertingEnabled });
   },

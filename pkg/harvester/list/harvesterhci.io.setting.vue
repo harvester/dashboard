@@ -17,15 +17,16 @@ export default {
   async fetch() {
     const isDev = this.$store.getters['prefs/get'](VIEW_IN_API);
     const isSingleProduct = !!this.$store.getters['isSingleProduct'];
+    const inStore = this.$store.getters['currentProduct'].inStore;
 
-    const hash = { harvesterSettings: this.$store.dispatch('harvester/findAll', { type: HCI.SETTING }) };
+    const hash = { harvesterSettings: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.SETTING }) };
 
     if (isSingleProduct) {
       hash.settings = this.$store.dispatch('management/findAll', { type: MANAGEMENT.SETTING });
     }
 
-    if (this.$store.getters['harvester/schemaFor'](MANAGEMENT.MANAGED_CHART)) {
-      hash.managedcharts = this.$store.dispatch('harvester/findAll', { type: MANAGEMENT.MANAGED_CHART });
+    if (this.$store.getters[`${ inStore }/schemaFor`](MANAGEMENT.MANAGED_CHART)) {
+      hash.managedcharts = this.$store.dispatch(`${ inStore }/findAll`, { type: MANAGEMENT.MANAGED_CHART });
     }
 
     const rows = await allHash(hash);

@@ -32,25 +32,26 @@ export default {
   mixins: [metricPoller],
 
   async fetch() {
+    const inStore = this.$store.getters['currentProduct'].inStore;
     const _hash = {
-      nodes: this.$store.dispatch('harvester/findAll', { type: NODE }),
-      pods:  this.$store.dispatch('harvester/findAll', { type: POD }),
+      nodes: this.$store.dispatch(`${ inStore }/findAll`, { type: NODE }),
+      pods:  this.$store.dispatch(`${ inStore }/findAll`, { type: POD }),
     };
 
-    if (this.$store.getters['harvester/schemaFor'](METRIC.NODE)) {
-      _hash.metric = this.$store.dispatch('harvester/findAll', { type: METRIC.NODE });
+    if (this.$store.getters[`${ inStore }/schemaFor`](METRIC.NODE)) {
+      _hash.metric = this.$store.dispatch(`${ inStore }/findAll`, { type: METRIC.NODE });
     } else {
       this.hasMetricSchema = false;
     }
 
-    if (this.$store.getters['harvester/schemaFor'](LONGHORN.NODES)) {
-      _hash.longhornNodes = this.$store.dispatch('harvester/findAll', { type: LONGHORN.NODES });
+    if (this.$store.getters[`${ inStore }/schemaFor`](LONGHORN.NODES)) {
+      _hash.longhornNodes = this.$store.dispatch(`${ inStore }/findAll`, { type: LONGHORN.NODES });
     } else {
       this.hasLonghornSchema = false;
     }
 
-    if (this.$store.getters['harvester/schemaFor'](HCI.BLOCK_DEVICE)) {
-      _hash.blockDevices = this.$store.dispatch('harvester/findAll', { type: HCI.BLOCK_DEVICE });
+    if (this.$store.getters[`${ inStore }/schemaFor`](HCI.BLOCK_DEVICE)) {
+      _hash.blockDevices = this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.BLOCK_DEVICE });
     }
 
     const hash = await allHash(_hash);

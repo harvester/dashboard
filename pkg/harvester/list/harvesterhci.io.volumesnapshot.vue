@@ -21,16 +21,17 @@ export default {
   components: { ResourceTable, Loading },
 
   async fetch() {
+    const inStore = this.$store.getters['currentProduct'].inStore;
     const hash = {
-      volumes:   this.$store.dispatch(`harvester/findAll`, { type: PVC }),
-      snapshots: this.$store.dispatch('harvester/findAll', { type: VOLUME_SNAPSHOT }),
+      volumes:   this.$store.dispatch(`${ inStore }/findAll`, { type: PVC }),
+      snapshots: this.$store.dispatch(`${ inStore }/findAll`, { type: VOLUME_SNAPSHOT }),
     };
 
     const res = await allHash(hash);
 
     this.rows = res.snapshots;
 
-    const snapShotSchema = this.$store.getters['harvester/schemaFor'](VOLUME_SNAPSHOT);
+    const snapShotSchema = this.$store.getters[`${ inStore }/schemaFor`](VOLUME_SNAPSHOT);
 
     if (!snapShotSchema?.collectionMethods.find(x => x.toLowerCase() === 'post')) {
       this.$store.dispatch('type-map/configureType', { match: HCI.SNAPSHOT, isCreatable: false });

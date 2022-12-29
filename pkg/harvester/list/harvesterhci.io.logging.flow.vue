@@ -22,15 +22,17 @@ export default {
   },
 
   async fetch() {
-    this.listSchema = this.$store.getters['harvester/schemaFor'](LOGGING.FLOW);
+    const inStore = this.$store.getters['currentProduct'].inStore;
+
+    this.listSchema = this.$store.getters[`${ inStore }/schemaFor`](LOGGING.FLOW);
 
     if (this.listSchema) {
       try {
-        await this.$store.dispatch('harvester/findAll', { type: LOGGING.OUTPUT });
-        await this.$store.dispatch('harvester/findAll', { type: LOGGING.CLUSTER_OUTPUT });
+        await this.$store.dispatch(`${ inStore }/findAll`, { type: LOGGING.OUTPUT });
+        await this.$store.dispatch(`${ inStore }/findAll`, { type: LOGGING.CLUSTER_OUTPUT });
       } catch (e) {}
 
-      this.rows = await this.$store.dispatch('harvester/findAll', { type: LOGGING.FLOW });
+      this.rows = await this.$store.dispatch(`${ inStore }/findAll`, { type: LOGGING.FLOW });
     }
 
     this.$store.dispatch('type-map/configureType', { match: HCI.FLOW, isCreatable: this.listSchema && this.listSchema?.collectionMethods.find(x => x.toLowerCase() === 'post') });

@@ -23,10 +23,11 @@ export default {
   },
 
   async fetch() {
+    const inStore = this.$store.getters['currentProduct'].inStore;
     const hash = await allHash({
-      vms:      this.$store.dispatch('harvester/findAll', { type: HCI.VM }),
-      settings: this.$store.dispatch('harvester/findAll', { type: HCI.SETTING }),
-      rows:     this.$store.dispatch('harvester/findAll', { type: HCI.BACKUP }),
+      vms:      this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VM }),
+      settings: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.SETTING }),
+      rows:     this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.BACKUP }),
     });
 
     this.rows = hash.rows;

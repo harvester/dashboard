@@ -63,7 +63,8 @@ export default {
     },
 
     getSSHValue(id) {
-      const sshs = this.$store.getters['harvester/all'](HCI.SSH) || [];
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const sshs = this.$store.getters[`${ inStore }/all`](HCI.SSH) || [];
 
       return sshs.find( O => O.id === id)?.spec?.publicKey || undefined;
     },
@@ -165,7 +166,8 @@ export default {
       const cloudInitNoCloud = spec?.template?.spec?.volumes?.find( (V) => {
         return V.name === 'cloudinitdisk';
       })?.cloudInitNoCloud || {};
-      const secrets = this.$store.getters['harvester/all'](SECRET) || [];
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const secrets = this.$store.getters[`${ inStore }/all`](SECRET) || [];
 
       const secretName = cloudInitNoCloud?.secretRef?.name || cloudInitNoCloud?.networkDataSecretRef?.name;
 
@@ -175,7 +177,8 @@ export default {
     },
 
     getAccessCredentials(spec) {
-      const secrets = this.$store.getters['harvester/all'](SECRET) || [];
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const secrets = this.$store.getters[`${ inStore }/all`](SECRET) || [];
       const credentials = spec?.template?.spec?.accessCredentials || [];
       const annotations = JSON.parse(spec.template.metadata?.annotations?.[HCI_ANNOTATIONS.DYNAMIC_SSHKEYS_NAMES] || '[]');
 
@@ -263,7 +266,8 @@ export default {
 
       let out = [];
 
-      const allSSHs = this.$store.getters['harvester/all'](HCI.SSH) || [];
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const allSSHs = this.$store.getters[`${ inStore }/all`](HCI.SSH) || [];
 
       out = (keys || []).map((id) => {
         const hasSSHResource = allSSHs.find(ssh => ssh.id === id);

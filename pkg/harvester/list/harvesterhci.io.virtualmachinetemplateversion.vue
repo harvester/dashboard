@@ -21,9 +21,10 @@ export default {
   },
 
   async fetch() {
+    const inStore = this.$store.getters['currentProduct'].inStore;
     const hash = await allHash({
-      template:        this.$store.dispatch('harvester/findAll', { type: HCI.VM_TEMPLATE }),
-      templateVersion: this.$store.dispatch('harvester/findAll', { type: HCI.VM_VERSION }),
+      template:        this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VM_TEMPLATE }),
+      templateVersion: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VM_VERSION }),
     });
 
     this.template = hash.template;
