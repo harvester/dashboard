@@ -25,12 +25,13 @@ export default {
   },
 
   async fetch() {
+    const inStore = this.$store.getters['currentProduct'].inStore;
     const hash = await allHash({
-      vms:  this.$store.dispatch('harvester/findAll', { type: HCI.VM }),
-      rows: this.$store.dispatch('harvester/findAll', { type: HCI.BACKUP }),
+      vms:  this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VM }),
+      rows: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.BACKUP }),
     });
 
-    const schema = this.$store.getters['harvester/schemaFor'](HCI.BACKUP);
+    const schema = this.$store.getters[`${ inStore }/schemaFor`](HCI.BACKUP);
 
     if (!schema?.collectionMethods.find(x => x.toLowerCase() === 'post')) {
       this.$store.dispatch('type-map/configureType', { match: HCI.VM_SNAPSHOT, isCreatable: false });

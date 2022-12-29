@@ -79,29 +79,30 @@ export default {
   },
 
   async fetch() {
+    const inStore = this.$store.getters['currentProduct'].inStore;
     const hash = {
-      pvs:               this.$store.dispatch('harvester/findAll', { type: PV }),
-      pvcs:              this.$store.dispatch('harvester/findAll', { type: PVC }),
-      storageClasses:    this.$store.dispatch('harvester/findAll', { type: STORAGE_CLASS }),
-      sshs:              this.$store.dispatch('harvester/findAll', { type: HCI.SSH }),
-      settings:          this.$store.dispatch('harvester/findAll', { type: HCI.SETTING }),
-      images:            this.$store.dispatch('harvester/findAll', { type: HCI.IMAGE }),
-      versions:          this.$store.dispatch('harvester/findAll', { type: HCI.VM_VERSION }),
-      templates:         this.$store.dispatch('harvester/findAll', { type: HCI.VM_TEMPLATE }),
-      networkAttachment: this.$store.dispatch('harvester/findAll', { type: NETWORK_ATTACHMENT }),
-      vmis:              this.$store.dispatch('harvester/findAll', { type: HCI.VMI }),
-      vmims:             this.$store.dispatch('harvester/findAll', { type: HCI.VMIM }),
-      vms:               this.$store.dispatch('harvester/findAll', { type: HCI.VM }),
-      secrets:           this.$store.dispatch('harvester/findAll', { type: SECRET }),
-      addons:            this.$store.dispatch('harvester/findAll', { type: HCI.ADD_ONS }),
+      pvs:               this.$store.dispatch(`${ inStore }/findAll`, { type: PV }),
+      pvcs:              this.$store.dispatch(`${ inStore }/findAll`, { type: PVC }),
+      storageClasses:    this.$store.dispatch(`${ inStore }/findAll`, { type: STORAGE_CLASS }),
+      sshs:              this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.SSH }),
+      settings:          this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.SETTING }),
+      images:            this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.IMAGE }),
+      versions:          this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VM_VERSION }),
+      templates:         this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VM_TEMPLATE }),
+      networkAttachment: this.$store.dispatch(`${ inStore }/findAll`, { type: NETWORK_ATTACHMENT }),
+      vmis:              this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VMI }),
+      vmims:             this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VMIM }),
+      vms:               this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VM }),
+      secrets:           this.$store.dispatch(`${ inStore }/findAll`, { type: SECRET }),
+      addons:            this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.ADD_ONS }),
     };
 
-    if (this.$store.getters['harvester/schemaFor'](NODE)) {
-      hash.nodes = this.$store.dispatch('harvester/findAll', { type: NODE });
+    if (this.$store.getters[`${ inStore }/schemaFor`](NODE)) {
+      hash.nodes = this.$store.dispatch(`${ inStore }/findAll`, { type: NODE });
     }
     const res = await allHash(hash);
 
-    const hasPCISchema = this.$store.getters['harvester/schemaFor'](HCI.PCI_DEVICE);
+    const hasPCISchema = this.$store.getters[`${ inStore }/schemaFor`](HCI.PCI_DEVICE);
 
     this.enabledPCI = res.addons.find(addon => addon.name === 'pcidevices-controller')?.spec?.enabled === true && hasPCISchema;
   },
@@ -144,28 +145,32 @@ export default {
   },
 
   computed: {
+    inStore() {
+      return this.$store.getters['currentProduct'].inStore;
+    },
+
     images() {
-      return this.$store.getters['harvester/all'](HCI.IMAGE);
+      return this.$store.getters[`${ this.inStore }/all`](HCI.IMAGE);
     },
 
     versions() {
-      return this.$store.getters['harvester/all'](HCI.VM_VERSION);
+      return this.$store.getters[`${ this.inStore }/all`](HCI.VM_VERSION);
     },
 
     templates() {
-      return this.$store.getters['harvester/all'](HCI.VM_TEMPLATE);
+      return this.$store.getters[`${ this.inStore }/all`](HCI.VM_TEMPLATE);
     },
 
     pvcs() {
-      return this.$store.getters['harvester/all'](PVC);
+      return this.$store.getters[`${ this.inStore }/all`](PVC);
     },
 
     secrets() {
-      return this.$store.getters['harvester/all'](SECRET);
+      return this.$store.getters[`${ this.inStore }/all`](SECRET);
     },
 
     nodesIdOptions() {
-      const nodes = this.$store.getters['harvester/all'](NODE);
+      const nodes = this.$store.getters[`${ this.inStore }/all`](NODE);
 
       return nodes.filter(N => !N.isUnSchedulable).map((node) => {
         return {
@@ -176,14 +181,14 @@ export default {
     },
 
     defaultStorageClass() {
-      const defaultStorage = this.$store.getters['harvester/all'](STORAGE_CLASS).find( O => O.isDefault);
+      const defaultStorage = this.$store.getters[`${ this.inStore }/all`](STORAGE_CLASS).find( O => O.isDefault);
 
       return defaultStorage?.metadata?.name || 'longhorn';
     },
 
     storageClassSetting() {
       try {
-        const storageClassValue = this.$store.getters['harvester/all'](HCI.SETTING).find( O => O.id === HCI_SETTING.DEFAULT_STORAGE_CLASS)?.value;
+        const storageClassValue = this.$store.getters[`${ this.inStore }/all`](HCI.SETTING).find( O => O.id === HCI_SETTING.DEFAULT_STORAGE_CLASS)?.value;
 
         return JSON.parse(storageClassValue);
       } catch (e) {
@@ -210,7 +215,7 @@ export default {
   },
 
   async created() {
-    await this.$store.dispatch('harvester/findAll', { type: SECRET });
+    await this.$store.dispatch(`${ this.inStore }/findAll`, { type: SECRET });
 
     this.getInitConfig({ value: this.value });
   },

@@ -22,10 +22,12 @@ export default {
   },
 
   async fetch() {
-    this.listSchema = this.$store.getters['harvester/schemaFor'](LOGGING.OUTPUT);
+    const inStore = this.$store.getters['currentProduct'].inStore;
+
+    this.listSchema = this.$store.getters[`${ inStore }/schemaFor`](LOGGING.OUTPUT);
 
     if (this.listSchema) {
-      this.rows = await this.$store.dispatch('harvester/findAll', { type: LOGGING.OUTPUT });
+      this.rows = await this.$store.dispatch(`${ inStore }/findAll`, { type: LOGGING.OUTPUT });
     }
 
     this.$store.dispatch('type-map/configureType', { match: HCI.OUTPUT, isCreatable: this.listSchema && this.listSchema?.collectionMethods.find(x => x.toLowerCase() === 'post') });

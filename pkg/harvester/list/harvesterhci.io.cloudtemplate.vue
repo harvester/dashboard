@@ -21,9 +21,11 @@ export default {
   components: { ResourceTable, Loading },
 
   async fetch() {
-    this.rows = await this.$store.dispatch('harvester/findAll', { type: CONFIG_MAP });
+    const inStore = this.$store.getters['currentProduct'].inStore;
 
-    const configSchema = this.$store.getters['harvester/schemaFor'](CONFIG_MAP);
+    this.rows = await this.$store.dispatch(`${ inStore }/findAll`, { type: CONFIG_MAP });
+
+    const configSchema = this.$store.getters[`${ inStore }/schemaFor`](CONFIG_MAP);
 
     if (!configSchema?.collectionMethods.find(x => x.toLowerCase() === 'post')) {
       this.$store.dispatch('type-map/configureType', { match: HCI.CLOUD_TEMPLATE, isCreatable: false });

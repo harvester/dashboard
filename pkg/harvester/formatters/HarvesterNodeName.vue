@@ -22,16 +22,18 @@ export default {
     },
 
     vmi() {
-      const vmiResources = this.$store.getters['harvester/all'](HCI.VMI);
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const vmiResources = this.$store.getters[`${ inStore }/all`](HCI.VMI);
       const resource = vmiResources.find(VMI => VMI.id === this.row.id) || null;
 
       return resource;
     },
 
     node() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
       const nodeName = this.vmi?.status?.nodeName;
 
-      return this.$store.getters['harvester/byId'](NODE, nodeName);
+      return this.$store.getters[`${ inStore }/byId`](NODE, nodeName);
     },
   },
 };

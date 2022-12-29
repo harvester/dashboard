@@ -3,10 +3,12 @@ import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../config/harvester';
 
 export default class HarvesterResource extends SteveModel {
   get listLocation() {
+    const name = this.harvesterResourcesInExplorer ? 'c-cluster-product-resource' : `${ HARVESTER_PRODUCT }-c-cluster-resource`;
+
     return this.$rootGetters['type-map/optionsFor'](this.type).customRoute || {
-      name:   `${ HARVESTER_PRODUCT }-c-cluster-resource`,
+      name,
       params: {
-        product:  HARVESTER_PRODUCT,
+        product:  this.$rootGetters['productId'],
         cluster:  this.$rootGetters['clusterId'],
         resource: this.type,
       },
@@ -25,20 +27,34 @@ export default class HarvesterResource extends SteveModel {
     return this.listLocation;
   }
 
+  get harvesterResourcesInExplorer() {
+    return this.$rootGetters['productId'] !== HARVESTER_PRODUCT;
+  }
+
   get _detailLocation() {
     const schema = this.$getters['schemaFor'](this.type);
-
     const id = this.id?.replace(/.*\//, '');
+    const name = this.harvesterResourcesInExplorer ? `c-cluster-product-resource${ schema?.attributes?.namespaced ? '-namespace' : '' }-id` : `${ HARVESTER_PRODUCT }-c-cluster-resource${ schema?.attributes?.namespaced ? '-namespace' : '' }-id`;
 
-    return {
-      name:   `${ HARVESTER_PRODUCT }-c-cluster-resource${ schema?.attributes?.namespaced ? '-namespace' : '' }-id`,
+    const out = {
+      name,
       params: {
-        product:   HARVESTER_PRODUCT,
+        product:   this.$rootGetters['productId'],
         cluster:   this.$rootGetters['clusterId'],
         resource:  this.type,
+        namespace: this.metadata?.namespace,
         id,
-        namespace: this.metadata.namespace,
       },
     };
+
+    if (this.harvesterResourcesInExplorer) {
+      out.query = { as: 'yaml' };
+    }
+
+    return out;
+  }
+
+  get forceYaml() {
+    return this.harvesterResourcesInExplorer;
   }
 }
