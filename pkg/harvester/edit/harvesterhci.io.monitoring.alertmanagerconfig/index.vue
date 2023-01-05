@@ -91,7 +91,6 @@ export default {
   },
 
   computed: {
-
     editorMode() {
       if ( this.mode === _VIEW ) {
         return EDITOR_MODES.VIEW_CODE;
@@ -101,7 +100,6 @@ export default {
     },
   },
   methods: {
-
     translateReceiverTypes() {
       return this.receiverTypes.map((receiverType) => {
         return {
@@ -208,7 +206,7 @@ export default {
           @clickedActionButton="setActionMenuState"
         >
           <template #header-button>
-            <nuxt-link v-if="createReceiverLink && createReceiverLink.name" :to="createReceiverLink">
+            <nuxt-link v-if="createReceiverLink && createReceiverLink.name" :to="mode !== create ? createReceiverLink : {}">
               <button
                 class="btn role-primary"
                 :disabled="mode === create"

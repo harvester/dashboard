@@ -261,6 +261,17 @@ export default {
         return;
       }
 
+      const receiversArray = this.alertmanagerConfigResource.spec.receivers;
+      const receiverNamesArray = receiversArray.map(R => R.name);
+      const receiversSet = new Set(receiverNamesArray);
+
+      if (receiversArray.length !== receiversSet.size) {
+        this.errors.push(this.$store.getters['i18n/t']('monitoring.alerting.validation.duplicatedReceiverName'));
+        buttonDone(false);
+
+        return;
+      }
+
       this.saveOverride(buttonDone);
     }
   }
