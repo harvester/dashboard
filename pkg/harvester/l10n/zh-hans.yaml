@@ -183,6 +183,8 @@ harvester:
     promiscuous: Promiscuous
     ipv4Address: IPv4 地址
     filterLabels: 标签过滤
+    storageClass: 存储类
+    dockerImage: Docker 镜像
   pci:
     available: 可用设备
     compatibleNodes: 兼容节点
@@ -214,14 +216,25 @@ harvester:
     noSchema: "找不到自定义资源定义：{schema}。"
 
   validation:
+    custom:
+      tooLongName: '"Name" 的长度不能超过 {max} 个字符。'
+    generic:
+      hasDelete: '{type} "{name}" 已删除。'
+      maxLength: '"{key}" 的长度不能超过 {max} 个字符'
+      tabError:  '{prefix}: {message}'
+      maximumSize: "超过最大大小 {max}！"
+      regex: '无效的 {lowerType} "{name}"：{upperType} 必须匹配正则表达式 "{regex}"'
     vm:
       name: '"名称"是必填项。'
       memory: '"内存"是必填项。'
+      duplicatedName: '{type} 名称重复："{name}"'
       network:
         macFormat: 'MAC 地址格式不正确。'
-        duplicatedName: '网络名称重复。'
+        upperType: 网络名称
+        lowerType: 网络名称
       volume:
-        duplicatedName: '卷名称重复。'
+        upperType: 卷名称
+        lowerType: 卷名称
         needImageOrExisting: '至少需要一个镜像卷或已存在的根磁盘卷。'
     image:
       ruleTip: 'URL 后缀不支持。仅支持后缀为 .img，.iso，.qcow，.qcow2或.raw的镜像文件。'
@@ -262,6 +275,8 @@ harvester:
       labels: 标签
       ksmtuned: Ksmtuned
     detail:
+      kvm:
+        disableMessage: KVM 已被 BIOS 禁用。在创建虚拟机之前必须先启用 KVM。
       title:
         network: 网络配置
       hostIP: 主机 IP
@@ -348,8 +363,10 @@ harvester:
         info: 当前文件系统为 {system}，你可以手动格式化。
       tags:
         label: 磁盘标签
+        addLabel: 添加磁盘标签
     tags:
       label: 主机标签
+      addLabel: 添加主机标签
 
   virtualMachine:
     label: 虚拟机
