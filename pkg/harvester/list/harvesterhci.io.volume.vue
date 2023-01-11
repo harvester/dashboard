@@ -4,7 +4,7 @@ import ResourceTable from '@shell/components/ResourceTable';
 import HarvesterVolumeState from '../formatters/HarvesterVolumeState';
 
 import { allHash } from '@shell/utils/promise';
-import { PV, PVC, SCHEMA } from '@shell/config/types';
+import { PV, PVC, SCHEMA, LONGHORN } from '@shell/config/types';
 import { HCI, VOLUME_SNAPSHOT } from '../types';
 import { STATE, AGE, NAME, NAMESPACE } from '@shell/config/table-headers';
 
@@ -26,9 +26,10 @@ export default {
 
   async fetch() {
     const _hash = {
-      pvcs: this.$store.dispatch('harvester/findAll', { type: PVC }),
-      pvs:  this.$store.dispatch('harvester/findAll', { type: PV }),
-      vms:  this.$store.dispatch('harvester/findAll', { type: HCI.VM }),
+      pvcs:            this.$store.dispatch('harvester/findAll', { type: PVC }),
+      pvs:             this.$store.dispatch('harvester/findAll', { type: PV }),
+      vms:             this.$store.dispatch('harvester/findAll', { type: HCI.VM }),
+      longhornVolumes: this.$store.dispatch('harvester/findAll', { type: LONGHORN.VOLUMES }),
     };
 
     const volumeSnapshotSchema = this.$store.getters['harvester/schemaFor'](VOLUME_SNAPSHOT);
