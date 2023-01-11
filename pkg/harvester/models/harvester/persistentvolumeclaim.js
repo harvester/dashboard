@@ -2,7 +2,7 @@ import Vue from 'vue';
 import { _CLONE } from '@shell/config/query-params';
 import pick from 'lodash/pick';
 import { HCI, VOLUME_SNAPSHOT } from '../../types';
-import { PV } from '@shell/config/types';
+import { PV, LONGHORN } from '@shell/config/types';
 import { DESCRIPTION } from '@shell/config/labels-annotations';
 import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 import { findBy } from '@shell/utils/array';
@@ -102,7 +102,7 @@ export default class HciPv extends HarvesterResource {
     const ownedBy = this?.metadata?.annotations?.[HCI_ANNOTATIONS.OWNED_BY];
     const volumeError = this.relatedPV?.metadata?.annotations?.[HCI_ANNOTATIONS.VOLUME_ERROR];
     const degradedVolume = volumeError === DEGRADED_ERROR;
-    const status = this?.status?.phase === 'Bound' && !volumeError ? 'Ready' : 'Not Ready';
+    const status = this?.status?.phase === 'Bound' && !volumeError && this.isLonghornVolumeReady ? 'Ready' : 'Not Ready';
 
     const conditions = this?.status?.conditions || [];
 
@@ -211,6 +211,31 @@ export default class HciPv extends HarvesterResource {
     }
 
     return false;
+  }
+
+  get longhornVolume() {
+    const inStore = this.$rootGetters['currentProduct'].inStore;
+
+    return this.$rootGetters[`${ inStore }/all`](LONGHORN.VOLUMES).find(v => v.metadata?.name === this.spec?.volumeName);
+  }
+
+  // https://github.com/longhorn/longhorn-manager/blob/master/api/model.go#L1151
+  get isLonghornVolumeReady() {
+    let ready = true;
+    const longhornVolume = this.longhornVolume || {};
+
+    const scheduledCondition = (longhornVolume?.status?.conditions).find(c => c.type === 'scheduled') || {};
+
+    if ((longhornVolume?.spec?.nodeID === '' && longhornVolume?.status?.state !== 'detached') ||
+          (longhornVolume?.status?.state === 'detached' && scheduledCondition.status !== 'True') ||
+          longhornVolume?.status?.robustness === 'faulted' ||
+          longhornVolume?.status?.restoreRequired ||
+          longhornVolume?.status?.cloneStatus?.state === 'failed'
+    ) {
+      ready = false;
+    }
+
+    return ready;
   }
 
   get relatedVolumeSnapshotCounts() {
