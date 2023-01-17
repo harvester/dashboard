@@ -224,7 +224,7 @@ export default class HciPv extends HarvesterResource {
     let ready = true;
     const longhornVolume = this.longhornVolume || {};
 
-    const scheduledCondition = (longhornVolume?.status?.conditions).find(c => c.type === 'scheduled') || {};
+    const scheduledCondition = (longhornVolume?.status?.conditions || []).find(c => c.type === 'scheduled') || {};
 
     if ((longhornVolume?.spec?.nodeID === '' && longhornVolume?.status?.state !== 'detached') ||
           (longhornVolume?.status?.state === 'detached' && scheduledCondition.status !== 'True') ||
