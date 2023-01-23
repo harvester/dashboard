@@ -1,6 +1,6 @@
 <script>
 import { mapGetters } from 'vuex';
-import { mapPref, DEV } from '@shell/store/prefs';
+import { mapPref, PLUGIN_DEVELOPER } from '@shell/store/prefs';
 import BannerGraphic from '@shell/components/BannerGraphic';
 import IndentedPanel from '@shell/components/IndentedPanel';
 import HarvesterSupportBundle from '../../../../dialog/HarvesterSupportBundle';
@@ -31,7 +31,7 @@ export default {
 
   computed: {
     ...mapGetters(['currentCluster']),
-    dev: mapPref(DEV),
+    dev: mapPref(PLUGIN_DEVELOPER),
 
     title() {
       return 'harvester.support.title';
