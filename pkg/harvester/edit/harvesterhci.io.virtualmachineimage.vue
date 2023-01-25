@@ -436,3 +436,10 @@ export default {
     </Tabbed>
   </CruResource>
 </template>
+
+<style lang="scss" scoped>
+.kv-item.value > .unlabeled-select {
+  height: 40px;
+  line-height: 1;
+}
+</style>
