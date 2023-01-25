@@ -1,5 +1,5 @@
 <script>
-import { HCI as HCI_ANNOTATIONS } from '@/pkg/harvester/config/labels-annotations';
+import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 import VolumeState from '@shell/components/formatter/BadgeStateFormatter';
 
 export default {
