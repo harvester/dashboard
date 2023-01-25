@@ -1,7 +1,7 @@
 <script>
 import KeyValue from '@shell/components/form/KeyValue';
 import Select from '@shell/components/form/Select';
-import { HARVESTER_NAME as VIRTUAL } from '@shell/config/product/harvester-manager';
+import { HARVESTER_NAME as VIRTUAL } from '@shell/config/features';
 
 export default {
   components: { KeyValue, Select },

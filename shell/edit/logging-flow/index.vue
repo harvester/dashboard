@@ -20,7 +20,7 @@ import { clone, set } from '@shell/utils/object';
 import isEmpty from 'lodash/isEmpty';
 import ArrayListGrouped from '@shell/components/form/ArrayListGrouped';
 import { exceptionToErrorsArray } from '@shell/utils/error';
-import { HARVESTER_NAME as VIRTUAL } from '@shell/config/product/harvester-manager';
+import { HARVESTER_NAME as VIRTUAL } from '@shell/config/features';
 import Match from './Match';
 
 const FLOW_LOGGING = 'Logging';
