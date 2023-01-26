@@ -156,7 +156,7 @@ export default {
       view:           _VIEW,
       yamlError:      '',
       fvFormRuleSets: [
-        { path: 'name', rules: ['required'] }
+        { path: 'name', rules: ['required', 'duplicateName'] }
       ],
       fvReportedValidationPaths: ['value']
     };
@@ -185,7 +185,19 @@ export default {
     receiverNameDisabled() {
       return this.$route.query.mode === _VIEW;
     },
+    fvExtraRules() {
+      return {
+        duplicateName: () => {
+          const receiversArray = this.alertmanagerConfigResource.spec.receivers;
+          const receiverNamesArray = receiversArray.map(R => R.name);
+          const receiversSet = new Set(receiverNamesArray);
 
+          if (receiversArray.length !== receiversSet.size) {
+            return this.$store.getters['i18n/t']('monitoring.alerting.validation.duplicatedReceiverName', { name: this.value.name });
+          }
+        }
+      };
+    }
   },
 
   watch: {
