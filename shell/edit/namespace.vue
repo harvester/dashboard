@@ -105,6 +105,9 @@ export default {
       return !this.isSingleHarvester;
     },
 
+    showPodSecurityAdmission() {
+      return !this.isSingleHarvester;
+    },
   },
 
   watch: {
@@ -237,6 +240,7 @@ export default {
         />
       </Tab>
       <Tab
+        v-if="showPodSecurityAdmission"
         name="pod-security-admission"
         label-key="podSecurityAdmission.label"
         :label="t('podSecurityAdmission.label')"
