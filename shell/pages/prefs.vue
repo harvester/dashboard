@@ -240,7 +240,10 @@ export default {
       </div>
     </div>
     <!-- Confirmation setting -->
-    <div class="col adv-features mt-10 mb-10">
+    <div
+      v-if="!isSingleProduct"
+      class="col adv-features mt-10 mb-10"
+    >
       <hr>
       <h4 v-t="'prefs.confirmationSetting.title'" />
       <Checkbox
