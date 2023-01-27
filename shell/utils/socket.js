@@ -10,9 +10,8 @@ const INSECURE = 'ws://';
 const SECURE = 'wss://';
 
 const STATE_DISCONNECTED = 'disconnected';
-
-export const STATE_CONNECTING = 'connecting';
-export const STATE_CONNECTED = 'connected';
+const STATE_CONNECTING = 'connecting';
+const STATE_CONNECTED = 'connected';
 const STATE_CLOSING = 'closing';
 const STATE_RECONNECTING = 'reconnecting';
 
@@ -24,9 +23,6 @@ export const EVENT_FRAME_TIMEOUT = 'frame_timeout';
 export const EVENT_CONNECT_ERROR = 'connect_error';
 export const EVENT_DISCONNECT_ERROR = 'disconnect_error';
 
-export const NO_WATCH = 'NO_WATCH';
-export const NO_SCHEMA = 'NO_SCHEMA';
-
 export default class Socket extends EventTarget {
   url;
   autoReconnect = true;
@@ -37,7 +33,6 @@ export default class Socket extends EventTarget {
   protocol = null;
   maxTries = null;
   tries = 0;
-  idAsTimestamp = false;
 
   // "Private"
   socket = null;
@@ -45,11 +40,11 @@ export default class Socket extends EventTarget {
   framesReceived = 0;
   frameTimer;
   reconnectTimer;
-  disconnectCallBacks = [];
+  disconnectCbs = [];
   disconnectedAt = 0;
   closingId = 0;
 
-  constructor(url, autoReconnect = true, frameTimeout = null, protocol = null, maxTries = null, idAsTimestamp = false) {
+  constructor(url, autoReconnect = true, frameTimeout = null, protocol = null, maxTries = null) {
     super();
 
     this.setUrl(url);
@@ -58,7 +53,6 @@ export default class Socket extends EventTarget {
     // maxTries = null === never stop trying to reconnect
     // allow maxTries to be defined on individual sockets bc not all will clearly warn the user that we've stopped trying
     this.maxTries = maxTries;
-    this.idAsTimestamp = idAsTimestamp;
 
     if ( frameTimeout !== null ) {
       this.frameTimeout = frameTimeout;
@@ -90,7 +84,7 @@ export default class Socket extends EventTarget {
 
     Object.assign(this.metadata, metadata);
 
-    const id = this.idAsTimestamp ? new Date().getTime() : sockId++;
+    const id = sockId++;
     const url = addParam(this.url, 'sockId', id);
 
     this._baseLog('connecting', { id, url: url.replace(/\?.*/, '') });
@@ -128,9 +122,9 @@ export default class Socket extends EventTarget {
     return false;
   }
 
-  disconnect(callBack) {
-    if ( callBack ) {
-      this.disconnectCallBacks.push(callBack);
+  disconnect(cb) {
+    if ( cb ) {
+      this.disconnectCbs.push(cb);
     }
 
     const self = this;
@@ -146,7 +140,7 @@ export default class Socket extends EventTarget {
 
       this.addEventListener(EVENT_CONNECT_ERROR, onError);
 
-      this.disconnectCallBacks.push(() => {
+      this.disconnectCbs.push(() => {
         this.removeEventListener(EVENT_CONNECT_ERROR, onError);
         resolve();
       });
@@ -286,10 +280,10 @@ export default class Socket extends EventTarget {
     clearTimeout(this.reconnectTimer);
     clearTimeout(this.frameTimer);
 
-    const callBacks = this.disconnectCallBacks;
+    const cbs = this.disconnectCbs;
 
-    while ( callBacks.length ) {
-      const fn = callBacks.pop();
+    while ( cbs.length ) {
+      const fn = cbs.pop();
 
       if ( fn ) {
         fn.apply(this);
@@ -316,19 +310,17 @@ export default class Socket extends EventTarget {
       this.state = STATE_RECONNECTING;
 
       if (this.maxTries && this.tries > 1 && this.tries <= this.maxTries) {
-        // dispatch an event which will trigger a growl from steve-plugin sockets warning users that we've lost connection and are attempting to reconnect
+        // dispatch an event which will trigger a growl from steve-plugin sockets warning users that we've lost connection and are attemping to reconnect
         const e = new CustomEvent(EVENT_CONNECT_ERROR);
 
         this.dispatchEvent(e);
       }
 
       if (this.maxTries && this.tries > this.maxTries) {
-        this._log('closed. Will not reconnect (hit max attempts)');
         this.state = STATE_DISCONNECTED;
         // dispatch an event which will trigger a growl from steve-plugin sockets warning users that we've given up trying to reconnect
         this.dispatchEvent(new CustomEvent(EVENT_DISCONNECT_ERROR));
       } else {
-        this._log('closed. Attempting to reconnect');
         const delay = Math.max(1000, Math.min(1000 * this.tries, 30000));
 
         this.reconnectTimer = setTimeout(() => {

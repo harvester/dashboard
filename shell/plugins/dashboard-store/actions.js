@@ -6,7 +6,6 @@ import { createYaml } from '@shell/utils/create-yaml';
 import { classify } from '@shell/plugins/dashboard-store/classify';
 import { normalizeType } from './normalize';
 import garbageCollect from '@shell/utils/gc/gc';
-import { addSchemaIndexFields } from '@shell/plugins/steve/schema.utils';
 
 export const _ALL = 'all';
 export const _MERGE = 'merge';
@@ -49,7 +48,10 @@ export async function loadSchemas(ctx, watch = true) {
     res.data = res.concat(spoofedTypes);
   }
 
-  res.data.forEach(addSchemaIndexFields);
+  res.data.forEach((schema) => {
+    schema._id = normalizeType(schema.id);
+    schema._group = normalizeType(schema.attributes?.group);
+  });
 
   commit('loadAll', {
     ctx,
@@ -149,7 +151,9 @@ export default {
         namespace: opt.watchNamespace
       };
 
-      if (opt.watch !== false ) {
+      // if we are coming from a resource that wasn't watched
+      // but for which we have results already, just return the results but start watching it
+      if (opt.watch !== false && !getters.watchStarted(args)) {
         dispatch('watch', args);
       }
 
@@ -484,15 +488,6 @@ export default {
     });
   },
 
-  batchChanges(ctx, batch) {
-    const { commit } = ctx;
-
-    commit('batchChanges', {
-      ctx,
-      batch
-    });
-  },
-
   loadAll(ctx, { type, data }) {
     const { commit } = ctx;
 
@@ -526,7 +521,20 @@ export default {
   // Forget a type in the store
   // Remove all entries for that type and stop watching it
   forgetType({ commit, getters, dispatch }, type) {
-    dispatch('unwatch', type);
+    const obj = {
+      type,
+      stop: true, // Stops the watch on a type
+    };
+
+    if (getters['schemaFor'](type) && getters['watchStarted'](obj)) {
+      // Set that we don't want to watch this type
+      // Otherwise, the dispatch to unwatch below will just cause a re-watch when we
+      // detect the stop message from the backend over the web socket
+      commit('setWatchStopped', obj);
+      dispatch('watch', obj); // Ask the backend to stop watching the type
+      // Make sure anything in the pending queue for the type is removed, since we've now removed the type
+      commit('clearFromQueue', type);
+    }
 
     commit('forgetType', type);
   },

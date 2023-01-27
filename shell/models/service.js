@@ -128,24 +128,23 @@ export default class extends SteveModel {
     return out;
   }
 
-  get podRelationship() {
+  get pods() {
     const { metadata:{ relationships = [] } } = this;
 
-    return (relationships || []).filter(relationship => relationship.toType === POD)[0];
-  }
+    return async() => {
+      const podRelationship = (relationships || []).filter(relationship => relationship.toType === POD)[0];
+      let pods = [];
 
-  async fetchPods() {
-    if (this.podRelationship) {
-      await this.$dispatch('cluster/findMatching', {
-        type:      POD,
-        selector:  this.podRelationship.selector,
-        namespace: this.namespace
-      }, { root: true });
-    }
-  }
+      if (podRelationship) {
+        pods = await this.$dispatch('cluster/findMatching', {
+          type:      POD,
+          selector:  podRelationship.selector,
+          namespace: this.namespace
+        }, { root: true });
+      }
 
-  get pods() {
-    return this.podRelationship ? this.$getters.matching( POD, this.podRelationship.selector, this.namespace ) : [];
+      return pods;
+    };
   }
 
   get serviceType() {
