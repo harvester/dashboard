@@ -179,18 +179,12 @@ export default {
 .name-console {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
 
   span {
+    padding-right: 4px;
     line-height: 26px;
-    width:160px;
-    overflow:hidden;
     white-space: nowrap;
-    text-overflow: ellipsis;
-    -o-text-overflow:ellipsis;
   }
-
-  display: flex;
-  justify-content: space-around;
 }
 </style>
