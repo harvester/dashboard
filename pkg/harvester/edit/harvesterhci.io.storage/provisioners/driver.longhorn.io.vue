@@ -70,7 +70,7 @@ export default {
         const disks = node.spec?.disks;
 
         const tagsOfNode = Object.keys(disks).reduce((sum, key) => {
-          const tags = disks[key]?.tags;
+          const tags = disks[key]?.tags || [];
 
           return uniq([...sum, ...tags]);
         }, []);
