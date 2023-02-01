@@ -479,9 +479,8 @@ export default class VirtVm extends HarvesterResource {
   }
 
   get podResource() {
-    const inStore = this.$rootGetters['currentProduct'].inStore;
-    const vmiResource = this.$rootGetters[`${ inStore }/byId`](HCI.VMI, this.id);
-    const podList = this.$rootGetters[`${ inStore }/all`](POD);
+    const vmiResource = this.$rootGetters['harvester/byId'](HCI.VMI, this.id);
+    const podList = this.$rootGetters['harvester/all'](POD);
 
     return podList.find((P) => {
       return (
@@ -516,8 +515,7 @@ export default class VirtVm extends HarvesterResource {
   }
 
   get vmi() {
-    const inStore = this.$rootGetters['currentProduct'].inStore;
-    const vmis = this.$rootGetters[`${ inStore }/all`](HCI.VMI);
+    const vmis = this.$rootGetters['harvester/all'](HCI.VMI);
 
     return vmis.find(VMI => VMI.id === this.id);
   }
@@ -640,8 +638,7 @@ export default class VirtVm extends HarvesterResource {
         `metadata.annotations."${ HCI_ANNOTATIONS.RESTORE_NAME }"`
       ) }`;
     }
-    const inStore = this.$rootGetters['currentProduct'].inStore;
-    const allRestore = this.$rootGetters[`${ inStore }/all`](HCI.RESTORE);
+    const allRestore = this.$rootGetters['harvester/all'](HCI.RESTORE);
 
     const restoreResource = allRestore.find(O => O.id === id);
 
@@ -783,8 +780,7 @@ export default class VirtVm extends HarvesterResource {
   }
 
   get resourcesStatus() {
-    const inStore = this.$rootGetters['currentProduct'].inStore;
-    const vmList = this.$rootGetters[`${ inStore }/all`](HCI.VM);
+    const vmList = this.$rootGetters['harvester/all'](HCI.VM);
     let warningCount = 0;
     let errorCount = 0;
 
@@ -834,8 +830,7 @@ export default class VirtVm extends HarvesterResource {
 
   get rootImageId() {
     let imageId = '';
-    const inStore = this.$rootGetters['currentProduct'].inStore;
-    const pvcs = this.$rootGetters[`${ inStore }/all`](PVC) || [];
+    const pvcs = this.$rootGetters[`harvester/all`](PVC) || [];
 
     const volumes = this.spec.template.spec.volumes || [];
 

@@ -53,8 +53,7 @@ export default {
     },
 
     vmiIp() {
-      const inStore = this.$store.getters['currentProduct'].inStore;
-      const vmiResources = this.$store.getters[`${ inStore }/all`](HCI.VMI);
+      const vmiResources = this.$store.getters['harvester/all'](HCI.VMI);
       const resource = vmiResources.find(VMI => VMI.id === this.value) || null;
       const networksName = this.row.networksName || [];
       const vmiNetworks = resource?.spec?.networks || [];

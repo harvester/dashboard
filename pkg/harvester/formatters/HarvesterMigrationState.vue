@@ -18,8 +18,7 @@ export default {
 
   computed: {
     vmiResource() {
-      const inStore = this.$store.getters['currentProduct'].inStore;
-      const vmiList = this.$store.getters[`${ inStore }/all`](HCI.VMI) || [];
+      const vmiList = this.$store.getters['harvester/all'](HCI.VMI) || [];
       const vmi = vmiList.find( (VMI) => {
         return VMI?.metadata?.ownerReferences?.[0]?.uid === this.vmResource?.metadata?.uid;
       });
