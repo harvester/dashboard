@@ -24,6 +24,16 @@ export default {
     }
   },
 
+  data() {
+    return { inStore: 'harvester' };
+  },
+
+  created() {
+    const inStore = this.$store.getters['currentProduct'].inStore;
+
+    this.inStore = inStore;
+  },
+
   computed: {
     // Return VM instance IP and VM annotation IP
     ips() {
@@ -53,7 +63,7 @@ export default {
     },
 
     vmiIp() {
-      const vmiResources = this.$store.getters['harvester/all'](HCI.VMI);
+      const vmiResources = this.$store.getters[`${ this.inStore }/all`](HCI.VMI);
       const resource = vmiResources.find(VMI => VMI.id === this.value) || null;
       const networksName = this.row.networksName || [];
       const vmiNetworks = resource?.spec?.networks || [];
