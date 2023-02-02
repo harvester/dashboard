@@ -76,6 +76,8 @@ const VMIPhase = {
   Unknown:    'Unknown'
 };
 
+let productInStore;
+
 const IgnoreMessages = ['pod has unbound immediate PersistentVolumeClaims'];
 
 export default class VirtVm extends HarvesterResource {
@@ -185,6 +187,14 @@ export default class VirtVm extends HarvesterResource {
       },
       ...out
     ];
+  }
+
+  get productInStore() {
+    if (!productInStore) {
+      productInStore = this.$rootGetters['currentProduct'].inStore;
+    }
+
+    return productInStore;
   }
 
   applyDefaults(resources = this, realMode) {
@@ -479,8 +489,10 @@ export default class VirtVm extends HarvesterResource {
   }
 
   get podResource() {
-    const vmiResource = this.$rootGetters['harvester/byId'](HCI.VMI, this.id);
-    const podList = this.$rootGetters['harvester/all'](POD);
+    const inStore = this.productInStore;
+
+    const vmiResource = this.$rootGetters[`${ inStore }/byId`](HCI.VMI, this.id);
+    const podList = this.$rootGetters[`${ inStore }/all`](POD);
 
     return podList.find((P) => {
       return (
@@ -515,7 +527,9 @@ export default class VirtVm extends HarvesterResource {
   }
 
   get vmi() {
-    const vmis = this.$rootGetters['harvester/all'](HCI.VMI);
+    const inStore = this.productInStore;
+
+    const vmis = this.$rootGetters[`${ inStore }/all`](HCI.VMI);
 
     return vmis.find(VMI => VMI.id === this.id);
   }
@@ -638,7 +652,9 @@ export default class VirtVm extends HarvesterResource {
         `metadata.annotations."${ HCI_ANNOTATIONS.RESTORE_NAME }"`
       ) }`;
     }
-    const allRestore = this.$rootGetters['harvester/all'](HCI.RESTORE);
+    const inStore = this.productInStore;
+
+    const allRestore = this.$rootGetters[`${ inStore }/all`](HCI.RESTORE);
 
     const restoreResource = allRestore.find(O => O.id === id);
 
@@ -780,7 +796,8 @@ export default class VirtVm extends HarvesterResource {
   }
 
   get resourcesStatus() {
-    const vmList = this.$rootGetters['harvester/all'](HCI.VM);
+    const inStore = this.productInStore;
+    const vmList = this.$rootGetters[`${ inStore }/all`](HCI.VM);
     let warningCount = 0;
     let errorCount = 0;
 
@@ -830,7 +847,8 @@ export default class VirtVm extends HarvesterResource {
 
   get rootImageId() {
     let imageId = '';
-    const pvcs = this.$rootGetters[`harvester/all`](PVC) || [];
+    const inStore = this.productInStore;
+    const pvcs = this.$rootGetters[`${ inStore }/all`](PVC) || [];
 
     const volumes = this.spec.template.spec.volumes || [];
 

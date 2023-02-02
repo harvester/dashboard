@@ -29,22 +29,23 @@ export default {
   },
 
   async fetch() {
+    const inStore = this.$store.getters['currentProduct'].inStore;
     const _hash = {
-      vms:     this.$store.dispatch('harvester/findAll', { type: HCI.VM }),
-      pod:     this.$store.dispatch('harvester/findAll', { type: POD }),
-      restore: this.$store.dispatch('harvester/findAll', { type: HCI.RESTORE }),
+      vms:     this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VM }),
+      pod:     this.$store.dispatch(`${ inStore }/findAll`, { type: POD }),
+      restore: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.RESTORE }),
     };
 
-    if (this.$store.getters['harvester/schemaFor'](NODE)) {
-      _hash.nodes = this.$store.dispatch('harvester/findAll', { type: NODE });
+    if (this.$store.getters[`${ inStore }/schemaFor`](NODE)) {
+      _hash.nodes = this.$store.dispatch(`${ inStore }/findAll`, { type: NODE });
     }
 
-    if (this.$store.getters['harvester/schemaFor'](HCI.NODE_NETWORK)) {
-      _hash.nodeNetworks = this.$store.dispatch('harvester/findAll', { type: HCI.NODE_NETWORK });
+    if (this.$store.getters[`${ inStore }/schemaFor`](HCI.NODE_NETWORK)) {
+      _hash.nodeNetworks = this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.NODE_NETWORK });
     }
 
-    if (this.$store.getters['harvester/schemaFor'](HCI.CLUSTER_NETWORK)) {
-      _hash.clusterNetworks = this.$store.dispatch('harvester/findAll', { type: HCI.CLUSTER_NETWORK });
+    if (this.$store.getters[`${ inStore }/schemaFor`](HCI.CLUSTER_NETWORK)) {
+      _hash.clusterNetworks = this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.CLUSTER_NETWORK });
     }
 
     const hash = await allHash(_hash);
@@ -125,9 +126,10 @@ export default {
   },
 
   async created() {
-    const vmis = await this.$store.dispatch('harvester/findAll', { type: HCI.VMI });
+    const inStore = this.$store.getters['currentProduct'].inStore;
+    const vmis = await this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VMI });
 
-    await this.$store.dispatch('harvester/findAll', { type: HCI.VMIM });
+    await this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VMIM });
 
     this.$set(this, 'allVMIs', vmis);
   }
