@@ -3,7 +3,7 @@ import { SETTING } from '@shell/config/settings';
 import { COUNT, NAMESPACE, MANAGEMENT } from '@shell/config/types';
 import { HCI } from '../../types';
 import { allHash } from '@shell/utils/promise';
-import { NAMESPACE_FILTERS } from '@shell/store/prefs';
+import { NAMESPACE_FILTERS, DEV } from '@shell/store/prefs';
 import { NAMESPACE_FILTER_ALL_USER as ALL_USER } from '@shell/utils/namespace-filter';
 
 export default {
@@ -100,6 +100,30 @@ export default {
     commit('updateNamespaces', {
       filters: filters || [ALL_USER],
       all:     res.virtualNamespaces,
+    }, { root: true });
+
+    // Solve compatibility with Rancher v2.6.x, fell remove these codes after not support v2.6.x
+    const definition = {
+      def:         false,
+      parseJSON:   true,
+      inheritFrom: DEV,
+    };
+
+    commit('prefs/setDefinition', {
+      name: 'view-in-api',
+      definition,
+    }, { root: true });
+    commit('prefs/setDefinition', {
+      name: 'all-namespaces',
+      definition,
+    }, { root: true });
+    commit('prefs/setDefinition', {
+      name: 'theme-shortcut',
+      definition,
+    }, { root: true });
+    commit('prefs/setDefinition', {
+      name: 'plugin-developer',
+      definition,
     }, { root: true });
   },
 };
