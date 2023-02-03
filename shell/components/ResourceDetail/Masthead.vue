@@ -435,7 +435,7 @@ export default {
               class="resource-external"
               rel="nofollow noopener noreferrer"
               target="_blank"
-              :href="resourceExternalLink"
+              :href="resourceExternalLink.url"
             >
               <i class="icon icon-external-link" />
             </a>
