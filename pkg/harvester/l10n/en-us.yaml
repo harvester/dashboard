@@ -877,7 +877,11 @@ harvester:
       diabledTips:
         prefix: 'You must enable'
         middle: 'Alertmanager'
-        suffix: 'before creating a new config.'
+        suffix: 'for configs to take effect.'
+      disabledAddon:
+        prefix: 'Monitoring Addon is disabled now, click'
+        middle: 'here'
+        suffix: 'to enable it.'
 
   logging:
     configuration:
@@ -892,6 +896,10 @@ harvester:
       label: Flow
     output:
       label: Output
+    diabledTips:
+        prefix: 'You must enable'
+        middle: 'Logging'
+        suffix: 'for configs to take effect.'
 
   snapshot:
     label: Volume Snapshots

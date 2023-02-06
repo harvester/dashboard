@@ -3,6 +3,7 @@ import { vmNetworks, vmDisks } from './vm';
 import { dataVolumeSize } from './vm-datavolumes';
 import { backupTarget } from './setting';
 import { volumeSize } from './volume';
+import { rancherMonitoring, rancherLogging } from './monitoringAndLogging';
 
 export default {
   imageUrl,
@@ -11,5 +12,7 @@ export default {
   vmDisks,
   fileRequired,
   backupTarget,
-  volumeSize
+  volumeSize,
+  rancherMonitoring,
+  rancherLogging
 };

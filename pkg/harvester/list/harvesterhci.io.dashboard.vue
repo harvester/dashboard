@@ -4,6 +4,8 @@ import minMax from 'dayjs/plugin/minMax';
 import utc from 'dayjs/plugin/utc';
 import { mapGetters } from 'vuex';
 import Loading from '@shell/components/Loading';
+import Banner from '@components/Banner/Banner.vue';
+import MessageLink from '@shell/components/MessageLink';
 import SortableTable from '@shell/components/SortableTable';
 import { allHash } from '@shell/utils/promise';
 import {
@@ -101,6 +103,8 @@ const CLUSTER_METRICS_DETAIL_URL = '/api/v1/namespaces/cattle-monitoring-system/
 const CLUSTER_METRICS_SUMMARY_URL = '/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/d/rancher-cluster-1/rancher-cluster?orgId=1';
 const VM_DASHBOARD_METRICS_URL = '/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/d/harvester-vm-dashboard-1/vm-dashboard?orgId=1';
 
+const MONITORING_ID = 'cattle-monitoring-system/rancher-monitoring';
+
 export default {
   mixins:     [metricPoller],
   components: {
@@ -112,6 +116,8 @@ export default {
     Tabbed,
     Tab,
     DashboardMetrics,
+    Banner,
+    MessageLink,
   },
 
   async fetch() {
@@ -135,6 +141,10 @@ export default {
       return null;
     });
 
+    if (this.$store.getters[`${ inStore }/schemaFor`](HCI.ADD_ONS )) {
+      hash.monitoring = this.$store.dispatch(`${ inStore }/find`, { type: HCI.ADD_ONS, id: MONITORING_ID });
+    }
+
     const res = await allHash(hash);
 
     for ( const k in res ) {
@@ -143,6 +153,7 @@ export default {
 
     this.showClusterMetrics = await allDashboardsExist(this.$store, this.currentCluster.id, [CLUSTER_METRICS_DETAIL_URL, CLUSTER_METRICS_SUMMARY_URL], 'harvester');
     this.showVmMetrics = await allDashboardsExist(this.$store, this.currentCluster.id, [VM_DASHBOARD_METRICS_URL], 'harvester');
+    this.enabledMonitoringAddon = this.monitoring?.spec?.enabled;
   },
 
   data() {
@@ -178,17 +189,19 @@ export default {
 
     return {
       eventHeaders,
-      constraints:        [],
-      events:             [],
-      nodeMetrics:        [],
-      nodes:              [],
-      metricNodes:        [],
-      vms:                [],
+      constraints:            [],
+      events:                 [],
+      nodeMetrics:            [],
+      nodes:                  [],
+      metricNodes:            [],
+      vms:                    [],
+      monitoring:             {},
       VM_DASHBOARD_METRICS_URL,
       CLUSTER_METRICS_SUMMARY_URL,
       CLUSTER_METRICS_DETAIL_URL,
-      showClusterMetrics: false,
-      showVmMetrics:      false,
+      showClusterMetrics:     false,
+      showVmMetrics:          false,
+      enabledMonitoringAddon: false,
     };
   },
 
@@ -450,6 +463,10 @@ export default {
 
       return !!this.$store.getters[`${ inStore }/schemaFor`](METRIC.NODE);
     },
+
+    toEnableMonitoringAddon() {
+      return `${ HCI.ADD_ONS }/cattle-monitoring-system/rancher-monitoring?mode=edit#alertmanager`;
+    },
   },
 
   methods: {
@@ -554,6 +571,17 @@ export default {
       </div>
     </div>
 
+    <div v-if="!enabledMonitoringAddon">
+      <Banner color="info">
+        <MessageLink
+          :to="toEnableMonitoringAddon"
+          prefix-label="harvester.monitoring.alertmanagerConfig.disabledAddon.prefix"
+          middle-label="harvester.monitoring.alertmanagerConfig.disabledAddon.middle"
+          suffix-label="harvester.monitoring.alertmanagerConfig.disabledAddon.suffix"
+        />
+      </Banner>
+    </div>
+
     <div class="resource-gauges">
       <ResourceSummary
         v-for="resource in totalCountGaugeInput"
@@ -593,7 +621,7 @@ export default {
     </template>
 
     <Tabbed
-      v-if="hasMetricsTabs"
+      v-if="hasMetricsTabs && enabledMonitoringAddon"
       class="mt-30"
     >
       <Tab

@@ -1,5 +1,7 @@
 <script>
+import merge from 'lodash/merge';
 import isEmpty from 'lodash/isEmpty';
+import jsyaml from 'js-yaml';
 import { allHash } from '@shell/utils/promise';
 import { findBy } from '@shell/utils/array';
 import { LabeledInput } from '@components/Form/LabeledInput';
@@ -11,9 +13,69 @@ import CreateEditView from '@shell/mixins/create-edit-view';
 import { ENDPOINTS } from '@shell/config/types';
 
 const CATTLE_MONITORING_NAMESPACE = 'cattle-monitoring-system';
+const DEFAUL_VALUE = {
+  prometheus: {
+    prometheusSpec: {
+      resources: {
+        limits: {
+          cpu:    '1000m',
+          memory: '3000Mi'
+        },
+        requests: {
+          cpu:    '750m',
+          memory: '750Mi'
+        }
+      },
+      evaluationInterval: '1m',
+      scrapeInterval:     '1m',
+      retention:          '5d',
+      retentionSize:      '50GiB',
+    },
+  },
+  'prometheus-node-exporter': {
+    resources: {
+      limits: {
+        cpu:    '200m',
+        memory: '180Mi'
+      },
+      requests: {
+        cpu:    '100m',
+        memory: '30Mi'
+      }
+    }
+  },
+  grafana: {
+    resources: {
+      limits: {
+        cpu:    '200m',
+        memory: '500Mi'
+      },
+      requests: {
+        cpu:    '100m',
+        memory: '200Mi'
+      }
+    }
+  },
+  alertmanager: {
+    enabled:          false,
+    alertmanagerSpec: {
+      retention: '120h',
+      resources: {
+        limits: {
+          cpu:    '1000m',
+          memory: '600Mi'
+        },
+        requests: {
+          cpu:    '100m',
+          memory: '100Mi'
+        }
+      }
+    },
+  }
+};
 
 export default {
-  name:       'EditHarvesterMonitoring',
+  name:       'EditAddonMonitoring',
   components: {
     LabeledInput, RadioGroup, LazyImage, Tabbed, Tab
   },
@@ -66,14 +128,32 @@ export default {
       type:     Object,
       required: true,
     },
+
+    mode: {
+      type:     String,
+      required: true
+    },
   },
 
   data() {
     const grafanaSrc = require('~shell/assets/images/vendor/grafana.svg');
     const prometheusSrc = require('~shell/assets/images/vendor/prometheus.svg');
     const currentCluster = this.$store.getters['currentCluster'];
+    let valuesContentJson = DEFAUL_VALUE;
+
+    try {
+      valuesContentJson = merge({}, DEFAUL_VALUE, jsyaml.load(this.value.spec.valuesContent));
+    } catch (err) {
+      valuesContentJson = DEFAUL_VALUE;
+
+      this.$store.dispatch('growl/fromError', {
+        title: this.$store.getters['i18n/t']('generic.notification.title.error'),
+        err:   err.data || err,
+      }, { root: true });
+    }
 
     return {
+      valuesContentJson,
       externalLinks: {
         alertmanager: {
           enabled:     false,
@@ -102,55 +182,19 @@ export default {
     };
   },
 
-  created() {
-    const resources = this.value.spec.values.prometheus.prometheusSpec.resources;
-
-    if (!resources?.limits) {
-      this.$set(resources, 'limits', {});
-    }
-
-    this.$set(resources.requests, 'cpu', resources?.requests?.cpu || '');
-    this.$set(resources.requests, 'memory', resources?.requests?.memory || '');
-    this.$set(resources.limits, 'cpu', resources?.limits?.cpu || '');
-    this.$set(resources.limits, 'memory', resources?.limits?.memory || '');
-
-    const { resources: grafanaResources } = this.value.spec.values.grafana;
-
-    if (!grafanaResources) {
-      this.$set(this.value.spec.values.grafana, 'resources', {
-        limits: {
-          cpu:    '200m',
-          memory: '500Mi'
-        },
-        requests: {
-          cpu:    '100m',
-          memory: '200Mi'
-        }
-      });
-    }
-
-    const { alertmanagerSpec } = this.value.spec.values.alertmanager;
-
-    if (!alertmanagerSpec) {
-      this.$set(this.value.spec.values.alertmanager, 'alertmanagerSpec', {
-        retention: '120h',
-        resources: {
-          limits: {
-            cpu:    '1000m',
-            memory: '600Mi'
-          },
-          requests: {
-            cpu:    '100m',
-            memory: '100Mi'
-          }
-        }
-      });
-    }
-  },
-
   computed: {
     prometheusNodeExporter() {
-      return this.value.spec.values['prometheus-node-exporter'];
+      return this.valuesContentJson['prometheus-node-exporter'];
+    },
+  },
+
+  watch: {
+    valuesContentJson: {
+      handler(neu) {
+        this.$set(this.value.spec, 'valuesContent', jsyaml.dump(neu));
+      },
+      deep:      true,
+      immediate: true
     },
   },
 };
@@ -158,7 +202,21 @@ export default {
 
 <template>
   <Tabbed :side-tabs="true">
-    <Tab name="prometheus" :label="t('harvester.setting.harvesterMonitoring.section.prometheus')" :weight="-1">
+    <Tab
+      name="basic"
+      :label="t('generic.basic')"
+      :weight="99"
+    >
+      <RadioGroup
+        v-model="value.spec.enabled"
+        class="mb-20"
+        name="model"
+        :mode="mode"
+        :options="[true,false]"
+        :labels="[t('generic.enabled'), t('generic.disabled')]"
+      />
+    </Tab>
+    <Tab v-if="value.spec.enabled" name="prometheus" :label="t('harvester.setting.harvesterMonitoring.section.prometheus')" :weight="-1">
       <a
         v-tooltip="!externalLinks.prometheus.enabled ? t('monitoring.overview.linkedList.na') : undefined"
         :disabled="!externalLinks.prometheus.enabled"
@@ -186,7 +244,7 @@ export default {
       <div class="row">
         <div class="col span-6">
           <LabeledInput
-            v-model="value.spec.values.prometheus.prometheusSpec.scrapeInterval"
+            v-model="valuesContentJson.prometheus.prometheusSpec.scrapeInterval"
             :label="t('monitoring.prometheus.config.scrape')"
             :tooltip="t('harvester.setting.harvesterMonitoring.tips.scrape')"
             :required="true"
@@ -195,7 +253,7 @@ export default {
         </div>
         <div class="col span-6">
           <LabeledInput
-            v-model="value.spec.values.prometheus.prometheusSpec.evaluationInterval"
+            v-model="valuesContentJson.prometheus.prometheusSpec.evaluationInterval"
             :label="t('monitoring.prometheus.config.evaluation')"
             :tooltip="t('harvester.setting.harvesterMonitoring.tips.evaluation')"
             :required="true"
@@ -206,7 +264,7 @@ export default {
       <div class="row mt-10">
         <div class="col span-6">
           <LabeledInput
-            v-model="value.spec.values.prometheus.prometheusSpec.retention"
+            v-model="valuesContentJson.prometheus.prometheusSpec.retention"
             :label="t('monitoring.prometheus.config.retention')"
             :tooltip="t('harvester.setting.harvesterMonitoring.tips.retention')"
             :required="true"
@@ -215,7 +273,7 @@ export default {
         </div>
         <div class="col span-6">
           <LabeledInput
-            v-model="value.spec.values.prometheus.prometheusSpec.retentionSize"
+            v-model="valuesContentJson.prometheus.prometheusSpec.retentionSize"
             :label="t('monitoring.prometheus.config.retentionSize')"
             :tooltip="t('harvester.setting.harvesterMonitoring.tips.retentionSize')"
             :required="true"
@@ -233,7 +291,7 @@ export default {
       <div class="row mt-10">
         <div class="col span-6">
           <LabeledInput
-            v-model="value.spec.values.prometheus.prometheusSpec.resources.requests.cpu"
+            v-model="valuesContentJson.prometheus.prometheusSpec.resources.requests.cpu"
             :label="t('monitoring.prometheus.config.requests.cpu')"
             :required="true"
             :mode="mode"
@@ -241,7 +299,7 @@ export default {
         </div>
         <div class="col span-6">
           <LabeledInput
-            v-model="value.spec.values.prometheus.prometheusSpec.resources.requests.memory"
+            v-model="valuesContentJson.prometheus.prometheusSpec.resources.requests.memory"
             :label="t('monitoring.prometheus.config.requests.memory')"
             :required="true"
             :mode="mode"
@@ -251,7 +309,7 @@ export default {
       <div class="row mt-10">
         <div class="col span-6">
           <LabeledInput
-            v-model="value.spec.values.prometheus.prometheusSpec.resources.limits.cpu"
+            v-model="valuesContentJson.prometheus.prometheusSpec.resources.limits.cpu"
             :label="t('monitoring.prometheus.config.limits.cpu')"
             :required="true"
             :mode="mode"
@@ -259,7 +317,7 @@ export default {
         </div>
         <div class="col span-6">
           <LabeledInput
-            v-model="value.spec.values.prometheus.prometheusSpec.resources.limits.memory"
+            v-model="valuesContentJson.prometheus.prometheusSpec.resources.limits.memory"
             :label="t('monitoring.prometheus.config.limits.memory')"
             :required="true"
             :mode="mode"
@@ -267,7 +325,7 @@ export default {
         </div>
       </div>
     </Tab>
-    <Tab name="nodeExporter" :label="t('harvester.setting.harvesterMonitoring.section.prometheusNodeExporter')" :weight="-2">
+    <Tab v-if="value.spec.enabled" name="nodeExporter" :label="t('harvester.setting.harvesterMonitoring.section.prometheusNodeExporter')" :weight="-2">
       <div class="row mt-10">
         <div class="col span-6">
           <LabeledInput
@@ -305,7 +363,7 @@ export default {
         </div>
       </div>
     </Tab>
-    <Tab v-if="value.spec.values.grafana.resources" name="grafana" :label="t('harvester.setting.harvesterMonitoring.section.grafana')" :weight="-3">
+    <Tab v-if="value.spec.enabled && valuesContentJson.grafana.resources" name="grafana" :label="t('harvester.setting.harvesterMonitoring.section.grafana')" :weight="-3">
       <a
         v-tooltip="!externalLinks.grafana.enabled ? t('monitoring.overview.linkedList.na') : undefined"
         :disabled="!externalLinks.grafana.enabled"
@@ -333,7 +391,7 @@ export default {
       <div class="row mt-10">
         <div class="col span-6">
           <LabeledInput
-            v-model="value.spec.values.grafana.resources.requests.cpu"
+            v-model="valuesContentJson.grafana.resources.requests.cpu"
             :label="t('monitoring.prometheus.config.requests.cpu')"
             :required="true"
             :mode="mode"
@@ -341,7 +399,7 @@ export default {
         </div>
         <div class="col span-6">
           <LabeledInput
-            v-model="value.spec.values.grafana.resources.requests.memory"
+            v-model="valuesContentJson.grafana.resources.requests.memory"
             :label="t('monitoring.prometheus.config.requests.memory')"
             :required="true"
             :mode="mode"
@@ -351,7 +409,7 @@ export default {
       <div class="row mt-10">
         <div class="col span-6">
           <LabeledInput
-            v-model="value.spec.values.grafana.resources.limits.cpu"
+            v-model="valuesContentJson.grafana.resources.limits.cpu"
             :label="t('monitoring.prometheus.config.limits.cpu')"
             :required="true"
             :mode="mode"
@@ -359,7 +417,7 @@ export default {
         </div>
         <div class="col span-6">
           <LabeledInput
-            v-model="value.spec.values.grafana.resources.limits.memory"
+            v-model="valuesContentJson.grafana.resources.limits.memory"
             :label="t('monitoring.prometheus.config.limits.memory')"
             :required="true"
             :mode="mode"
@@ -367,9 +425,9 @@ export default {
         </div>
       </div>
     </Tab>
-    <Tab name="alertmanager" :label="t('harvester.setting.harvesterMonitoring.section.alertmanager')" :weight="-4">
+    <Tab v-if="value.spec.enabled" name="alertmanager" :label="t('harvester.setting.harvesterMonitoring.section.alertmanager')" :weight="-4">
       <RadioGroup
-        v-model="value.spec.values.alertmanager.enabled"
+        v-model="valuesContentJson.alertmanager.enabled"
         class="mb-20"
         name="model"
         :options="[true,false]"
@@ -377,7 +435,7 @@ export default {
       />
 
       <a
-        v-if="value.spec.values.alertmanager.enabled"
+        v-if="valuesContentJson.alertmanager.enabled"
         v-tooltip="!externalLinks.alertmanager.enabled ? t('monitoring.overview.linkedList.na') : undefined"
         :disabled="!externalLinks.alertmanager.enabled"
         :href="externalLinks.alertmanager.link"
@@ -402,11 +460,11 @@ export default {
         </div>
       </a>
 
-      <div v-if="value.spec.values.alertmanager.enabled">
+      <div v-if="valuesContentJson.alertmanager.enabled">
         <div class="row mt-10">
           <div class="col span-6">
             <LabeledInput
-              v-model="value.spec.values.alertmanager.alertmanagerSpec.retention"
+              v-model="valuesContentJson.alertmanager.alertmanagerSpec.retention"
               :label="t('monitoring.prometheus.config.retention')"
               :required="true"
               :mode="mode"
@@ -416,7 +474,7 @@ export default {
         <div class="row mt-10">
           <div class="col span-6">
             <LabeledInput
-              v-model="value.spec.values.alertmanager.alertmanagerSpec.resources.limits.cpu"
+              v-model="valuesContentJson.alertmanager.alertmanagerSpec.resources.limits.cpu"
               :label="t('monitoring.prometheus.config.limits.cpu')"
               :required="true"
               :mode="mode"
@@ -424,7 +482,7 @@ export default {
           </div>
           <div class="col span-6">
             <LabeledInput
-              v-model="value.spec.values.alertmanager.alertmanagerSpec.resources.limits.memory"
+              v-model="valuesContentJson.alertmanager.alertmanagerSpec.resources.limits.memory"
               :label="t('monitoring.prometheus.config.limits.memory')"
               :required="true"
               :mode="mode"
@@ -434,7 +492,7 @@ export default {
         <div class="row mt-10">
           <div class="col span-6">
             <LabeledInput
-              v-model="value.spec.values.alertmanager.alertmanagerSpec.resources.requests.cpu"
+              v-model="valuesContentJson.alertmanager.alertmanagerSpec.resources.requests.cpu"
               :label="t('monitoring.prometheus.config.requests.cpu')"
               :required="true"
               :mode="mode"
@@ -442,7 +500,7 @@ export default {
           </div>
           <div class="col span-6">
             <LabeledInput
-              v-model="value.spec.values.alertmanager.alertmanagerSpec.resources.requests.memory"
+              v-model="valuesContentJson.alertmanager.alertmanagerSpec.resources.requests.memory"
               :label="t('monitoring.prometheus.config.requests.memory')"
               :required="true"
               :mode="mode"
