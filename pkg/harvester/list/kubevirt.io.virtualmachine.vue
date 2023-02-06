@@ -38,6 +38,7 @@ export default {
 
     if (this.$store.getters[`${ inStore }/schemaFor`](NODE)) {
       _hash.nodes = this.$store.dispatch(`${ inStore }/findAll`, { type: NODE });
+      this.hasNode = true;
     }
 
     if (this.$store.getters[`${ inStore }/schemaFor`](HCI.NODE_NETWORK)) {
@@ -57,6 +58,7 @@ export default {
 
   data() {
     return {
+      hasNode:            false,
       allVMs:             [],
       allVMIs:            [],
       allNodeNetworks:    [],
@@ -67,7 +69,16 @@ export default {
 
   computed: {
     headers() {
-      return [
+      const nodeCol = {
+        name:      'node',
+        label:     'Node',
+        value:     'id',
+        sort:      ['realAttachNodeName'],
+        formatter: 'HarvesterNodeName',
+        labelKey:  'tableHeaders.node'
+      };
+
+      const cols = [
         STATE,
         {
           ...NAME,
@@ -104,18 +115,16 @@ export default {
           labelKey:  'tableHeaders.ipAddress'
         },
         {
-          name:      'node',
-          label:     'Node',
-          value:     'id',
-          sort:      ['realAttachNodeName'],
-          formatter: 'HarvesterNodeName',
-          labelKey:  'tableHeaders.node'
-        },
-        {
           ...AGE,
           sort: 'metadata.creationTimestamp:desc',
         }
       ];
+
+      if (this.hasNode) {
+        cols.splice(-1, 0, nodeCol);
+      }
+
+      return cols;
     },
 
     rows() {
