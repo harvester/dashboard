@@ -1,6 +1,7 @@
 generic:
   tip: Tip
   resourceExternalLinkTips: 'External Link'
+  namespace: Namespace
 
 nav:
   group:
