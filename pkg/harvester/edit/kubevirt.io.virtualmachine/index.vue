@@ -18,6 +18,7 @@ import Network from './VirtualMachineNetwork';
 import CpuMemory from './VirtualMachineCpuMemory';
 import CloudConfig from './VirtualMachineCloudConfig';
 import NodeScheduling from '@shell/components/form/NodeScheduling';
+import PodAffinity from '@shell/components/form/PodAffinity';
 import AccessCredentials from './VirtualMachineAccessCredentials';
 import PciDevices from './VirtualMachinePciDevices/index';
 import RestartVMDialog from '../../dialog/RestartVMDialog';
@@ -52,6 +53,7 @@ export default {
     CpuMemory,
     CloudConfig,
     NodeScheduling,
+    PodAffinity,
     AccessCredentials,
     Reserved,
     PciDevices,
@@ -536,18 +538,24 @@ export default {
         </template>
       </Tab>
 
-      <Tab v-if="enabledPCI" :label="t('harvester.tab.pciDevices')" name="pciDevices" :weight="-4">
+      <Tab :label="t('harvester.tab.vmScheduling')" name="vmScheduling" :weight="-4">
+        <template #default="{active}">
+          <PodAffinity :key="active" :mode="mode" :value="spec.template.spec" :nodes="nodes" :namespaces="filteredNamespaces" />
+        </template>
+      </Tab>
+
+      <Tab v-if="enabledPCI" :label="t('harvester.tab.pciDevices')" name="pciDevices" :weight="-5">
         <PciDevices :mode="mode" :value="spec.template.spec" :vm="value" />
       </Tab>
 
-      <Tab v-if="isEdit" :label="t('harvester.tab.accessCredentials')" name="accessCredentials" :weight="-5">
+      <Tab v-if="isEdit" :label="t('harvester.tab.accessCredentials')" name="accessCredentials" :weight="-6">
         <AccessCredentials v-model="accessCredentials" :mode="mode" :resource="value" :is-qemu-installed="isQemuInstalled" />
       </Tab>
 
       <Tab
         name="advanced"
         :label="t('harvester.tab.advanced')"
-        :weight="-5"
+        :weight="-7"
       >
         <div class="row mb-20">
           <div class="col span-6">

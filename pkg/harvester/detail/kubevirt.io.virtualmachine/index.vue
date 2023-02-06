@@ -13,6 +13,8 @@ import { allDashboardsExist } from '@shell/utils/grafana';
 import CloudConfig from '../../edit/kubevirt.io.virtualmachine/VirtualMachineCloudConfig';
 import Volume from '../../edit/kubevirt.io.virtualmachine/VirtualMachineVolume';
 import Network from '../../edit/kubevirt.io.virtualmachine/VirtualMachineNetwork';
+import NodeScheduling from '@shell/components/form/NodeScheduling';
+import PodAffinity from '@shell/components/form/PodAffinity';
 import AccessCredentials from '../../edit/kubevirt.io.virtualmachine/VirtualMachineAccessCredentials';
 import Events from './VirtualMachineTabs/VirtualMachineEvents';
 import Migration from './VirtualMachineTabs/VirtualMachineMigration';
@@ -36,6 +38,8 @@ export default {
     Migration,
     DashboardMetrics,
     AccessCredentials,
+    NodeScheduling,
+    PodAffinity,
   },
 
   mixins: [CreateEditView, VM_MIXIN],
@@ -185,6 +189,25 @@ export default {
             graph-height="550px"
             :has-summary-and-detail="false"
             :vars="graphVars"
+          />
+        </template>
+      </Tab>
+
+      <Tab name="nodeScheduling" :label="t('workload.container.titles.nodeScheduling')" :weight="2.4">
+        <template #default="{active}">
+          <NodeScheduling v-if="spec" :key="active" :mode="mode" :value="spec.template.spec" :nodes="nodesIdOptions" />
+        </template>
+      </Tab>
+
+      <Tab :label="t('workload.container.titles.podScheduling')" name="podScheduling" :weight="2.3">
+        <template #default="{active}">
+          <PodAffinity
+            v-if="spec"
+            :key="active"
+            :mode="mode"
+            :value="spec.template.spec"
+            :nodes="nodes"
+            :namespaces="filteredNamespaces"
           />
         </template>
       </Tab>

@@ -14,7 +14,7 @@ import { formatSi, parseSi } from '@shell/utils/units';
 import { SOURCE_TYPE, ACCESS_CREDENTIALS } from '../../config/harvester-map';
 import { _CLONE, _CREATE, _VIEW } from '@shell/config/query-params';
 import {
-  PV, PVC, STORAGE_CLASS, NODE, SECRET, CONFIG_MAP, NETWORK_ATTACHMENT
+  PV, PVC, STORAGE_CLASS, NODE, SECRET, CONFIG_MAP, NETWORK_ATTACHMENT, NAMESPACE
 } from '@shell/config/types';
 import { HCI } from '../../types';
 import { HCI_SETTING } from '../../config/settings';
@@ -173,6 +173,14 @@ export default {
 
     secrets() {
       return this.$store.getters[`${ this.inStore }/all`](SECRET);
+    },
+
+    filteredNamespaces() {
+      return this.$store.getters['harvester/all'](NAMESPACE).filter(namespace => !namespace.isSystem);
+    },
+
+    nodes() {
+      return this.$store.getters['harvester/all'](NODE);
     },
 
     nodesIdOptions() {

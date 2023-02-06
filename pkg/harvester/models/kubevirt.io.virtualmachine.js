@@ -243,7 +243,8 @@ export default class VirtVm extends HarvesterResource {
               pod:  {}
             }
           ],
-          volumes: []
+          volumes:  [],
+          affinity: {},
         }
       }
     };

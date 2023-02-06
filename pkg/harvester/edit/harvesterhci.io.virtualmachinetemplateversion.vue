@@ -7,6 +7,7 @@ import CruResource from '@shell/components/CruResource';
 import NameNsDescription from '@shell/components/form/NameNsDescription';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import NodeScheduling from '@shell/components/form/NodeScheduling';
+import PodAffinity from '@shell/components/form/PodAffinity';
 
 import Reserved from './kubevirt.io.virtualmachine/VirtualMachineReserved';
 import Volume from './kubevirt.io.virtualmachine/VirtualMachineVolume';
@@ -41,6 +42,7 @@ export default {
     LabeledSelect,
     NameNsDescription,
     NodeScheduling,
+    PodAffinity,
     Reserved,
   },
 
@@ -250,11 +252,20 @@ export default {
         :label="t('workload.container.titles.nodeScheduling')"
         :weight="-89"
       >
-        <NodeScheduling
-          :mode="mode"
-          :value="spec.template.spec"
-          :nodes="nodesIdOptions"
-        />
+        <template #default="{active}">
+          <NodeScheduling
+            :key="active"
+            :mode="mode"
+            :value="spec.template.spec"
+            :nodes="nodesIdOptions"
+          />
+        </template>
+      </Tab>
+
+      <Tab :label="t('harvester.tab.vmScheduling')" name="vmScheduling" :weight="-90">
+        <template #default="{active}">
+          <PodAffinity :key="active" :mode="mode" :value="spec.template.spec" :nodes="nodes" :namespaces="filteredNamespaces" />
+        </template>
       </Tab>
 
       <Tab name="advanced" :label="t('harvester.tab.advanced')" :weight="-99">

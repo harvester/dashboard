@@ -100,7 +100,8 @@ export default class HciVmTemplateVersion extends HarvesterResource {
                 name: 'default',
                 pod:  {}
               }],
-              volumes: []
+              volumes:  [],
+              affinity: {},
             }
           }
         }
