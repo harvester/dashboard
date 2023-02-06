@@ -1,4 +1,3 @@
-import { _EDIT, MODE } from '@shell/config/query-params';
 import {
   NODE,
   CONFIG_MAP,
@@ -38,8 +37,6 @@ import { IF_HAVE } from '@shell/store/type-map';
 const TEMPLATE = HCI.VM_VERSION;
 const MONITORING_GROUP = 'Monitoring & Logging::Monitoring';
 const LOGGING_GROUP = 'Monitoring & Logging::Logging';
-const MONITORING_CONFIGURATION = 'monitoring-configuration';
-const LOGGING_CONFIGURATION = 'logging-configuration';
 
 export const PRODUCT_NAME = 'harvester';
 
@@ -250,12 +247,10 @@ export function init($plugin, store) {
   }
 
   basicType([
-    MONITORING_CONFIGURATION,
     HCI.ALERTMANAGERCONFIG
   ], MONITORING_GROUP);
 
   basicType([
-    LOGGING_CONFIGURATION,
     HCI.CLUSTER_FLOW,
     HCI.CLUSTER_OUTPUT,
     HCI.FLOW,
@@ -264,38 +259,6 @@ export function init($plugin, store) {
 
   weightGroup('Monitoring', 2, true);
   weightGroup('Logging', 1, true);
-
-  virtualType({
-    ifHaveType: MANAGEMENT.MANAGED_CHART,
-    labelKey:   'harvester.monitoring.configuration.label',
-    name:       MONITORING_CONFIGURATION,
-    namespaced: true,
-    weight:     88,
-    route:      {
-      name:   `${ PRODUCT_NAME }-c-cluster-resource-namespace-id`,
-      params: {
-        resource: HCI.MANAGED_CHART, namespace: 'fleet-local', id: 'rancher-monitoring'
-      },
-      query: { [MODE]: _EDIT }
-    },
-    exact: false,
-  });
-
-  virtualType({
-    ifHaveType: MANAGEMENT.MANAGED_CHART,
-    labelKey:   'harvester.monitoring.configuration.label',
-    name:       LOGGING_CONFIGURATION,
-    namespaced: true,
-    weight:     88,
-    route:      {
-      name:   `${ PRODUCT_NAME }-c-cluster-resource-namespace-id`,
-      params: {
-        resource: HCI.MANAGED_CHART, namespace: 'fleet-local', id: 'rancher-logging'
-      },
-      query: { [MODE]: _EDIT }
-    },
-    exact: false,
-  });
 
   headers(HCI.ALERTMANAGERCONFIG, [
     STATE,

@@ -2,6 +2,25 @@ import HarvesterResource from './harvester';
 import { HCI as HCI_ANNOTATIONS } from '../config/labels-annotations';
 
 export default class HciAddonConfig extends HarvesterResource {
+  get availableActions() {
+    const out = super._availableActions;
+
+    return [
+      {
+        action:  'toggleAddon',
+        enabled: true,
+        icon:    this.spec.enabled ? 'icon icon-pause' : 'icon icon-play',
+        label:   this.spec.enabled ? this.t('generic.disable') : this.t('generic.enable'),
+      },
+      ...out
+    ];
+  }
+
+  toggleAddon() {
+    this.spec.enabled = !this.spec.enabled;
+    this.save();
+  }
+
   get stateColor() {
     const state = this.stateDisplay;
 
@@ -36,5 +55,31 @@ export default class HciAddonConfig extends HarvesterResource {
     const isExperimental = this.metadata?.labels?.[HCI_ANNOTATIONS.ADDON_EXPERIMENTAL] === 'true';
 
     return isExperimental ? `${ this.metadata.name } (${ this.t('generic.experimental') })` : this.metadata.name;
+  }
+
+  get customValidationRules() {
+    let rules = [];
+
+    if (this.metadata.name === 'rancher-monitoring') {
+      rules = [
+        {
+          nullable:   false,
+          path:       'spec.valuesContent',
+          validators: ['rancherMonitoring'],
+        },
+      ];
+    }
+
+    if (this.metadata.name === 'rancher-logging') {
+      rules = [
+        {
+          nullable:   false,
+          path:       'spec.valuesContent',
+          validators: ['rancherLogging'],
+        },
+      ];
+    }
+
+    return rules;
   }
 }

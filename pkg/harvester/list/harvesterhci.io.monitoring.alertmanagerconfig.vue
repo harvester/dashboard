@@ -1,11 +1,12 @@
 <script>
+import jsyaml from 'js-yaml';
 import { allHash } from '@shell/utils/promise';
 import { Banner } from '@components/Banner';
 import MessageLink from '@shell/components/MessageLink';
 import ResourceTable from '@shell/components/ResourceTable';
 import Loading from '@shell/components/Loading';
 
-import { SCHEMA, MONITORING, MANAGEMENT } from '@shell/config/types';
+import { SCHEMA, MONITORING } from '@shell/config/types';
 import { HCI } from '../types';
 
 const schema = {
@@ -18,6 +19,8 @@ const schema = {
   metadata: { name: HCI.ALERTMANAGERCONFIG },
 };
 
+const MONITORING_ID = 'cattle-monitoring-system/rancher-monitoring';
+
 export default {
   name:       'ListAlertManagerConfigs',
   components: {
@@ -28,22 +31,22 @@ export default {
     const inStore = this.$store.getters['currentProduct'].inStore;
     const _hash = { rows: this.$store.dispatch(`${ inStore }/findAll`, { type: MONITORING.ALERTMANAGERCONFIG }) };
 
-    if (this.$store.getters[`${ inStore }/schemaFor`](MANAGEMENT.MANAGED_CHART)) {
-      _hash.monitoring = this.$store.dispatch(`${ inStore }/find`, { type: MANAGEMENT.MANAGED_CHART, id: 'fleet-local/rancher-monitoring' });
+    if (this.$store.getters[`${ inStore }/schemaFor`](HCI.ADD_ONS )) {
+      _hash.monitoring = this.$store.dispatch(`${ inStore }/find`, { type: HCI.ADD_ONS, id: MONITORING_ID });
     }
 
     const hash = await allHash(_hash);
 
     this.rows = hash.rows;
-    this.alertingEnabled = hash.monitoring?.spec?.values?.alertmanager?.enabled;
+    this.monitoringAddon = hash.monitoring;
 
     const configSchema = this.$store.getters[`${ inStore }/schemaFor`](MONITORING.ALERTMANAGERCONFIG);
 
-    this.$store.dispatch('type-map/configureType', { match: HCI.ALERTMANAGERCONFIG, isCreatable: configSchema?.collectionMethods.find(x => x.toLowerCase() === 'post') && this.alertingEnabled });
+    this.$store.dispatch('type-map/configureType', { match: HCI.ALERTMANAGERCONFIG, isCreatable: configSchema?.collectionMethods.find(x => x.toLowerCase() === 'post') });
   },
 
   data() {
-    return { rows: null, alertingEnabled: false };
+    return { rows: null, monitoringAddon: null };
   },
 
   computed: {
@@ -52,7 +55,13 @@ export default {
     },
 
     to() {
-      return `${ HCI.MANAGED_CHART }/fleet-local/rancher-monitoring?mode=edit#alertmanager`;
+      return `${ HCI.ADD_ONS }/cattle-monitoring-system/rancher-monitoring?mode=edit#alertmanager`;
+    },
+
+    alertingEnabled() {
+      const valueJson = jsyaml.load(this.monitoringAddon?.spec?.valuesContent);
+
+      return this.monitoringAddon?.spec?.enabled && valueJson?.alertmanager?.enabled;
     },
   },
 
@@ -65,7 +74,7 @@ export default {
 <template>
   <Loading v-if="$fetchState.pending" />
   <div v-else>
-    <Banner v-if="alertingEnabled === false" color="error">
+    <Banner v-if="alertingEnabled === false" color="info">
       <MessageLink
         :to="to"
         prefix-label="harvester.monitoring.alertmanagerConfig.diabledTips.prefix"
