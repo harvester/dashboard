@@ -24,17 +24,19 @@ export default {
 <template>
   <div>
     <Banner color="warning">
-      <strong>{{ t('harvester.upgradePage.upgradeInfo.warning') }}:</strong>
-      <p class="mb-5" v-html="t('harvester.upgradePage.upgradeInfo.doc', {}, true)">
-      </p>
+      <div>
+        <strong>{{ t('harvester.upgradePage.upgradeInfo.warning') }}:</strong>
+        <p class="mb-5" v-html="t('harvester.upgradePage.upgradeInfo.doc', {}, true)">
+        </p>
 
-      <p class="mb-5">
-        {{ t('harvester.upgradePage.upgradeInfo.tip') }}
-      </p>
+        <p class="mb-5">
+          {{ t('harvester.upgradePage.upgradeInfo.tip') }}
+        </p>
 
-      <p class="mb-5">
-        {{ t('harvester.upgradePage.upgradeInfo.moreNotes') }} <a :href="releaseVersion" target="_blank">{{ t('generic.moreInfo') }} </a>
-      </p>
+        <p class="mb-5">
+          {{ t('harvester.upgradePage.upgradeInfo.moreNotes') }} <a :href="releaseVersion" target="_blank">{{ t('generic.moreInfo') }} </a>
+        </p>
+      </div>
     </Banner>
   </div>
 </template>
