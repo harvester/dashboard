@@ -654,6 +654,7 @@ harvester:
       success: 成功
       fail:  失败
       ongoing: 进行中
+      downloadLog: 下载日志
     dismissMessage: 忽略
     upgradeInfo:
       warning: 警告
