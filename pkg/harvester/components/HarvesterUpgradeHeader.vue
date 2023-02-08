@@ -30,11 +30,22 @@ export default {
       hash.nodes = this.$store.dispatch('harvester/findAll', { type: NODE });
     }
 
+    if (this.$store.getters['harvester/schemaFor'](HCI.UPGRADE_LOG)) {
+      hash.upgradeLogs = this.$store.dispatch('harvester/findAll', { type: HCI.UPGRADE_LOG });
+    }
+
     await allHash(hash);
   },
 
+  data() {
+    return {
+      filename:       '',
+      logDownloading: false,
+    };
+  },
+
   computed: {
-    ...mapGetters(['currentProduct', 'isVirtualCluster']),
+    ...mapGetters(['currentProduct', 'isVirtualCluster', 'isMultiCluster']),
 
     enabled() {
       return this.isVirtualCluster && this.currentProduct.name === HARVESTER;
@@ -42,6 +53,16 @@ export default {
 
     latestResource() {
       return this.$store.getters['harvester/all'](HCI.UPGRADE).find( U => U.isLatestUpgrade);
+    },
+
+    latestUpgradeLogResource() {
+      const upgradeLogId = `${ this.latestResource.id }-upgradelog`;
+
+      return this.$store.getters['harvester/all'](HCI.UPGRADE_LOG).find( U => U.id === upgradeLogId);
+    },
+
+    canStartedDownload() {
+      return this.latestUpgradeLogResource?.canStartedDownload || false;
     },
 
     overallMessage() {
@@ -99,6 +120,43 @@ export default {
     ignoreMessage() {
       this.latestResource.setLabel(HCI_ANNOTATIONS.REAY_MESSAGE, 'true');
       this.latestResource.save();
+    },
+
+    async generateLogFileName() {
+      const res = await this.latestUpgradeLogResource.doActionGrowl('generate');
+
+      this.filename = res?.data;
+    },
+
+    waitFileGeneratedReady() {
+      const id = this.latestUpgradeLogResource.id;
+
+      return new Promise((resolve) => {
+        let log;
+
+        const timer = setInterval(async() => {
+          log = await this.$store.dispatch('harvester/find', {
+            type: HCI.UPGRADE_LOG,
+            id,
+            opt:  { force: true }
+          }, { root: true });
+
+          if (log.fileIsReady(this.filename)) {
+            this.logDownloading = false;
+            clearInterval(timer);
+            resolve();
+          }
+        }, 1800);
+      });
+    },
+
+    async downloadLog() {
+      this.logDownloading = true;
+      await this.generateLogFileName();
+      this.waitFileGeneratedReady().then(() => {
+        this.latestUpgradeLogResource.downloadLog(this.filename);
+        this.logDownloading = false;
+      });
     }
   }
 };
@@ -186,8 +244,12 @@ export default {
           <ProgressBarList :title="t('harvester.upgradePage.upgradeSysService')" :precent="sysServiceTotal" :list="sysServiceUpgradeMessage" />
         </div>
 
-        <div v-if="latestResource.isUpgradeSucceeded" class="successTip">
-          <button class="btn role-primary" @click="ignoreMessage()">
+        <div class="footer">
+          <button v-if="canStartedDownload" :disabled="logDownloading" class="btn role-primary mr-10" @click="downloadLog()">
+            <i class="icon mr-10" :class="[logDownloading ? 'icon-spinner icon-spin' : 'icon-download']"></i> {{ t('harvester.upgradePage.repoInfo.downloadLog') }}
+          </button>
+
+          <button v-if="latestResource.isUpgradeSucceeded" class="btn role-primary" @click="ignoreMessage()">
             {{ t('harvester.upgradePage.dismissMessage') }}
           </button>
         </div>
@@ -236,8 +298,8 @@ export default {
   }
 }
 
-.successTip {
+.footer {
   display: flex;
-  flex-direction: row-reverse
+  justify-content: flex-end;
 }
 </style>
