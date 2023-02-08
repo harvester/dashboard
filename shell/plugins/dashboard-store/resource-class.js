@@ -1028,7 +1028,7 @@ export default class Resource {
 
   async doActionGrowl(actionName, body, opt = {}) {
     try {
-      await this.$dispatch('resourceAction', {
+      return await this.$dispatch('resourceAction', {
         resource: this,
         actionName,
         body,
