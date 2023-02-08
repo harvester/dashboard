@@ -156,12 +156,6 @@ export default {
     },
   },
 
-  created() {
-    if (this.idx === 0 && !this.image) {
-      this.value.volumeName = null;
-    }
-  },
-
   methods: {
     update() {
       this.$emit('update');
