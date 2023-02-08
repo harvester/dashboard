@@ -656,6 +656,7 @@ harvester:
       success: Success
       fail:  Fail
       ongoing: on-going
+      downloadLog: Download Log
     dismissMessage: Dismiss it
     upgradeInfo:
       warning: WARNING
