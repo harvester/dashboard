@@ -3,13 +3,17 @@ import { mapGetters } from 'vuex';
 import AsyncButton from '@shell/components/AsyncButton';
 import { Card } from '@components/Card';
 import { Banner } from '@components/Banner';
+import { Checkbox } from '@components/Form/Checkbox';
 import { exceptionToErrorsArray } from '@shell/utils/error';
+import { BadgeState } from '@components/BadgeState';
 
 export default {
   components: {
     Card,
+    Checkbox,
     AsyncButton,
     Banner,
+    BadgeState
   },
 
   props: {
@@ -20,7 +24,11 @@ export default {
   },
 
   data() {
-    return { errors: [] };
+    return {
+      errors:      [],
+      unhealthyVM: '',
+      force:       false
+    };
   },
 
   computed: {
@@ -38,12 +46,26 @@ export default {
 
     async apply(buttonCb) {
       this.errors = [];
+      this.unhealthyVM = '';
 
       try {
-        await this.actionResource.doAction('enableMaintenanceMode', {});
+        if (this.force) {
+          await this.actionResource.doAction('enableMaintenanceMode', { force: 'true' });
 
-        buttonCb(true);
-        this.close();
+          buttonCb(true);
+          this.close();
+        } else {
+          const res = await this.actionResource.doAction('listUnhealthyVM');
+
+          if (res.message) {
+            this.unhealthyVM = res;
+            buttonCb(false);
+          } else {
+            await this.actionResource.doAction('enableMaintenanceMode', { force: 'false' });
+            buttonCb(true);
+            this.close();
+          }
+        }
       } catch (e) {
         const error = [e?.data] || exceptionToErrorsArray(e);
 
@@ -62,8 +84,31 @@ export default {
     </template>
 
     <template #body>
-      <Banner color="warning" :label="t('harvester.host.enableMaintenance.protip')" class="mt-20" />
+      <div>
+        <Checkbox
+          v-model="force"
+          label-key="harvester.host.enableMaintenance.force"
+        />
+      </div>
+      <Banner color="warning" :label="t('harvester.host.enableMaintenance.protip')" class="mb-0" />
       <Banner v-for="(err, i) in errors" :key="i" color="error" :label="err" />
+
+      <div v-if="unhealthyVM">
+        <Banner color="error mb-5">
+          <p>
+            {{ unhealthyVM.message }}
+          </p>
+        </Banner>
+
+        <div class="vm-list mb-5">
+          <BadgeState
+            v-for="vm in unhealthyVM.vms"
+            :key="vm"
+            color="bg-error mb-5 mr-5"
+            :label="vm"
+          />
+        </div>
+      </div>
     </template>
 
     <div slot="actions" class="actions">
@@ -84,6 +129,11 @@ export default {
 <style lang="scss" scoped>
 .actions {
   width: 100%;
+}
+
+.vm-list {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .buttons {

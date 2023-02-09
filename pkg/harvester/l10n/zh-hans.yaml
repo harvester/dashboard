@@ -299,6 +299,7 @@ harvester:
     enableMaintenance:
       title: 开启维护模式
       protip: 该操作会将此节点上的所有虚拟机迁移到其他节点。
+      force: 强制
     cordon:
       title: 封锁
       protip: 此操作会将节点 { node } 标记为不可调度。
