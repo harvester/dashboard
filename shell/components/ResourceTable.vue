@@ -410,7 +410,9 @@ export default {
     },
 
     handleEnterKeyPress(event) {
-      this.keyAction('detail');
+      if (event.key === 'Enter') {
+        this.keyAction('detail');
+      }
     }
   }
 };
