@@ -321,9 +321,17 @@ export default class HciNode extends HarvesterResource {
 
   get vlanStatuses() {
     const inStore = this.$rootGetters['currentProduct'].inStore;
-    const nodeId = this.value.id;
+    const nodeId = this.id;
     const vlanStatuses = this.$rootGetters[`${ inStore }/all`](HCI.VLAN_STATUS);
 
     return vlanStatuses.filter(s => s?.status?.node === nodeId) || [];
+  }
+
+  get blockDevices() {
+    const inStore = this.$rootGetters['currentProduct'].inStore;
+    const nodeId = this.id;
+    const blockDevices = this.$rootGetters[`${ inStore }/all`](HCI.BLOCK_DEVICE);
+
+    return blockDevices.filter(s => s?.spec?.nodeName === nodeId) || [];
   }
 }
