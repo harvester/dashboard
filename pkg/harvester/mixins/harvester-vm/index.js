@@ -388,7 +388,9 @@ export default {
               size = dataVolumeSpecPVC?.resources?.requests?.storage || '10Gi';
               storageClassName = dataVolumeSpecPVC?.storageClassName;
               dataSource = dataVolumeSpecPVC?.dataSource;
-            } else { // SOURCE_TYPE.ATTACH_VOLUME
+            } else {
+              // SOURCE_TYPE.ATTACH_VOLUME
+              // Compatible with VMS that have been created before, Because they're not saved in the annotation
               const allPVCs = this.$store.getters['harvester/all'](PVC);
               const pvcResource = allPVCs.find( O => O.id === `${ namespace }/${ volume?.persistentVolumeClaim?.claimName }`);
 
@@ -525,7 +527,7 @@ export default {
         volumes.push(_volume);
         diskNameLables.push(dataVolumeName);
 
-        if (R.source !== SOURCE_TYPE.CONTAINER && R.source !== SOURCE_TYPE.ATTACH_VOLUME) {
+        if (R.source !== SOURCE_TYPE.CONTAINER) {
           volumeClaimTemplates.push(_dataVolumeTemplate);
         }
       });
@@ -827,6 +829,9 @@ export default {
       }
 
       switch (R.source) {
+      case SOURCE_TYPE.ATTACH_VOLUME:
+        out.spec.storageClassName = R.storageClassName;
+        break;
       case SOURCE_TYPE.NEW:
         out.spec.storageClassName = R.storageClassName;
         break;

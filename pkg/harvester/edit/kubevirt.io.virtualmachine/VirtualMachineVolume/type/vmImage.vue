@@ -255,7 +255,6 @@ export default {
             :mode="mode"
             :required="validateRequired"
             suffix="GiB"
-            :disabled="isDisabled"
             @input="update"
           />
         </InputOrDisplay>

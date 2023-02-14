@@ -100,7 +100,7 @@ export function vmDisks(spec, getters, errors, validatorArgs, displayKey, value)
         errors.push(getters['i18n/t']('harvester.validation.generic.tabError', { prefix, message }));
       }
 
-      if (type === SOURCE_TYPE.NEW && !typeValue?.spec?.storageClassName) {
+      if (!typeValue?.spec?.storageClassName && V?.persistentVolumeClaim?.claimName && type !== SOURCE_TYPE.IMAGE) {
         const key = getters['i18n/t']('harvester.fields.storageClass');
         const message = getters['i18n/t']('validation.required', { key });
 
@@ -149,6 +149,14 @@ function getVolumeType(V, DVTS) {
   let outValue = null;
 
   if (V.persistentVolumeClaim) {
+    if (!V.persistentVolumeClaim.claimName) {
+      // In other cases, claimName will not be empty, so we can judge whether this is an exiting volume based on this attribute
+      return {
+        type:      SOURCE_TYPE.ATTACH_VOLUME,
+        typeValue: null
+      };
+    }
+
     outValue = DVTS.find((DVT) => {
       return V.persistentVolumeClaim.claimName === DVT.metadata.name && DVT.metadata?.annotations && Object.prototype.hasOwnProperty.call(DVT.metadata.annotations, 'harvesterhci.io/imageId');
     });
@@ -169,12 +177,6 @@ function getVolumeType(V, DVTS) {
         typeValue: outValue
       };
     }
-
-    // existing, container type volume doesn't need validator
-    return {
-      type:      SOURCE_TYPE.ATTACH_VOLUME,
-      typeValue: null
-    };
   }
 
   if (V.containerDisk) {
