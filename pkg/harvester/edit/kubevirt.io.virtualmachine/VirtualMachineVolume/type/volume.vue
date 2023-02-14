@@ -197,7 +197,6 @@ export default {
             :mode="mode"
             :required="validateRequired"
             :label="t('harvester.fields.size')"
-            :disabled="isDisabled"
             @input="update"
           />
         </InputOrDisplay>
