@@ -3,6 +3,8 @@ import namespace from '@shell/models/namespace';
 import { SYSTEM_NAMESPACE, FLEET } from '@shell/config/labels-annotations';
 import SYSTEM_NAMESPACES from '@shell/config/system-namespaces';
 import { get } from '@shell/utils/object';
+import { NAMESPACE } from '@shell/config/types';
+import { PRODUCT_NAME as HARVESTER_PRODUCT } from '@pkg/harvester/config/harvester';
 
 const OBSCURE_NAMESPACE_PREFIX = [
   'c-', // cluster namespace
@@ -77,5 +79,26 @@ export default class HciNamespace extends namespace {
     const isObscurePrefix = !!OBSCURE_NAMESPACE_PREFIX.some(prefix => this.metadata.name.startsWith(prefix));
 
     return isSettingSystemNamespace || isObscurePrefix;
+  }
+
+  get detailLocation() {
+    const id = this.id?.replace(/.*\//, '');
+
+    const detailLocation = {
+      name:   `${ HARVESTER_PRODUCT }-c-cluster-resource-id`,
+      params: {
+        product:   this.$rootGetters['productId'],
+        cluster:   this.$rootGetters['clusterId'],
+        resource:  NAMESPACE,
+        namespace: this.metadata?.namespace,
+        id,
+      }
+    };
+
+    return detailLocation;
+  }
+
+  get hideDetailLocation() {
+    return !!this.$rootGetters['currentProduct'].hideNamespaceLocation;
   }
 }

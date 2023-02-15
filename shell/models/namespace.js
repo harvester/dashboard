@@ -187,11 +187,7 @@ export default class Namespace extends SteveModel {
   }
 
   get _detailLocation() {
-    let _detailLocation = super._detailLocation;
-
-    if (this.$rootGetters['currentProduct'].hideNamespaceLocation) {
-      _detailLocation = false;
-    }
+    const _detailLocation = super._detailLocation;
 
     return _detailLocation;
   }
