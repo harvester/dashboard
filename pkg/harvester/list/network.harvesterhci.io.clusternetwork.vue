@@ -92,8 +92,13 @@ export default {
 
       const clusterNetworks = this.$store.getters[`${ inStore }/all`](HCI.CLUSTER_NETWORK);
 
-      const out = clusterNetworks.filter((network) => {
-        return !this.rows.find(config => config?.spec?.clusterNetwork === network.id);
+      const out = clusterNetworks.map((network) => {
+        const hasChild = !!this.rows.find(config => config?.spec?.clusterNetwork === network.id);
+
+        return {
+          ...network,
+          hasChild
+        };
       });
 
       return out;
@@ -165,7 +170,7 @@ export default {
       }
 
       return `${ this.t('harvester.network.clusterNetwork.label') }: ${ group.key }`;
-    }
+    },
   },
 };
 </script>
@@ -219,7 +224,11 @@ export default {
           </div>
         </template>
         <template v-for="clusterNetwork in clusterNetworkWithoutConfigs" v-slot:[slotName(clusterNetwork.id)]>
-          <tr :key="clusterNetwork.id" class="main-row">
+          <tr
+            v-show="!clusterNetwork.hasChild"
+            :key="clusterNetwork.id"
+            class="main-row"
+          >
             <td class="empty text-center" colspan="12">
               {{ clusterNetwork.id === 'mgmt' ? t('harvester.clusterNetwork.mgmt') : t('harvester.clusterNetwork.clusterNetwork') }}
             </td>

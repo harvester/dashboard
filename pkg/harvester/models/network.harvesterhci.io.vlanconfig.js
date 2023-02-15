@@ -1,6 +1,7 @@
 import { set, clone } from '@shell/utils/object';
 import HarvesterResource from './harvester';
 import { HCI } from '../types';
+import { insertAt } from '@shell/utils/array';
 
 export default class HciVlanConfig extends HarvesterResource {
   applyDefaults() {
@@ -41,5 +42,28 @@ export default class HciVlanConfig extends HarvesterResource {
 
   get typeDisplay() {
     return 'VLAN';
+  }
+
+  get _availableActions() {
+    const out = super._availableActions;
+
+    insertAt(out, 0, this.migrateAction);
+
+    return out;
+  }
+
+  get migrateAction() {
+    return {
+      action: 'migrate',
+      icon:   'icon icon-copy',
+      label:  this.t('harvester.vlanConfig.action.migrate'),
+    };
+  }
+
+  migrate(resources = this) {
+    this.$dispatch('promptModal', {
+      resources,
+      component: 'HarvesterVlanConfigMigrateDialog',
+    });
   }
 }

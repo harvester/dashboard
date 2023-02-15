@@ -100,6 +100,11 @@ export default {
     if (this.$store.getters[`${ inStore }/schemaFor`](NODE)) {
       hash.nodes = this.$store.dispatch(`${ inStore }/findAll`, { type: NODE });
     }
+
+    if (this.$store.getters[`${ inStore }/schemaFor`](HCI.CLUSTER_NETWORK)) {
+      hash.clusterNetworks = this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.CLUSTER_NETWORK });
+    }
+
     const res = await allHash(hash);
 
     const hasPCISchema = this.$store.getters[`${ inStore }/schemaFor`](HCI.PCI_DEVICE);
