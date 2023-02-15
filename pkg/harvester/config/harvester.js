@@ -517,7 +517,6 @@ export function init($plugin, store) {
     exact: false,
   });
 
-  configureType(NETWORK_ATTACHMENT, { isEditable: false, showState: false });
   configureType(HCI.NETWORK_ATTACHMENT, {
     location: {
       name:   `${ PRODUCT_NAME }-c-cluster-resource`,

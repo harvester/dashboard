@@ -3,19 +3,6 @@ import SteveModel from '@shell/plugins/steve/steve-class';
 import { HCI } from '@shell/config/labels-annotations';
 
 export default class NetworkAttachmentDef extends SteveModel {
-  get _availableActions() {
-    let out = super._availableActions;
-    const toFilter = ['goToClone', 'cloneYaml', 'goToViewConfig', 'goToEditYaml', 'goToEdit'];
-
-    out = out.filter((action) => {
-      if (!toFilter.includes(action.action)) {
-        return action;
-      }
-    });
-
-    return out;
-  }
-
   applyDefaults() {
     const spec = this.spec || {
       config: JSON.stringify({

@@ -28,4 +28,10 @@ export default class HciClusterNetwork extends HarvesterResource {
   get canUpdate() {
     return this.hasLink('update') && this.$rootGetters['type-map/optionsFor'](this.type).isEditable && this.id !== 'mgmt';
   }
+
+  get isReady() {
+    const readyCondition = (this?.status?.conditions || []).find(c => c.type === 'ready') || {};
+
+    return readyCondition?.status === 'True';
+  }
 }

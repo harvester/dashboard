@@ -46,9 +46,12 @@ export default {
 
       const out = sortBy(
         choices.map((N) => {
+          const label = N.isNotReady ? `${ N.id } (${ this.t('generic.notReady') })` : N.id;
+
           return {
-            label: N.id,
-            value: N.id
+            label,
+            value:    N.id,
+            disabled: N.isNotReady,
           };
         }),
         'label'

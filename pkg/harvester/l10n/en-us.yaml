@@ -2,6 +2,7 @@ generic:
   tip: Tip
   resourceExternalLinkTips: 'External Link'
   namespace: Namespace
+  notReady: Not Ready
 
 nav:
   group:
@@ -895,6 +896,8 @@ harvester:
   vlanConfig:
     title: Network Configs
     createNetworkConfig: Create Network Config
+    action:
+      migrate: Migrate
     titles:
       nodeSelector: Node Selector
       uplink: Uplink
@@ -941,6 +944,8 @@ harvester:
         label: Create Cluster Network
     clusterNetwork: There are no network configs defined.
     mgmt: mgmt is a built-in cluster management network and does not support any additional network configurations.
+    notExist: 'Cluster Network "{ clusterNetwork }" does not exist'
+    notReady: 'Cluster Network "{ clusterNetwork }" is not ready'
   
   addons:
     descriptions:
@@ -953,6 +958,11 @@ harvester:
   
   secret:
     label: Secrets
+
+  harvesterVlanConfigMigrateDialog:
+    targetClusterNetwork: 
+      label: Target Cluster Network
+      placeholder: Choose Target Cluster Network 
 
 advancedSettings:
   descriptions:
