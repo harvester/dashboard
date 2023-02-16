@@ -94,11 +94,7 @@ export default {
       return allPVCs.find((P) => {
         return this.namespace ? P.id === `${ this.namespace }/${ this.value.volumeName }` : true;
       });
-    },
-
-    isDisabled() {
-      return !this.value.newCreateId && this.isEdit && this.isVirtualType;
-    },
+    }
   },
 
   watch: {
