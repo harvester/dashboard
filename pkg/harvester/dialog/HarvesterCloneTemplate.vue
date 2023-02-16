@@ -4,6 +4,7 @@ import { mapGetters } from 'vuex';
 
 import { Card } from '@components/Card';
 import { Banner } from '@components/Banner';
+import { Checkbox } from '@components/Form/Checkbox';
 import AsyncButton from '@shell/components/AsyncButton';
 import { LabeledInput } from '@components/Form/LabeledInput';
 
@@ -14,6 +15,7 @@ export default {
     AsyncButton,
     Banner,
     Card,
+    Checkbox,
     LabeledInput
   },
 
@@ -28,6 +30,7 @@ export default {
     return {
       templateName: '',
       description:  '',
+      withData:     false,
       errors:       []
     };
   },
@@ -47,11 +50,13 @@ export default {
       this.$emit('close');
     },
 
-    async saveRestore(buttonCb) {
+    async save(buttonCb) {
       try {
         const res = await this.actionResource.doAction(
           'createTemplate',
-          { name: this.templateName, description: this.description },
+          {
+            name: this.templateName, description: this.description, withData: this.withData
+          },
           {},
           false
         );
@@ -96,6 +101,8 @@ export default {
     </template>
 
     <template #body>
+      <Checkbox v-model="withData" class="mb-10" label="With Data" />
+
       <LabeledInput
         v-model="templateName"
         class="mb-20"
@@ -118,7 +125,7 @@ export default {
         <AsyncButton
           mode="create"
           :disabled="!templateName"
-          @click="saveRestore"
+          @click="save"
         />
       </div>
 

@@ -6,7 +6,10 @@ import {
 } from '@shell/config/query-params';
 import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 import HarvesterResource from './harvester';
+import { findBy } from '@shell/utils/array';
+import { get } from '@shell/utils/object';
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../config/harvester';
+import { colorForState } from '@shell/plugins/dashboard-store/resource-class';
 
 export default class HciVmTemplateVersion extends HarvesterResource {
   get availableActions() {
@@ -28,10 +31,10 @@ export default class HciVmTemplateVersion extends HarvesterResource {
 
     return [
       {
-        action:  'launchFromTemplate',
-        icon:    'icon icon-spinner',
-        enabled: canCreateVM,
-        label:   this.t('harvester.action.launchFormTemplate'),
+        action:   'launchFromTemplate',
+        icon:     'icon icon-spinner',
+        disabled: !canCreateVM || !this.isReady,
+        label:    this.t('harvester.action.launchFormTemplate'),
       },
       {
         action:  'cloneTemplate',
@@ -115,6 +118,26 @@ export default class HciVmTemplateVersion extends HarvesterResource {
     return this.$rootGetters['harvester/all'](HCI.VM_TEMPLATE).find((T) => {
       return T.id === this.spec.templateId;
     });
+  }
+
+  get isReady() {
+    const conditions = get(this, 'status.conditions');
+
+    return findBy(conditions, 'type', 'ready')?.status === 'True';
+  }
+
+  get stateDisplay() {
+    if (this.isReady) {
+      return 'Active';
+    } else {
+      return 'Not Ready';
+    }
+  }
+
+  get stateColor() {
+    const state = this.stateDisplay;
+
+    return colorForState(state);
   }
 
   get version() {
