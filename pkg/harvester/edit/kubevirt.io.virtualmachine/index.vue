@@ -105,9 +105,12 @@ export default {
 
     templateOptions() {
       return this.templates.map( (T) => {
+        const isReady = this.hasAvailableVersion(T.id);
+
         return {
-          label: T.id,
-          value: T.id
+          label:    T.id,
+          value:    T.id,
+          disabled: !isReady
         };
       });
     },
@@ -121,7 +124,11 @@ export default {
         const label = defaultVersion === version ? `${ version } (${ this.t('generic.default') })` : version;
         const value = T.id;
 
-        return { label, value };
+        return {
+          label,
+          value,
+          disabled: !T.isReady
+        };
       });
     },
 
@@ -383,6 +390,18 @@ export default {
       if (tab.name === 'advanced') {
         this.$refs.yamlEditor?.refresh();
       }
+    },
+
+    hasAvailableVersion(templateId) {
+      let hasAvailableVersion = false;
+
+      this.versions.filter( O => O.templateId === templateId).find( (T) => {
+        if (T.isReady) {
+          hasAvailableVersion = true;
+        }
+      });
+
+      return hasAvailableVersion;
     },
 
     generateYaml() {
