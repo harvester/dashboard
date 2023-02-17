@@ -1,7 +1,14 @@
+import { isEmpty } from 'lodash';
+
 import { set, clone } from '@shell/utils/object';
 import HarvesterResource from './harvester';
 import { HCI } from '../types';
 import { insertAt } from '@shell/utils/array';
+import { HOSTNAME } from '@shell/config/labels-annotations';
+import { matching } from '@shell/utils/selector';
+import { NODE } from '@shell/config/types';
+
+const NOT_READY = 'Not Ready';
 
 export default class HciVlanConfig extends HarvesterResource {
   applyDefaults() {
@@ -65,5 +72,57 @@ export default class HciVlanConfig extends HarvesterResource {
       resources,
       component: 'HarvesterVlanConfigMigrateDialog',
     });
+  }
+
+  get inStore() {
+    return this.$rootGetters['currentProduct'].inStore;
+  }
+
+  get vlanStatuses() {
+    const nodes = this.selectedNodes.map(n => n.id) || [];
+    const vlanStatuses = this.$rootGetters[`${ this.inStore }/all`](HCI.VLAN_STATUS);
+
+    return vlanStatuses.filter(s => nodes.includes(s?.status?.node)) || [];
+  }
+
+  get isReady() {
+    if (this.vlanStatuses.length === 0) {
+      return false;
+    } else {
+      const states = this.vlanStatuses.filter(s => s.metadata?.state?.name === 'active');
+
+      return states.length === this.vlanStatuses.length;
+    }
+  }
+
+  get selectedNodes() {
+    const nodeSelector = this.value?.spec?.nodeSelector || {};
+    const nodes = this.$rootGetters[`${ this.inStore }/all`](NODE);
+
+    if (isEmpty(nodeSelector)) {
+      return nodes;
+    } else if (nodeSelector[HOSTNAME] && Object.keys(nodeSelector).length === 1) {
+      return nodes.filter(n => n.nodeName === nodeSelector[HOSTNAME]) || [];
+    } else {
+      const matchNodes = matching(nodes || [], nodeSelector).map(n => n.id);
+
+      return nodes.filter(n => matchNodes.includes(n.nodeName));
+    }
+  }
+
+  get stateDisplay() {
+    if (!this.isReady) {
+      return NOT_READY;
+    }
+
+    return super.stateDisplay;
+  }
+
+  get stateBackground() {
+    if (!this.isReady) {
+      return 'bg-warning';
+    }
+
+    return super.stateBackground;
   }
 }
