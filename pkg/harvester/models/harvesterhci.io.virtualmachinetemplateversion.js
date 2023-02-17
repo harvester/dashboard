@@ -122,8 +122,10 @@ export default class HciVmTemplateVersion extends HarvesterResource {
 
   get isReady() {
     const conditions = get(this, 'status.conditions');
+    const readyCondition = findBy(conditions, 'type', 'ready');
 
-    return findBy(conditions, 'type', 'ready')?.status === 'True';
+    // Compatibility processing
+    return readyCondition ? readyCondition?.status === 'True' : true;
   }
 
   get stateDisplay() {
