@@ -6,6 +6,7 @@ import Masthead from '@shell/components/ResourceList/Masthead';
 import { allHash } from '@shell/utils/promise';
 import { STATE, AGE, NAME } from '@shell/config/table-headers';
 import { mapPref, GROUP_RESOURCES } from '@shell/store/prefs';
+import { NODE } from '@shell/config/types';
 
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../config/harvester';
 import { CLUSTER_NETWORK } from '../config/query-params';
@@ -26,6 +27,8 @@ export default {
     await allHash({
       configs:         this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VLAN_CONFIG }),
       clusterNetworks: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.CLUSTER_NETWORK }),
+      vlanStatuses:    this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VLAN_STATUS }),
+      nodes:           this.$store.dispatch(`${ inStore }/findAll`, { type: NODE })
     });
   },
 
