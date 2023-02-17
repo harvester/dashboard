@@ -3,7 +3,7 @@ import { isValidMac, isValidDNSLabelName } from '@pkg/utils/regular';
 import { SOURCE_TYPE } from '@pkg/config/harvester-map';
 import { parseVolumeClaimTemplates } from '@pkg/utils/vm.js';
 
-const maxNameLength = 20;
+const maxNameLength = 63;
 
 export function vmNetworks(spec, getters, errors, validatorArgs) {
   const { domain: { devices: { interfaces } }, networks } = spec;
@@ -197,7 +197,7 @@ function validName(getters, errors, name, names = [], prefix, type, lowerType, u
 
   names.push(name);
 
-  // The maximum length of volume name is 20 characters.
+  // The maximum length of volume name is 63 characters.
   if (name && name?.length > maxNameLength) {
     const key = getters['i18n/t']('harvester.fields.name');
     const message = getters['i18n/t']('harvester.validation.generic.maxLength', { key, max: maxNameLength });
