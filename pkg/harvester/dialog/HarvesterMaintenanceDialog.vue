@@ -49,12 +49,17 @@ export default {
       this.unhealthyVM = '';
 
       try {
-        if (this.force) {
-          await this.actionResource.doAction('enableMaintenanceMode', { force: 'true' });
+        const res = await this.actionResource.doAction('maintenancePossible');
 
-          buttonCb(true);
-          this.close();
-        } else {
+        if (this.force) {
+          if (res._status === 200 || res._status === 204) {
+            await this.actionResource.doAction('enableMaintenanceMode', { force: 'true' });
+            buttonCb(true);
+            this.close();
+          } else {
+            buttonCb(false);
+          }
+        } else if (res._status === 200 || res._status === 204) {
           const res = await this.actionResource.doAction('listUnhealthyVM');
 
           if (res.message) {
@@ -65,6 +70,8 @@ export default {
             buttonCb(true);
             this.close();
           }
+        } else {
+          buttonCb(false);
         }
       } catch (e) {
         const error = [e?.data] || exceptionToErrorsArray(e);
