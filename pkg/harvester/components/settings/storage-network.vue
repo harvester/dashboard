@@ -2,6 +2,8 @@
 import { LabeledInput } from '@components/Form/LabeledInput';
 import LabeledSelect from '@shell/components/form/LabeledSelect.vue';
 import { RadioGroup } from '@components/Form/Radio';
+import ArrayList from '@shell/components/form/ArrayList';
+import { isValidCIDR } from '@shell/utils/validators/cidr';
 import { _EDIT } from '@shell/config/query-params';
 import { Banner } from '@components/Banner';
 import Tip from '@shell/components/Tip';
@@ -11,6 +13,7 @@ export default {
   name: 'HarvesterEditStorageNetwork',
 
   components: {
+    ArrayList,
     Tip,
     Banner,
     LabeledInput,
@@ -54,14 +57,18 @@ export default {
       parsedDefaultValue = {
         vlan:           '',
         clusterNetwork: '',
-        range:          ''
+        range:          '',
+        exclude:        []
       };
     }
+    const exclude = parsedDefaultValue?.exclude?.toString().split(',') || [];
 
     return {
       openVlan,
-      errors: [],
-      parsedDefaultValue
+      errors:          [],
+      exclude,
+      parsedDefaultValue,
+      defaultAddValue: ''
     };
   },
 
@@ -87,6 +94,9 @@ export default {
 
   methods: {
     update() {
+      const exclude = this.exclude;
+
+      this.parsedDefaultValue.exclude = exclude;
       const valueString = JSON.stringify(this.parsedDefaultValue);
 
       if (this.openVlan) {
@@ -112,6 +122,16 @@ export default {
 
         if (!this.parsedDefaultValue.clusterNetwork) {
           errors.push(this.t('validation.required', { key: this.t('harvester.setting.storageNetwork.clusterNetwork') }, true));
+        }
+
+        if (this.exclude) {
+          const hasInvalidCIDR = this.exclude.find((cidr) => {
+            return !isValidCIDR(cidr);
+          });
+
+          if (hasInvalidCIDR) {
+            errors.push(this.t('harvester.setting.storageNetwork.exclude.invalid', null, true));
+          }
         }
       } else {
         return Promise.resolve();
@@ -172,6 +192,33 @@ export default {
         label-key="harvester.setting.storageNetwork.range.label"
       />
       <Tip class="mb-20" icon="icon icon-info" :text="t('harvester.setting.storageNetwork.tip')" />
+
+      <ArrayList
+        v-model="exclude"
+        :show-header="true"
+        :default-add-value="defaultAddValue"
+        :mode="mode"
+        :add-label="t('harvester.setting.storageNetwork.exclude.addIp')"
+        @input="update"
+      >
+        <template v-slot:column-headers>
+          <div class="box">
+            <div class="key">
+              {{ t('harvester.setting.storageNetwork.exclude.label') }}
+              <span class="required">*</span>
+            </div>
+          </div>
+        </template>
+        <template v-slot:columns="scope">
+          <div class="key">
+            <input
+              v-model="scope.row.value"
+              :placeholder="t('harvester.setting.storageNetwork.exclude.placeholder')"
+              @input="update"
+            />
+          </div>
+        </template>
+      </ArrayList>
     </div>
   </div>
 </template>
