@@ -11,8 +11,8 @@ export default {
      *      }
      * }
      */
-    uniqueDevices: {
-      type:     Object,
+    enabledDevices: {
+      type:     Array,
       required: true
     },
     /**
@@ -52,40 +52,22 @@ export default {
   },
 
   methods: {
-    deviceDescription(id) {
-      return (this.uniqueDevices[id]?.deviceCRDs || [])[0]?.status?.description;
-    },
-
     nodeNameFromId(id) {
       return this.devicesByNode[id]?.name;
     },
 
-    nodeHasDevice(nodeName, deviceId) {
-      const allNodesWithDevice = this.uniqueDevices[deviceId]?.nodes;
-
-      return allNodesWithDevice.includes(nodeName);
+    nodeHasDevice(nodeName, deviceCRD) {
+      return deviceCRD.status.nodeName === nodeName;
     },
 
-    vmsUsingDevice(id) {
-      const resourceName = this.uniqueDevices[id].deviceCRDs[0].status?.resourceName;
+    noneAvailable(deviceCRD) {
+      const name = deviceCRD.metadata?.name;
 
-      return this.devicesInUse[resourceName]?.usedBy || null;
+      return !!this.devicesInUse[name];
     },
 
-    noneAvailable(id) {
-      const resourceName = this.uniqueDevices[id].deviceCRDs[0].status?.resourceName;
-
-      const count = this.devicesInUse[resourceName]?.count || 0;
-
-      return count === this.uniqueDevices[id].deviceCRDs.length;
-    },
-
-    deviceTooltip(id) {
-      if (this.vmsUsingDevice(id)) {
-        return `${ this.deviceDescription(id) }<br/>${ this.t('harvester.pci.tooltip', { numVMs: this.vmsUsingDevice(id).length }) }`;
-      }
-
-      return this.deviceDescription(id);
+    deviceTooltip(deviceCRD) {
+      return `${ deviceCRD?.status?.resourceName }<br/>${ deviceCRD?.status?.description }`;
     }
   }
 };
@@ -94,20 +76,25 @@ export default {
 <template>
   <div class="compat-matrix">
     <div class="device-col node-names">
-      <div class="blank-corner" />
+      <div class="blank-corner">
+        <div class="text-right">
+          {{ t('harvester.pci.matrixDeviceClaimName') }}
+        </div>
+        <div>{{ t('harvester.pci.matrixHostName') }}</div>
+      </div>
       <div v-for="nodeName in allNodeNames" :key="nodeName" class="node-label">
         <span>  {{ nodeName }}</span>
       </div>
     </div>
-    <div v-for="deviceId in allDeviceIds" :key="deviceId" class="device-col">
-      <div v-tooltip="deviceTooltip(deviceId)" class="compat-cell device-label" :class="{'text-muted': noneAvailable(deviceId)}">
-        {{ deviceId }}
+    <div v-for="deviceCRD in enabledDevices" :key="deviceCRD.metadata.name" class="device-col">
+      <div v-tooltip="deviceTooltip(deviceCRD)" class="compat-cell device-label" :class="{'text-muted': noneAvailable(deviceCRD)}">
+        {{ deviceCRD.metadata.name }}
       </div>
       <div
         v-for="nodeName in allNodeNames"
         :key="nodeName"
         class="compat-cell"
-        :class="{'has-device': nodeHasDevice(nodeName, deviceId)}"
+        :class="{'has-device': nodeHasDevice(nodeName, deviceCRD)}"
       />
     </div>
   </div>
@@ -145,10 +132,26 @@ export default {
 }
 
 .node-label{
-    justify-content: flex-end;
+    padding: 0 10px;
+    justify-content: center;
 }
 
 .node-label, .device-label, .compat-cell, .blank-corner {
-    flex-basis: calc(1em + 10px);
+    flex-basis: calc(2em + 10px);
+}
+
+.blank-corner {
+  background: linear-gradient(
+              to top right,
+              #fff 0%,
+              #fff calc(50% - 1px),
+                var(--body-text) 50%,
+              #fff calc(50% + 1px),
+              #fff 100%
+           );
+
+  DIV.text-right {
+    padding-left: 80px;
+  }
 }
 </style>
