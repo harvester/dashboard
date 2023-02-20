@@ -192,6 +192,7 @@ harvester:
     compatibleNodes: Compatible Nodes
     impossibleSelection: 'There are no hosts with all of the selected devices.'
     howToUseDevice: 'Use the table below to enable PCI passthrough on each device you want to use in this VM.'
+    deviceInTheSameHost: 'You can only select devices on the same host.'
     showCompatibility: Show device compatibility matrix
     hideCompatibility: Hide device compatibility matrix
     claimError: Error enabling passthrough on {name}
@@ -206,6 +207,8 @@ harvester:
       suffix: to enable it to manage your PCI devices.
     noPCIPermission: Please contact system admin to enable the PCI devices first.
     enablePassthroughWarning: Please be careful not to use host-owned PCI devices (e.g., management and VLAN NICs). Incorrect device allocation may cause damage to your cluster, including node failure.
+    matrixHostName: Host Name
+    matrixDeviceClaimName: Device Claim Name
   generic:
     close: Close
     open: Open
