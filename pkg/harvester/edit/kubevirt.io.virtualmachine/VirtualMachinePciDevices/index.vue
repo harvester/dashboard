@@ -49,11 +49,9 @@ export default {
     for (const key in res) {
       this[key] = res[key];
     }
-    this.selectedDevices = (this.value?.domain?.devices?.hostDevices || []).map(({ deviceName, name }) => {
-      for (const deviceId in this.uniqueDevices) {
-        if (this.uniqueDevices[deviceId].deviceCRDs.some(device => device?.status?.resourceName === deviceName)) {
-          return deviceId;
-        }
+    this.selectedDevices = (this.value?.domain?.devices?.hostDevices || []).map(({ name }) => {
+      if (this.enabledDevices.find(device => device?.metadata?.name === name)) {
+        return name;
       }
     });
   },
@@ -71,13 +69,13 @@ export default {
 
   watch: {
     selectedDevices(neu) {
-      const formatted = neu.map((deviceUid, idx) => {
-        const deviceCRD = this.uniqueDevices[deviceUid].deviceCRDs[0];
+      const formatted = neu.map((selectedDevice) => {
+        const deviceCRD = this.enabledDevices.find(device => device.metadata.name === selectedDevice);
         const deviceName = deviceCRD?.status?.resourceName;
 
         return {
           deviceName,
-          name: `${ deviceName.split('/')[1] }${ idx + 1 }`
+          name: deviceCRD.metadata.name,
         };
       });
 
@@ -103,14 +101,7 @@ export default {
         const devices = get(vm, 'spec.template.spec.domain.devices.hostDevices') || [];
 
         devices.forEach((device) => {
-          if (!inUse[device.deviceName]) {
-            inUse[device.deviceName] = { count: 1, usedBy: [vm.metadata.name] };
-          } else {
-            inUse[device.deviceName].count = inUse[device.deviceName].count + 1;
-            if (!inUse[device.deviceName].usedBy.includes(vm.metadata.name)) {
-              inUse[device.deviceName].usedBy.push(vm.metadata.name);
-            }
-          }
+          inUse[device.name] = { usedBy: [vm.metadata.name] };
         });
 
         return inUse;
@@ -119,44 +110,18 @@ export default {
       return inUse;
     },
 
-    // pciDevice is one per device per node - if multiple nodes have device or multiple devices on a node there will be duplicate deviceID vendorID
-    uniqueDevices() {
-      const out = {};
-
-      this.enabledDevices.forEach((deviceCRD) => {
-        const uniqueId = deviceCRD.uniqueId;
-        const deviceNode = deviceCRD?.status?.nodeName;
-
-        if (!out[uniqueId]) {
-          out[uniqueId] = {
-            nodes:      [deviceNode],
-            deviceCRDs: [deviceCRD]
-          };
-        } else {
-          if (!out[uniqueId].nodes.includes(deviceNode)) {
-            out[uniqueId].nodes.push(deviceNode);
-          }
-          out[uniqueId].deviceCRDs.push(deviceCRD);
-        }
-      });
-
-      return out;
-    },
-
     devicesByNode() {
       const out = {};
 
-      for (const deviceUid in this.uniqueDevices) {
-        const nodesWithDevice = this.uniqueDevices[deviceUid].nodes;
+      this.enabledDevices.forEach((deviceCRD) => {
+        const nodeName = deviceCRD.status?.nodeName;
 
-        nodesWithDevice.forEach((node) => {
-          if (!out[node]) {
-            out[node] = [deviceUid];
-          } else {
-            out[node].push(deviceUid);
-          }
-        });
-      }
+        if (!out[nodeName]) {
+          out[nodeName] = [deviceCRD];
+        } else {
+          out[nodeName].push(deviceCRD);
+        }
+      });
 
       return out;
     },
@@ -167,9 +132,9 @@ export default {
 
       this.selectedDevices.forEach((deviceUid) => {
         remove(out, (nodeName) => {
-          const nodesWithDevice = this.uniqueDevices[deviceUid].nodes;
+          const device = this.enabledDevices.find(deviceCRD => deviceCRD.metadata.name === deviceUid);
 
-          return !nodesWithDevice.includes(nodeName);
+          return device.status.nodeName !== nodeName;
         });
       });
 
@@ -178,19 +143,21 @@ export default {
 
     // format an array of available devices for the dropdown
     deviceOpts() {
-      return Object.keys(this.uniqueDevices).map((deviceId) => {
-        const device = this.uniqueDevices[deviceId].deviceCRDs[0];
-        // .deviceCRDs is an array of every instance of this device enabled by this user: deviceCRDs.length == how many of this device have been enabled by the user
-        const numberOfDeviceEnabled = this.uniqueDevices[deviceId].deviceCRDs.length;
-        // how many times this device is listed in other VM spec
-        const numberOfDeviceInUse = this.devicesInUse[device?.status?.resourceName]?.count || 0;
+      const filteredOptions = this.enabledDevices.filter((deviceCRD) => {
+        if (this.selectedDevices.length > 0) {
+          const selectedDevice = this.enabledDevices.find(device => device.metadata.name === this.selectedDevices[0]);
 
+          return !this.devicesInUse[deviceCRD?.metadata.name] && deviceCRD.status.nodeName === selectedDevice.status.nodeName;
+        }
+
+        return !this.devicesInUse[deviceCRD?.metadata.name];
+      });
+
+      return filteredOptions.map((deviceCRD) => {
         return {
-          resourceName: device?.status?.resourceName,
-          value:        deviceId,
-          label:        deviceId,
-          // if the number of this device in use by other VMs is equal to the total number available, the device cannot be added to this VM
-          disabled:     numberOfDeviceInUse === numberOfDeviceEnabled
+          value:        deviceCRD?.metadata.name,
+          label:        deviceCRD?.metadata.name,
+          displayLabel: deviceCRD?.status?.resourceName,
         };
       });
     },
@@ -218,6 +185,9 @@ export default {
         <Banner color="info">
           <t k="harvester.pci.howToUseDevice" />
         </Banner>
+        <Banner v-if="selectedDevices.length > 0" color="info">
+          <t k="harvester.pci.deviceInTheSameHost" />
+        </Banner>
       </div>
     </div>
     <template v-if="enabledDevices.length">
@@ -230,9 +200,10 @@ export default {
             multiple
             taggable
             :options="deviceOpts"
+            :mode="mode"
           >
             <template #option="option">
-              <span>{{ option.value }} <span class="text-label">{{ option.resourceName }}</span></span>
+              <span>{{ option.value }} <span class="text-label">({{ option.displayLabel }})</span></span>
             </template>
           </LabeledSelect>
         </div>
@@ -252,7 +223,7 @@ export default {
       </button>
       <div v-if="showMatrix" class="row mt-20">
         <div class="col span-12">
-          <CompatibilityMatrix :unique-devices="uniqueDevices" :devices-by-node="devicesByNode" :devices-in-use="devicesInUse" />
+          <CompatibilityMatrix :enabled-devices="enabledDevices" :devices-by-node="devicesByNode" :devices-in-use="devicesInUse" />
         </div>
       </div>
     </template>
