@@ -3,7 +3,7 @@ import { isEmpty } from 'lodash';
 import { set, clone } from '@shell/utils/object';
 import HarvesterResource from './harvester';
 import { HCI } from '../types';
-import { insertAt } from '@shell/utils/array';
+import { insertAt, findBy } from '@shell/utils/array';
 import { HOSTNAME } from '@shell/config/labels-annotations';
 import { matching } from '@shell/utils/selector';
 import { NODE } from '@shell/config/types';
@@ -82,14 +82,22 @@ export default class HciVlanConfig extends HarvesterResource {
     const nodes = this.selectedNodes.map(n => n.id) || [];
     const vlanStatuses = this.$rootGetters[`${ this.inStore }/all`](HCI.VLAN_STATUS);
 
-    return vlanStatuses.filter(s => nodes.includes(s?.status?.node)) || [];
+    return vlanStatuses.filter((s) => {
+      return nodes.includes(s?.status?.node) &&
+              this.id === s?.status?.vlanConfig;
+    }) || [];
   }
 
   get isReady() {
-    if (this.vlanStatuses.length === 0) {
+    if (this.vlanStatuses.length !== this.selectedNodes.length) {
       return false;
     } else {
-      const states = this.vlanStatuses.filter(s => s.metadata?.state?.name === 'active');
+      const states = this.vlanStatuses.filter((s) => {
+        const conditions = s.status?.conditions || [];
+        const readyCondition = findBy(conditions, 'type', 'ready') || {};
+
+        return readyCondition.status === 'True';
+      });
 
       return states.length === this.vlanStatuses.length;
     }

@@ -84,9 +84,13 @@ export default {
       const clusterNetworks = this.$store.getters[`${ inStore }/all`](HCI.CLUSTER_NETWORK) || [];
 
       return clusterNetworks.map((n) => {
+        const readyCondition = (n?.status?.conditions || []).find(c => c.type === 'ready') || {};
+        const disabled = readyCondition?.status !== 'True';
+
         return {
-          label: n.id,
+          label: disabled ? `${ n.id } (${ this.t('fleet.fleetSummary.state.notReady') })` : n.id,
           value: n.id,
+          disabled,
         };
       });
     },
@@ -205,7 +209,6 @@ export default {
           <div class="box">
             <div class="key">
               {{ t('harvester.setting.storageNetwork.exclude.label') }}
-              <span class="required">*</span>
             </div>
           </div>
         </template>
