@@ -60,6 +60,19 @@ const getters = {
 
   uploadingImages(state) {
     return state.uploadingImages;
+  },
+
+  getHarvesterClusterUrl: (state, getters, rootState, rootGetters) => (url) => {
+    // returns in multiple clusters: /k8s/clusters/${ clusterId }/${url}
+    // Directly return the passed url in a single cluster
+    if (rootGetters['isMultiCluster']) {
+      const clusterId = rootGetters['clusterId'];
+      const multipleClusterUrl = `/k8s/clusters/${ clusterId }/${ url }`;
+
+      return `${ multipleClusterUrl }`;
+    } else {
+      return url;
+    }
   }
 };
 
