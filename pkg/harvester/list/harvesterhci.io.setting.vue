@@ -154,7 +154,9 @@ export default {
 
     async testConnect(buttonDone, value) {
       try {
-        const healthz = await this.$store.dispatch('harvester/request', { url: 'v1/harvester/backuptarget/healthz' });
+        const url = this.$store.getters['harvester-common/getHarvesterClusterUrl']('v1/harvester/backuptarget/healthz');
+
+        const healthz = await this.$store.dispatch('harvester/request', { url });
         const settingValue = JSON.parse(value);
 
         if (healthz?._status === 200) {
@@ -225,7 +227,7 @@ export default {
 
           <AsyncButton
             v-if="setting.id === HCI_SETTING.BACKUP_TARGET"
-            class="backupButton"
+            class="backupButton ml-5"
             mode="apply"
             size="sm"
             :delay="0"
