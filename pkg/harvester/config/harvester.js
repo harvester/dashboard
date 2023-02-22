@@ -642,7 +642,7 @@ export function init($plugin, store) {
     resource:           SECRET,
     resourceDetail:     HCI.SECRET,
     resourceEdit:       HCI.SECRET,
-    notFilterNamespace: ['cattle-monitoring-system']
+    notFilterNamespace: ['cattle-monitoring-system', 'cattle-logging-system']
   });
 
   virtualType({
