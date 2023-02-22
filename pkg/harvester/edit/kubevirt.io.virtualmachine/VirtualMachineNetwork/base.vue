@@ -92,16 +92,21 @@ export default {
     },
 
     allNetworkOption() {
-      const out = clone(this.networkOption);
+      const vlanNetwork = clone(this.networkOption);
+      const managementNetwork = [{
+        label: MANAGEMENT_NETWORK,
+        value: MANAGEMENT_NETWORK
+      }];
 
-      if (!this.hasManagementNetwork) {
-        out.unshift({
-          label: MANAGEMENT_NETWORK,
-          value: MANAGEMENT_NETWORK
-        });
+      if (this.value.newCreateId && this.hasManagementNetwork) {
+        return vlanNetwork;
+      } else if (this.value.newCreateId && !this.hasManagementNetwork) {
+        return [...managementNetwork, ...vlanNetwork];
+      } else if (this.isMasquerade) {
+        return managementNetwork;
+      } else {
+        return vlanNetwork;
       }
-
-      return out;
     },
 
     typeOption() {
@@ -116,13 +121,7 @@ export default {
       const other = [{
         label: 'bridge',
         value: 'bridge'
-      }
-      // Temporarily Remove
-      // , {
-      //   label: 'sriov',
-      //   value: 'sriov'
-      // }
-      ];
+      }];
 
       return this.isMasquerade ? masquerade : other;
     }
