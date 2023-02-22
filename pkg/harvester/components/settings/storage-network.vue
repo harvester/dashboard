@@ -8,6 +8,8 @@ import { _EDIT } from '@shell/config/query-params';
 import { Banner } from '@components/Banner';
 import Tip from '@shell/components/Tip';
 import { HCI } from '../../types';
+import { allHash } from '@shell/utils/promise';
+import { NODE } from '@shell/config/types';
 
 export default {
   name: 'HarvesterEditStorageNetwork',
@@ -43,7 +45,11 @@ export default {
   async fetch() {
     const inStore = this.$store.getters['currentProduct'].inStore;
 
-    await this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.CLUSTER_NETWORK });
+    await allHash({
+      clusterNetworks: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.CLUSTER_NETWORK }),
+      vlanStatus:      this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VLAN_STATUS }),
+      nodes:           this.$store.dispatch(`${ inStore }/findAll`, { type: NODE }),
+    });
   },
 
   data() {
@@ -84,11 +90,10 @@ export default {
       const clusterNetworks = this.$store.getters[`${ inStore }/all`](HCI.CLUSTER_NETWORK) || [];
 
       return clusterNetworks.map((n) => {
-        const readyCondition = (n?.status?.conditions || []).find(c => c.type === 'ready') || {};
-        const disabled = readyCondition?.status !== 'True';
+        const disabled = !n.isReadyForStorageNetwork;
 
         return {
-          label: disabled ? `${ n.id } (${ this.t('fleet.fleetSummary.state.notReady') })` : n.id,
+          label: disabled ? `${ n.id } (${ this.t('generic.notReady') })` : n.id,
           value: n.id,
           disabled,
         };
