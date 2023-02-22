@@ -1,6 +1,7 @@
 import { HCI } from '../types';
 import { clone } from '@shell/utils/object';
 import HarvesterResource from './harvester';
+import { NODE } from '@shell/config/types';
 
 export default class HciClusterNetwork extends HarvesterResource {
   get doneOverride() {
@@ -33,5 +34,35 @@ export default class HciClusterNetwork extends HarvesterResource {
     const readyCondition = (this?.status?.conditions || []).find(c => c.type === 'ready') || {};
 
     return readyCondition?.status === 'True';
+  }
+
+  get inStore() {
+    return this.$rootGetters['currentProduct'].inStore;
+  }
+
+  get nodes() {
+    const nodes = this.$rootGetters[`${ this.inStore }/all`](NODE);
+
+    return nodes.filter(n => !n.isUnSchedulable);
+  }
+
+  get vlanStatuses() {
+    const vlanStatuses = this.$rootGetters[`${ this.inStore }/all`](HCI.VLAN_STATUS);
+    const nodeIds = this.nodes.map(n => n.id);
+
+    return vlanStatuses.filter((s) => {
+      return nodeIds.includes(s?.status?.node) &&
+              this.id === s?.status?.clusterNetwork;
+    }) || [];
+  }
+
+  get isReadyForStorageNetwork() {
+    if (this.id === 'mgmt') {
+      return true;
+    } else {
+      const readyStatuses = this.vlanStatuses.filter(s => s.isReady) || [];
+
+      return readyStatuses.length === this.nodes.length && this.isReady;
+    }
   }
 }

@@ -86,11 +86,10 @@ export default {
       const clusterNetworks = this.$store.getters[`${ inStore }/all`](HCI.CLUSTER_NETWORK) || [];
 
       return clusterNetworks.map((n) => {
-        const readyCondition = (n?.status?.conditions || []).find(c => c.type === 'ready') || {};
-        const disabled = readyCondition?.status !== 'True';
+        const disabled = !n.isReady;
 
         return {
-          label: disabled ? `${ n.id } (${ this.t('fleet.fleetSummary.state.notReady') })` : n.id,
+          label: disabled ? `${ n.id } (${ this.t('generic.notReady') })` : n.id,
           value: n.id,
           disabled,
         };
