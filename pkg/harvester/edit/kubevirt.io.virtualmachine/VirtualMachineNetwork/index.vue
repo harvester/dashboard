@@ -8,7 +8,7 @@ import { sortBy } from '@shell/utils/sort';
 import { clone } from '@shell/utils/object';
 import { randomStr } from '@shell/utils/string';
 import { removeObject } from '@shell/utils/array';
-import { _VIEW } from '@shell/config/query-params';
+import { _VIEW, _CREATE } from '@shell/config/query-params';
 
 export default {
   components: { InfoBox, Base },
@@ -28,6 +28,10 @@ export default {
   },
 
   data() {
+    if (this.mode === _CREATE && this.value.length === 1) {
+      this.value[0].newCreateId = randomStr(10);
+    }
+
     return {
       rows:    clone(this.value),
       nameIdx: 1
@@ -118,6 +122,7 @@ export default {
       <h3> {{ t('harvester.virtualMachine.network.title') }} </h3>
 
       <Base
+        :key="rows[i].name"
         v-model="rows[i]"
         :rows="rows"
         :mode="mode"
