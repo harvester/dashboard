@@ -229,7 +229,7 @@ export default {
         // By default, include the namespace in the dropdown.
         let out = true;
 
-        if (this.currentProduct?.customNamespaceFilter && this.currentProduct?.inStore) {
+        if (this.currentProduct?.customNamespaceFilter && this.currentProduct?.inStore && filterNamespace) {
           out = filterNamespace.find(NS => NS.metadata.name === namespace.metadata.name);
         } else if (this.currentProduct?.hideSystemResources) {
           // Filter out the namespace
