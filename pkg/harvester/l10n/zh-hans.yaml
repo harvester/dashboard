@@ -1,6 +1,8 @@
 generic:
   tip: 提示
   resourceExternalLinkTips: '外部链接'
+  namespace: 命名空间
+  notReady: 未就绪
 
 nav:
   group:
@@ -735,6 +737,11 @@ harvester:
         invalid: '范围无效。'
       clusterNetwork: 集群网络
       vlan: VLAN ID
+      exclude:
+        label: 排除
+        placeholder: 例如：172.16.0.1/32
+        invalid: '"排除列表"无效。'
+        addIp: 添加排除 IP
       warning: '警告：<br/>如果要更改存储网络，你需要在应用此设置之前关闭所有虚拟机。<br/>用户必须确保配置了集群网络，VLAN 配置能覆盖所有节点，而且所有节点的网络正常。'
       tip: IP 范围格式是 IPv4 CIDR，而且是集群节点数的 4 倍。
     vmForceDeletionPolicy:
@@ -894,6 +901,8 @@ harvester:
   vlanConfig:
     title: 网络配置
     createNetworkConfig: 创建网络配置
+    action:
+      migrate: 迁移
     titles:
       nodeSelector: 节点选择器
       uplink: Uplink
@@ -940,6 +949,8 @@ harvester:
         label: 创建集群网络
     clusterNetwork: 没有定义的网络配置。
     mgmt: mgmt 是一个内置的集群管理网络，它不支持其它网络配置。
+    notExist: '集群网络 "{ clusterNetwork }" 不存在'
+    notReady: '集群网络 "{ clusterNetwork }" 未就绪'
   
   addons:
     descriptions:
@@ -952,6 +963,11 @@ harvester:
   
   secret:
     label: 密文
+
+  harvesterVlanConfigMigrateDialog:
+    targetClusterNetwork: 
+      label: 目标集群网络
+      placeholder: 选择目标集群网络
 
 advancedSettings:
   descriptions:
