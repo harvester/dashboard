@@ -249,6 +249,7 @@ $transition-duration: 150ms;
   border-radius: 3px;
   color: var(--link);
   margin-left: $input-padding-sm;
+  white-space: nowrap;
 
   &:not(:last-of-type) {
     margin-right: 2px;
