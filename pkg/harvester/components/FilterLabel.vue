@@ -1,13 +1,15 @@
 <script>
 import ArrayList from '@shell/components/form/ArrayList';
 import Select from '@shell/components/form/Select';
+import LabeledInput from '@components/Form/LabeledInput/LabeledInput.vue';
 
 export default {
   name: 'HarvesterFilterLabel',
 
   components: {
     Select,
-    ArrayList
+    ArrayList,
+    LabeledInput
   },
 
   props: {
@@ -178,7 +180,7 @@ export default {
                     :options="calcValueOptions(scope.row.value.key)"
                     @input="filterRows"
                   />
-                  <input v-else v-model="scope.row.value.value" class="input-sm" type="search" @input="filterRows" />
+                  <LabeledInput v-else v-model="scope.row.value.value" @input="filterRows" />
                 </div>
               </template>
 
@@ -236,17 +238,7 @@ export default {
   display: grid;
   grid-template-columns: 40% 40% 10%;
   column-gap: 1.75%;
-  align-items: center;
   margin-bottom: 10px;
-
-  .key,
-  .value {
-    height: 100%;
-
-    INPUT {
-      height: $unlabeled-input-height;
-    }
-  }
 }
 
 .required {
