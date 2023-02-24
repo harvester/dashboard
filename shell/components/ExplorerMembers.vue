@@ -243,7 +243,7 @@ export default {
       :create-location="createLocation"
       :create-button-label="t('members.createActionLabel')"
       :is-creatable="false"
-      :type-display="t('members.clusterAndProject')"
+      :type-display="t('members.clusterMembers')"
     />
     <Banner
       v-if="isLocal"
