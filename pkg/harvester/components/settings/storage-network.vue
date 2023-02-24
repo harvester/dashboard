@@ -103,9 +103,14 @@ export default {
 
   methods: {
     update() {
-      const exclude = this.exclude;
+      const exclude = this.exclude.filter(ip => ip);
 
-      this.parsedDefaultValue.exclude = exclude;
+      if (Array.isArray(exclude) && exclude.length > 0) {
+        this.parsedDefaultValue.exclude = exclude;
+      } else {
+        delete this.parsedDefaultValue.exclude;
+      }
+
       const valueString = JSON.stringify(this.parsedDefaultValue);
 
       if (this.openVlan) {
@@ -116,6 +121,7 @@ export default {
     },
 
     willSave() {
+      this.update();
       const errors = [];
 
       if (this.openVlan) {
