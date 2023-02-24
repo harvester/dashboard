@@ -21,14 +21,14 @@ export function monitoringStatus() {
   };
 }
 
-export function haveV2Monitoring(getters) {
+export function haveV2Monitoring(getters, storeName = 'cluster') {
   // Can't have V2 and V1 monitoring installed, so if V1 is installed we know v2 is not
   if (haveV1Monitoring(getters)) {
     return false;
   }
 
   // Just check for the pod monitors CRD
-  const schemas = getters[`cluster/all`](SCHEMA);
+  const schemas = getters[`${ storeName }/all`](SCHEMA);
   const exists = findBy(schemas, 'id', normalizeType(MONITORING.PODMONITOR));
 
   return !!exists;

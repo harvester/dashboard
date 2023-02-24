@@ -21,7 +21,7 @@ export function computeDashboardUrl(embedUrl, clusterId, params) {
 }
 
 export async function dashboardExists(store, clusterId, embedUrl, storeName = 'cluster') {
-  if ( !haveV2Monitoring(store.getters) ) {
+  if ( !haveV2Monitoring(store.getters, storeName) ) {
     return false;
   }
 
