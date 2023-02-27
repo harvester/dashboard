@@ -473,7 +473,7 @@ harvester:
       network:
         label: 网络数据模板
         title: "网络数据："
-        tip: "通过分配子网配置，创建虚拟设备（bonds，bridges，Vlan）路由和 DNS 配置，来自定义实例的网络接口。<a href='https://cloudinit.readthedocs.io/en/latest/topics/network-config-format-v1.html' target='_blank'>了解更多</a>"
+        tip: "通过分配子网配置，创建虚拟设备（bonds，bridges，Vlan）路由和 DNS 配置，来自定义实例的网络接口。<a href='https://cloudinit.readthedocs.io/en/latest/reference/network-config-format-v1.html' target='_blank'>了解更多</a>"
     scheduling:
       affinity:
         anyNode: '在任何可用节点上运行虚拟机'
