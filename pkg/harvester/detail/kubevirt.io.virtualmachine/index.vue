@@ -159,7 +159,7 @@ export default {
   <div>
     <Tabbed v-bind="$attrs" class="mt-15" :side-tabs="true" @changed="onTabChanged">
       <Tab name="basics" :label="t('harvester.virtualMachine.detail.tabs.basics')" class="bordered-table" :weight="7">
-        <OverviewBasics v-model="value" :resource="vmi" mode="view" />
+        <OverviewBasics v-model="value" :vmi="vmi" mode="view" />
       </Tab>
 
       <Tab name="disks" :label="t('harvester.tab.volume')" class="bordered-table" :weight="6">

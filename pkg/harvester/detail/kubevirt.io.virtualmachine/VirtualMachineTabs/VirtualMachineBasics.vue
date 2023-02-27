@@ -9,7 +9,7 @@ import CreateEditView from '@shell/mixins/create-edit-view';
 const UNDEFINED = 'n/a';
 
 export default {
-  name: 'Details',
+  name: 'VMDetailsBasics',
 
   components: {
     VMConsoleBar,
@@ -25,7 +25,7 @@ export default {
       type:     Object,
       required: true
     },
-    resource: {
+    vmi: {
       type:     Object,
       required: true,
       default:  () => {
@@ -50,11 +50,15 @@ export default {
     },
 
     node() {
-      return this.resource?.status?.nodeName || UNDEFINED;
+      const node = this.vmi?.status?.nodeName || UNDEFINED;
+
+      return this.isDown ? this.t('harvester.virtualMachine.detail.details.down') : node;
     },
 
     hostname() {
-      return this.resource?.spec?.hostname || this.resource?.status?.guestOSInfo?.hostname;
+      const hostName = this.vmi?.spec?.hostname || this.vmi?.status?.guestOSInfo?.hostname || this.t('harvester.virtualMachine.detail.GuestAgentNotInstalled');
+
+      return this.isDown ? this.t('harvester.virtualMachine.detail.details.down') : hostName;
     },
 
     imageName() {
@@ -96,15 +100,19 @@ export default {
     },
 
     kernelRelease() {
-      return this.resource?.status?.guestOSInfo?.kernelRelease;
+      const kernelRelease = this.vmi?.status?.guestOSInfo?.kernelRelease || this.t('harvester.virtualMachine.detail.GuestAgentNotInstalled');
+
+      return this.isDown ? this.t('harvester.virtualMachine.detail.details.down') : kernelRelease;
     },
 
     operatingSystem() {
-      return this.resource?.status?.guestOSInfo?.prettyName;
+      const operatingSystem = this.vmi?.status?.guestOSInfo?.prettyName || this.t('harvester.virtualMachine.detail.GuestAgentNotInstalled');
+
+      return this.isDown ? this.t('harvester.virtualMachine.detail.details.down') : operatingSystem;
     },
 
     isDown() {
-      return this.isEmpty(this.resource);
+      return this.isEmpty(this.vmi);
     },
 
     machineType() {
@@ -151,11 +159,8 @@ export default {
       <div class="col span-6">
         <LabelValue :name="t('harvester.virtualMachine.detail.details.hostname')" :value="hostname">
           <template #value>
-            <div v-if="!isDown">
-              {{ hostname || t("harvester.virtualMachine.detail.GuestAgentNotInstalled") }}
-            </div>
-            <div v-else>
-              {{ t("harvester.virtualMachine.detail.details.down") }}
+            <div>
+              {{ hostname }}
             </div>
           </template>
         </LabelValue>
@@ -164,11 +169,8 @@ export default {
       <div class="col span-6">
         <LabelValue :name="t('harvester.virtualMachine.detail.details.node')" :value="node">
           <template #value>
-            <div v-if="!isDown">
+            <div>
               {{ node }}
-            </div>
-            <div v-else>
-              {{ t("harvester.virtualMachine.detail.details.down") }}
             </div>
           </template>
         </LabelValue>
@@ -224,13 +226,13 @@ export default {
     </div>
     <div class="row">
       <div class="col span-6">
-        <LabelValue :name="t('harvester.virtualMachine.detail.details.operatingSystem')" :value="operatingSystem || t('harvester.virtualMachine.detail.GuestAgentNotInstalled')" />
+        <LabelValue :name="t('harvester.virtualMachine.detail.details.operatingSystem')" :value="operatingSystem" />
       </div>
       <LabelValue :name="t('harvester.virtualMachine.detail.details.flavor')" :value="flavor" />
     </div>
     <div class="row">
       <div class="col span-6">
-        <LabelValue :name="t('harvester.virtualMachine.detail.details.kernelRelease')" :value="kernelRelease || t('harvester.virtualMachine.detail.GuestAgentNotInstalled')" />
+        <LabelValue :name="t('harvester.virtualMachine.detail.details.kernelRelease')" :value="kernelRelease" />
       </div>
 
       <div class="col span-6">
