@@ -221,13 +221,14 @@ export default {
 
   async created() {
     await this.$store.dispatch(`${ this.inStore }/findAll`, { type: SECRET });
-
-    this.getInitConfig({ value: this.value });
+    this.getInitConfig({ value: this.value, init: this.isCreate });
   },
 
   methods: {
     getInitConfig(config) {
-      const { value, existUserData } = config;
+      const {
+        value, existUserData, fromTemplate = false, init = false
+      } = config;
 
       const vm = this.resource === HCI.VM ? value : this.resource === HCI.BACKUP ? this.value.status?.source : value.spec.vm;
 
@@ -259,7 +260,7 @@ export default {
 
       const imageId = this.getRootImageId(vm) || '';
       const diskRows = this.getDiskRows(vm);
-      const networkRows = this.getNetworkRows(vm);
+      const networkRows = this.getNetworkRows(vm, { fromTemplate, init });
       const hasCreateVolumes = this.getHasCreatedVolumes(spec) || [];
 
       let { userData = undefined, networkData = undefined } = this.getCloudInitNoCloud(spec);
@@ -447,7 +448,9 @@ export default {
       return out.filter( O => O.name !== 'cloudinitdisk');
     },
 
-    getNetworkRows(vm) {
+    getNetworkRows(vm, config) {
+      const { fromTemplate = false, init = false } = config;
+
       const networks = vm.spec.template.spec.networks || [];
       const interfaces = vm.spec.template.spec.domain.devices.interfaces || [];
 
@@ -463,6 +466,7 @@ export default {
           index,
           type,
           isPod,
+          newCreateId: (fromTemplate || init) ? randomStr(10) : false,
           model:       I.model,
           networkName: isPod ? MANAGEMENT_NETWORK : network?.multus?.networkName,
         };
