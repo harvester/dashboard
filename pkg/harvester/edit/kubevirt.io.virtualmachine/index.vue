@@ -219,7 +219,7 @@ export default {
         this.templateId = '';
         this.templateVersionId = '';
         this.value.applyDefaults();
-        this.getInitConfig({ value: this.value });
+        this.getInitConfig({ value: this.value, init: this.isCreate });
       }
     },
   },
