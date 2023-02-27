@@ -8,7 +8,7 @@ import { sortBy } from '@shell/utils/sort';
 import { clone } from '@shell/utils/object';
 import { randomStr } from '@shell/utils/string';
 import { removeObject } from '@shell/utils/array';
-import { _VIEW, _CREATE } from '@shell/config/query-params';
+import { _VIEW } from '@shell/config/query-params';
 
 export default {
   components: { InfoBox, Base },
@@ -28,12 +28,8 @@ export default {
   },
 
   data() {
-    if (this.mode === _CREATE && this.value.length === 1) {
-      this.value[0].newCreateId = randomStr(10);
-    }
-
     return {
-      rows:    clone(this.value),
+      rows:    this.addKeyId(clone(this.value)),
       nameIdx: 1
     };
   },
@@ -81,6 +77,7 @@ export default {
         model:       'virtio',
         type:        'bridge',
         newCreateId: randomStr(10),
+        rowKeyId:    randomStr(10)
       };
 
       this.rows.push(neu);
@@ -90,6 +87,15 @@ export default {
     remove(vol) {
       removeObject(this.rows, vol);
       this.update();
+    },
+
+    addKeyId(row) {
+      return row.map((R) => {
+        return {
+          ...R,
+          rowKeyId: randomStr(10)
+        };
+      });
     },
 
     generateName() {
@@ -122,7 +128,7 @@ export default {
       <h3> {{ t('harvester.virtualMachine.network.title') }} </h3>
 
       <Base
-        :key="rows[i].name"
+        :key="rows[i].rowKeyId"
         v-model="rows[i]"
         :rows="rows"
         :mode="mode"
