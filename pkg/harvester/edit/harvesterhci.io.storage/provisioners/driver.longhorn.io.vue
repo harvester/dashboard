@@ -34,10 +34,14 @@ export default {
       type:     String,
       required: true
     },
+    realMode: {
+      type:     String,
+      required: true
+    },
   },
 
   data() {
-    if (this.mode === _CREATE) {
+    if (this.realMode === _CREATE) {
       this.$set(this.value, 'parameters', {
         numberOfReplicas:    '3',
         staleReplicaTimeout: '30',

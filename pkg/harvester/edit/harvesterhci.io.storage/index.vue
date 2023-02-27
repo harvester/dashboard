@@ -195,6 +195,7 @@ export default {
           :key="value.provisioner"
           :value="value"
           :mode="modeOverride"
+          :real-mode="realMode"
         />
       </Tab>
       <Tab name="customize" :label="t('storageClass.customize.label')">
