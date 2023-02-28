@@ -161,6 +161,7 @@ export default {
           type="text"
           size="small"
           @blur="confirmAdd"
+          @keydown.enter.prevent="confirmAdd"
         />
       </span>
     </div>
