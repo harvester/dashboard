@@ -8,6 +8,9 @@ nav:
   group:
     networks: Networks
     backupAndSnapshot: Backup & Snapshot
+    Monitoring: Monitoring
+    Logging: Logging
+    'Monitoring & Logging': Monitoring & Logging
 
 asyncButton:
   restart:
