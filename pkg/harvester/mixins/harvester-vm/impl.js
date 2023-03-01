@@ -135,6 +135,10 @@ export default {
       return !!(spec?.template?.spec?.domain?.features?.smm && spec?.template?.spec?.domain?.firmware?.bootloader?.efi);
     },
 
+    isTpmEnabled(spec) {
+      return !!spec?.template?.spec?.domain?.devices?.tpm ;
+    },
+
     isSecureBoot(spec) {
       return !!spec?.template?.spec?.domain?.firmware?.bootloader?.efi?.secureBoot;
     },
