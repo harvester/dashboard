@@ -169,7 +169,7 @@ export default {
       <div class="row mt-10">
         <div class="col span-12">
           <div class="pull-right">
-            Conditions:
+            {{ t('harvester.host.disk.conditions') }}:
             <BadgeState
               v-tooltip="readyCondition.message"
               :color="readyCondition.status === 'True' ? 'bg-success' : 'bg-error' "
@@ -197,15 +197,15 @@ export default {
       <div v-if="!value.isNew" class="row mt-30">
         <div class="col flex span-12">
           <LabelValue
-            name="Storage Available"
+            :name="t('harvester.host.disk.storageAvailable.label')"
             :value="value.storageAvailable"
           />
           <LabelValue
-            name="Storage Scheduled"
+            :name="t('harvester.host.disk.storageScheduled.label')"
             :value="value.storageScheduled"
           />
           <LabelValue
-            name="Storage Max"
+            :name="t('harvester.host.disk.storageMaximum.label')"
             :value="value.storageMaximum"
           />
         </div>

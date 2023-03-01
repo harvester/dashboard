@@ -373,6 +373,13 @@ harvester:
       tags:
         label: Disk Tags
         addLabel: Add Disk Tag
+      conditions: Conditions
+      storageAvailable:
+        label: Storage Available 
+      storageScheduled:
+        label: Storage Scheduled
+      storageMaximum:
+        label: Storage Maximum
     tags:
       label: Host Tags
       addLabel: Add Host Tag
