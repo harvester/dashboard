@@ -319,6 +319,14 @@ export default {
         />
 
         <Checkbox
+          v-model="tpmEnabled"
+          class="check"
+          type="checkbox"
+          label-key="harvester.virtualMachine.advancedOptions.tpm"
+          :mode="mode"
+        />
+
+        <Checkbox
           v-model="efiEnabled"
           class="check"
           type="checkbox"

@@ -140,6 +140,7 @@ export default {
       reservedMemory:             null,
       accessCredentials:          [],
       efiEnabled:                 false,
+      tpmEnabled:                 false,
       secureBoot:                 false,
       userDataTemplateId:         '',
       saveUserDataAsClearText:    false,
@@ -283,6 +284,7 @@ export default {
       const installUSBTablet = this.isInstallUSBTablet(spec);
       const installAgent = this.hasInstallAgent(userData, osType, true);
       const efiEnabled = this.isEfiEnabled(spec);
+      const tpmEnabled = this.isTpmEnabled(spec);
       const secureBoot = this.isSecureBoot(spec);
 
       const secretRef = this.getSecret(spec);
@@ -311,6 +313,7 @@ export default {
 
       this.$set(this, 'installUSBTablet', installUSBTablet);
       this.$set(this, 'efiEnabled', efiEnabled);
+      this.$set(this, 'tpmEnabled', tpmEnabled);
       this.$set(this, 'secureBoot', secureBoot);
 
       this.$set(this, 'hasCreateVolumes', hasCreateVolumes);
@@ -1245,6 +1248,14 @@ export default {
       }
     },
 
+    setTPM(tpmEnabled) {
+      if (tpmEnabled) {
+        set(this.spec.template.spec.domain.devices, 'tpm', {});
+      } else {
+        this.$delete(this.spec.template.spec.domain.devices, 'tpm');
+      }
+    },
+
     deleteSSHFromUserData(ssh = []) {
       const sshAuthorizedKeys = this.getSSHFromUserData(this.userScript);
 
@@ -1354,6 +1365,10 @@ export default {
 
     secureBoot(val) {
       this.setBootMethod({ efi: this.efiEnabled, secureBoot: val });
+    },
+
+    tpmEnabled(val) {
+      this.setTPM(val);
     },
 
     installAgent: {
