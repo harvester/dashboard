@@ -8,6 +8,9 @@ nav:
   group:
     networks: 网络
     backupAndSnapshot: 备份 & 快照
+    Monitoring: 监控
+    Logging: 日志
+    'Monitoring & Logging': 监控 & 日志
 
 asyncButton:
   restart:
