@@ -195,6 +195,7 @@ harvester:
     compatibleNodes: 兼容节点
     impossibleSelection: '没有具有所选设备的主机。'
     howToUseDevice: '使用下表，在你想在这个 VM 中使用的每个设备上启用 PCI 透传'
+    deviceInTheSameHost: '你只能选择同一主机上的设备。'
     showCompatibility: 显示设备兼容性矩阵
     hideCompatibility: 隐藏设备兼容性矩阵
     claimError: 在 {name} 上启用透传时出错
@@ -209,6 +210,8 @@ harvester:
       suffix: 使它能够管理你的 PCI 设备。
     noPCIPermission: 请联系系统管理员启用 PCI 设备。
     enablePassthroughWarning: 请不要使用宿主机专用的 PCI 设备（例如，管理网络和 VLAN 网络的网卡）。错误的设备分配可能会损坏你的集群（包括节点故障）。
+    matrixHostName: 主机名
+    matrixDeviceClaimName: 设备声明名称
   generic:
     close: 关闭
     open: 打开
@@ -370,6 +373,13 @@ harvester:
       tags:
         label: 磁盘标签
         addLabel: 添加磁盘标签
+      conditions: 状态
+      storageAvailable:
+        label: 可用存储
+      storageScheduled:
+        label: 已调度存储
+      storageMaximum:
+        label: 最大存储
     tags:
       label: 主机标签
       addLabel: 添加主机标签
