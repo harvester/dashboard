@@ -638,6 +638,7 @@ harvester:
     upgradeTip: Please select the version you want to upgrade to
     currentVersion: CURRENT VERSION
     versionLabel: AVAILABLE COMPATIBLE VERSIONS
+    enableLogging: Enable Logging
     upgradeNode: Upgrading Node
     upgradeSysService: Upgrading System Service
     upgradeImage: Download Upgrade Image
