@@ -165,6 +165,10 @@ export default {
     hasStartAction() {
       return this.value.hasAction('start');
     },
+
+    affinityNsModeLabel() {
+      return [this.t('cluster.credential.harvester.affinity.thisPodNamespace'), this.t('cluster.credential.harvester.affinity.matchExpressions.inNamespaces'), this.t('cluster.credential.harvester.affinity.namespaces.label')];
+    },
   },
 
   watch: {
@@ -540,7 +544,14 @@ export default {
 
       <Tab :label="t('harvester.tab.vmScheduling')" name="vmScheduling" :weight="-4">
         <template #default="{active}">
-          <PodAffinity :key="active" :mode="mode" :value="spec.template.spec" :nodes="nodes" :namespaces="filteredNamespaces" />
+          <PodAffinity
+            :key="active"
+            :mode="mode"
+            :value="spec.template.spec"
+            :nodes="nodes"
+            :namespaces="filteredNamespaces"
+            :overwrite-ns-mode-label="affinityNsModeLabel"
+          />
         </template>
       </Tab>
 

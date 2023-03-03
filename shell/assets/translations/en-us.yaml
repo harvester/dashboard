@@ -1264,8 +1264,13 @@ cluster:
       placeholder: 'Namespace/Name'
       cluster: Imported Harvester Cluster
       affinity:
+        thisPodNamespace: This VM's namespace
+        matchExpressions:
+          inNamespaces: "Workloads in these namespaces"
+        vmAffinityTitle: VM Scheduling
         namespaces:
           placeholder: e.g. default,system,base
+          label: Namespaces
       installGuestAgent: Install guest agent
   description:
     label: Cluster Description

@@ -1,4 +1,5 @@
 <script>
+import { mapGetters } from 'vuex';
 import { _VIEW } from '@shell/config/query-params';
 import { get, set, isEmpty, clone } from '@shell/utils/object';
 import { POD, NODE, NAMESPACE } from '@shell/config/types';
@@ -40,6 +41,12 @@ export default {
       type:    Array,
       default: null
     },
+
+    overwriteNsModeLabel: {
+      type:    Array,
+      default: null
+    },
+
     loading: {
       default: false,
       type:    Boolean
@@ -89,6 +96,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({ t: 'i18n/t' }),
     isView() {
       return this.mode === _VIEW;
     },
@@ -125,6 +133,14 @@ export default {
     hasNamespaces() {
       return this.allNamespaces.length;
     },
+
+    namespaceModeLabel() {
+      return this.overwriteNsModeLabel || [this.t('workload.scheduling.affinity.thisPodNamespace'), this.t('workload.scheduling.affinity.matchExpressions.inNamespaces')];
+    },
+
+    namespaceLabel() {
+      return this.overwriteNsModeLabel?.[2] || this.t('workload.scheduling.affinity.matchExpressions.inNamespaces');
+    }
   },
 
   created() {
@@ -261,7 +277,7 @@ export default {
           <div class="row">
             <RadioGroup
               :options="[false, true]"
-              :labels="[t('workload.scheduling.affinity.thisPodNamespace'),t('workload.scheduling.affinity.matchExpressions.inNamespaces'),]"
+              :labels="namespaceModeLabel"
               :name="`namespaces-${props.row.value._id}`"
               :mode="mode"
               :value="!!props.row.value.namespaces"
@@ -280,14 +296,14 @@ export default {
               :multiple="true"
               :taggable="true"
               :options="allNamespaces"
-              :label="t('workload.scheduling.affinity.matchExpressions.inNamespaces')"
+              :label="namespaceLabel"
               @input="updateNamespaces(props.row.value, props.row.value.namespaces)"
             />
             <LabeledInput
               v-else
               v-model="props.row.value._namespaces"
               :mode="mode"
-              :label="t('workload.scheduling.affinity.matchExpressions.inNamespaces')"
+              :label="namespaceLabel"
               :placeholder="t('cluster.credential.harvester.affinity.namespaces.placeholder')"
               @input="updateNamespaces(props.row.value, props.row.value._namespaces)"
             />

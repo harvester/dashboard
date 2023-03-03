@@ -128,6 +128,10 @@ export default {
 
       return !!this.$store.getters[`${ inStore }/byId`]('service', 'cattle-monitoring-system/rancher-monitoring-grafana');
     },
+
+    affinityNsModeLabel() {
+      return [this.t('cluster.credential.harvester.affinity.thisPodNamespace'), this.t('cluster.credential.harvester.affinity.matchExpressions.inNamespaces'), this.t('cluster.credential.harvester.affinity.namespaces.label')];
+    },
   },
 
   methods: {
@@ -199,7 +203,7 @@ export default {
         </template>
       </Tab>
 
-      <Tab :label="t('workload.container.titles.podScheduling')" name="podScheduling" :weight="2.3">
+      <Tab :label="t('cluster.credential.harvester.affinity.vmAffinityTitle')" name="vmScheduling" :weight="2.3">
         <template #default="{active}">
           <PodAffinity
             v-if="spec"
@@ -208,6 +212,7 @@ export default {
             :value="spec.template.spec"
             :nodes="nodes"
             :namespaces="filteredNamespaces"
+            :overwrite-ns-mode-label="affinityNsModeLabel"
           />
         </template>
       </Tab>
