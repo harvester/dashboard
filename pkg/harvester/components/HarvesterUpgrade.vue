@@ -2,6 +2,7 @@
 import { mapGetters } from 'vuex';
 import { HCI } from '../types';
 import { allHash } from '@shell/utils/promise';
+import { Checkbox } from '@components/Form/Checkbox';
 import ModalWithCard from '@shell/components/ModalWithCard';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import { Banner } from '@components/Banner';
@@ -10,7 +11,7 @@ export default {
   name: 'HarvesterUpgrade',
 
   components: {
-    ModalWithCard, LabeledSelect, Banner, UpgradeInfo
+    Checkbox, ModalWithCard, LabeledSelect, Banner, UpgradeInfo
   },
 
   async fetch() {
@@ -31,7 +32,8 @@ export default {
       upgradeMessage: [],
       errors:         '',
       selectMode:     true,
-      version:        ''
+      version:        '',
+      enableLogging:  true
     };
   },
 
@@ -75,7 +77,10 @@ export default {
           generateName: 'hvst-upgrade-',
           namespace:    'harvester-system'
         },
-        spec: { version: this.version }
+        spec: {
+          version:    this.version,
+          logEnabled: this.enableLogging
+        }
       };
 
       const proxyResource = await this.$store.dispatch('harvester/create', upgradeValue);
@@ -99,10 +104,6 @@ export default {
     open() {
       this.$refs.deleteTip.open();
     },
-
-    handleMode() {
-      this.selectMode = !this.selectMode;
-    }
   }
 };
 </script>
@@ -134,14 +135,18 @@ export default {
           <span class="version">{{ currentVersion }}</span>
         </div>
 
-        <div v-if="selectMode">
+        <div>
           <LabeledSelect
             v-model="version"
-            class="mb-20"
+            class="mb-10"
             :label="t('harvester.upgradePage.versionLabel')"
             :options="versionOptions"
             :clearable="true"
           />
+
+          <div>
+            <Checkbox v-model="enableLogging" class="check" type="checkbox" :label="t('harvester.upgradePage.enableLogging')" />
+          </div>
 
           <Banner v-if="errors.length" color="warning">
             {{ errors }}
