@@ -106,7 +106,7 @@ export default {
     },
 
     showPodSecurityAdmission() {
-      return !this.isSingleHarvester;
+      return !this.$store.getters['currentProduct'].inStore === HARVESTER;
     },
   },
 
