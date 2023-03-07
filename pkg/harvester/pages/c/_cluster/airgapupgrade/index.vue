@@ -1,6 +1,7 @@
 <script>
 import CruResource from '@shell/components/CruResource';
 import { RadioGroup } from '@components/Form/Radio';
+import { Checkbox } from '@components/Form/Checkbox';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import UpgradeInfo from '../../../../components/UpgradeInfo';
@@ -21,7 +22,7 @@ const UPLOAD = 'upload';
 export default {
   name:       'HarvesterAirgapUpgrade',
   components: {
-    CruResource, LabeledSelect, LabeledInput, RadioGroup, UpgradeInfo
+    Checkbox, CruResource, LabeledSelect, LabeledInput, RadioGroup, UpgradeInfo
   },
 
   async fetch() {
@@ -57,13 +58,14 @@ export default {
 
   data() {
     return {
-      value:       null,
-      file:        {},
-      imageId:     '',
-      imageSource: IMAGE_METHOD.NEW,
-      sourceType:  UPLOAD,
-      imageValue:  null,
-      errors:      [],
+      value:         null,
+      file:          {},
+      imageId:       '',
+      imageSource:   IMAGE_METHOD.NEW,
+      sourceType:    UPLOAD,
+      imageValue:    null,
+      errors:        [],
+      enableLogging: true,
       IMAGE_METHOD
     };
   },
@@ -157,7 +159,7 @@ export default {
 
           this.value.spec.image = this.imageId;
         }
-
+        this.value.spec.logEnabled = this.enableLogging;
         await this.value.save();
         this.done();
         buttonCb(true);
@@ -235,7 +237,9 @@ export default {
       <div v-if="uploadImage">
         <LabeledInput v-model.trim="imageValue.spec.displayName" class="mb-20" label-key="harvester.fields.name" required />
 
-        <LabeledInput v-model="imageValue.spec.checksum" class="mb-20" label-key="harvester.setting.upgrade.checksum" />
+        <LabeledInput v-model="imageValue.spec.checksum" class="mb-10" label-key="harvester.setting.upgrade.checksum" />
+
+        <Checkbox v-model="enableLogging" class="check mb-20" type="checkbox" :label="t('harvester.upgradePage.enableLogging')" />
 
         <RadioGroup
           v-model="sourceType"
