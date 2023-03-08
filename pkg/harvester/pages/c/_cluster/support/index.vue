@@ -151,6 +151,11 @@ export default {
         <div class="community">
           <CommunityLinks :link-options="options" />
         </div>
+        <div class="external">
+          <a href="https://www.suse.com/suse-harvester/support-matrix/all-supported-versions" target="_blank" rel="noopener noreferrer nofollow">{{ t('harvester.support.community.learnMore') }} <i class="icon icon-external-link" /></a>
+          or
+          <a href="https://www.suse.com/products/harvester/" target="_blank" rel="noopener noreferrer nofollow">{{ t('harvester.support.community.pricing') }} <i class="icon icon-external-link" /></a>
+        </div>
       </div>
     </IndentedPanel>
     <HarvesterSupportBundle v-if="showSupportBundle" />
