@@ -824,6 +824,9 @@ harvester:
       longhorn:
         title: Access Embedded Longhorn UI
         titleDescription: We only support to use the embedded Longhorn UI for debugging and validation purpose.
+    community:
+      learnMore: Find out more about SUSE Harvester support
+      pricing: Contact us for pricing
 
   namespace:
     label: Namespaces
