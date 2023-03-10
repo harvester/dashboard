@@ -767,6 +767,10 @@ harvester:
       imagePullPolicy: Pull Policy
       repo: Repository
       tag: Tag
+    csiDriverConfig:
+      provisioner: Provisioner
+      volumeSnapshotClassName: volumeSnapshotClassName
+      backupVolumeSnapshotClassName: backupVolumeSnapshotClassName
     containerdRegistry:
       mirrors:
         mirrors: Mirrors
@@ -993,6 +997,8 @@ advancedSettings:
   descriptions:
     'harv-vlan': Default Network Interface name of the VLAN network.
     'harv-backup-target': Custom backup target to store VM backups.
+    'harv-csi-driver-config': Configure additional information for csi drivers.
+    'harv-containerd-registry': Containerd Registry Configuration to connect private registries.
     'harv-log-level': Configure Harvester server log level. Default to info.
     'harv-server-version': Harvester server version.
     'harv-upgrade-checker-enabled': Specify whether to enable Harvester upgrade check or not. Default is true.
