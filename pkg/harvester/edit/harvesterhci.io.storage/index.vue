@@ -12,15 +12,10 @@ import Loading from '@shell/components/Loading';
 import { _CREATE, _VIEW } from '@shell/config/query-params';
 import { mapFeature, UNSUPPORTED_STORAGE_DRIVERS } from '@shell/store/features';
 import { STORAGE_CLASS, LONGHORN } from '@shell/config/types';
+import { CSI_DRIVER } from '../../types';
 import { allHash } from '@shell/utils/promise';
 
-const PROVISIONER_OPTIONS = [
-  {
-    labelKey:  'storageClass.longhorn.title',
-    value:     'driver.longhorn.io',
-    supported: true
-  },
-];
+const LONGHORN_DRIVER = 'driver.longhorn.io';
 
 export default {
   name: 'HarvesterStorage',
@@ -39,15 +34,13 @@ export default {
   mixins: [CreateEditView],
 
   data() {
-    const reclaimPolicyOptions = [
-      {
-        label: this.t('storageClass.customize.reclaimPolicy.delete'),
-        value: 'Delete'
-      },
-      {
-        label: this.t('storageClass.customize.reclaimPolicy.retain'),
-        value: 'Retain'
-      }];
+    const reclaimPolicyOptions = [{
+      label: this.t('storageClass.customize.reclaimPolicy.delete'),
+      value: 'Delete'
+    }, {
+      label: this.t('storageClass.customize.reclaimPolicy.retain'),
+      value: 'Retain'
+    }];
 
     const allowVolumeExpansionOptions = [
       {
@@ -72,7 +65,7 @@ export default {
     ];
 
     this.$set(this.value, 'parameters', this.value.parameters || {});
-    this.$set(this.value, 'provisioner', this.value.provisioner || PROVISIONER_OPTIONS[0].value);
+    this.$set(this.value, 'provisioner', this.value.provisioner || LONGHORN_DRIVER);
     this.$set(this.value, 'allowVolumeExpansion', this.value.allowVolumeExpansion || allowVolumeExpansionOptions[0].value);
     this.$set(this.value, 'reclaimPolicy', this.value.reclaimPolicy || reclaimPolicyOptions[0].value);
     this.$set(this.value, 'volumeBindingMode', this.value.volumeBindingMode || volumeBindingModeOptions[0].value);
@@ -82,7 +75,7 @@ export default {
       allowVolumeExpansionOptions,
       volumeBindingModeOptions,
       mountOptions: [],
-      provisioner:  PROVISIONER_OPTIONS[0].value,
+      provisioner:  LONGHORN_DRIVER,
       STORAGE_CLASS,
     };
   },
@@ -93,6 +86,7 @@ export default {
     const hash = {
       storages:      this.$store.dispatch(`${ inStore }/findAll`, { type: STORAGE_CLASS }),
       longhornNodes: this.$store.dispatch(`${ inStore }/findAll`, { type: LONGHORN.NODES }),
+      csiDrivers:    this.$store.dispatch(`${ inStore }/findAll`, { type: CSI_DRIVER }),
     };
 
     await allHash(hash);
@@ -100,6 +94,10 @@ export default {
 
   computed: {
     showUnsupportedStorage: mapFeature(UNSUPPORTED_STORAGE_DRIVERS),
+
+    inStore() {
+      return this.$store.getters['currentProduct'].inStore;
+    },
 
     modeOverride() {
       return this.isCreate ? _CREATE : _VIEW;
@@ -110,7 +108,14 @@ export default {
     },
 
     provisioners() {
-      return PROVISIONER_OPTIONS.filter(provisioner => this.showUnsupportedStorage || provisioner.supported);
+      const csiDrivers = this.$store.getters[`${ this.inStore }/all`](CSI_DRIVER) || [];
+
+      return csiDrivers.map((provisioner) => {
+        return {
+          label: provisioner.name,
+          value: provisioner.name,
+        };
+      });
     },
 
     schema() {
@@ -135,16 +140,15 @@ export default {
       try {
         return require(`./provisioners/${ name }`).default;
       } catch {
-        return require(`./provisioners/driver.longhorn.io`).default;
+        return require(`./provisioners/custom`).default;
       }
     },
 
-    updateProvisioner(event) {
-      const provisioner = event.labelKey ? event.labelKey : event;
-
+    updateProvisioner(provisioner) {
       this.$set(this.value, 'provisioner', provisioner);
-      this.$set(this.value, 'allowVolumeExpansion', provisioner === 'driver.longhorn.io');
+      this.$set(this.value, 'allowVolumeExpansion', provisioner === LONGHORN_DRIVER);
     },
+
     willSave() {
       Object.keys(this.value.parameters).forEach((key) => {
         if (this.value.parameters[key] === null || this.value.parameters[key] === '') {
@@ -181,7 +185,6 @@ export default {
       label="Provisioner"
       :options="provisioners"
       :localized-label="true"
-      option-label="labelKey"
       :mode="modeOverride"
       :searchable="true"
       :taggable="true"

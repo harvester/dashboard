@@ -25,6 +25,7 @@ export const HCI_SETTING = {
   AUTO_DISK_PROVISION_PATHS: 'auto-disk-provision-paths',
   RELEASE_DOWNLOAD_URL:      'release-download-url',
   CCM_CSI_VERSION:           'harvester-csi-ccm-versions',
+  CSI_DRIVER_CONFIG:         'csi-driver-config'
 };
 
 export const HCI_ALLOWED_SETTINGS = {
@@ -38,6 +39,7 @@ export const HCI_ALLOWED_SETTINGS = {
   [HCI_SETTING.VLAN]: {
     kind: 'custom', from: 'import', alias: 'vlan'
   },
+  [HCI_SETTING.CSI_DRIVER_CONFIG]:       { kind: 'json', from: 'import' },
   [HCI_SETTING.SERVER_VERSION]:          { readOnly: true },
   [HCI_SETTING.UPGRADE_CHECKER_ENABLED]: { kind: 'boolean' },
   [HCI_SETTING.UPGRADE_CHECKER_URL]:     { kind: 'url' },
