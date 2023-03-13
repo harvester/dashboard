@@ -23,10 +23,33 @@ export default {
     }
   },
 
+  async fetch() {
+    try {
+      if (!this.actionResource.hasAction('findMigratableNodes')) {
+        return;
+      }
+
+      const res = await this.actionResource.$dispatch('resourceAction', {
+        resource:   this.actionResource,
+        actionName: 'findMigratableNodes',
+        body:       {},
+        opt:        {},
+      });
+
+      this.availableNodes = res.nodes;
+    } catch (err) {
+      this.actionResource.$dispatch('growl/fromError', {
+        title: this.t('generic.notification.title.error'),
+        err:   err.data || err,
+      }, { root: true });
+    }
+  },
+
   data() {
     return {
-      nodeName: '',
-      errors:   []
+      nodeName:       '',
+      errors:         [],
+      availableNodes: []
     };
   },
 
@@ -50,7 +73,7 @@ export default {
 
       return nodes.filter((n) => {
         // do not allow to migrate to self node
-        return n.id !== this.vmi?.status?.nodeName && n.isMigratable;
+        return !!this.availableNodes.includes(n.id);
       }).map((n) => {
         let label = n?.metadata?.name;
         const value = n?.metadata?.name;
