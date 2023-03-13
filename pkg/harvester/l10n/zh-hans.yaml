@@ -437,6 +437,8 @@ harvester:
     createSSHKey: 创建 SSH 密钥
     installAgent: 安装访客代理
     enableUsb: 启用 USB Tablet
+    advancedOptions:
+      tpm: 启用 TPM
     usbTip: 提供绝对指针设备，有助于在 VNC 中获得一致的鼠标光标位置。
     sshTitle: 添加 SSH 公钥
     imageTip: 创建虚拟机所需的.iso，.img，.qcow2或.raw外部镜像地址
@@ -636,6 +638,7 @@ harvester:
     upgradeTip: 请选择目标升级版本
     currentVersion: 当前版本
     versionLabel: 可用的兼容版本
+    enableLogging: 启用 Logging
     upgradeNode: 升级节点
     upgradeSysService: 升级系统服务
     upgradeImage: 下载升级镜像
