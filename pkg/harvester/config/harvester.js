@@ -70,7 +70,8 @@ export function init($plugin, store) {
       productNameKey:  'harvester.productLabel',
       getVersionInfo:  store => store.getters[`${ PRODUCT_NAME }/byId`](HCI.SETTING, 'server-version')?.value || 'unknown',
       afterLoginRoute: home,
-      logoRoute:       home
+      logoRoute:       home,
+      ignoreLogo:      true
     });
   }
 

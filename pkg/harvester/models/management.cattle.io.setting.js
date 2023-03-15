@@ -1,15 +1,39 @@
-import { HCI } from '../../types';
+import { HCI } from '../types';
 import { clone } from '@shell/utils/object';
-import HarvesterResource from '../harvester';
-import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../../config/harvester';
+import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../config/harvester';
+import ManagementSetting from '@shell/models/management.cattle.io.setting';
+import {
+  _EDIT,
+  _UNFLAG,
+  AS,
+  MODE
+} from '@shell/config/query-params';
 
-export default class HciSetting extends HarvesterResource {
+export default class HciSetting extends ManagementSetting {
   get detailLocation() {
     const detailLocation = clone(this._detailLocation);
 
     detailLocation.params.resource = HCI.SETTING;
 
     return detailLocation;
+  }
+
+  goToEdit(moreQuery = {}) {
+    const location = this.detailLocation;
+
+    if (location?.params?.id === 'ui-pl') {
+      location.name = `${ HARVESTER_PRODUCT }-c-cluster-brand`;
+      location.params = { cluster: this.$rootGetters['currentCluster'].id, product: 'harvester' };
+    }
+
+    location.query = {
+      ...location.query,
+      [MODE]: _EDIT,
+      [AS]:   _UNFLAG,
+      ...moreQuery
+    };
+
+    this.currentRouter().push(location);
   }
 
   get doneOverride() {

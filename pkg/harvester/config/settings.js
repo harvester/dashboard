@@ -1,18 +1,20 @@
 export const HCI_SETTING = {
+  ADDITIONAL_CA:             'additional-ca',
+  AUTO_DISK_PROVISION_PATHS: 'auto-disk-provision-paths',
   BACKUP_TARGET:             'backup-target',
   CONTAINERD_REGISTRY:       'containerd-registry',
+  CCM_CSI_VERSION:           'harvester-csi-ccm-versions',
+  CLUSTER_REGISTRATION_URL:  'cluster-registration-url',
   LOG_LEVEL:                 'log-level',
   SERVER_VERSION:            'server-version',
   UI_INDEX:                  'ui-index',
   UI_PLUGIN_INDEX:           'ui-plugin-index',
   UPGRADE_CHECKER_ENABLED:   'upgrade-checker-enabled',
   UPGRADE_CHECKER_URL:       'upgrade-checker-url',
-  VLAN:                      'vlan',
+  UI_PL:                     'ui-pl',
   UI_SOURCE:                 'ui-source',
   HTTP_PROXY:                'http-proxy',
-  ADDITIONAL_CA:             'additional-ca',
   OVERCOMMIT_CONFIG:         'overcommit-config',
-  CLUSTER_REGISTRATION_URL:  'cluster-registration-url',
   DEFAULT_STORAGE_CLASS:     'default-storage-class',
   VIP:                       'vip-pools',
   SUPPORT_BUNDLE_TIMEOUT:    'support-bundle-timeout',
@@ -22,21 +24,19 @@ export const HCI_SETTING = {
   SSL_CERTIFICATES:          'ssl-certificates',
   SSL_PARAMETERS:            'ssl-parameters',
   SUPPORT_BUNDLE_NAMESPACES: 'support-bundle-namespaces',
-  AUTO_DISK_PROVISION_PATHS: 'auto-disk-provision-paths',
   RELEASE_DOWNLOAD_URL:      'release-download-url',
-  CCM_CSI_VERSION:           'harvester-csi-ccm-versions',
 };
 
 export const HCI_ALLOWED_SETTINGS = {
   [HCI_SETTING.BACKUP_TARGET]: {
     kind: 'json', from: 'import', canReset: true
   },
+  [HCI_SETTING.UI_PL]: {
+    kind: 'custom', from: 'import', alias: 'branding'
+  },
   [HCI_SETTING.LOG_LEVEL]: {
     kind:    'enum',
     options: ['info', 'debug', 'trace']
-  },
-  [HCI_SETTING.VLAN]: {
-    kind: 'custom', from: 'import', alias: 'vlan'
   },
   [HCI_SETTING.SERVER_VERSION]:          { readOnly: true },
   [HCI_SETTING.UPGRADE_CHECKER_ENABLED]: { kind: 'boolean' },
