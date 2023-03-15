@@ -308,7 +308,13 @@ export default {
         v-if="isSingleProduct"
         :to="singleProductLogoRoute"
       >
+        <BrandImage
+          v-if="isSingleProduct.ignoreLogo"
+          class="side-menu-logo"
+          file-name="harvester.svg"
+        />
         <img
+          v-else
           class="side-menu-logo"
           :src="isSingleProduct.logo"
         >
