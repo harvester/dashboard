@@ -6,7 +6,7 @@ import { BadgeState } from '@components/BadgeState';
 import { Banner } from '@components/Banner';
 import { get } from '@shell/utils/object';
 import { NAME as FLEET_NAME } from '@shell/config/product/fleet';
-import { mapPref, PLUGIN_DEVELOPER, HIDE_SENSITIVE } from '@shell/store/prefs';
+import { PLUGIN_DEVELOPER, HIDE_SENSITIVE, DEV } from '@shell/store/prefs';
 import {
   AS, _DETAIL, _CONFIG, _YAML, MODE, _CREATE, _EDIT, _VIEW, _UNFLAG, _GRAPH
 } from '@shell/config/query-params';
@@ -87,7 +87,13 @@ export default {
   },
 
   computed: {
-    dev: mapPref(PLUGIN_DEVELOPER),
+    dev() {
+      try {
+        return this.$store.getters['prefs/get'](PLUGIN_DEVELOPER);
+      } catch {
+        return this.$store.getters['prefs/get'](DEV);
+      }
+    },
 
     schema() {
       const inStore = this.storeOverride || this.$store.getters['currentStore'](this.resource);

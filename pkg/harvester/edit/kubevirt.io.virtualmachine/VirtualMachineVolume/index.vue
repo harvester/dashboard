@@ -16,7 +16,7 @@ import { randomStr } from '@shell/utils/string';
 import { SOURCE_TYPE } from '../../../config/harvester-map';
 import { _VIEW, _EDIT, _CREATE } from '@shell/config/query-params';
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../../../config/harvester';
-import { mapPref, PLUGIN_DEVELOPER } from '@shell/store/prefs';
+import { PLUGIN_DEVELOPER, DEV } from '@shell/store/prefs';
 
 export default {
   components: {
@@ -88,7 +88,13 @@ export default {
   },
 
   computed: {
-    dev: mapPref(PLUGIN_DEVELOPER),
+    dev() {
+      try {
+        return this.$store.getters['prefs/get'](PLUGIN_DEVELOPER);
+      } catch {
+        return this.$store.getters['prefs/get'](DEV);
+      }
+    },
 
     isVirtualType() {
       return this.resourceType === HCI.VM;
