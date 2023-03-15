@@ -2,7 +2,7 @@
 import { mapGetters } from 'vuex';
 import { Banner } from '@components/Banner';
 import Loading from '@shell/components/Loading';
-import { VIEW_IN_API } from '@shell/store/prefs';
+import { VIEW_IN_API, DEV } from '@shell/store/prefs';
 import { MANAGEMENT } from '@shell/config/types';
 import { HCI } from '../types';
 import { allHash } from '@shell/utils/promise';
@@ -15,7 +15,14 @@ export default {
   },
 
   async fetch() {
-    const isDev = this.$store.getters['prefs/get'](VIEW_IN_API);
+    let isDev;
+
+    try {
+      isDev = this.$store.getters['prefs/get'](VIEW_IN_API);
+    } catch {
+      isDev = this.$store.getters['prefs/get'](DEV);
+    }
+
     const isSingleProduct = !!this.$store.getters['isSingleProduct'];
     const inStore = this.$store.getters['currentProduct'].inStore;
 
