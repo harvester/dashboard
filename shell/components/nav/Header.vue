@@ -298,13 +298,13 @@ export default {
     ref="header"
   >
     <div>
-      <TopLevelMenu v-if="isMultiCluster || !isSingleProduct" />
+      <TopLevelMenu />
     </div>
     <div
       class="menu-spacer"
       :class="{'isSingleProduct': isSingleProduct }"
     >
-      <n-link
+      <!-- <n-link
         v-if="isSingleProduct"
         :to="singleProductLogoRoute"
       >
@@ -312,7 +312,7 @@ export default {
           class="side-menu-logo"
           :src="isSingleProduct.logo"
         >
-      </n-link>
+      </n-link> -->
     </div>
     <div
       v-if="!simple"
