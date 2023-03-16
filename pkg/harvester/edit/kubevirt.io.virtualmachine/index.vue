@@ -298,6 +298,13 @@ export default {
         return;
       }
 
+      if (!this.value.metadata.name) {
+        this.errors.push(this.t('validation.required', { key: this.t('generic.name') }, true));
+        buttonCb(false);
+
+        return;
+      }
+
       const cloneValue = clone(this.value);
       const cloneSpec = clone(this.spec);
 
