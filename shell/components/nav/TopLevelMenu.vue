@@ -4,7 +4,7 @@ import ClusterProviderIcon from '@shell/components/ClusterProviderIcon';
 import IconOrSvg from '../IconOrSvg';
 import { mapGetters } from 'vuex';
 import $ from 'jquery';
-import { CAPI, MANAGEMENT } from '@shell/config/types';
+import { CAPI, MANAGEMENT, HCI } from '@shell/config/types';
 import { mapPref, MENU_MAX_CLUSTERS } from '@shell/store/prefs';
 import { sortBy } from '@shell/utils/sort';
 import { ucFirst } from '@shell/utils/string';
@@ -33,13 +33,20 @@ export default {
       fullVersion,
       clusterFilter: '',
       hasProvCluster,
+      hciSetting:    []
     };
   },
 
-  fetch() {
+  async fetch() {
     if (this.hasProvCluster) {
       this.$store.dispatch('management/findAll', { type: CAPI.RANCHER_CLUSTER });
     }
+
+    const url = `/k8s/clusters/local/v1`;
+
+    const res = await this.$store.dispatch('cluster/request', { url: `${ url }/${ HCI.SETTING }s` });
+
+    this.hciSetting = res?.data || [];
   },
 
   computed: {
@@ -60,6 +67,27 @@ export default {
 
     showClusterSearch() {
       return this.clusters.length > this.maxClustersToShow;
+    },
+
+    isEnableMCMView() {
+      return this.hciSetting?.find(setting => setting.id === 'enable-mcm-view').default === 'true';
+    },
+
+    isEnableContainerView() {
+      return this.hciSetting?.find(setting => setting.id === 'enable-container-view').default === 'true';
+    },
+
+    goToHarvesterLocalCluster() {
+      const VIRTUAL = 'harvester';
+
+      return {
+        name:   `${ VIRTUAL }-c-cluster-resource`,
+        params: {
+          cluster:  'local',
+          product:  VIRTUAL,
+          resource: HCI.DASHBOARD
+        }
+      };
     },
 
     clusters() {
@@ -248,14 +276,15 @@ export default {
         <div class="title">
           <div class="menu-spacer" />
           <div class="side-menu-logo">
-            <BrandImage file-name="rancher-logo.svg" />
+            <!-- <BrandImage file-name="rancher-logo.svg" /> -->
+            <BrandImage file-name="harvester.svg" />
           </div>
         </div>
         <div class="body">
           <div @click="hide()">
             <nuxt-link
               class="option cluster selector home"
-              :to="{ name: 'home' }"
+              :to="goToHarvesterLocalCluster"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -271,7 +300,7 @@ export default {
               </div>
             </nuxt-link>
           </div>
-          <template v-if="clusters && !!clusters.length">
+          <template v-if="clusters && !!clusters.length && isEnableContainerView">
             <div class="category">
               {{ t('nav.categories.explore') }}
             </div>
@@ -334,7 +363,7 @@ export default {
             </div>
           </template>
 
-          <template v-if="multiClusterApps.length">
+          <template v-if="multiClusterApps.length && isEnableMCMView">
             <div class="category">
               {{ t('nav.categories.multiCluster') }}
             </div>
@@ -376,7 +405,7 @@ export default {
               </nuxt-link>
             </div>
           </template>
-          <template v-if="configurationApps.length">
+          <template v-if="configurationApps.length && isEnableMCMView">
             <div class="category">
               {{ t('nav.categories.configuration') }}
             </div>

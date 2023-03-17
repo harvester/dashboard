@@ -98,7 +98,7 @@ export default {
     );
 
     if (this.currentCluster.isLocal) {
-      this.$store.dispatch('management/findAll', { type: MANAGEMENT.NODE });
+      // this.$store.dispatch('management/findAll', { type: MANAGEMENT.NODE });
     }
   },
 
