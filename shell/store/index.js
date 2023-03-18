@@ -719,9 +719,13 @@ export const actions = {
     const samePackage = oldPkg?.name === newPkg?.name;
     const isMultiCluster = getters['isMultiCluster'];
 
+    console.log('-----loadCluster cluster', sameCluster, samePackage, id);
+    console.log('----oldPkg?.name', oldPkg?.name, newPkg?.name);
     // Are we in the same cluster and package?
-    if ( sameCluster && samePackage) {
+    if ( sameCluster) {
       // Do nothing, we're already connected/connecting to this cluster
+      console.log('-------load 返回了');
+
       return;
     }
 
@@ -792,7 +796,7 @@ export const actions = {
       console.log('Done loading pkg cluster:', newPkgClusterStore); // eslint-disable-line no-console
 
       // Everything below here is rancher/kube cluster specific
-      return;
+      // return;
     }
 
     // Execute Rancher cluster specific code
@@ -830,7 +834,7 @@ export const actions = {
     await Promise.all([
       dispatch('cluster/loadSchemas', true),
     ]);
-
+    console.log('------下来了');
     dispatch('cluster/subscribe');
 
     const projectArgs = {

@@ -279,6 +279,7 @@ export const HCI = {
   DASHBOARD: 'harvesterhci.io.dashboard',
   IMAGE:     'harvesterhci.io.virtualmachineimage',
   SETTING:   'harvesterhci.io.setting',
+  VM:        'kubevirt.io.virtualmachine'
 };
 
 export const VIRTUAL_HARVESTER_PROVIDER = 'harvester';

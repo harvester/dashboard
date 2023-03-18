@@ -653,14 +653,15 @@ export default class ProvCluster extends SteveModel {
   }
 
   get stateObj() {
-    if ( this.isHarvester) {
-      return {
-        error:         true,
-        message:       this.$rootGetters['i18n/t']('cluster.harvester.warning.label'),
-        name:          this.$rootGetters['i18n/t']('cluster.harvester.warning.state'),
-        transitioning: false
-      };
-    }
+    // 加强判断
+    // if ( this.isHarvester) {
+    //   return {
+    //     error:         true,
+    //     message:       this.$rootGetters['i18n/t']('cluster.harvester.warning.label'),
+    //     name:          this.$rootGetters['i18n/t']('cluster.harvester.warning.state'),
+    //     transitioning: false
+    //   };
+    // }
 
     return this._stateObj;
   }

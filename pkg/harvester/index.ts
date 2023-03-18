@@ -23,4 +23,6 @@ export default function(plugin: IPlugin) {
   plugin.validators = customValidators;
 
   plugin.register('component', 'NavHeaderRight', () => import(/* webpackChunkName: "pkg/harvester/components" */ `./components/HarvesterUpgradeHeader.vue`));
+
+  plugin.register('component', 'HarvesterTopLevelMenu', () => import(/* webpackChunkName: "pkg/harvester/components" */ `./components/HarvesterTopLevelMenu.vue`));
 }

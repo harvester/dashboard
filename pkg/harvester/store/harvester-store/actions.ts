@@ -12,7 +12,7 @@ export default {
     // This is a workaround for a timing issue where the mgmt cluster schema may not be available
     // Try and wait until the schema exists before proceeding
     await dispatch('management/waitForSchema', { type: MANAGEMENT.CLUSTER }, { root: true });
-
+    console.log('-----loadCluster harvester');
     // See if it really exists
     const cluster = await dispatch('management/find', {
       type: MANAGEMENT.CLUSTER,

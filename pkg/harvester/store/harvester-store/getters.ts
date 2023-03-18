@@ -25,7 +25,7 @@ export default {
 
     // harvester multi cluster === isRancher
     if (rootGetters['isRancher']) {
-      const cluster = rootGetters['currentCluster'];
+      const cluster = rootGetters['currentCluster'] || 'local';
       let projects = rootGetters['management/all'](
         MANAGEMENT.PROJECT
       );

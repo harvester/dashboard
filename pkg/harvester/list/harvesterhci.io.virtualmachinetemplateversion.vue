@@ -27,6 +27,7 @@ export default {
       templateVersion: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VM_VERSION }),
     });
 
+    console.log('------schema template', this.schema);
     this.template = hash.template;
     this.templateVersion = hash.templateVersion;
   },

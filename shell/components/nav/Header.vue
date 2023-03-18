@@ -1,7 +1,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import debounce from 'lodash/debounce';
-import { NORMAN, STEVE } from '@shell/config/types';
+import { NORMAN, STEVE, HCI } from '@shell/config/types';
 import { ucFirst } from '@shell/utils/string';
 import { isMac } from '@shell/utils/platform';
 import Import from '@shell/components/Import';
@@ -43,13 +43,14 @@ export default {
     const shellShortcut = '(Ctrl+`)';
 
     return {
-      show:              false,
-      showTooltip:       false,
-      kubeConfigCopying: false,
+      show:                  false,
+      showTooltip:           false,
+      kubeConfigCopying:     false,
       searchShortcut,
       shellShortcut,
       LOGGED_OUT,
-      navHeaderRight:    null,
+      navHeaderRight:        null,
+      HarvesterTopLevelMenu: null
     };
   },
 
@@ -163,6 +164,9 @@ export default {
       };
     },
 
+    vmSchema() {
+      return this.$store.getters['cluster/schemaFor'](HCI.VM);
+    },
   },
 
   watch: {
@@ -181,6 +185,8 @@ export default {
     this.$nextTick(() => this.layoutHeader(null, true));
 
     this.navHeaderRight = this.$plugin?.getDynamic('component', 'NavHeaderRight');
+
+    this.HarvesterTopLevelMenu = this.$plugin?.getDynamic('component', 'HarvesterTopLevelMenu');
   },
 
   beforeDestroy() {
@@ -298,7 +304,11 @@ export default {
     ref="header"
   >
     <div>
-      <TopLevelMenu />
+      <component
+        :is="HarvesterTopLevelMenu"
+        v-if="vmSchema"
+      />
+      <TopLevelMenu v-else />
     </div>
     <div
       class="menu-spacer"

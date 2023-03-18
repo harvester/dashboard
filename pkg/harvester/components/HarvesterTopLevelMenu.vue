@@ -1,10 +1,10 @@
 <script>
 import BrandImage from '@shell/components/BrandImage';
 import ClusterProviderIcon from '@shell/components/ClusterProviderIcon';
-import IconOrSvg from '../IconOrSvg';
+import IconOrSvg from '@shell/components/IconOrSvg';
 import { mapGetters } from 'vuex';
 import $ from 'jquery';
-import { CAPI, MANAGEMENT } from '@shell/config/types';
+import { CAPI, MANAGEMENT, HCI } from '@shell/config/types';
 import { mapPref, MENU_MAX_CLUSTERS } from '@shell/store/prefs';
 import { sortBy } from '@shell/utils/sort';
 import { ucFirst } from '@shell/utils/string';
@@ -33,13 +33,18 @@ export default {
       fullVersion,
       clusterFilter: '',
       hasProvCluster,
+      hciSetting:    []
     };
   },
 
-  fetch() {
+  async fetch() {
     if (this.hasProvCluster) {
       this.$store.dispatch('management/findAll', { type: CAPI.RANCHER_CLUSTER });
     }
+
+    // const schema = this.$store.getters['harvester/schemaFor'](METRIC.NODE);
+
+    await this.$store.dispatch('cluster/findAll', { type: HCI.SETTING });
   },
 
   computed: {
@@ -60,6 +65,34 @@ export default {
 
     showClusterSearch() {
       return this.clusters.length > this.maxClustersToShow;
+    },
+
+    isEnableMCMView() {
+      const allSetting = this.$store.getters[`cluster/all`](HCI.SETTING);
+      const containerAndMcm = allSetting?.find(setting => setting.id === 'container-and-mcm-support');
+      const value = containerAndMcm.value || containerAndMcm.default || {};
+
+      try {
+        return JSON.parse(value)['multi-cluster'];
+      } catch (e) {
+        return JSON.parse(containerAndMcm.default)['multi-cluster'];
+      }
+    },
+
+    isEnableContainerView() {
+      const allSetting = this.$store.getters[`cluster/all`](HCI.SETTING);
+      const containerAndMcm = allSetting?.find(setting => setting.id === 'container-and-mcm-support');
+      const value = containerAndMcm.value || containerAndMcm.default || {};
+
+      if (this.isEnableMCMView) {
+        return true;
+      }
+
+      try {
+        return JSON.parse(value)['container-management'];
+      } catch (e) {
+        return JSON.parse(containerAndMcm.default)['container-management'];
+      }
     },
 
     clusters() {
@@ -165,6 +198,13 @@ export default {
     hasSupport() {
       return isRancherPrime() || this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.SUPPORTED )?.value === 'true';
     },
+
+    goToHarvesterSupport() {
+      const PRODUCT_NAME = 'harvester';
+      const cluster = 'local';
+
+      return { name: `${ PRODUCT_NAME }-c-cluster-support`, params: { cluster } };
+    }
   },
 
   watch: {
@@ -211,6 +251,20 @@ export default {
         this.setClusterListHeight(this.maxClustersToShow);
       });
     },
+
+    goToCluster() {
+      // await this.$store.dispatch(`harvester/loadCluster`, { id: 'local' });
+      const VIRTUAL = 'harvester';
+
+      this.$router.push({
+        name:   `${ VIRTUAL }-c-cluster-resource`,
+        params: {
+          cluster:  'local',
+          product:  VIRTUAL,
+          resource: HCI.DASHBOARD
+        }
+      });
+    }
   }
 };
 </script>
@@ -248,14 +302,16 @@ export default {
         <div class="title">
           <div class="menu-spacer" />
           <div class="side-menu-logo">
-            <BrandImage file-name="rancher-logo.svg" />
+            <!-- <BrandImage file-name="rancher-logo.svg" /> -->
+            <BrandImage file-name="harvester.svg" />
+            <span class="ml-10 product-name">Harvester</span>
           </div>
         </div>
         <div class="body">
           <div @click="hide()">
-            <nuxt-link
+            <!-- <nuxt-link
               class="option cluster selector home"
-              :to="{ name: 'home' }"
+              :to="goToHarvesterLocalCluster"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -267,11 +323,29 @@ export default {
                 fill="none"
               /><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" /></svg>
               <div>
-                {{ t('nav.home') }}
+                Harvester Dashboard
               </div>
-            </nuxt-link>
+            </nuxt-link> -->
+
+            <a
+              class="option cluster selector home"
+              @click="goToCluster()"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24"
+                viewBox="0 0 24 24"
+                width="24"
+              ><path
+                d="M0 0h24v24H0z"
+                fill="none"
+              /><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" /></svg>
+              <div>
+                Harvester Dashboard
+              </div>
+            </a>
           </div>
-          <template v-if="clusters && !!clusters.length">
+          <template v-if="clusters && !!clusters.length && isEnableContainerView">
             <div class="category">
               {{ t('nav.categories.explore') }}
             </div>
@@ -334,7 +408,7 @@ export default {
             </div>
           </template>
 
-          <template v-if="multiClusterApps.length">
+          <template v-if="multiClusterApps.length && isEnableMCMView">
             <div class="category">
               {{ t('nav.categories.multiCluster') }}
             </div>
@@ -376,7 +450,7 @@ export default {
               </nuxt-link>
             </div>
           </template>
-          <template v-if="configurationApps.length">
+          <template v-if="configurationApps.length && isEnableMCMView">
             <div class="category">
               {{ t('nav.categories.configuration') }}
             </div>
@@ -404,7 +478,7 @@ export default {
             v-if="canEditSettings"
             @click="hide()"
           >
-            <nuxt-link :to="{name: 'support'}">
+            <nuxt-link :to="goToHarvesterSupport">
               {{ t('nav.support', {hasSupport}) }}
             </nuxt-link>
           </div>

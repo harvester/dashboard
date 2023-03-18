@@ -3,6 +3,7 @@ export const HCI_SETTING = {
   AUTO_DISK_PROVISION_PATHS: 'auto-disk-provision-paths',
   BACKUP_TARGET:             'backup-target',
   CONTAINERD_REGISTRY:       'containerd-registry',
+  CONTAINER_MCM_SUPPORT:     'container-and-mcm-support',
   CCM_CSI_VERSION:           'harvester-csi-ccm-versions',
   CLUSTER_REGISTRATION_URL:  'cluster-registration-url',
   LOG_LEVEL:                 'log-level',
@@ -34,7 +35,8 @@ export const HCI_ALLOWED_SETTINGS = {
   [HCI_SETTING.UI_PL]: {
     kind: 'custom', from: 'import', alias: 'branding'
   },
-  [HCI_SETTING.LOG_LEVEL]: {
+  [HCI_SETTING.CONTAINER_MCM_SUPPORT]: { kind: 'json', from: 'import' },
+  [HCI_SETTING.LOG_LEVEL]:             {
     kind:    'enum',
     options: ['info', 'debug', 'trace']
   },

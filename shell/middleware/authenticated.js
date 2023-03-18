@@ -348,7 +348,7 @@ export default async function({
         getters: store.getters
       });
     }
-
+    console.log('----加载authen', clusterId);
     // Always run loadCluster, it handles 'unload' as well
     // Run them in parallel
     await Promise.all([
