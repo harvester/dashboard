@@ -94,6 +94,10 @@ export default {
     fileName() {
       return this.file?.name || '';
     },
+
+    canEnableLogging() {
+      return this.$store.getters['harvester/schemaFor'](HCI.UPGRADE_LOG);
+    },
   },
 
   methods: {
@@ -159,7 +163,11 @@ export default {
 
           this.value.spec.image = this.imageId;
         }
-        this.value.spec.logEnabled = this.enableLogging;
+
+        if (this.canEnableLogging) {
+          this.value.spec.logEnabled = this.enableLogging;
+        }
+
         await this.value.save();
         this.done();
         buttonCb(true);
@@ -239,7 +247,13 @@ export default {
 
         <LabeledInput v-model="imageValue.spec.checksum" class="mb-10" label-key="harvester.setting.upgrade.checksum" />
 
-        <Checkbox v-model="enableLogging" class="check mb-20" type="checkbox" :label="t('harvester.upgradePage.enableLogging')" />
+        <Checkbox
+          v-if="canEnableLogging"
+          v-model="enableLogging"
+          class="check mb-20"
+          type="checkbox"
+          :label="t('harvester.upgradePage.enableLogging')"
+        />
 
         <RadioGroup
           v-model="sourceType"
