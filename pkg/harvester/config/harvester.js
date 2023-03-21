@@ -732,6 +732,25 @@ export function init($plugin, store) {
     ]
   });
 
+  basicType([HCI.SR_IOV], 'advanced');
+
+  virtualType({
+    labelKey:   'harvester.sriov.label',
+    group:      'advanced',
+    name:       HCI.SR_IOV,
+    namespaced: false,
+    route:      {
+      name:   `${ PRODUCT_NAME }-c-cluster-resource`,
+      params: { resource: HCI.SR_IOV }
+    },
+    exact: false
+  });
+
+  configureType(HCI.SR_IOV, {
+    isCreatable:                false,
+    hiddenNamespaceGroupButton: true,
+  });
+
   configureType(HCI.ADD_ONS, {
     isCreatable: false,
     isRemovable: false,
