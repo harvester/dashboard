@@ -1011,6 +1011,11 @@ harvester:
   secret:
     label: Secrets
 
+  sriov:
+    label: SR-IOV Network Devices
+    nodeName: Node
+    numVFs: Number of virtual functions
+
   harvesterVlanConfigMigrateDialog:
     targetClusterNetwork: 
       label: Target Cluster Network
@@ -1158,6 +1163,11 @@ typeLabel:
     {count, plural,
       one { Cluster Network }
       other { Cluster Networks }
+    }
+  devices.harvesterhci.io.sriovnetworkdevice: |-
+    {count, plural,
+      one { SR-IOV Network Device }
+      other { SR-IOV Network Devices }
     }
   harvesterhci.io.secret: |-
     {count, plural,

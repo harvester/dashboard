@@ -35,6 +35,7 @@ export const HCI = {
   KSTUNED:            'node.harvesterhci.io.ksmtuned',
   PCI_DEVICE:         'devices.harvesterhci.io.pcidevice',
   PCI_CLAIM:          'devices.harvesterhci.io.pcideviceclaim',
+  SR_IOV:             'devices.harvesterhci.io.sriovnetworkdevice',
   VLAN_CONFIG:        'network.harvesterhci.io.vlanconfig',
   VLAN_STATUS:        'network.harvesterhci.io.vlanstatus',
   ADD_ONS:            'harvesterhci.io.addon',
