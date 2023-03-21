@@ -50,7 +50,11 @@ export default {
       const serverVersion = this.$store.getters['harvester/byId'](HCI.SETTING, 'server-version');
 
       return serverVersion.currentVersion || '';
-    }
+    },
+
+    canEnableLogging() {
+      return this.$store.getters['harvester/schemaFor'](HCI.UPGRADE_LOG);
+    },
   },
 
   watch: {
@@ -77,11 +81,12 @@ export default {
           generateName: 'hvst-upgrade-',
           namespace:    'harvester-system'
         },
-        spec: {
-          version:    this.version,
-          logEnabled: this.enableLogging
-        }
+        spec: { version: this.version }
       };
+
+      if (this.canEnableLogging) {
+        upgradeValue.spec.logEnabled = this.enableLogging;
+      }
 
       const proxyResource = await this.$store.dispatch('harvester/create', upgradeValue);
 
@@ -144,7 +149,7 @@ export default {
             :clearable="true"
           />
 
-          <div>
+          <div v-if="canEnableLogging">
             <Checkbox v-model="enableLogging" class="check" type="checkbox" :label="t('harvester.upgradePage.enableLogging')" />
           </div>
 
