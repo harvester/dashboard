@@ -164,7 +164,7 @@ export default {
       };
     },
 
-    vmSchema() {
+    vmSchema() { // 不合适
       return this.$store.getters['cluster/schemaFor'](HCI.VM);
     },
   },

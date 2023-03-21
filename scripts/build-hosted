@@ -22,7 +22,8 @@ if [[ "${DIR}" == "master" ]]; then
 fi
 
 # BASE=${BASE:-https://releases.rancher.com/dashboard/${DIR}}
-BASE=${BASE:-https://releases.rancher.com/harvester-ui/dashboard/${DIR}}
+# BASE=${BASE:-https://releases.rancher.com/harvester-ui/dashboard/${DIR}}
+BASE=${BASE:-https://harvester-dev.oss-cn-hangzhou.aliyuncs.com/dashboard/${DIR}}
 
 echo "Building for ${BASE}..."
 

@@ -106,6 +106,13 @@ export function init($plugin, store) {
       value:    'kubernetesVersion',
       getValue: row => row.kubernetesVersion
     },
+    {
+      ...VERSION,
+      name:     'kubernetesVersion',
+      labelKey: 'tableHeaders.kubernetesVersion',
+      value:    'kubernetesVersion',
+      getValue: row => row.kubernetesVersion
+    },
     MACHINE_POOLS,
     AGE,
     {

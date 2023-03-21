@@ -5,7 +5,7 @@ import { Card } from '@components/Card';
 import ResourceTable from '@shell/components/ResourceTable';
 import { Banner } from '@components/Banner';
 import { LabeledInput } from '@components/Form/LabeledInput';
-import { MANAGEMENT } from '@shell/config/types';
+import { MANAGEMENT, HCI } from '@shell/config/types';
 import { SETTING } from '@shell/config/settings';
 import ResourceFetch from '@shell/mixins/resource-fetch';
 
@@ -74,7 +74,13 @@ export default {
     ...mapGetters({ t: 'i18n/t' }),
 
     filteredRows() {
-      return this.rows.filter(x => x.name !== 'fleet');
+      return this.rows.filter(x => x.name !== 'fleet').filter((x) => {
+        if (this.vmSchema) {
+          return !['harvester', 'multi-cluster-management'].includes(x.nameDisplay);
+        }
+
+        return true;
+      });
     },
 
     promptForUrl() {
@@ -85,6 +91,10 @@ export default {
       const schema = this.$store.getters[`management/schemaFor`](MANAGEMENT.SETTING);
 
       return schema?.resourceMethods?.includes('PUT');
+    },
+
+    vmSchema() {
+      return this.$store.getters['cluster/schemaFor'](HCI.VM);
     },
   },
 

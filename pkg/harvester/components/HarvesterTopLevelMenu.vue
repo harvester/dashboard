@@ -70,7 +70,7 @@ export default {
     isEnableMCMView() {
       const allSetting = this.$store.getters[`cluster/all`](HCI.SETTING);
       const containerAndMcm = allSetting?.find(setting => setting.id === 'container-and-mcm-support');
-      const value = containerAndMcm.value || containerAndMcm.default || {};
+      const value = containerAndMcm?.value || containerAndMcm?.default || {};
 
       try {
         return JSON.parse(value)['multi-cluster'];
@@ -82,7 +82,7 @@ export default {
     isEnableContainerView() {
       const allSetting = this.$store.getters[`cluster/all`](HCI.SETTING);
       const containerAndMcm = allSetting?.find(setting => setting.id === 'container-and-mcm-support');
-      const value = containerAndMcm.value || containerAndMcm.default || {};
+      const value = containerAndMcm?.value || containerAndMcm?.default || {};
 
       if (this.isEnableMCMView) {
         return true;
