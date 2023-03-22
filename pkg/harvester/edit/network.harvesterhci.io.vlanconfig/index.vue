@@ -92,7 +92,7 @@ export default {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const nodes = this.$store.getters[`${ inStore }/all`](NODE);
 
-      return nodes.filter(n => !n.isUnSchedulable).map((node) => {
+      return nodes.map((node) => {
         return {
           label: node.nameDisplay,
           value: node.id
@@ -150,18 +150,23 @@ export default {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const linkMonitor = this.$store.getters[`${ inStore }/byId`](HCI.LINK_MONITOR, 'nic') || {};
       const linkStatus = linkMonitor?.status?.linkStatus || {};
+      const nodes = this.nodes.map(n => n.id);
 
       const out = [];
 
+      // The node name in the Link monitor is not deleted after the nodes is deleted
+      // So the UI needs to filter it first.
       Object.keys(linkStatus).map((nodeName) => {
-        const nics = linkStatus[nodeName] || [];
+        if (nodes.includes(nodeName)) {
+          const nics = linkStatus[nodeName] || [];
 
-        nics.map((nic) => {
-          out.push({
-            ...nic,
-            nodeName,
+          nics.map((nic) => {
+            out.push({
+              ...nic,
+              nodeName,
+            });
           });
-        });
+        }
       });
 
       return out;
@@ -208,7 +213,7 @@ export default {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const nodes = this.$store.getters[`${ inStore }/all`](NODE);
 
-      return nodes.filter(n => !n.isUnSchedulable);
+      return nodes;
     },
   },
 
