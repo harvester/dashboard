@@ -84,13 +84,17 @@ export default {
       virtualCount:      dispatch('findAll', { type: COUNT }),
       virtualNamespaces: dispatch('findAll', { type: NAMESPACE }),
       settings:          dispatch('findAll', { type: HCI.SETTING }),
+      clusters:          dispatch('management/findAll', {
+        type: MANAGEMENT.CLUSTER,
+        opt:  { force: true }
+      }, { root: true }),
     };
 
     if (getters['schemaFor'](HCI.UPGRADE)) {
       hash.upgrades = dispatch('findAll', { type: HCI.UPGRADE });
     }
 
-    await allHash(hash);
+    const res: any = await allHash(hash);
 
     await dispatch('cleanNamespaces', null, { root: true });
 
@@ -122,5 +126,15 @@ export default {
       name: 'plugin-developer',
       definition,
     }, { root: true });
+
+    const isMultiCluster = !(res.clusters.length === 1 && res.clusters[0].metadata?.name === 'local');
+
+    if (isMultiCluster) {
+      commit('managementChanged', {
+        ready:          true,
+        isMultiCluster: true,
+        isRancher:      true,
+      }, { root: true });
+    }
   },
 };
