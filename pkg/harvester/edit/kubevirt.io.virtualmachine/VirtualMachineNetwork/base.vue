@@ -58,6 +58,11 @@ export default {
     mode: {
       type:    String,
       default: 'create'
+    },
+
+    isSingle: {
+      type:    Boolean,
+      default: true
     }
   },
 
@@ -70,7 +75,8 @@ export default {
 
     return {
       isMasquerade,
-      hasManagementNetwork: false
+      hasManagementNetwork: false,
+      showAdvanced:         false,
     };
   },
 
@@ -136,6 +142,13 @@ export default {
       },
       immediate: true,
       deep:      true
+    },
+
+    isSingle(neu) {
+      if (!neu) {
+        this.$set(this.value, 'macAddress', '');
+        this.update();
+      }
     }
   },
 
@@ -163,7 +176,11 @@ export default {
 
     update() {
       this.$emit('update');
-    }
+    },
+
+    toggleAdvanced() {
+      this.showAdvanced = !this.showAdvanced;
+    },
   }
 };
 </script>
@@ -256,24 +273,32 @@ export default {
       </div>
     </div>
 
-    <div v-if="!isMasquerade" class="row">
-      <div
-        data-testid="input-hen-macAddress"
-        class="col span-6"
-      >
-        <InputOrDisplay
-          :name="t('harvester.fields.macAddress')"
-          :value="value.macAddress"
-          :mode="mode"
+    <div v-if="!isMasquerade && isSingle">
+      <div class="row mb-20">
+        <a v-if="showAdvanced" v-t="'harvester.generic.showMore'" role="button" @click="toggleAdvanced" />
+        <a v-else v-t="'harvester.generic.showMore'" role="button" @click="toggleAdvanced" />
+      </div>
+
+      <div class="row">
+        <div
+          v-if="showAdvanced"
+          data-testid="input-hen-macAddress"
+          class="col span-6"
         >
-          <LabeledInput
-            v-model="value.macAddress"
-            label-key="harvester.fields.macAddress"
+          <InputOrDisplay
+            :name="t('harvester.fields.macAddress')"
+            :value="value.macAddress"
             :mode="mode"
-            :tooltip="t('harvester.virtualMachine.volume.macTip')"
-            @input="update"
-          />
-        </InputOrDisplay>
+          >
+            <LabeledInput
+              v-model="value.macAddress"
+              label-key="harvester.fields.macAddress"
+              :mode="mode"
+              :tooltip="t('harvester.virtualMachine.volume.macTip')"
+              @input="update"
+            />
+          </InputOrDisplay>
+        </div>
       </div>
     </div>
   </div>
