@@ -527,7 +527,7 @@ export default {
       </Tab>
 
       <Tab name="Network" :label="t('harvester.tab.network')" :weight="-2">
-        <Network v-model="networkRows" :mode="mode" />
+        <Network v-model="networkRows" :mode="mode" :is-single="isSingle" />
       </Tab>
 
       <Tab name="nodeScheduling" :label="t('workload.container.titles.nodeScheduling')" :weight="-3">

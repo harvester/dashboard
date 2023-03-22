@@ -24,6 +24,11 @@ export default {
       default: () => {
         return [];
       }
+    },
+
+    isSingle: {
+      type:    Boolean,
+      default: true
     }
   },
 
@@ -132,6 +137,7 @@ export default {
         v-model="rows[i]"
         :rows="rows"
         :mode="mode"
+        :is-single="isSingle"
         :network-option="networkOption"
         @update="update"
       />
