@@ -275,8 +275,9 @@ export default {
 
     <div v-if="!isMasquerade && isSingle">
       <div class="row mb-20">
-        <a v-if="showAdvanced" v-t="'harvester.generic.showMore'" role="button" @click="toggleAdvanced" />
-        <a v-else v-t="'harvester.generic.showMore'" role="button" @click="toggleAdvanced" />
+        <a role="button" @click="toggleAdvanced">
+          {{ showAdvanced ? t('harvester.generic.hideMore') : t('harvester.generic.showMore') }}
+        </a>
       </div>
 
       <div class="row">
