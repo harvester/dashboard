@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import { clone } from '@shell/utils/object';
 import { HCI } from '../../types';
 import NetworkAttachmentDef from '@shell/models/k8s.cni.cncf.io.networkattachmentdefinition';
@@ -6,6 +7,22 @@ import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../../config/harvester';
 const NOT_READY = 'Not Ready';
 
 export default class HarvesterNetworkAttachmentDef extends NetworkAttachmentDef {
+  applyDefaults() {
+    const spec = this.spec || {
+      config: JSON.stringify({
+        cniVersion:  '0.3.1',
+        name:        '',
+        type:        'bridge',
+        bridge:      '',
+        promiscMode: true,
+        vlan:        '',
+        ipam:        {}
+      })
+    };
+
+    Vue.set(this, 'spec', spec);
+  }
+
   get listLocation() {
     return this.$rootGetters['type-map/optionsFor'](this.type).customRoute || {
       name:   `${ HARVESTER_PRODUCT }-c-cluster-resource`,
