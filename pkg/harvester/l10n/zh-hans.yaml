@@ -3,6 +3,7 @@ generic:
   resourceExternalLinkTips: '外部链接'
   namespace: 命名空间
   notReady: 未就绪
+  inProgress: 进行中
 
 nav:
   group:
@@ -17,6 +18,14 @@ asyncButton:
     action: 保存并重启
     success: 已重启
     waiting: 正在重启&hellip;
+
+resourceTable:
+  groupBy:
+    device: 按设备分组
+
+labeledSelect:
+  startTyping: 输入定义一个选项
+  pressEnter: 按下回车键添加 "{input}"
 
 harvester:
   productLabel: 'Harvester'
@@ -247,6 +256,7 @@ harvester:
     image:
       ruleTip: 'URL 后缀不支持。仅支持后缀为 .img，.iso，.qcow，.qcow2或.raw的镜像文件。'
       ruleFileTip: '文件后缀不支持。仅支持后缀为 .img，.iso，.qcow，.qcow2或.raw的镜像文件。'
+      arrayCountRequired: "最少需要{count}个{key}, 而且{key}不能为空。"
 
   dashboard:
     label: 仪表板

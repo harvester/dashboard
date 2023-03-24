@@ -3,6 +3,7 @@ generic:
   resourceExternalLinkTips: 'External Link'
   namespace: Namespace
   notReady: Not Ready
+  inProgress: In Progress
 
 nav:
   group:
@@ -17,6 +18,14 @@ asyncButton:
     action: Save & Restart
     success: Restarted
     waiting: Restarting&hellip;
+
+resourceTable:
+  groupBy:
+    device: Group by Device
+
+labeledSelect:
+  startTyping: Start typing to define an item
+  pressEnter: Press enter to add "{input}"
 
 harvester:
   productLabel: 'Harvester'
@@ -247,6 +256,7 @@ harvester:
     image:
       ruleTip: 'The URL you have entered ends in an extension that we do not support. We only accept image files that end in .img, .iso, .qcow, .qcow2, .raw.'
       ruleFileTip: 'The file you have chosen ends in an extension that we do not support. We only accept image files that end in .img, .iso, .qcow, .qcow2, .raw.'
+    arrayCountRequired: "At least {count} {key} {count, plural, =1 {is} other {are}} required, and {key} can not be empty."
 
   dashboard:
     label: Dashboard
