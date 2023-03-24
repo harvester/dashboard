@@ -89,7 +89,7 @@ export default class HciVlanConfig extends HarvesterResource {
   }
 
   get isReady() {
-    if (this.vlanStatuses.length !== this.nodes.length) {
+    if (this.nodes.length === 0 || (this.vlanStatuses.length !== this.nodes.length)) {
       return false;
     } else {
       const states = this.vlanStatuses.filter((s) => {
