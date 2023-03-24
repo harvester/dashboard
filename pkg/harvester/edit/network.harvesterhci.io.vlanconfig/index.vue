@@ -222,7 +222,7 @@ export default {
       const errors = [];
 
       const nics = this.value.spec?.uplink?.nics || [];
-      const nicRequired = this.t('validation.arrayCountRequired', { key: this.t('harvester.vlanConfig.uplink.nics.label'), count: 1 }, true);
+      const nicRequired = this.t('harvester.validation.arrayCountRequired', { key: this.t('harvester.vlanConfig.uplink.nics.label'), count: 1 }, true);
 
       if (nics.length === 0) {
         errors.push(nicRequired);
