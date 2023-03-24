@@ -24,8 +24,14 @@ resourceTable:
     device: 按设备分组
 
 labeledSelect:
-  startTyping: 输入定义一个选项
-  pressEnter: 按下回车键添加 "{input}"
+  startTyping: 输入以定义一个项
+  pressEnter: 按回车以添加 “{input}”
+
+logging:
+  output:
+    tips:
+      singleProvider: 此输出配置了多个提供程序。目前，我们仅支持为输出配置单个提供程序。你可以查看或编辑 YAML。
+      multipleProviders: 此输出配置了不受支持的提供程序。你可以查看或编辑 YAML。
 
 harvester:
   productLabel: 'Harvester'
@@ -256,7 +262,7 @@ harvester:
     image:
       ruleTip: 'URL 后缀不支持。仅支持后缀为 .img，.iso，.qcow，.qcow2或.raw的镜像文件。'
       ruleFileTip: '文件后缀不支持。仅支持后缀为 .img，.iso，.qcow，.qcow2或.raw的镜像文件。'
-      arrayCountRequired: "最少需要{count}个{key}, 而且{key}不能为空。"
+    arrayCountRequired: "至少需要 {count} 个 {key}，而且 {key} 不能为空。"
 
   dashboard:
     label: 仪表板
