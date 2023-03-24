@@ -318,7 +318,7 @@ export default {
           matched: 1,
           total:   allNodes.length,
           none:    false,
-          sample:  matchNode ? matchNode.nameDisplay : null,
+          sample:  matchNode ? matchNode.nameDisplay : selector[HOSTNAME],
         };
       } else {
         const match = matching(allNodes, selector);
