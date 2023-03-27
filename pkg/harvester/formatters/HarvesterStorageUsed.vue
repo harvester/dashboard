@@ -114,6 +114,12 @@ export default {
         unit:  this.units,
       };
     },
+
+    hasLonghornSchema() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+
+      return !!this.$store.getters[`${ inStore }/schemaFor`](LONGHORN.NODES);
+    },
   },
 
   methods: {
@@ -135,7 +141,7 @@ export default {
 </script>
 
 <template>
-  <div>
+  <div :class="[hasLonghornSchema ? 'sm-min-width' : 'xs-min-width']">
     <div
       v-if="showReserved"
     >
@@ -183,3 +189,13 @@ export default {
     </ConsumptionGauge>
   </div>
 </template>
+
+<style lang='scss' scoped>
+  .xs-min-width {
+    min-width: 230px;
+  }
+
+  .sm-min-width {
+    min-width: 345px;
+  }
+</style>

@@ -1,6 +1,6 @@
 <script>
 import ConsumptionGauge from '@shell/components/ConsumptionGauge';
-import { METRIC, NODE } from '@shell/config/types';
+import { METRIC, NODE, LONGHORN } from '@shell/config/types';
 import { parseSi } from '@shell/utils/units';
 
 export default {
@@ -74,12 +74,18 @@ export default {
         return 0;
       }
     },
+
+    hasLonghornSchema() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+
+      return !!this.$store.getters[`${ inStore }/schemaFor`](LONGHORN.NODES);
+    },
   }
 };
 </script>
 
 <template>
-  <div>
+  <div :class="[hasLonghornSchema ? 'sm-min-width' : 'xs-min-width']">
     <ConsumptionGauge
       :capacity="cpuTotal"
       :used="reserved"
@@ -120,3 +126,13 @@ export default {
     </div>
   </div>
 </template>
+
+<style lang='scss' scoped>
+  .xs-min-width {
+    min-width: 230px;
+  }
+
+  .sm-min-width {
+    min-width: 345px;
+  }
+</style>
