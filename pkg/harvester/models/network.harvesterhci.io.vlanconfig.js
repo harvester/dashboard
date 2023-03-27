@@ -107,11 +107,11 @@ export default class HciVlanConfig extends HarvesterResource {
     if (isEmpty(nodeSelector)) {
       return nodes;
     } else if (nodeSelector[HOSTNAME] && Object.keys(nodeSelector).length === 1) {
-      return nodes.filter(n => n.nodeName === nodeSelector[HOSTNAME]) || [];
+      return nodes.filter(n => n.id === nodeSelector[HOSTNAME]) || [];
     } else {
       const matchNodes = matching(nodes || [], nodeSelector).map(n => n.id);
 
-      return nodes.filter(n => matchNodes.includes(n.nodeName));
+      return nodes.filter(n => matchNodes.includes(n.id));
     }
   }
 
