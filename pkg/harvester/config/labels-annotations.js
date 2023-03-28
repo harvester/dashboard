@@ -38,5 +38,8 @@ export const HCI = {
   STORAGE_NETWORK:              'storage-network.settings.harvesterhci.io',
   ADDON_EXPERIMENTAL:           'addon.harvesterhci.io/experimental',
   VOLUME_ERROR:                 'longhorn.io/volume-scheduling-error',
-  KVM_DISABLE:                  'cpu-feature.node.kubevirt.io/svm'
+  KVM_DISABLE:                  'cpu-feature.node.kubevirt.io/svm',
+  MAINTENANCE_QUOTA:            'harvesterhci.io/maintenanceQuota',
+  VM_COUNT:                     'harvesterhci.io/vm-count',
+  USER_INPUT_MEMORY_LIMIT:      'harvesterhci.io/user-input-memory-limit',
 };
