@@ -48,6 +48,33 @@ export const CLUSTERIP = (() => {
 })();
 
 export default class extends SteveModel {
+  get _availableActions() {
+    const filterAction = ['goToEdit', 'goToEditYaml', 'promptRemove'];
+    const CRNames = ['harvester-system/harvester', 'cattle-logging-system/rancher-logging'];
+
+    if (!CRNames.includes(this.id)) {
+      return super._availableActions;
+    }
+
+    const out = super._availableActions.filter((action) => {
+      if (!filterAction.includes(action.action)) {
+        return action;
+      }
+    });
+
+    return out;
+  }
+
+  get canEditYaml() {
+    const CRNames = ['harvester-system/harvester', 'cattle-logging-system/rancher-logging'];
+
+    if (CRNames.includes(this.id)) {
+      return false;
+    }
+
+    return super.canEditYaml;
+  }
+
   get customValidationRules() {
     return [
       {

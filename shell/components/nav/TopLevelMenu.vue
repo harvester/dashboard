@@ -4,7 +4,7 @@ import ClusterProviderIcon from '@shell/components/ClusterProviderIcon';
 import IconOrSvg from '../IconOrSvg';
 import { mapGetters } from 'vuex';
 import $ from 'jquery';
-import { CAPI, MANAGEMENT } from '@shell/config/types';
+import { CAPI, MANAGEMENT, HCI } from '@shell/config/types';
 import { mapPref, MENU_MAX_CLUSTERS } from '@shell/store/prefs';
 import { sortBy } from '@shell/utils/sort';
 import { ucFirst } from '@shell/utils/string';
@@ -12,7 +12,7 @@ import { KEY } from '@shell/utils/platform';
 import { getVersionInfo } from '@shell/utils/version';
 import { LEGACY } from '@shell/store/features';
 import { SETTING } from '@shell/config/settings';
-import { filterOnlyKubernetesClusters, filterHiddenLocalCluster } from '@shell/utils/cluster';
+import { filterHiddenLocalCluster } from '@shell/utils/cluster';
 import { isRancherPrime } from '@shell/config/version';
 
 export default {
@@ -43,8 +43,8 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['clusterId']),
-    ...mapGetters(['clusterReady', 'isRancher', 'currentCluster', 'currentProduct']),
+    ...mapGetters(['clusterId', 'supportRancherManage']),
+    ...mapGetters(['clusterReady', 'isRancher', 'currentCluster', 'currentProduct', 'openRancherManagerSupport']),
     ...mapGetters('type-map', ['activeProducts']),
     ...mapGetters({ features: 'features/get' }),
 
@@ -64,7 +64,7 @@ export default {
 
     clusters() {
       const all = this.$store.getters['management/all'](MANAGEMENT.CLUSTER);
-      let kubeClusters = filterHiddenLocalCluster(filterOnlyKubernetesClusters(all), this.$store);
+      let kubeClusters = filterHiddenLocalCluster(all, this.$store);
       let pClusters = null;
 
       if (this.hasProvCluster) {
@@ -91,7 +91,8 @@ export default {
           osLogo:          x.providerOsLogo,
           providerNavLogo: x.providerMenuLogo,
           badge:           x.badge,
-          isLocal:         x.isLocal
+          isLocal:         x.isLocal,
+          isHarvester:     x.isHarvester
         };
       });
     },
@@ -165,6 +166,10 @@ export default {
     hasSupport() {
       return isRancherPrime() || this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.SUPPORTED )?.value === 'true';
     },
+
+    harvesterLocalCluster() {
+      return this.clusters.find(c => c.id === 'local');
+    }
   },
 
   watch: {
@@ -211,6 +216,31 @@ export default {
         this.setClusterListHeight(this.maxClustersToShow);
       });
     },
+
+    async goToHarvesterCluster() {
+      const localCluster = this.$store.getters['management/all'](CAPI.RANCHER_CLUSTER).find(C => C.id === 'fleet-local/local');
+
+      const harvCluster = await this.$store.dispatch('management/create', {
+        ...localCluster,
+        type: HCI.CLUSTER
+      });
+
+      const timeout = setTimeout(() => {
+        // Don't show loading indicator for quickly fetched plugins
+        this.navigating = harvCluster.id;
+      }, 1000);
+
+      try {
+        await harvCluster.goToCluster();
+
+        clearTimeout(timeout);
+        this.navigating = false;
+      } catch {
+        // The error handling is carried out within goToCluster, but just in case something happens before the promise chain can catch it...
+        clearTimeout(timeout);
+        this.navigating = false;
+      }
+    }
   }
 };
 </script>
@@ -252,6 +282,21 @@ export default {
           </div>
         </div>
         <div class="body">
+          <a
+            v-if="openRancherManagerSupport"
+            class="option cluster selector home"
+            @click="goToHarvesterCluster()"
+          >
+            <ClusterProviderIcon
+              :small="true"
+              :cluster="harvesterLocalCluster"
+              class="mr-10"
+            />
+            <div>
+              Harvester Dashboard
+            </div>
+          </a>
+
           <div @click="hide()">
             <nuxt-link
               class="option cluster selector home"

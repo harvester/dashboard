@@ -343,6 +343,7 @@ export default async function({
     if ((oldProduct === FLEET_NAME || product === FLEET_NAME) && oldProduct !== product) {
       // See note above for store.app.router.beforeEach, need to setProduct manually, for the moment do this in a targeted way
       setProduct(store, route);
+
       store.commit('updateWorkspace', {
         value:   store.getters['prefs/get'](WORKSPACE) || DEFAULT_WORKSPACE,
         getters: store.getters
@@ -365,8 +366,9 @@ export default async function({
     if (!clusterId) {
       clusterId = store.getters['defaultClusterId']; // This needs the cluster list, so no parallel
       const isSingleProduct = store.getters['isSingleProduct'];
+      const openRancherManagerSupport = store.getters['openRancherManagerSupport'];
 
-      if (isSingleProduct?.afterLoginRoute) {
+      if (isSingleProduct?.afterLoginRoute && !openRancherManagerSupport) {
         const value = {
           name:   'c-cluster-product',
           ...isSingleProduct.afterLoginRoute,

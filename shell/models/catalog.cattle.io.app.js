@@ -68,6 +68,10 @@ export default class CatalogApp extends SteveModel {
     // null = no upgrade found
     // object = version available to upgrade to
 
+    if (this.$rootGetters['disableHarvesterRelatedOperation'] && this.id === 'cattle-system/rancher') {
+      return false;
+    }
+
     if (
       this.spec?.chart?.metadata?.annotations?.[CATALOG_ANNOTATIONS.MANAGED] ||
       this.spec?.chart?.metadata?.annotations?.[FLEET.BUNDLE_ID]

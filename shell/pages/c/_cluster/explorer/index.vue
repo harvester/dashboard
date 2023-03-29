@@ -551,7 +551,10 @@ export default {
     </div>
 
     <div class="mt-30">
-      <Tabbed @changed="tabChange">
+      <Tabbed
+        :use-hash="false"
+        @changed="tabChange"
+      >
         <Tab
           name="cluster-events"
           :label="t('clusterIndexPage.sections.events.label')"
@@ -577,6 +580,7 @@ export default {
     <Tabbed
       v-if="hasMetricsTabs"
       class="mt-30"
+      :use-hash="false"
     >
       <Tab
         v-if="showClusterMetrics"

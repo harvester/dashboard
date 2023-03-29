@@ -85,9 +85,8 @@ export default {
 
   computed: {
     filteredRows() {
-      // If Harvester feature is enabled, hide Harvester Clusters
       if (this.harvesterEnabled) {
-        return filterHiddenLocalCluster(filterOnlyKubernetesClusters(this.rows), this.$store);
+        return filterHiddenLocalCluster(this.rows, this.$store);
       }
 
       // Otherwise, show Harvester clusters - these will be shown with a warning
@@ -191,9 +190,8 @@ export default {
         <span v-if="!row.stateParts.length">{{ row.nodes.length }}</span>
       </template>
       <template #cell:explorer="{row}">
-        <span v-if="row.mgmt && row.mgmt.isHarvester" />
         <n-link
-          v-else-if="row.mgmt && row.mgmt.isReady && !row.hasError"
+          v-if="row.mgmt && row.mgmt.isReady && !row.hasError"
           data-testid="cluster-manager-list-explore-management"
           class="btn btn-sm role-secondary"
           :to="{name: 'c-cluster', params: {cluster: row.mgmt.id}}"

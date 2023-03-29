@@ -595,6 +595,7 @@ export default {
     <Tabbed
       v-if="hasMetricsTabs"
       class="mt-30"
+      :use-hash="false"
     >
       <Tab
         v-if="showClusterMetrics"
@@ -632,7 +633,7 @@ export default {
       <h3>
         {{ t('clusterIndexPage.sections.events.label') }}
       </h3>
-      <Tabbed class="mt-20">
+      <Tabbed class="mt-20" :use-hash="false">
         <Tab
           name="host"
           label="Hosts"
