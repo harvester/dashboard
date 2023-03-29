@@ -24,7 +24,7 @@ export default {
     const namespaces = getters.filterNamespace(notFilterNamespaces);
 
     // harvester multi cluster === isRancher
-    if (rootGetters['isRancher']) {
+    if (rootGetters['isRancher'] && rootGetters['currentCluster'] && rootGetters['currentCluster']?.id !== '_') {
       const cluster = rootGetters['currentCluster'];
       let projects = rootGetters['management/all'](
         MANAGEMENT.PROJECT

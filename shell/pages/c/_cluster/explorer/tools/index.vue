@@ -73,7 +73,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['currentCluster']),
+    ...mapGetters(['currentCluster', 'disableHarvesterRelatedOperation']),
     ...mapGetters({ allCharts: 'catalog/charts', loadingErrors: 'catalog/errors' }),
     ...mapGetters({ t: 'i18n/t' }),
 
@@ -206,6 +206,12 @@ export default {
 
     install(chart) {
       chart.goToInstall(FROM_TOOLS);
+    },
+
+    disableHarvesterRelatedTools(chart) {
+      const harvesterRelatedTools = ['cluster/rancher-charts/longhorn', 'cluster/rancher-charts/rancher-logging', 'cluster/rancher-charts/rancher-monitoring'];
+
+      return this.disableHarvesterRelatedOperation && harvesterRelatedTools.includes(chart.id);
     },
 
     openV1Tool(id) {
@@ -363,10 +369,12 @@ export default {
         margin: 0;
       }
 
-      .os-label {
-        position: absolute;
-        top: 10px;
-        right: 10px;
+      .title {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .label {
         padding: 3px;
         font-size: 12px;
         line-height: 12px;
@@ -443,14 +451,23 @@ export default {
           />
         </div>
         <div class="name-version">
-          <div>
+          <div class="title">
             <h3 class="name">
               {{ opt.chart.chartNameDisplay }}
             </h3>
-            <label
-              v-if="opt.chart.deploysOnWindows"
-              class="os-label"
-            >{{ t('catalog.charts.deploysOnWindows') }}</label>
+
+            <div>
+              <label
+                v-if="opt.chart.deploysOnWindows"
+                class="label"
+              >{{ t('catalog.charts.deploysOnWindows') }}</label>
+              <label
+                v-if="disableHarvesterRelatedTools(opt.chart)"
+                class="label"
+              >
+                Managed by Harvester
+              </label>
+            </div>
           </div>
           <div class="version">
             <template v-if="opt.app && opt.app.upgradeAvailable">
@@ -480,7 +497,10 @@ export default {
             :link-to="opt.app.detailLocation"
           />
         </div>
-        <div class="action">
+        <div
+          v-if="!disableHarvesterRelatedTools(opt.chart)"
+          class="action"
+        >
           <template v-if="opt.blocked">
             <button
               disabled="true"

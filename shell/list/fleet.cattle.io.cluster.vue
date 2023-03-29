@@ -1,13 +1,11 @@
 <script>
 import FleetClusters from '@shell/components/fleet/FleetClusters';
 import { FLEET, MANAGEMENT } from '@shell/config/types';
-import { isHarvesterCluster } from '@shell/utils/cluster';
-import { Banner } from '@components/Banner';
 import ResourceFetch from '@shell/mixins/resource-fetch';
 
 export default {
   name:       'ListCluster',
-  components: { Banner, FleetClusters },
+  components: { FleetClusters },
   mixins:     [ResourceFetch],
   props:      {
     resource: {
@@ -56,15 +54,11 @@ export default {
     },
 
     filteredRows() {
-      return this.fleetClusters.filter(c => !isHarvesterCluster(c));
+      return this.fleetClusters;
     },
 
     fleetClusters() {
       return this.allClusters.filter(c => c.type === FLEET.CLUSTER);
-    },
-
-    hiddenHarvesterCount() {
-      return this.fleetClusters.length - this.filteredRows.length;
     },
   },
   // override with relevant info for the loading indicator since this doesn't use it's own masthead
@@ -79,11 +73,6 @@ export default {
 
 <template>
   <div>
-    <Banner
-      v-if="hiddenHarvesterCount"
-      color="info"
-      :label="t('fleet.clusters.harvester', {count: hiddenHarvesterCount} )"
-    />
     <FleetClusters
       :rows="filteredRows"
       :schema="schema"
