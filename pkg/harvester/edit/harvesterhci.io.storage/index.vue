@@ -2,10 +2,13 @@
 import CreateEditView from '@shell/mixins/create-edit-view';
 import CruResource from '@shell/components/CruResource';
 import NameNsDescription from '@shell/components/form/NameNsDescription';
+import Tags from '../../components/DiskTags';
 import ArrayList from '@shell/components/form/ArrayList';
 import Tab from '@shell/components/Tabbed/Tab';
 import Tabbed from '@shell/components/Tabbed';
 import { RadioGroup } from '@components/Form/Radio';
+
+import LabeledInput from '@components/Form/LabeledInput/LabeledInput.vue';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import Loading from '@shell/components/Loading';
 
@@ -14,6 +17,7 @@ import { mapFeature, UNSUPPORTED_STORAGE_DRIVERS } from '@shell/store/features';
 import { STORAGE_CLASS, LONGHORN } from '@shell/config/types';
 import { CSI_DRIVER } from '../../types';
 import { allHash } from '@shell/utils/promise';
+import { clone } from '@shell/utils/object';
 
 const LONGHORN_DRIVER = 'driver.longhorn.io';
 
@@ -24,11 +28,13 @@ export default {
     ArrayList,
     CruResource,
     LabeledSelect,
+    LabeledInput,
     NameNsDescription,
     RadioGroup,
     Tab,
     Tabbed,
     Loading,
+    Tags,
   },
 
   mixins: [CreateEditView],
@@ -64,6 +70,8 @@ export default {
       }
     ];
 
+    const allowedTopologies = clone(this.value.allowedTopologies?.[0]?.matchLabelExpressions || []);
+
     this.$set(this.value, 'parameters', this.value.parameters || {});
     this.$set(this.value, 'provisioner', this.value.provisioner || LONGHORN_DRIVER);
     this.$set(this.value, 'allowVolumeExpansion', this.value.allowVolumeExpansion || allowVolumeExpansionOptions[0].value);
@@ -74,9 +82,14 @@ export default {
       reclaimPolicyOptions,
       allowVolumeExpansionOptions,
       volumeBindingModeOptions,
-      mountOptions: [],
-      provisioner:  LONGHORN_DRIVER,
+      mountOptions:    [],
+      provisioner:     LONGHORN_DRIVER,
       STORAGE_CLASS,
+      allowedTopologies,
+      defaultAddValue: {
+        key:    '',
+        values: [],
+      }
     };
   },
 
@@ -128,6 +141,16 @@ export default {
   watch: {
     provisionerWatch() {
       this.$set(this.value, 'parameters', {});
+    },
+
+    allowedTopologies(neu) {
+      if (!neu || neu.length === 0) {
+        delete this.value.allowedTopologies;
+
+        return;
+      }
+
+      this.value.allowedTopologies = [{ matchLabelExpressions: neu }];
     }
   },
 
@@ -155,7 +178,7 @@ export default {
           delete this.value.parameters[key];
         }
       });
-    }
+    },
   }
 };
 </script>
@@ -234,6 +257,56 @@ export default {
           </div>
         </div>
       </Tab>
+      <Tab
+        name="allowedTopologies"
+        :label="t('harvester.storage.allowedTopologies.title')"
+        :weight="-1"
+        :tooltip="t('harvester.storage.allowedTopologies.tooltip')"
+      >
+        <ArrayList
+          v-model="allowedTopologies"
+          :default-add-value="defaultAddValue"
+          :initial-empty-row="true"
+          :show-header="true"
+        >
+          <template v-slot:column-headers>
+            <div class="box">
+              <div class="row">
+                <div class="col span-4 key">
+                  {{ t('generic.key') }}
+                  <span class="required">*</span>
+                </div>
+                <div class="col span-8 value">
+                  {{ t('generic.value') }}
+                </div>
+              </div>
+            </div>
+          </template>
+          <template v-slot:columns="scope">
+            <div class="row custom-headers">
+              <div class="col span-4 key">
+                <LabeledInput
+                  v-model="scope.row.value.key"
+                  :required="true"
+                />
+              </div>
+              <div class="col span-8 value">
+                <Tags
+                  v-model="scope.row.value.values"
+                  :add-label="t('generic.add')"
+                  :mode="mode"
+                />
+              </div>
+            </div>
+          </template>
+        </ArrayList>
+      </Tab>
     </Tabbed>
   </CruResource>
 </template>
+
+<style lang="scss" scoped>
+  .custom-headers {
+    align-items: center;
+  }
+</style>

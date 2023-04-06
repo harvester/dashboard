@@ -78,6 +78,11 @@ export default {
           },
         },
         {
+          name:     'storageClass',
+          labelKey: 'tableHeaders.storageClass',
+          value:    'spec.storageClassName'
+        },
+        {
           name:     'AttachedVM',
           labelKey: 'tableHeaders.attachedVM',
           type:     'attached',
@@ -133,7 +138,7 @@ export default {
     key-field="_key"
     v-on="$listeners"
   >
-    <template slot="cell:state" slot-scope="scope" class="state-col">
+    <template slot="cell:state" slot-scope="scope">
       <div class="state">
         <HarvesterVolumeState class="vmstate" :row="scope.row" />
       </div>
