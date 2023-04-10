@@ -51,7 +51,7 @@ module.exports = {
     'newline-per-chained-call':        ['warn', { ignoreChainWithDepth: 4 }],
     'no-caller':                       'warn',
     'no-cond-assign':                  ['warn', 'except-parens'],
-    'no-console':                      'warn',
+    'no-console':                      'off',
     'no-debugger':                     'warn',
     'no-eq-null':                      'warn',
     'no-eval':                         'warn',
