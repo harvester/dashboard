@@ -183,7 +183,7 @@ export default {
   <div>
     <InfoBox v-for="(driver, idx) in configArr" :key="driver.key" class="box">
       <button :disabled="disableEdit(driver.key)" type="button" class="role-link btn btn-sm remove" @click="remove(idx)">
-        <i class="icon icon-2x icon-x" />
+        <i class="icon icon-x" />
       </button>
 
       <div class="row">
@@ -208,7 +208,7 @@ export default {
             required
             :disabled="disableEdit(driver.key)"
             :options="getVolumeSnapshotOptions(driver.key)"
-            label="volumeSnapshotClassName"
+            :label="t('harvester.setting.csiDriverConfig.volumeSnapshotClassName')"
             @keydown.native.enter.prevent="()=>{}"
             @input="update"
           />
@@ -221,7 +221,7 @@ export default {
             required
             :disabled="disableEdit(driver.key)"
             :options="getVolumeSnapshotOptions(driver.key)"
-            label="backupVolumeSnapshotClassName"
+            :label="t('harvester.setting.csiDriverConfig.backupVolumeSnapshotClassName')"
             @keydown.native.enter.prevent="()=>{}"
             @input="update"
           />

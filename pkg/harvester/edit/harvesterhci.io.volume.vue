@@ -6,7 +6,6 @@ import UnitInput from '@shell/components/form/UnitInput';
 import ResourceTabs from '@shell/components/form/ResourceTabs';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import { LabeledInput } from '@components/Form/LabeledInput';
-import MatchExpressions from '@shell/components/form/MatchExpressions';
 import NameNsDescription from '@shell/components/form/NameNsDescription';
 
 import { allHash } from '@shell/utils/promise';
@@ -33,7 +32,6 @@ export default {
     LabeledSelect,
     LabeledInput,
     NameNsDescription,
-    MatchExpressions,
   },
 
   mixins: [CreateEditView],
@@ -269,20 +267,7 @@ export default {
           @input="update"
         />
       </Tab>
-      <Tab
-        name="advanced"
-        :label="t('harvester.tab.advanced')"
-        :weight="2"
-      >
-        <MatchExpressions
-          :initial-empty-row="false"
-          :mode="mode"
-          :value="matchExpressions"
-          :show-remove="false"
-          @input="matchChanged($event)"
-        />
-      </Tab>
-      <Tab v-if="!isCreate" name="instances" :label="t('harvester.volume.tabs.snapshots')" :weight="1" class="bordered-table">
+      <Tab v-if="!isCreate" name="instances" :label="t('harvester.volume.tabs.snapshots')" :weight="2" class="bordered-table">
         <SortableTable
           v-bind="$attrs"
           :headers="snapshotHeaders"
@@ -292,7 +277,7 @@ export default {
           v-on="$listeners"
         />
       </Tab>
-      <Tab v-if="!isCreate && value.spec.dataSource" name="datasource" :label="t('harvester.volume.tabs.datasource')" :weight="-1" class="bordered-table">
+      <Tab v-if="!isCreate && value.spec.dataSource" name="datasource" :label="t('harvester.volume.tabs.datasource')" :weight="1" class="bordered-table">
         <LabeledInput v-model="dataSourceKind" class="mb-20" :mode="mode" :disabled="true" :label="t('harvester.volume.kind')" />
         <LabeledInput v-model="value.spec.dataSource.name" :mode="mode" :disabled="true" :label="t('nameNsDescription.name.label')" />
       </Tab>
