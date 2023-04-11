@@ -122,10 +122,11 @@ export default {
 
     provisioners() {
       const csiDrivers = this.$store.getters[`${ this.inStore }/all`](CSI_DRIVER) || [];
+      const format = { [LONGHORN_DRIVER]: 'storageClass.longhorn.title' };
 
       return csiDrivers.map((provisioner) => {
         return {
-          label: provisioner.name,
+          label: format[provisioner.name] || provisioner.name,
           value: provisioner.name,
         };
       });
@@ -141,16 +142,6 @@ export default {
   watch: {
     provisionerWatch() {
       this.$set(this.value, 'parameters', {});
-    },
-
-    allowedTopologies(neu) {
-      if (!neu || neu.length === 0) {
-        delete this.value.allowedTopologies;
-
-        return;
-      }
-
-      this.value.allowedTopologies = [{ matchLabelExpressions: neu }];
     }
   },
 
@@ -178,7 +169,25 @@ export default {
           delete this.value.parameters[key];
         }
       });
+
+      this.formatAllowedTopoloties();
     },
+
+    formatAllowedTopoloties() {
+      const neu = this.allowedTopologies;
+
+      if (!neu || neu.length === 0) {
+        delete this.value.allowedTopologies;
+
+        return;
+      }
+
+      const matchLabelExpressions = neu.filter(R => !!R.key.trim() && (R.values.length > 0 && !R.values.find(V => !V.trim())));
+
+      if (matchLabelExpressions.length > 0) {
+        this.value.allowedTopologies = [{ matchLabelExpressions }];
+      }
+    }
   }
 };
 </script>
@@ -192,6 +201,7 @@ export default {
     :resource="value"
     :subtypes="[]"
     :validation-passed="true"
+    :apply-hooks="applyHooks"
     :errors="errors"
     @error="e=>errors = e"
     @finish="save"
@@ -268,6 +278,7 @@ export default {
           :default-add-value="defaultAddValue"
           :initial-empty-row="true"
           :show-header="true"
+          :mode="modeOverride"
         >
           <template v-slot:column-headers>
             <div class="box">
@@ -288,13 +299,14 @@ export default {
                 <LabeledInput
                   v-model="scope.row.value.key"
                   :required="true"
+                  :mode="modeOverride"
                 />
               </div>
               <div class="col span-8 value">
                 <Tags
                   v-model="scope.row.value.values"
                   :add-label="t('generic.add')"
-                  :mode="mode"
+                  :mode="modeOverride"
                 />
               </div>
             </div>
