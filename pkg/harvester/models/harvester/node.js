@@ -6,12 +6,15 @@ import { clone } from '@shell/utils/object';
 import findLast from 'lodash/findLast';
 import {
   colorForState,
-  stateDisplay
+  stateDisplay,
+  STATES_ENUM,
 } from '@shell/plugins/dashboard-store/resource-class';
 import { parseSi } from '@shell/utils/units';
 import HarvesterResource from '../harvester';
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../../config/harvester';
 import { findBy, isArray } from '@shell/utils/array';
+
+import { ucFirst } from '@shell/utils/string';
 
 const ALLOW_SYSTEM_LABEL_KEYS = [
   'topology.kubernetes.io/zone',
@@ -52,11 +55,38 @@ export default class HciNode extends HarvesterResource {
       total:   1
     };
 
+    const shutDown = {
+      action:  'shutDown',
+      enabled: this.hasAction('powerActionPossible') && this.hasAction('powerAction') && !this.isStopped && !!this.inventory,
+      icon:    'icon icon-fw icon-pause',
+      label:   this.t('harvester.action.shutdown'),
+      total:   1
+    };
+
+    const powerOn = {
+      action:  'powerOn',
+      enabled: this.hasAction('powerActionPossible') && this.hasAction('powerAction') && this.isStopped && !!this.inventory,
+      icon:    'icon icon-fw icon-play',
+      label:   this.t('harvester.action.powerOn'),
+      total:   1
+    };
+
+    const reboot = {
+      action:  'reboot',
+      enabled: this.hasAction('powerActionPossible') && this.hasAction('powerAction') && !this.isStopped && !!this.inventory,
+      icon:    'icon icon-fw icon-refresh',
+      label:   this.t('harvester.action.reboot'),
+      total:   1
+    };
+
     return [
       cordon,
       uncordon,
       enableMaintenance,
       disableMaintenance,
+      shutDown,
+      powerOn,
+      reboot,
       ...super._availableActions
     ];
   }
@@ -111,6 +141,22 @@ export default class HciNode extends HarvesterResource {
   get stateDisplay() {
     if (this.isEnteringMaintenance) {
       return 'Entering maintenance mode';
+    }
+
+    if (this.isStopping) {
+      return ucFirst(STATES_ENUM.STOPPING);
+    }
+
+    if (this.isStarting) {
+      return ucFirst(STATES_ENUM.STARTING);
+    }
+
+    if (this.isStopped) {
+      return ucFirst(STATES_ENUM.OFF);
+    }
+
+    if (this.isRebooting) {
+      return 'Rebooting';
     }
 
     if (this.isMaintenance) {
@@ -333,5 +379,125 @@ export default class HciNode extends HarvesterResource {
     const blockDevices = this.$rootGetters[`${ inStore }/all`](HCI.BLOCK_DEVICE);
 
     return blockDevices.filter(s => s?.spec?.nodeName === nodeId) || [];
+  }
+
+  get manufacturer() {
+    return this.metadata?.labels?.[HCI_ANNOTATIONS.NODE_MANUFACTURER];
+  }
+
+  get serialNumber() {
+    return this.metadata?.labels?.[HCI_ANNOTATIONS.NODE_SERIAL_NUMBER];
+  }
+
+  get model() {
+    return this.metadata?.labels?.[HCI_ANNOTATIONS.NODE_MODEL];
+  }
+
+  get isStopped() {
+    return this.metadata?.annotations?.[HCI_ANNOTATIONS.NODE_LAST_ACTION] === 'shutdown' &&
+            this.metadata?.annotations?.[HCI_ANNOTATIONS.NODE_ACTION_STATUS] === 'complete';
+  }
+
+  get isStopping() {
+    if (!Object.prototype.hasOwnProperty.call(this.metadata.annotations, HCI_ANNOTATIONS.NODE_ACTION)) {
+      return false;
+    } else {
+      return this.metadata?.annotations?.[HCI_ANNOTATIONS.NODE_ACTION] === 'shutdown';
+    }
+  }
+
+  get isStarted() {
+    return this.metadata?.annotations?.[HCI_ANNOTATIONS.NODE_ACTION] === 'poweron' &&
+            this.metadata?.annotations?.[HCI_ANNOTATIONS.NODE_ACTION_STATUS] === 'complete';
+  }
+
+  get isStarting() {
+    if (!Object.prototype.hasOwnProperty.call(this.metadata.annotations, HCI_ANNOTATIONS.NODE_ACTION)) {
+      return false;
+    } else {
+      return this.metadata?.annotations?.[HCI_ANNOTATIONS.NODE_ACTION] === 'poweron';
+    }
+  }
+
+  get isRebooting() {
+    if (!Object.prototype.hasOwnProperty.call(this.metadata.annotations, HCI_ANNOTATIONS.NODE_ACTION)) {
+      return false;
+    } else {
+      return this.metadata?.annotations?.[HCI_ANNOTATIONS.NODE_ACTION] === 'reboot';
+    }
+  }
+
+  async shutDown(resources = this) {
+    try {
+      await this.doAction('powerActionPossible', {});
+
+      await this.doAction('powerAction', { operation: 'shutdown' });
+
+      await this.$dispatch('growl/success', {
+        title:   this.t('generic.notification.title.succeed'),
+        message: this.t('harvester.host.powerAction.message.success', {
+          name:      this.name,
+          operation: 'shut down'
+        })
+      }, { root: true });
+    } catch (err) {
+      await this.$dispatch('growl/error', {
+        title:   this.t('generic.notification.title.error'),
+        message: err,
+      }, { root: true });
+    }
+  }
+
+  async powerOn(resources = this) {
+    const operation = 'poweron';
+
+    try {
+      await this.doAction('powerActionPossible', {});
+
+      await this.doAction('powerAction', { operation });
+
+      await this.$dispatch('growl/success', {
+        title:   this.t('generic.notification.title.succeed'),
+        message: this.t('harvester.host.powerAction.message.success', {
+          name: this.name,
+          operation,
+        })
+      }, { root: true });
+    } catch (err) {
+      await this.$dispatch('growl/error', {
+        title:   this.t('generic.notification.title.error'),
+        message: err,
+      }, { root: true });
+    }
+  }
+
+  async reboot(resources = this) {
+    const operation = 'reboot';
+
+    try {
+      await this.doAction('powerActionPossible', {});
+
+      await this.doAction('powerAction', { operation });
+
+      await this.$dispatch('growl/success', {
+        title:   this.t('generic.notification.title.succeed'),
+        message: this.t('harvester.host.powerAction.message.success', {
+          name: this.name,
+          operation,
+        })
+      }, { root: true });
+    } catch (err) {
+      await this.$dispatch('growl/error', {
+        title:   this.t('generic.notification.title.error'),
+        message: err,
+      }, { root: true });
+    }
+  }
+
+  get inventory() {
+    const inStore = this.$rootGetters['currentProduct'].inStore;
+    const inventories = this.$rootGetters[`${ inStore }/all`](HCI.INVENTORY) || [];
+
+    return inventories.find(inv => inv.id === `harvester-system/${ this.id }`);
   }
 }

@@ -9,7 +9,7 @@ import ArrayListGrouped from '@shell/components/form/ArrayListGrouped';
 import ButtonDropdown from '@shell/components/ButtonDropdown';
 import CreateEditView from '@shell/mixins/create-edit-view';
 import { HCI as HCI_LABELS_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
-import { LONGHORN } from '@shell/config/types';
+import { LONGHORN, SECRET } from '@shell/config/types';
 import { HCI } from '../../types';
 import { allHash } from '@shell/utils/promise';
 import { formatSi } from '@shell/utils/units';
@@ -23,6 +23,7 @@ import { sortBy } from '@shell/utils/sort';
 import { Banner } from '@components/Banner';
 import HarvesterDisk from './HarvesterDisk';
 import HarvesterKsmtuned from './HarvesterKsmtuned';
+import HarvesterSeeder from './HarvesterSeeder';
 import Tags from '../../components/DiskTags';
 
 export const LONGHORN_SYSTEM = 'longhorn-system';
@@ -43,6 +44,7 @@ export default {
     Banner,
     Tags,
     Loading,
+    HarvesterSeeder,
   },
   mixins: [CreateEditView],
   props:  {
@@ -57,6 +59,9 @@ export default {
     await allHash({
       longhornNodes: this.$store.dispatch(`${ inStore }/findAll`, { type: LONGHORN.NODES }),
       blockDevices:  this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.BLOCK_DEVICE }),
+      addons:        this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.ADD_ONS }),
+      inventories:   this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.INVENTORY }),
+      secrets:       this.$store.dispatch(`${ inStore }/findAll`, { type: SECRET }),
     });
 
     const blockDevices = this.$store.getters[`${ inStore }/all`](HCI.BLOCK_DEVICE);
@@ -85,7 +90,29 @@ export default {
     this.disks = disks;
     this.newDisks = clone(disks);
     this.blockDeviceOpts = this.getBlockDeviceOpts();
+
+    if (this.seederEnabled) {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const inventories = this.$store.getters[`${ inStore }/all`](HCI.INVENTORY) || [];
+
+      const inventory = inventories.find(inv => inv.id === `harvester-system/${ this.value.id }`);
+
+      if (inventory) {
+        this.inventory = inventory;
+      } else {
+        this.inventory = await this.$store.dispatch(`${ inStore }/create`, {
+          type:     HCI.INVENTORY,
+          metadata: {
+            name:      this.value.id,
+            namespace: 'harvester-system'
+          },
+        });
+
+        this.inventory.applyDefaults();
+      }
+    }
   },
+
   data() {
     const customName = this.value.metadata?.annotations?.[HCI_LABELS_ANNOTATIONS.HOST_CUSTOM_NAME] || '';
     const consoleUrl = this.value.metadata?.annotations?.[HCI_LABELS_ANNOTATIONS.HOST_CONSOLE_URL] || '';
@@ -98,6 +125,7 @@ export default {
       blockDevice:     [],
       blockDeviceOpts: [],
       filteredLabels:  clone(this.value.filteredSystemLabels),
+      inventory:       {},
     };
   },
   computed: {
@@ -164,6 +192,14 @@ export default {
       const longhornNodes = this.$store.getters[`${ inStore }/all`](LONGHORN.NODES);
 
       return longhornNodes.find(node => node.id === `${ LONGHORN_SYSTEM }/${ this.value.id }`);
+    },
+
+    seederEnabled() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const addons = this.$store.getters[`${ inStore }/all`](HCI.ADD_ONS);
+      const seeder = addons.find(addon => addon.id === 'harvester-system/harvester-seeder');
+
+      return seeder ? seeder?.spec?.enabled : false;
     },
   },
   watch: {
@@ -470,6 +506,19 @@ export default {
       </Tab>
       <Tab name="Ksmtuned" :weight="70" :label="t('harvester.host.tabs.ksmtuned')">
         <HarvesterKsmtuned :mode="mode" :node="value" :register-before-hook="registerBeforeHook" />
+      </Tab>
+      <Tab
+        v-if="seederEnabled"
+        name="seeder"
+        :weight="60"
+        :label="t('harvester.host.tabs.seeder')"
+      >
+        <HarvesterSeeder
+          :mode="mode"
+          :node="value"
+          :register-before-hook="registerBeforeHook"
+          :inventory="inventory"
+        />
       </Tab>
       <Tab name="labels" label-key="harvester.host.tabs.labels">
         <KeyValue

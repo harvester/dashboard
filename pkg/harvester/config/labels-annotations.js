@@ -38,5 +38,11 @@ export const HCI = {
   STORAGE_NETWORK:              'storage-network.settings.harvesterhci.io',
   ADDON_EXPERIMENTAL:           'addon.harvesterhci.io/experimental',
   VOLUME_ERROR:                 'longhorn.io/volume-scheduling-error',
-  KVM_DISABLE:                  'cpu-feature.node.kubevirt.io/svm'
+  KVM_DISABLE:                  'cpu-feature.node.kubevirt.io/svm',
+  NODE_MANUFACTURER:            'manufacturer',
+  NODE_MODEL:                   'model',
+  NODE_SERIAL_NUMBER:           'serialNumber',
+  NODE_LAST_ACTION:             'metal.harvesterhci.io/lastActionRequested',
+  NODE_ACTION_STATUS:           'metal.harvesterhci.io/actionStatus',
+  NODE_ACTION:                  'metal.harvesterhci.io/actionRequested',
 };
