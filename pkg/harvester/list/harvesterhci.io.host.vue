@@ -54,6 +54,10 @@ export default {
       _hash.blockDevices = this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.BLOCK_DEVICE });
     }
 
+    if (this.$store.getters[`${ inStore }/schemaFor`](HCI.INVENTORY)) {
+      _hash.inventories = this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.INVENTORY });
+    }
+
     const hash = await allHash(_hash);
 
     this.rows = hash.nodes;

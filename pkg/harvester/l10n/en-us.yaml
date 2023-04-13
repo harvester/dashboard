@@ -139,6 +139,9 @@ harvester:
     snapshot: Take Snapshot
     pvcClone: Clone Volume
     vmSnapshot: Take VM Snapshot
+    shutdown: Shut Down
+    powerOn: Power On
+    reboot: Reboot
   tableHeaders:
     size: Size
     progress: Progress
@@ -297,6 +300,7 @@ harvester:
       storage: Storage
       labels: Labels
       ksmtuned: Ksmtuned
+      seeder: Out-of-Band Access
     detail:
       kvm:
         disableMessage: KVM has been disabled by BIOS. KVM must be enabled before creating any Virtual Machines.
@@ -319,6 +323,9 @@ harvester:
       nic: Physical NIC
       notRecommended: 'Not recommended'
       networkType: Type
+      manufacturer: Manufacturer
+      serialNumber: Serial Number
+      model: Model
     enableMaintenance:
       title: Enable Maintenance Mode
       protip: The operation will migrate all virtual machines on this node to other nodes.
@@ -398,6 +405,9 @@ harvester:
     tags:
       label: Host Tags
       addLabel: Add Host Tag
+    powerAction:
+      message:
+        success: 'Perform host { name } { operation } successfully.'
 
   virtualMachine:
     label: Virtual Machines
@@ -1019,7 +1029,24 @@ harvester:
   harvesterVlanConfigMigrateDialog:
     targetClusterNetwork: 
       label: Target Cluster Network
-      placeholder: Choose Target Cluster Network 
+      placeholder: Choose Target Cluster Network
+
+  seeder:
+    inventory:
+      host:
+        label: Host
+      port:
+        label: Port
+      insecureTLS:
+        label: Insecure TLS
+      secret:
+        label: Secret
+        create:
+          title: Add Secret
+      event:
+        label: Event
+      pollingInterval:
+        label: Polling Interval
 
 advancedSettings:
   descriptions:

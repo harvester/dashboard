@@ -41,6 +41,7 @@ export const HCI = {
   ADD_ONS:            'harvesterhci.io.addon',
   LINK_MONITOR:       'network.harvesterhci.io.linkmonitor',
   SECRET:             'harvesterhci.io.secret',
+  INVENTORY:          'metal.harvesterhci.io.inventory',
 };
 
 export const VOLUME_SNAPSHOT = 'snapshot.storage.k8s.io.volumesnapshot';

@@ -6,9 +6,12 @@ import InfoBox from '@shell/components/InfoBox';
 import LabelValue from '@shell/components/LabelValue';
 import ArrayListGrouped from '@shell/components/form/ArrayListGrouped';
 import Loading from '@shell/components/Loading.vue';
+import SortableTable from '@shell/components/SortableTable';
 
 import metricPoller from '@shell/mixins/metric-poller';
-import { METRIC, NODE, LONGHORN, POD } from '@shell/config/types';
+import {
+  METRIC, NODE, LONGHORN, POD, EVENT
+} from '@shell/config/types';
 import { HCI } from '../../types';
 import { allHash } from '@shell/utils/promise';
 import { formatSi } from '@shell/utils/units';
@@ -39,6 +42,7 @@ export default {
     LabelValue,
     HarvesterKsmtuned,
     Loading,
+    SortableTable,
   },
   mixins: [metricPoller],
 
@@ -109,12 +113,18 @@ export default {
   },
 
   data() {
+    const defaultTab = 'basics';
+
     return {
       metrics:             null,
       mode:                'view',
       hostNetworkResource: null,
       newDisks:            [],
       disks:               [],
+      selectedTab:         defaultTab,
+      defaultTab,
+      allEvents:           [],
+      didLoadEvents:       false,
     };
   },
 
@@ -177,6 +187,46 @@ export default {
 
       return longhornNodes.find(node => node.id === `${ LONGHORN_SYSTEM }/${ this.value.id }`);
     },
+
+    events() {
+      return this.allEvents.filter((event) => {
+        return event.involvedObject?.uid === this.value?.metadata?.uid &&
+                event.reason !== 'SeederUpdated';
+      }).map((event) => {
+        return {
+          reason:    (`${ event.reason || this.t('generic.unknown') }${ event.count > 1 ? ` (${ event.count })` : '' }`).trim(),
+          message:   event.message || this.t('generic.unknown'),
+          date:      event.lastTimestamp || event.firstTimestamp || event.metadata.creationTimestamp,
+          eventType: event.eventType
+        };
+      });
+    },
+
+    eventHeaders() {
+      return [
+        {
+          name:  'reason',
+          label: this.t('tableHeaders.reason'),
+          value: 'reason',
+          sort:  'reason',
+        },
+        {
+          name:  'message',
+          label: this.t('tableHeaders.message'),
+          value: 'message',
+          sort:  'message',
+        },
+        {
+          name:          'date',
+          label:         this.t('tableHeaders.updated'),
+          value:         'date',
+          sort:          'date:desc',
+          formatter:     'LiveDate',
+          formatterOpts: { addSuffix: true },
+          width:         125
+        },
+      ];
+    },
   },
 
   methods: {
@@ -194,6 +244,17 @@ export default {
       }
     },
 
+    // Ensures we only fetch events and show the table when the events tab has been activated
+    tabChange(neu) {
+      this.selectedTab = neu?.selectedName;
+
+      if (!this.didLoadEvents && this.selectedTab === 'events') {
+        this.$store.dispatch(`harvester/findAll`, { type: EVENT }).then((events) => {
+          this.allEvents = events;
+          this.didLoadEvents = true;
+        });
+      }
+    },
   }
 };
 </script>
@@ -201,7 +262,13 @@ export default {
 <template>
   <Loading v-if="$fetchState.pending" />
   <div v-else>
-    <Tabbed v-bind="$attrs" class="mt-15" :side-tabs="true">
+    <Tabbed
+      v-bind="$attrs"
+      class="mt-15"
+      :side-tabs="true"
+      :default-tab="defaultTab"
+      @changed="tabChange"
+    >
       <Tab name="basics" :label="t('harvester.host.tabs.basics')" :weight="4" class="bordered-table">
         <Basic
           v-model="value"
@@ -278,6 +345,22 @@ export default {
         :label="t('harvester.host.tabs.ksmtuned')"
       >
         <HarvesterKsmtuned :mode="mode" :node="value" />
+      </Tab>
+      <Tab
+        label-key="harvester.virtualMachine.detail.tabs.events"
+        name="events"
+        :weight="-2"
+      >
+        <SortableTable
+          v-if="selectedTab === 'events'"
+          :rows="events"
+          :headers="eventHeaders"
+          key-field="id"
+          :search="false"
+          :table-actions="false"
+          :row-actions="false"
+          default-sort-by="date"
+        />
       </Tab>
     </Tabbed>
   </div>
