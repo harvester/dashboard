@@ -49,21 +49,36 @@ export default {
     for (const key in res) {
       this[key] = res[key];
     }
-    this.selectedDevices = (this.value?.domain?.devices?.hostDevices || []).map(({ name }) => {
-      if (this.enabledDevices.find(device => device?.metadata?.name === name)) {
-        return name;
+
+    const selectedDevices = [];
+    const oldFormatDevices = [];
+
+    (this.value?.domain?.devices?.hostDevices || []).forEach(({ name, deviceName }) => {
+      const checkName = (deviceName || '').split('/')?.[1];
+
+      if (checkName && name.includes(checkName)) {
+        oldFormatDevices.push(name);
+      } else if (this.enabledDevices.find(device => device?.metadata?.name === name)) {
+        selectedDevices.push(name);
       }
     });
+
+    if (oldFormatDevices.length > 0) {
+      this.oldFormatDevices = oldFormatDevices;
+    } else {
+      this.selectedDevices = selectedDevices;
+    }
   },
 
   data() {
     return {
-      pciDevices:      [],
-      claims:          [],
-      vms:             [],
-      selectedDevices: [],
-      pciDeviceSchema: this.$store.getters['harvester/schemaFor'](HCI.PCI_DEVICE),
-      showMatrix:      false,
+      pciDevices:       [],
+      claims:           [],
+      vms:              [],
+      selectedDevices:  [],
+      pciDeviceSchema:  this.$store.getters['harvester/schemaFor'](HCI.PCI_DEVICE),
+      showMatrix:       false,
+      oldFormatDevices: [],
     };
   },
 
@@ -75,7 +90,7 @@ export default {
 
         return {
           deviceName,
-          name: deviceCRD.metadata.name,
+          name: deviceCRD?.metadata.name,
         };
       });
 
@@ -161,6 +176,12 @@ export default {
         };
       });
     },
+
+    oldFormatDevicesHTML() {
+      return this.oldFormatDevices.map((device) => {
+        return `<li>${ device }</li>`;
+      }).join('');
+    },
   },
 
   methods: {
@@ -180,56 +201,68 @@ export default {
 
 <template>
   <div>
-    <div class="row">
+    <div
+      v-if="oldFormatDevices.length > 0"
+      class="row"
+    >
       <div class="col span-12">
-        <Banner color="info">
-          <t k="harvester.pci.howToUseDevice" />
-        </Banner>
-        <Banner v-if="selectedDevices.length > 0" color="info">
-          <t k="harvester.pci.deviceInTheSameHost" />
+        <Banner color="warning">
+          <p v-html="t('harvester.pci.oldFormatDevices.help', {oldFormatDevicesHTML}, true)" />
         </Banner>
       </div>
     </div>
-    <template v-if="enabledDevices.length">
+    <div v-else>
       <div class="row">
-        <div class="col span-6">
-          <LabeledSelect
-            v-model="selectedDevices"
-            label="Available PCI Devices"
-            searchable
-            multiple
-            taggable
-            :options="deviceOpts"
-            :mode="mode"
-          >
-            <template #option="option">
-              <span>{{ option.value }} <span class="text-label">({{ option.displayLabel }})</span></span>
-            </template>
-          </LabeledSelect>
-        </div>
-      </div>
-      <div v-if="compatibleNodes.length && selectedDevices.length" class="row">
-        <div class="col span-12 text-muted">
-          Compatible hosts:
-          <!-- eslint-disable-next-line vue/no-parsing-error -->
-          <span v-for="(node, idx) in compatibleNodes" :key="node">{{ node }}{{ idx < compatibleNodes.length-1 ? ', ' : '' }}</span>
-        </div>
-      </div>
-      <div v-else-if="selectedDevices.length" class="text-error">
-        {{ t('harvester.pci.impossibleSelection') }}
-      </div>
-      <button type="button" class="btn btn-sm role-link pl-0" @click="e=>{showMatrix = !showMatrix; e.target.blur()}">
-        {{ showMatrix ? t('harvester.pci.hideCompatibility') : t('harvester.pci.showCompatibility') }}
-      </button>
-      <div v-if="showMatrix" class="row mt-20">
         <div class="col span-12">
-          <CompatibilityMatrix :enabled-devices="enabledDevices" :devices-by-node="devicesByNode" :devices-in-use="devicesInUse" />
+          <Banner color="info">
+            <t k="harvester.pci.howToUseDevice" />
+          </Banner>
+          <Banner v-if="selectedDevices.length > 0" color="info">
+            <t k="harvester.pci.deviceInTheSameHost" />
+          </Banner>
         </div>
       </div>
-    </template>
-    <div class="row mt-20">
-      <div class="col span-12">
-        <DeviceList :schema="pciDeviceSchema" :rows="pciDevices" @submit.prevent />
+      <template v-if="enabledDevices.length">
+        <div class="row">
+          <div class="col span-6">
+            <LabeledSelect
+              v-model="selectedDevices"
+              label="Available PCI Devices"
+              searchable
+              multiple
+              taggable
+              :options="deviceOpts"
+              :mode="mode"
+            >
+              <template #option="option">
+                <span>{{ option.value }} <span class="text-label">({{ option.displayLabel }})</span></span>
+              </template>
+            </LabeledSelect>
+          </div>
+        </div>
+        <div v-if="compatibleNodes.length && selectedDevices.length" class="row">
+          <div class="col span-12 text-muted">
+            Compatible hosts:
+            <!-- eslint-disable-next-line vue/no-parsing-error -->
+            <span v-for="(node, idx) in compatibleNodes" :key="node">{{ node }}{{ idx < compatibleNodes.length-1 ? ', ' : '' }}</span>
+          </div>
+        </div>
+        <div v-else-if="selectedDevices.length" class="text-error">
+          {{ t('harvester.pci.impossibleSelection') }}
+        </div>
+        <button type="button" class="btn btn-sm role-link pl-0" @click="e=>{showMatrix = !showMatrix; e.target.blur()}">
+          {{ showMatrix ? t('harvester.pci.hideCompatibility') : t('harvester.pci.showCompatibility') }}
+        </button>
+        <div v-if="showMatrix" class="row mt-20">
+          <div class="col span-12">
+            <CompatibilityMatrix :enabled-devices="enabledDevices" :devices-by-node="devicesByNode" :devices-in-use="devicesInUse" />
+          </div>
+        </div>
+      </template>
+      <div class="row mt-20">
+        <div class="col span-12">
+          <DeviceList :schema="pciDeviceSchema" :rows="pciDevices" @submit.prevent />
+        </div>
       </div>
     </div>
   </div>

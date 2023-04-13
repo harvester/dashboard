@@ -196,6 +196,21 @@ harvester:
     impossibleSelection: '没有具有所选设备的主机。'
     howToUseDevice: '使用下表，在你想在这个 VM 中使用的每个设备上启用 PCI 透传'
     deviceInTheSameHost: '你只能选择同一主机上的设备。'
+    oldFormatDevices:
+      help: |-
+        <p>
+          以下PCI设备正在使用旧的命名规则, 需要在YAML文件中进行更新:
+        </p>
+        <ul>
+          {oldFormatDevicesHTML}
+        </ul>
+        <p>
+          请使用以下说明更新虚拟机:
+        </p>
+        <ol>
+          <li>停止虚拟机, 编辑虚拟机YAML文件, 删除<Code>hostDevices</Code>部分, 并将更改保存到YAML文件中</li>
+          <li>编辑虚拟机, 从可用的PCI Devices列表中添加已启用的PCI Device, 并保存并启动虚拟机.</li>
+        </ol>
     showCompatibility: 显示设备兼容性矩阵
     hideCompatibility: 隐藏设备兼容性矩阵
     claimError: 在 {name} 上启用透传时出错
