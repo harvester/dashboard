@@ -196,6 +196,21 @@ harvester:
     impossibleSelection: 'There are no hosts with all of the selected devices.'
     howToUseDevice: 'Use the table below to enable PCI passthrough on each device you want to use in this VM.'
     deviceInTheSameHost: 'You can only select devices on the same host.'
+    oldFormatDevices:
+      help: |-
+        <p>
+          The following PCI devices are using the old naming convention and need to be updated in the YAML file:
+        </p>
+        <ul>
+          {oldFormatDevicesHTML}
+        </ul>
+        <p>
+          Please use the following instructions to update the VM:
+        </p>
+        <ol>
+          <li>Stop the VM, edit the VM YAML, and remove the <Code>hostDevices</Code> section, and save VM the changes to the YAML file.</li>
+          <li>Edit the VM, and add the already enabled PCIDevice from the list of available PCIDevices, and save and start VM.</li>
+        </ol>
     showCompatibility: Show device compatibility matrix
     hideCompatibility: Hide device compatibility matrix
     claimError: Error enabling passthrough on {name}
