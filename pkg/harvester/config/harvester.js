@@ -53,6 +53,7 @@ export function init($plugin, store) {
 
   const isSingleVirtualCluster = process.env.rancherEnv === PRODUCT_NAME;
 
+  // TODO support mcm
   if (isSingleVirtualCluster) {
     const home = {
       name:   `${ PRODUCT_NAME }-c-cluster-resource`,
@@ -65,7 +66,7 @@ export function init($plugin, store) {
     store.dispatch('setIsSingleProduct', {
       logo:            require(`@shell/assets/images/providers/harvester.svg`),
       productNameKey:  'harvester.productLabel',
-      getVersionInfo:  store => store.getters[`${ PRODUCT_NAME }/byId`](HCI.SETTING, 'server-version')?.value || 'unknown',
+      getVersionInfo:  store => store.getters[`${ PRODUCT_NAME }/byId`]?.(HCI.SETTING, 'server-version')?.value || 'unknown',
       afterLoginRoute: home,
       logoRoute:       home
     });

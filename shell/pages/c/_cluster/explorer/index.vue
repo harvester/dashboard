@@ -552,7 +552,6 @@ export default {
 
     <div class="mt-30">
       <Tabbed
-        :use-hash="false"
         @changed="tabChange"
       >
         <Tab
@@ -580,7 +579,6 @@ export default {
     <Tabbed
       v-if="hasMetricsTabs"
       class="mt-30"
-      :use-hash="false"
     >
       <Tab
         v-if="showClusterMetrics"
