@@ -123,6 +123,7 @@ export default {
   async fetch() {
     const inStore = this.$store.getters['currentProduct'].inStore;
 
+    console.log('-------fetch harvester');
     const hash = {
       vms:          this.fetchClusterResources(HCI.VM),
       nodes:        this.fetchClusterResources(NODE),
@@ -623,7 +624,6 @@ export default {
     <Tabbed
       v-if="hasMetricsTabs && enabledMonitoringAddon"
       class="mt-30"
-      :use-hash="false"
     >
       <Tab
         v-if="showClusterMetrics"
@@ -661,7 +661,7 @@ export default {
       <h3>
         {{ t('clusterIndexPage.sections.events.label') }}
       </h3>
-      <Tabbed class="mt-20" :use-hash="false">
+      <Tabbed class="mt-20">
         <Tab
           name="host"
           label="Hosts"

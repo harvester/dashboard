@@ -153,7 +153,7 @@ export default async function({
 
     firstLogin = res?.value === 'true';
 
-    if (!initialPass && plSetting?.value === 'Harvester') {
+    if (!initialPass && plSetting?.default === 'Harvester') {
       initialPass = 'admin';
     }
   } catch (e) {
@@ -175,7 +175,7 @@ export default async function({
         opt:  { url: `/v3/settings/${ SETTING.PL }` }
       });
 
-      if (!initialPass && plSetting?.value === 'Harvester') {
+      if (!initialPass && plSetting?.default === 'Harvester') {
         initialPass = 'admin';
       }
     } catch (e) {
@@ -389,11 +389,12 @@ export default async function({
     await Promise.all([
       ...always,
       store.dispatch('loadCluster', {
-        id:     clusterId,
-        oldPkg: oldPkgPlugin,
-        newPkg: newPkgPlugin,
+        id:          clusterId,
+        oldPkg:      oldPkgPlugin,
+        newPkg:      newPkgPlugin,
         product,
         oldProduct,
+        targetRoute: route
       })
     ]);
 
