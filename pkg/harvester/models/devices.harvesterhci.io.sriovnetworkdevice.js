@@ -1,7 +1,7 @@
 import SteveModel from '@shell/plugins/steve/steve-class';
+import { escapeHtml } from '@shell/utils/string';
 import { colorForState } from '@shell/plugins/dashboard-store/resource-class';
 import { NODE } from '@shell/config/types';
-import { HCI } from '../types';
 
 /**
  * Class representing SR-IOV Device resource.
@@ -63,14 +63,25 @@ export default class SRIOVDevice extends SteveModel {
   }
 
   async disableDevice() {
-    this.spec.numVFs = 0;
-    await this.save();
+    const numVFsHistory = this.spec.numVFs;
+
+    try {
+      this.spec.numVFs = 0;
+      await this.save();
+    } catch (err) {
+      this.spec.numVFs = numVFsHistory;
+      this.$dispatch('growl/fromError', {
+        title: this.t('generic.notification.title.error', { name: escapeHtml(this.metadata.name) }),
+        err,
+      }, { root: true });
+    }
   }
 
   get realNodeName() {
-    const device = this.$getters['byId'](HCI.SR_IOV, this.id);
-    const nodeName = device?.spec?.nodeName;
-    const node = this.$getters['byId'](NODE, nodeName);
+    const inStore = this.$rootGetters['currentProduct'].inStore;
+    const nodeName = this.spec?.nodeName;
+    const nodes = this.$rootGetters[`${ inStore }/all`](NODE);
+    const node = nodes.find(N => N.id === nodeName);
 
     return node?.nameDisplay || '';
   }

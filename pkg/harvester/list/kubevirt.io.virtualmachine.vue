@@ -72,9 +72,9 @@ export default {
       const nodeCol = {
         name:      'node',
         label:     'Node',
-        value:     'id',
+        value:     'realAttachNodeName',
         sort:      ['realAttachNodeName'],
-        formatter: 'HarvesterNodeName',
+        formatter: 'CopyToClipboard',
         labelKey:  'tableHeaders.node'
       };
 

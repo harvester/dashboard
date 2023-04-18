@@ -30,9 +30,9 @@ export default {
       const nodeCol = {
         name:      'node',
         label:     'Node',
-        value:     'id',
+        value:     'realNodeName',
         sort:      ['realNodeName'],
-        formatter: 'SriovNodeName',
+        formatter: 'CopyToClipboard',
         labelKey:  'tableHeaders.node'
       };
 
@@ -67,7 +67,7 @@ export default {
 
       return cols;
     },
-  },
+  }
 };
 </script>
 

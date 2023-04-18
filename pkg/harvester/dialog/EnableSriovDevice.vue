@@ -22,7 +22,9 @@ export default {
   },
 
   data() {
-    return { numVFs: 0 };
+    const numVFs = this.resources[0].spec?.numVFs || 1;
+
+    return { numVFs, numVFsHistory: numVFs };
   },
 
   computed: { ...mapGetters({ t: 'i18n/t' }) },
@@ -36,10 +38,12 @@ export default {
       const actionResource = this.resources[0];
 
       try {
+        this.resources[0].spec.numVFs = this.numVFs;
         await actionResource.save();
         buttonCb(true);
         this.close();
       } catch (err) {
+        this.resources[0].spec.numVFs = this.numVFsHistory;
         this.$store.dispatch('growl/fromError', {
           title: this.t('generic.notification.title.error', { name: escapeHtml(actionResource.metadata.name) }),
           err,
@@ -62,7 +66,7 @@ export default {
 
     <template #body>
       <LabeledInput
-        v-model.number="resources[0].spec.numVFs"
+        v-model.number="numVFs"
         type="number"
         min="0"
         required
