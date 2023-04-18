@@ -1,18 +1,20 @@
 <script>
 import { mapGetters } from 'vuex';
 import debounce from 'lodash/debounce';
-import { NORMAN, STEVE } from '@shell/config/types';
+import { NORMAN, STEVE, MANAGEMENT } from '@shell/config/types';
 import { ucFirst } from '@shell/utils/string';
 import { isMac } from '@shell/utils/platform';
 import Import from '@shell/components/Import';
 import BrandImage from '@shell/components/BrandImage';
-import { getProduct } from '@shell/config/private-label';
+import { getProduct, getVendor } from '@shell/config/private-label';
 import ClusterProviderIcon from '@shell/components/ClusterProviderIcon';
 import ClusterBadge from '@shell/components/ClusterBadge';
+
 import { LOGGED_OUT } from '@shell/config/query-params';
 import NamespaceFilter from './NamespaceFilter';
 import WorkspaceSwitcher from './WorkspaceSwitcher';
 import TopLevelMenu from './TopLevelMenu';
+
 import Jump from './Jump';
 import { allHash } from '@shell/utils/promise';
 
@@ -49,7 +51,7 @@ export default {
       searchShortcut,
       shellShortcut,
       LOGGED_OUT,
-      navHeaderRight:    null,
+      navHeaderRight:    null
     };
   },
 
@@ -60,6 +62,12 @@ export default {
 
     appName() {
       return getProduct();
+    },
+
+    vendor() {
+      this.$store.getters['management/all'](MANAGEMENT.SETTING)?.find(setting => setting.id === 'ui-pl');
+
+      return getVendor();
     },
 
     authEnabled() {
@@ -308,7 +316,14 @@ export default {
         v-if="isSingleProduct && !openRancherManagerSupport"
         :to="singleProductLogoRoute"
       >
+        <BrandImage
+          v-if="isSingleProduct.supportCustomLogo"
+          class="side-menu-logo"
+          file-name="harvester.svg"
+          :support-custom-logo="true"
+        />
         <img
+          v-else
           class="side-menu-logo"
           :src="isSingleProduct.logo"
         >
@@ -328,7 +343,12 @@ export default {
           v-if="isSingleProduct && !openRancherManagerSupport"
           class="product-name"
         >
-          {{ t(isSingleProduct.productNameKey) }}
+          <template v-if="isSingleProduct.supportCustomLogo">
+            {{ vendor }}
+          </template>
+          <template v-else>
+            {{ t(isSingleProduct.productNameKey) }}
+          </template>
         </div>
         <template v-else>
           <ClusterProviderIcon

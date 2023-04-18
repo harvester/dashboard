@@ -175,13 +175,13 @@ export default class HciCluster extends ProvCluster {
   async loadClusterPlugin() {
     // Skip loading if it's built in
     const plugins = this.$rootState.$plugin.getPlugins();
-    // const loadedPkgs = Object.keys(plugins);
+    const loadedPkgs = Object.keys(plugins);
 
-    // if (loadedPkgs.find(pkg => pkg === HARVESTER_NAME)) {
-    //   console.info('Harvester plugin built is built in, skipping load from external sources'); // eslint-disable-line no-console
+    if (loadedPkgs.find(pkg => pkg === HARVESTER_NAME)) {
+      console.info('Harvester plugin built is built in, skipping load from external sources'); // eslint-disable-line no-console
 
-    //   return;
-    // }
+      return;
+    }
 
     // Determine the plugin name and the url it can be fetched from
     const { pkgUrl, pkgName } = await this._pkgDetails();

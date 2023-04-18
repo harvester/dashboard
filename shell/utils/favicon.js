@@ -20,6 +20,8 @@ export function setFavIcon(store) {
       brandImage = require('~shell/assets/brand/suse/favicon.png');
     } else if (brandSetting?.value === 'csp') {
       brandImage = require('~shell/assets/brand/csp/favicon.png');
+    } else if (brandSetting?.value === 'harvester') {
+      brandImage = require('~shell/assets/brand/harvester/favicon.png');
     }
 
     link.href = res?.value || brandImage || defaultFavIcon;

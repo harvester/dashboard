@@ -9,6 +9,7 @@ export const HCI_SETTING = {
   UPGRADE_CHECKER_URL:       'upgrade-checker-url',
   VLAN:                      'vlan',
   UI_SOURCE:                 'ui-source',
+  UI_PL:                     'ui-pl',
   HTTP_PROXY:                'http-proxy',
   ADDITIONAL_CA:             'additional-ca',
   OVERCOMMIT_CONFIG:         'overcommit-config',
@@ -32,6 +33,9 @@ export const HCI_SETTING = {
 export const HCI_ALLOWED_SETTINGS = {
   [HCI_SETTING.BACKUP_TARGET]: {
     kind: 'json', from: 'import', canReset: true
+  },
+  [HCI_SETTING.UI_PL]: {
+    kind: 'custom', from: 'import', alias: 'branding'
   },
   [HCI_SETTING.LOG_LEVEL]: {
     kind:    'enum',
