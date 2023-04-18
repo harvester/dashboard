@@ -978,6 +978,7 @@ harvester:
           label: Mode
         miimon:
           label: Miimon
+          tooltip: <Code>-1</Code> means to keep the original value
     nodeSelector:
       matchingNodes:
         matchesSome: |-
