@@ -452,6 +452,7 @@ export default {
               :label="t('harvester.vlanConfig.uplink.bondOptions.miimon.label')"
               :mode="mode"
               type="number"
+              :tooltip="t('harvester.vlanConfig.uplink.bondOptions.miimon.tooltip', null, true)"
             />
           </div>
         </div>
