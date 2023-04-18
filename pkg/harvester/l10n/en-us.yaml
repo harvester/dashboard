@@ -1057,6 +1057,7 @@ advancedSettings:
   descriptions:
     'harv-vlan': Default Network Interface name of the VLAN network.
     'harv-backup-target': Custom backup target to store VM backups.
+    'branding': Branding allows administrators to globally re-brand the UI by customizing the Harvester product name, logos and color scheme.
     'harv-csi-driver-config': Configure additional information for csi drivers.
     'harv-containerd-registry': Containerd Registry Configuration to connect private registries.
     'harv-log-level': Configure Harvester server log level. Default to info.
