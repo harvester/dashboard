@@ -34,9 +34,6 @@ export const HCI_ALLOWED_SETTINGS = {
   [HCI_SETTING.BACKUP_TARGET]: {
     kind: 'json', from: 'import', canReset: true
   },
-  [HCI_SETTING.UI_PL]: {
-    kind: 'custom', from: 'import', alias: 'branding'
-  },
   [HCI_SETTING.LOG_LEVEL]: {
     kind:    'enum',
     options: ['info', 'debug', 'trace']
@@ -79,4 +76,9 @@ export const HCI_ALLOWED_SETTINGS = {
   [HCI_SETTING.UI_INDEX]: { kind: 'url' },
 };
 
-export const HCI_SINGLE_CLUSTER_ALLOWED_SETTING = { [HCI_SETTING.CLUSTER_REGISTRATION_URL]: { kind: 'url' } };
+export const HCI_SINGLE_CLUSTER_ALLOWED_SETTING = {
+  [HCI_SETTING.CLUSTER_REGISTRATION_URL]: { kind: 'url' },
+  [HCI_SETTING.UI_PL]:                    {
+    kind: 'custom', from: 'import', alias: 'branding'
+  }
+};
