@@ -24,6 +24,7 @@ export default {
     }
 
     const isSingleProduct = !!this.$store.getters['isSingleProduct'];
+    const openRancherManagerSupport = !!this.$store.getters['openRancherManagerSupport'];
     const inStore = this.$store.getters['currentProduct'].inStore;
 
     const hash = { harvesterSettings: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.SETTING }) };
@@ -62,9 +63,9 @@ export default {
     const initSettings = [];
     let SETTINGS = HCI_ALLOWED_SETTINGS;
 
-    if (isSingleProduct) {
+    if (!openRancherManagerSupport) {
       SETTINGS = {
-        ...HCI_ALLOWED_SETTINGS,
+        ...SETTINGS,
         ...HCI_SINGLE_CLUSTER_ALLOWED_SETTING,
       };
     }
