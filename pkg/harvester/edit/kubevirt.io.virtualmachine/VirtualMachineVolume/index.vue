@@ -327,7 +327,7 @@ export default {
               </div>
             </div>
 
-            <Banner v-if="volume.volumeStatus" class="mt-15 volume-status" color="warning" :label="volume.volumeStatus" />
+            <Banner v-if="volume.volumeStatus && !isCreate" class="mt-15 volume-status" color="warning" :label="volume.volumeStatus" />
           </InfoBox>
         </div>
       </transition-group>
