@@ -139,6 +139,9 @@ harvester:
     snapshot: 生成快照
     pvcClone: 克隆卷
     vmSnapshot: 生成 VM 快照
+    shutdown: 关机
+    powerOn: 开机
+    reboot: 重启
   tableHeaders:
     size: 大小
     progress: 进度
@@ -162,6 +165,7 @@ harvester:
     snapshotTargetVolume: 原始卷
     volumeSnapshotCounts: 快照数量
     networkState: 网络状态
+    storageClass: 存储类
   tab:
     volume: 卷
     network: 网络
@@ -199,17 +203,17 @@ harvester:
     oldFormatDevices:
       help: |-
         <p>
-          以下PCI设备正在使用旧的命名规则, 需要在YAML文件中进行更新:
+          以下 PCI 设备使用旧的命名方式，需要在 YAML 文件中更新：
         </p>
         <ul>
           {oldFormatDevicesHTML}
         </ul>
         <p>
-          请根据以下说明更新虚拟机:
+          请根据以下说明更新虚拟机：
         </p>
         <ol>
-          <li>停止虚拟机, 编辑虚拟机YAML文件, 删除<Code>hostDevices</Code>部分, 并将更改保存到YAML文件中</li>
-          <li>编辑虚拟机, 从可用的PCI Devices列表中添加已启用的PCI Device, 然后保存并启动虚拟机</li>
+          <li>停止虚拟机，编辑虚拟机 YAML 文件，删除 <Code>hostDevices</Code> 部分，并将更改保存到 YAML 文件中。</li>
+          <li>编辑虚拟机，从可用的 PCI Device 列表中添加已启用的 PCI Device，然后保存并启动虚拟机。</li>
         </ol>
     showCompatibility: 显示设备兼容性矩阵
     hideCompatibility: 隐藏设备兼容性矩阵
@@ -297,6 +301,7 @@ harvester:
       storage: 存储
       labels: 标签
       ksmtuned: Ksmtuned
+      seeder: 带外访问
     detail:
       kvm:
         disableMessage: KVM 已被 BIOS 禁用。在创建虚拟机之前必须先启用 KVM。
@@ -319,6 +324,9 @@ harvester:
       nic: 物理网卡
       notRecommended: '不推荐'
       networkType: 类型
+      manufacturer: 制造商
+      serialNumber: 序列号
+      model: 模式
     enableMaintenance:
       title: 开启维护模式
       protip: 该操作会将此节点上的所有虚拟机迁移到其他节点。
@@ -398,6 +406,9 @@ harvester:
     tags:
       label: 主机标签
       addLabel: 添加主机标签
+    powerAction:
+      message:
+        success: '主机 { name } { operation } 成功。'
 
   virtualMachine:
     label: 虚拟机
@@ -782,6 +793,10 @@ harvester:
       imagePullPolicy: 镜像拉取策略
       repo: 仓库
       tag: 标签
+    csiDriverConfig:
+      provisioner: 提供商
+      volumeSnapshotClassName: 卷快照类名
+      backupVolumeSnapshotClassName: 备份卷快照类名
     containerdRegistry:
       mirrors:
         mirrors: Mirror
@@ -873,11 +888,11 @@ harvester:
       diabledTips:
         prefix: '你必须先启用'
         middle: 'Alertmanager'
-        suffix: '然后才能创建新配置。'
+        suffix: '然后配置才能生效'
       disabledAddon:
-        prefix: '监控插件已经被禁用, 请点击'
-        middle: '这里'
-        suffix: '启用监控插件.'
+        prefix: 'Monitoring Addon 已禁用。单击'
+        middle: '此处'
+        suffix: '启用它。'
 
   logging:
     configuration:
@@ -892,6 +907,10 @@ harvester:
       label: Flow
     output:
       label: Output
+    diabledTips:
+        prefix: '你必须先启用'
+        middle: 'Logging'
+        suffix: '然后配置才能生效'
 
   snapshot:
     label: 卷快照
@@ -936,6 +955,9 @@ harvester:
         no-options: 没有可用的标签，请前往 `主机 > 存储` 页面进行添加。
       migratable:
         label: 可迁移
+    allowedTopologies:
+      title: 允许的拓扑
+      tooltip: 用于在匹配以下所有表达式的主机上调度虚拟机。
 
   vlanConfig:
     title: 网络配置
@@ -968,6 +990,7 @@ harvester:
           label: 模式
         miimon:
           label: Miimon
+          tooltip: <Code>-1</Code> 指保持原有值。
     nodeSelector:
       matchingNodes:
         matchesSome: |-
@@ -1003,15 +1026,39 @@ harvester:
   secret:
     label: 密文
 
+  sriov:
+    label: SR-IOV 网络设备
+    nodeName: 节点
+    numVFs: 虚拟函数数量
+
   harvesterVlanConfigMigrateDialog:
     targetClusterNetwork: 
       label: 目标集群网络
       placeholder: 选择目标集群网络
 
+  seeder:
+    inventory:
+      host:
+        label: 主机
+      port:
+        label: 端口
+      insecureTLS:
+        label: 不安全的 TLS
+      secret:
+        label: 密文
+        create:
+          title: 添加密文
+      event:
+        label: 事件
+      pollingInterval:
+        label: 轮询间隔
+
 advancedSettings:
   descriptions:
     'harv-vlan': VLAN 网络的默认网络接口名称。
     'harv-backup-target': 用于存储虚拟机备份的自定义备份目标。
+    'harv-csi-driver-config': 为 CSI 设备配置其他信息。
+    'harv-containerd-registry': 连接到私有镜像仓库的 Containerd 仓库配置。
     'harv-log-level': 配置 Harvester server 日志级别。默认级别为 info。
     'harv-server-version': Harvester server 版本。
     'harv-upgrade-checker-enabled': 是否启用 Harvester 升级检查。默认值为 true。
@@ -1149,6 +1196,11 @@ typeLabel:
     {count, plural,
       one { 集群网络 }
       other { 集群网络 }
+    }
+  devices.harvesterhci.io.sriovnetworkdevice: |-
+    {count, plural,
+      one { SR-IOV 网络设备 }
+      other { SR-IOV 网络设备 }
     }
   harvesterhci.io.secret: |-
     {count, plural,
