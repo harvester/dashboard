@@ -123,7 +123,6 @@ export default {
   async fetch() {
     const inStore = this.$store.getters['currentProduct'].inStore;
 
-    console.log('-------fetch harvester');
     const hash = {
       vms:          this.fetchClusterResources(HCI.VM),
       nodes:        this.fetchClusterResources(NODE),
