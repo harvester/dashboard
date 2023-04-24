@@ -7,6 +7,7 @@ import { SECRET } from '@shell/config/types';
 import ModalWithCard from '@shell/components/ModalWithCard';
 import NameNsDescription from '@shell/components/form/NameNsDescription';
 import { base64Encode, base64Decode } from '@shell/utils/crypto';
+import { exceptionToErrorsArray } from '@shell/utils/error';
 
 const _NEW = '_NEW';
 
@@ -45,8 +46,10 @@ export default {
   },
 
   data() {
+    const enableInventory = !!this.inventory?.id;
+
     return {
-      enabled:           true,
+      enableInventory,
       value:             this.inventory,
       secret:            {},
       errors:            [],
@@ -145,7 +148,35 @@ export default {
 
   methods: {
     async saveInventory() {
-      return await this.value.save();
+      if (this.enableInventory) {
+        const errors = [];
+
+        if (!this.value.spec.baseboardSpec.connection.host) {
+          errors.push(this.t('validation.required', { key: this.t('harvester.seeder.inventory.host.label') }, true));
+        }
+
+        if (!this.value.spec.baseboardSpec.connection.port) {
+          errors.push(this.t('validation.required', { key: this.t('harvester.seeder.inventory.port.label') }, true));
+        }
+
+        if (!this.selectedSecret) {
+          errors.push(this.t('validation.required', { key: this.t('harvester.seeder.inventory.secret.label') }, true));
+        }
+
+        if (errors.length > 0) {
+          return Promise.reject(exceptionToErrorsArray(errors));
+        }
+
+        if (!this.value.id) {
+          this.value.metadata.annotations['metal.harvesterhci.io/localNodeName'] = this.node.id;
+        }
+
+        this.value.metadata.annotations['metal.harvesterhci.io/localInventory'] = 'true';
+
+        return await this.value.save();
+      } else {
+        this.value.remove();
+      }
     },
 
     show() {
@@ -161,15 +192,16 @@ export default {
       this.hide();
     },
 
-    resetFields() {
-      this.secret.data.username = '';
-      this.secret.data.password = '';
-      this.secret.metadata.name = '';
-      this.secret.metadata.namespace = '';
-    },
-
     async saveSecret(buttonCb) {
       this.errors = [];
+
+      if (!this.username) {
+        this.errors.push(this.t('validation.required', { key: this.t('harvester.virtualMachine.input.username') }, true));
+      }
+
+      if (!this.password) {
+        this.errors.push(this.t('validation.required', { key: this.t('harvester.virtualMachine.input.password') }, true));
+      }
 
       if (this.errors.length > 0) {
         buttonCb(false);
@@ -210,13 +242,28 @@ export default {
 
 <template>
   <div>
-    <div v-if="enabled">
-      <div class="row">
+    <div class="row">
+      <div class="col span-6">
+        <RadioGroup
+          v-model="enableInventory"
+          :options="[
+            { label: t('generic.enabled'), value: true },
+            { label: t('generic.disabled'), value: false }
+          ]"
+          :mode="mode"
+          name="enableInventory"
+        />
+      </div>
+    </div>
+    <div v-if="enableInventory">
+      <div class="row mt-10">
         <div class="col span-6">
           <LabeledInput
             v-model="value.spec.baseboardSpec.connection.host"
             :label="t('harvester.seeder.inventory.host.label')"
+            :placeholder="t('harvester.seeder.inventory.host.placeholder')"
             :mode="mode"
+            required
           />
           <Checkbox
             v-model="value.spec.baseboardSpec.connection.insecureTLS"
@@ -229,7 +276,9 @@ export default {
           <LabeledInput
             v-model.number="value.spec.baseboardSpec.connection.port"
             :label="t('harvester.seeder.inventory.port.label')"
+            :placeholder="t('harvester.seeder.inventory.port.placeholder')"
             :mode="mode"
+            required
           />
         </div>
       </div>
@@ -240,6 +289,7 @@ export default {
             :label="t('harvester.seeder.inventory.secret.label')"
             :mode="mode"
             :options="secretOption"
+            required
           />
         </div>
       </div>

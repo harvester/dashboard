@@ -96,7 +96,12 @@ export default {
     this.newDisks = clone(disks);
     this.blockDeviceOpts = this.getBlockDeviceOpts();
 
-    if (this.seederEnabled) {
+    const addons = this.$store.getters[`${ inStore }/all`](HCI.ADD_ONS);
+    const seeder = addons.find(addon => addon.id === 'harvester-system/harvester-seeder');
+
+    const seederEnabled = seeder ? seeder?.spec?.enabled : false;
+
+    if (seederEnabled) {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const inventories = this.$store.getters[`${ inStore }/all`](HCI.INVENTORY) || [];
 

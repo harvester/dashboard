@@ -58,7 +58,7 @@ export default class HciNode extends HarvesterResource {
     const shutDown = {
       action:  'shutDown',
       enabled: this.hasAction('powerActionPossible') && this.hasAction('powerAction') && !this.isStopped && !!this.inventory,
-      icon:    'icon icon-fw icon-pause',
+      icon:    'icon icon-fw icon-dot',
       label:   this.t('harvester.action.shutdown'),
       total:   1
     };
@@ -171,6 +171,14 @@ export default class HciNode extends HarvesterResource {
   }
 
   get stateBackground() {
+    if (this.isStopped || this.isStopping || this.isStarting || this.isRebooting) {
+      return colorForState(
+        this.stateDisplay,
+        false,
+        this.stateObj?.transitioning
+      ).replace('text-', 'bg-');
+    }
+
     return colorForState(
       this.stateDisplay,
       this.stateObj?.error,
@@ -394,36 +402,46 @@ export default class HciNode extends HarvesterResource {
   }
 
   get isStopped() {
-    return this.metadata?.annotations?.[HCI_ANNOTATIONS.NODE_LAST_ACTION] === 'shutdown' &&
-            this.metadata?.annotations?.[HCI_ANNOTATIONS.NODE_ACTION_STATUS] === 'complete';
+    const inventory = this.inventory || {};
+
+    return inventory.status?.powerAction?.actionRequested === 'shutdown' &&
+            inventory.status?.powerAction?.actionStatus === 'complete';
   }
 
   get isStopping() {
-    if (!Object.prototype.hasOwnProperty.call(this.metadata.annotations, HCI_ANNOTATIONS.NODE_ACTION)) {
-      return false;
+    const inventory = this.inventory || {};
+
+    if (!Object.prototype.hasOwnProperty.call(inventory?.status?.powerAction || {}, 'actionStatus')) {
+      return inventory.status?.powerAction?.actionRequested === 'shutdown';
     } else {
-      return this.metadata?.annotations?.[HCI_ANNOTATIONS.NODE_ACTION] === 'shutdown';
+      return false;
     }
   }
 
   get isStarted() {
-    return this.metadata?.annotations?.[HCI_ANNOTATIONS.NODE_ACTION] === 'poweron' &&
-            this.metadata?.annotations?.[HCI_ANNOTATIONS.NODE_ACTION_STATUS] === 'complete';
+    const inventory = this.inventory || {};
+
+    return inventory.status?.powerAction?.actionRequested === 'poweron' &&
+            inventory.status?.powerAction?.actionStatus === 'complete';
   }
 
   get isStarting() {
-    if (!Object.prototype.hasOwnProperty.call(this.metadata.annotations, HCI_ANNOTATIONS.NODE_ACTION)) {
-      return false;
+    const inventory = this.inventory || {};
+
+    if (!Object.prototype.hasOwnProperty.call(inventory?.status?.powerAction || {}, 'actionStatus')) {
+      return inventory.status?.powerAction?.actionRequested === 'poweron';
     } else {
-      return this.metadata?.annotations?.[HCI_ANNOTATIONS.NODE_ACTION] === 'poweron';
+      return false;
     }
   }
 
   get isRebooting() {
-    if (!Object.prototype.hasOwnProperty.call(this.metadata.annotations, HCI_ANNOTATIONS.NODE_ACTION)) {
-      return false;
+    const inventory = this.inventory || {};
+
+    if (!Object.prototype.hasOwnProperty.call(inventory?.status?.powerAction || {}, 'actionStatus')) {
+      return inventory.status?.powerAction?.actionRequested === 'reboot';
     } else {
-      return this.metadata?.annotations?.[HCI_ANNOTATIONS.NODE_ACTION] === 'reboot';
+      return false;
     }
   }
 

@@ -11,6 +11,7 @@ export default class HciInventory extends HarvesterResource {
       },
     };
 
+    set(this, 'metadata.annotations', {});
     set(this, 'spec', this.spec || defaultSpec);
     set(this, 'spec.baseboardSpec', this.spec?.baseboardSpec || {});
     set(this, 'spec.baseboardSpec.connection', this.spec?.baseboardSpec?.connection || {});

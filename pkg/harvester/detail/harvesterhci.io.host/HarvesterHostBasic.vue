@@ -278,20 +278,32 @@ export default {
         <LabelValue :name="t('harvester.host.detail.containerRuntime')" :value="value.status.nodeInfo.containerRuntimeVersion" />
       </div>
     </div>
-    <div class="row mb-20">
-      <div class="col span-4">
+    <div
+      v-if="value.manufacturer || value.serialNumber || value.model"
+      class="row mb-20"
+    >
+      <div
+        v-if="value.manufacturer"
+        class="col span-4"
+      >
         <LabelValue
           :name="t('harvester.host.detail.manufacturer')"
           :value="value.manufacturer"
         />
       </div>
-      <div class="col span-4">
+      <div
+        v-if="value.serialNumber"
+        class="col span-4"
+      >
         <LabelValue
           :name="t('harvester.host.detail.serialNumber')"
           :value="value.serialNumber"
         />
       </div>
-      <div class="col span-4">
+      <div
+        v-if="value.model"
+        class="col span-4"
+      >
         <LabelValue
           :name="t('harvester.host.detail.model')"
           :value="value.model"

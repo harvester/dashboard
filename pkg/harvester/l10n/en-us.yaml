@@ -1045,8 +1045,10 @@ harvester:
     inventory:
       host:
         label: Host
+        placeholder: e.g. 172.16.1.1
       port:
         label: Port
+        placeholder: e.g. 623
       insecureTLS:
         label: Insecure TLS
       secret:

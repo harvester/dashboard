@@ -23,6 +23,7 @@ import Instance from './VirtualMachineInstance';
 import Disk from './HarvesterHostDisk';
 import VlanStatus from './VlanStatus';
 import HarvesterKsmtuned from './HarvesterKsmtuned.vue';
+import HarvesterSeeder from './HarvesterSeeder';
 
 const LONGHORN_SYSTEM = 'longhorn-system';
 
@@ -43,6 +44,7 @@ export default {
     HarvesterKsmtuned,
     Loading,
     SortableTable,
+    HarvesterSeeder,
   },
   mixins: [metricPoller],
 
@@ -75,6 +77,14 @@ export default {
 
     if (this.$store.getters['harvester/schemaFor'](HCI.LINK_MONITOR)) {
       hash.linkMonitors = this.$store.dispatch('harvester/findAll', { type: HCI.LINK_MONITOR });
+    }
+
+    if (this.$store.getters['harvester/schemaFor'](HCI.ADD_ONS)) {
+      hash.addons = this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.ADD_ONS });
+    }
+
+    if (this.$store.getters['harvester/schemaFor'](HCI.INVENTORY)) {
+      hash.inventories = this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.INVENTORY });
     }
 
     const res = await allHash(hash);
@@ -110,21 +120,44 @@ export default {
 
     this.disks = disks;
     this.newDisks = clone(disks);
+
+    const addons = this.$store.getters[`${ inStore }/all`](HCI.ADD_ONS);
+    const seeder = addons.find(addon => addon.id === 'harvester-system/harvester-seeder');
+
+    const seederEnabled = seeder ? seeder?.spec?.enabled : false;
+
+    if (seederEnabled) {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const inventories = this.$store.getters[`${ inStore }/all`](HCI.INVENTORY) || [];
+
+      const inventory = inventories.find(inv => inv.id === `harvester-system/${ this.value.id }`);
+
+      if (inventory) {
+        this.inventory = inventory;
+      } else {
+        this.inventory = await this.$store.dispatch(`${ inStore }/create`, {
+          type:     HCI.INVENTORY,
+          metadata: {
+            name:      this.value.id,
+            namespace: 'harvester-system'
+          },
+        });
+
+        this.inventory.applyDefaults();
+      }
+    }
   },
 
   data() {
-    const defaultTab = 'basics';
-
     return {
       metrics:             null,
       mode:                'view',
       hostNetworkResource: null,
       newDisks:            [],
       disks:               [],
-      selectedTab:         defaultTab,
-      defaultTab,
       allEvents:           [],
       didLoadEvents:       false,
+      inventory:           {},
     };
   },
 
@@ -227,6 +260,14 @@ export default {
         },
       ];
     },
+
+    seederEnabled() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const addons = this.$store.getters[`${ inStore }/all`](HCI.ADD_ONS);
+      const seeder = addons.find(addon => addon.id === 'harvester-system/harvester-seeder');
+
+      return seeder ? seeder?.spec?.enabled : false;
+    },
   },
 
   methods: {
@@ -246,9 +287,7 @@ export default {
 
     // Ensures we only fetch events and show the table when the events tab has been activated
     tabChange(neu) {
-      this.selectedTab = neu?.selectedName;
-
-      if (!this.didLoadEvents && this.selectedTab === 'events') {
+      if (!this.didLoadEvents && neu?.selectedName === 'events') {
         this.$store.dispatch(`harvester/findAll`, { type: EVENT }).then((events) => {
           this.allEvents = events;
           this.didLoadEvents = true;
@@ -266,7 +305,6 @@ export default {
       v-bind="$attrs"
       class="mt-15"
       :side-tabs="true"
-      :default-tab="defaultTab"
       @changed="tabChange"
     >
       <Tab name="basics" :label="t('harvester.host.tabs.basics')" :weight="4" class="bordered-table">
@@ -346,13 +384,26 @@ export default {
       >
         <HarvesterKsmtuned :mode="mode" :node="value" />
       </Tab>
+
+      <Tab
+        v-if="seederEnabled"
+        name="seeder"
+        :weight="-1"
+        :label="t('harvester.host.tabs.seeder')"
+      >
+        <HarvesterSeeder
+          :mode="mode"
+          :node="value"
+          :inventory="inventory"
+        />
+      </Tab>
+
       <Tab
         label-key="harvester.virtualMachine.detail.tabs.events"
         name="events"
-        :weight="-2"
+        :weight="-99"
       >
         <SortableTable
-          v-if="selectedTab === 'events'"
           :rows="events"
           :headers="eventHeaders"
           key-field="id"

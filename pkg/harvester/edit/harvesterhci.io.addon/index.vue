@@ -20,7 +20,11 @@ export default {
     currentComponent() {
       const name = this.value.metadata.name;
 
-      return require(`./${ name }.vue`).default;
+      try {
+        return require(`./${ name }.vue`).default;
+      } catch {
+        return require(`./generic.vue`).default;
+      }
     },
   },
 };
