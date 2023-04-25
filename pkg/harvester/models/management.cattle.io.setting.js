@@ -1,5 +1,6 @@
 import { HCI } from '../types';
 import { clone } from '@shell/utils/object';
+import { HCI_SETTING } from '../config/settings';
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../config/harvester';
 import ManagementSetting from '@shell/models/management.cattle.io.setting';
 import {
@@ -36,7 +37,7 @@ export default class HciSetting extends ManagementSetting {
   goToEdit(moreQuery = {}) {
     const location = this.detailLocation;
 
-    if (location?.params?.id === 'ui-pl') {
+    if (location?.params?.id === HCI_SETTING.UI_PL) {
       location.name = `${ HARVESTER_PRODUCT }-c-cluster-brand`;
       location.params = { cluster: this.$rootGetters['currentCluster'].id, product: 'harvester' };
     }
