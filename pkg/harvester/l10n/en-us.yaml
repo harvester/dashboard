@@ -5,6 +5,7 @@ generic:
   notReady: Not Ready
 
 nav:
+  harvesterDashboard: Harvester Dashboard
   group:
     networks: Networks
     backupAndSnapshot: Backup & Snapshot

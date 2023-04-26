@@ -43,7 +43,7 @@ export default class Feature extends HybridModel {
     // User can not disable or enable if the feature flag is locked
     // Note: lockedValue is the value that the feature flag is locked to, so it can be true or false
     // It can also be null, which indicates that the feature flag is not locked
-    enableAction.enabled = enableAction.enabled && (this.lockedValue === null);
+    enableAction.enabled = enableAction.enabled && (this.status.lockedValue === null);
 
     out.unshift(enableAction);
 
@@ -52,16 +52,5 @@ export default class Feature extends HybridModel {
 
   toggleFeatureFlag(resources = this) {
     this.$dispatch('promptUpdate', resources);
-  }
-
-  get lockedValue() {
-    const openRancherManagerSupport = this.$rootGetters['openRancherManagerSupport'];
-    const arr = ['harvester', 'multi-cluster-management'];
-
-    if (openRancherManagerSupport && arr.includes(this.id)) {
-      return true;
-    }
-
-    return this.status.lockedValue;
   }
 }
