@@ -1,6 +1,5 @@
 <script>
 import { isEmpty, throttle } from 'lodash';
-import Vue from 'vue';
 
 import CruResource from '@shell/components/CruResource';
 import NameNsDescription from '@shell/components/form/NameNsDescription';
@@ -58,6 +57,7 @@ export default {
       matchNICs: [],
       originNics,
       matchingNodes,
+      nicErrors: [],
     };
   },
 
@@ -336,15 +336,33 @@ export default {
   watch: {
     nicOptions(options) {
       const nics = this.value.spec?.uplink?.nics || [];
+      const nicErrors = [];
 
-      nics.map((n, idx) => {
+      nics.map((n) => {
         const option = options.find(option => option.value === n);
 
         if ((option && option?.disabled) || !option) {
-          Vue.set(nics, idx, '');
+          nicErrors.push(this.t('harvester.vlanConfig.uplink.nics.validate.available', { nic: n }, true));
         }
       });
+
+      this.nicErrors = uniq(nicErrors);
     },
+
+    'value.spec.uplink.nics'(nics = []) {
+      const nicErrors = [];
+      const options = this.nicOptions || [];
+
+      nics.map((n) => {
+        const option = options.find(option => option.value === n);
+
+        if ((option && option?.disabled) || !option) {
+          nicErrors.push(this.t('harvester.vlanConfig.uplink.nics.validate.available', { nic: n }, true));
+        }
+      });
+
+      this.nicErrors = uniq(nicErrors);
+    }
   },
 };
 </script>
@@ -415,6 +433,12 @@ export default {
 
         <div class="row mt-20">
           <div class="col span-12">
+            <Banner
+              v-for="(err, i) in nicErrors"
+              :key="i"
+              color="warning"
+              :label="err"
+            />
             <ArrayListSelect
               v-model="value.spec.uplink.nics"
               :mode="mode"
