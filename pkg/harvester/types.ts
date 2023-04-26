@@ -23,7 +23,6 @@ export const HCI = {
   CLOUD_TEMPLATE:     'harvesterhci.io.cloudtemplate',
   HOST:               'harvesterhci.io.host',
   VERSION:            'harvesterhci.io.version',
-  MANAGED_CHART:      'harvesterhci.io.managedchart',
   SNAPSHOT:           'harvesterhci.io.volumesnapshot',
   VM_SNAPSHOT:        'harvesterhci.io.vmsnapshot',
   ALERTMANAGERCONFIG: 'harvesterhci.io.monitoring.alertmanagerconfig',

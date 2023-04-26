@@ -428,18 +428,6 @@ export function init($plugin, store) {
     showState:    false
   });
 
-  configureType(HCI.MANAGED_CHART, {
-    location: {
-      name:   `${ PRODUCT_NAME }-c-cluster-resource`,
-      params: { resource: HCI.MANAGED_CHART }
-    },
-    resource:       MANAGEMENT.MANAGED_CHART,
-    resourceDetail: HCI.MANAGED_CHART,
-    resourceEdit:   HCI.MANAGED_CHART
-  });
-
-  configureType(MANAGEMENT.MANAGED_CHART, { showState: false });
-
   virtualType({
     labelKey:   'harvester.vmTemplate.label',
     group:      'root',

@@ -33,19 +33,9 @@ export default {
       hash.settings = this.$store.dispatch('management/findAll', { type: MANAGEMENT.SETTING });
     }
 
-    if (this.$store.getters[`${ inStore }/schemaFor`](MANAGEMENT.MANAGED_CHART)) {
-      hash.managedcharts = this.$store.dispatch(`${ inStore }/findAll`, { type: MANAGEMENT.MANAGED_CHART });
-    }
-
     const rows = await allHash(hash);
 
     let allRows = [];
-
-    const monitoring = (rows.managedcharts || []).find(c => c.id === 'fleet-local/rancher-monitoring');
-
-    if (monitoring) {
-      allRows.push(...rows.managedcharts);
-    }
 
     allRows.push(...rows.harvesterSettings);
 
