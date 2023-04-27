@@ -8,7 +8,6 @@ import {
 import { HCI } from '../types';
 import { allHash } from '@shell/utils/promise';
 import metricPoller from '@shell/mixins/metric-poller';
-import CopyToClipboard from '@shell/components/CopyToClipboard';
 
 const schema = {
   id:         HCI.HOST,
@@ -24,7 +23,6 @@ export default {
   name: 'HarvesterListHost',
 
   components: {
-    CopyToClipboard,
     ResourceTable,
     Loading,
   },
@@ -77,10 +75,11 @@ export default {
         STATE,
         NAME,
         {
-          name:     'host-ip',
-          labelKey: 'tableHeaders.hostIp',
-          search:   ['internalIp'],
-          value:    'internalIp',
+          name:      'host-ip',
+          labelKey:  'tableHeaders.hostIp',
+          search:    ['internalIp'],
+          value:     'internalIp',
+          formatter: 'CopyToClipboard',
         },
         {
           name:      'diskState',
@@ -92,13 +91,11 @@ export default {
       ];
 
       if (this.hasMetricSchema) {
-        const width = this.hasLonghornSchema ? '230' : '345';
         const metricCol = [
           {
             name:          'cpu',
             labelKey:      'node.detail.glance.consumptionGauge.cpu',
             value:         'id',
-            width,
             formatter:     'HarvesterCPUUsed',
             formatterOpts: { showUsed: true },
           },
@@ -106,7 +103,6 @@ export default {
             name:          'memory',
             labelKey:      'node.detail.glance.consumptionGauge.memory',
             value:         'id',
-            width,
             formatter:     'HarvesterMemoryUsed',
             formatterOpts: { showUsed: true },
           },
@@ -120,7 +116,6 @@ export default {
           name:          'storage',
           labelKey:      'tableHeaders.storage',
           value:         'id',
-          width:         '230',
           formatter:     'HarvesterStorageUsed',
           formatterOpts: { showReserved: true },
         };
@@ -189,12 +184,6 @@ export default {
       key-field="_key"
       v-on="$listeners"
     >
-      <template slot="cell:host-ip" slot-scope="scope">
-        <div class="name-console">
-          {{ scope.row.internalIp }}<CopyToClipboard :text="scope.row.internalIp" label-as="tooltip" class="icon-btn" action-color="bg-transparent" />
-        </div>
-      </template>
-
       <template #cell:console="{row}">
         <button type="button" class="btn btn-sm role-primary" :disabled="!row.consoleUrl" @click="goto(row)">
           {{ t('harvester.host.console') }}

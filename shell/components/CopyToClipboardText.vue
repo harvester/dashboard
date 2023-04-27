@@ -52,6 +52,7 @@ export default {
 </template>
 <style lang="scss" scoped>
   .copy-to-clipboard-text {
+    white-space: nowrap;
     &.plain {
       color: var(--body-text);
 

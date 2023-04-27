@@ -107,7 +107,7 @@ export default {
         <span>
           {{ t('clusterIndexPage.hardwareResourceGauge.reserved') }}
         </span>
-        <span>
+        <span class="precent-data">
           {{ t('node.detail.glance.consumptionGauge.amount', amountTemplateValues) }}
           <span class="ml-10 percentage">/&nbsp;{{ formattedPercentage }}
           </span>
@@ -128,7 +128,7 @@ export default {
           <span>
             {{ t('clusterIndexPage.hardwareResourceGauge.used') }}
           </span>
-          <span>
+          <span class="precent-data">
             {{ t('node.detail.glance.consumptionGauge.amount', amountTemplateValues) }}
             <span class="ml-10 percentage">/&nbsp;{{ formattedPercentage }}
             </span>
@@ -138,3 +138,9 @@ export default {
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.precent-data {
+  white-space: nowrap;
+}
+</style>
