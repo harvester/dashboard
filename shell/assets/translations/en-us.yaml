@@ -833,6 +833,7 @@ catalog:
       partner: Partner
       rancher: '{vendor}'
     deploysOnWindows: Deploys on Windows
+    managedByHarvester: Managed By Harvester
     windowsIncompatible: Linux only
     versionWindowsIncompatible: Linux only version
     header: Charts

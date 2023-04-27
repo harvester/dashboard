@@ -465,7 +465,7 @@ export default {
                 v-if="disableHarvesterRelatedTools(opt.chart)"
                 class="label"
               >
-                Managed by Harvester
+                {{ t('catalog.charts.deploysOnWindows') }}
               </label>
             </div>
           </div>
