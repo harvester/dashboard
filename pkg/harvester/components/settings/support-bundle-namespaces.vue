@@ -71,17 +71,3 @@ export default {
     </div>
   </div>
 </template>
-
-<style lang="scss" scoped>
-::v-deep .labeled-select .v-select:not(.vs--single) {
-    .vs__selected-options {
-      flex-basis: auto;
-      flex-wrap: wrap;
-      width: 100%;
-    }
-
-    .vs__selected {
-      white-space: nowrap;
-    }
-}
-</style>
