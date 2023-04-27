@@ -874,6 +874,10 @@ harvester:
         prefix: '你必须先启用'
         middle: 'Alertmanager'
         suffix: '然后才能创建新配置。'
+      disabledAddon:
+        prefix: '监控插件已经被禁用, 请点击'
+        middle: '这里'
+        suffix: '启用监控插件.'
 
   logging:
     configuration:
