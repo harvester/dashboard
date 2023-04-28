@@ -45,6 +45,7 @@ export default {
           sort:        ['spec.numVFs'],
           value:       'spec.numVFs',
           align:       'center',
+          labelKey:    'harvester.sriov.numVFs',
           dashIfEmpty: true,
         },
         {
