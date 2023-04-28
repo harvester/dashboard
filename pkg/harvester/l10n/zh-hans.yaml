@@ -5,6 +5,7 @@ generic:
   notReady: 未就绪
 
 nav:
+  harvesterDashboard: Harvester 仪表板
   group:
     networks: 网络
     backupAndSnapshot: 备份 & 快照
@@ -172,6 +173,7 @@ harvester:
     advanced: 高级选项
     accessCredentials: 凭证管理
     pciDevices: PCI 设备
+    vmScheduling: 虚拟机调度
   fields:
     version: 版本
     name: 名称
@@ -301,7 +303,7 @@ harvester:
       storage: 存储
       labels: 标签
       ksmtuned: Ksmtuned
-      seeder: 带外访问
+      seeder: 外部访问
     detail:
       kvm:
         disableMessage: KVM 已被 BIOS 禁用。在创建虚拟机之前必须先启用 KVM。
@@ -1029,7 +1031,7 @@ harvester:
   sriov:
     label: SR-IOV 网络设备
     nodeName: 节点
-    numVFs: 虚拟函数数量
+    numVFs: 虚拟数量
 
   harvesterVlanConfigMigrateDialog:
     targetClusterNetwork: 
@@ -1057,6 +1059,7 @@ advancedSettings:
   descriptions:
     'harv-vlan': VLAN 网络的默认网络接口名称。
     'harv-backup-target': 用于存储虚拟机备份的自定义备份目标。
+    'branding': 管理员可以修改 Harvester 产品名称、Logo 和配色方案来全局自定义 UI 界面。
     'harv-csi-driver-config': 为 CSI 设备配置其他信息。
     'harv-containerd-registry': 连接到私有镜像仓库的 Containerd 仓库配置。
     'harv-log-level': 配置 Harvester server 日志级别。默认级别为 info。
@@ -1079,7 +1082,7 @@ advancedSettings:
     'harv-auto-disk-provision-paths': 指定 Harvester 将自动添加为虚拟机存储的磁盘（使用 glob 模式）。
     'harv-support-bundle-image': Support Bundle 镜像配置。前往 <a href="https://hub.docker.com/r/rancher/support-bundle-kit/tags" target="_blank">rancher/support-bundle-kit</a> 查看更多版本。
     'harv-release-download-url': 此设置用于配置<code>升级版本下载</code>的 URL 地址。Harvester 将从该 URL 托管的 (<code>$URL</code>/<code>$VERSION</code>/version.yaml) 文件中获取 ISO URL 和校验和值。
-    'harv-rancher-manager-support': Multi-cluster provisioning and management of Kubernetes clusters.
+    'harv-rancher-manager-support': Kubernetes 多集群配置和管理。
 
 typeLabel:
   kubevirt.io.virtualmachine: |-
