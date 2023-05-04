@@ -56,13 +56,18 @@ export default {
   async fetch() {
     const inStore = this.$store.getters['currentProduct'].inStore;
 
-    await allHash({
+    const hash = {
       longhornNodes: this.$store.dispatch(`${ inStore }/findAll`, { type: LONGHORN.NODES }),
       blockDevices:  this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.BLOCK_DEVICE }),
       addons:        this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.ADD_ONS }),
-      inventories:   this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.INVENTORY }),
       secrets:       this.$store.dispatch(`${ inStore }/findAll`, { type: SECRET }),
-    });
+    };
+
+    if (this.$store.getters[`${ inStore }/schemaFor`](HCI.INVENTORY)) {
+      hash.inventories = this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.INVENTORY });
+    }
+
+    await allHash(hash);
 
     const blockDevices = this.$store.getters[`${ inStore }/all`](HCI.BLOCK_DEVICE);
     const provisionedBlockDevices = blockDevices.filter((d) => {
@@ -126,6 +131,7 @@ export default {
       blockDeviceOpts: [],
       filteredLabels:  clone(this.value.filteredSystemLabels),
       inventory:       {},
+      originValue:     clone(this.value),
     };
   },
   computed: {
@@ -398,17 +404,38 @@ export default {
     },
 
     async saveLonghornNode() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+
       const disks = this.longhornNode?.spec?.disks || {};
 
       this.newDisks.map((disk) => {
         (disks[disk.name] || {}).tags = disk.tags;
       });
 
-      try {
-        await this.longhornNode.save();
-      } catch (err) {
-        return Promise.reject(exceptionToErrorsArray(err));
-      }
+      let count = 0;
+
+      const retrySave = async() => {
+        try {
+          await this.longhornNode.save();
+        } catch (err) {
+          if ((err.status === 409 || err.status === 403) && count < 3) {
+            count++;
+
+            await this.$store.dispatch(`${ inStore }/find`, {
+              type: LONGHORN.NODES,
+              id:   this.longhornNode.id,
+              opt:  { force: true },
+            });
+
+            await new Promise(resolve => setTimeout(resolve, '5000'));
+            await retrySave();
+          } else {
+            return Promise.reject(exceptionToErrorsArray(err));
+          }
+        }
+      };
+
+      await retrySave();
     },
   },
 };
