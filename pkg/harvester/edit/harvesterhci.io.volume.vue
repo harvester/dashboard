@@ -104,7 +104,7 @@ export default {
           .filter(obj => obj.isReady)
           .map((obj) => {
             return {
-              label: obj.spec.displayName,
+              label: `${ obj.metadata.namespace }/${ obj.spec.displayName }`,
               value: obj.id
             };
           }),
