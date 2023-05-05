@@ -13,7 +13,7 @@ import Loading from '@shell/components/Loading';
 import Tabbed from '@shell/components/Tabbed';
 import Tab from '@shell/components/Tabbed/Tab';
 import Labels from '@shell/components/form/Labels';
-import { HIDE_SENSITIVE } from '@shell/store/prefs';
+import { HIDE_SENSITIVE, LAST_NAMESPACE } from '@shell/store/prefs';
 import { CAPI } from '@shell/config/labels-annotations';
 import { clear } from '@shell/utils/array';
 import { importCloudCredential } from '@shell/utils/dynamic-importer';
@@ -151,6 +151,16 @@ export default {
         return this.t('secret.data');
       }
     },
+  },
+
+  created() {
+    this.registerAfterHook(() => {
+      const allNamespaces = this.$store.getters['allNamespaces'];
+      const defaultNamepsace = allNamespaces.find(N => N.id === 'default');
+      const ns = defaultNamepsace?.id || allNamespaces?.[0]?.id || '';
+
+      this.value.$dispatch('prefs/set', { key: LAST_NAMESPACE, value: ns }, { root: true });
+    });
   },
 
   methods: {
