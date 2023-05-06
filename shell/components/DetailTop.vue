@@ -96,7 +96,7 @@ export default {
     },
 
     labels() {
-      if (!this.showFilteredSystemLabels) {
+      if (this.showAllLabels || !this.showFilteredSystemLabels) {
         return this.value?.labels || {};
       }
 
@@ -150,6 +150,8 @@ export default {
     },
 
     showFilteredSystemLabels() {
+      // TODO: This is to set whether the system label is displayed by default, But the name and usage are inconsistent, including upstream
+
       // It would be nicer to use hasSystemLabels here, but not all places have implemented it
       // Instead check that there's a discrepancy between all labels and all labels without system ones
       if (this.value?.labels && this.value?.filteredSystemLabels) {
