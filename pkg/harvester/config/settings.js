@@ -77,8 +77,11 @@ export const HCI_ALLOWED_SETTINGS = {
 };
 
 export const HCI_SINGLE_CLUSTER_ALLOWED_SETTING = {
-  [HCI_SETTING.CLUSTER_REGISTRATION_URL]: { kind: 'url' },
-  [HCI_SETTING.UI_PL]:                    {
+  [HCI_SETTING.CLUSTER_REGISTRATION_URL]: {
+    kind:     'url',
+    canReset: true,
+  },
+  [HCI_SETTING.UI_PL]: {
     kind: 'custom', from: 'import', alias: 'branding'
   }
 };
