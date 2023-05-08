@@ -144,6 +144,13 @@ export default class HciSetting extends HarvesterResource {
         validators: ['backupTarget'],
       });
       break;
+    case 'ntp-servers':
+      out.push( {
+        nullable:   true,
+        path:       'value',
+        validators: ['ntpServers'],
+      });
+      break;
     }
 
     return out;

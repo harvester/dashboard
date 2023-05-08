@@ -44,4 +44,5 @@ export const HCI = {
   NODE_MODEL:                   'model',
   NODE_SERIAL_NUMBER:           'serialNumber',
   VM_INSUFFICIENT:              'harvesterhci.io/insufficientResourceQuota',
+  NODE_NTP_SYNC_STATUS:         'harvesterhci.io/ntp-service',
 };

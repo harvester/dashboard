@@ -36,3 +36,20 @@ export function backupTarget(value, getters, errors, validatorArgs) {
 
   return errors;
 }
+
+export function ntpServers(value, getters, errors, validatorArgs) {
+  const { ntpServers } = JSON.parse(value);
+  const t = getters['i18n/t'];
+  const ipv4Regex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
+  const hostRegex = /^(?!:\/\/)(?:[a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,63}$/;
+
+  if (!ntpServers) {
+    return errors;
+  }
+
+  if (ntpServers.find(V => !ipv4Regex.test(V) && !hostRegex.test(V))) {
+    errors.push(t('harvester.setting.ntpServers.isNotIPV4'));
+  }
+
+  return errors;
+}

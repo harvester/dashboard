@@ -1,4 +1,5 @@
 <script>
+import { mapGetters } from 'vuex';
 import Tag from '@shell/components/Tag';
 import Tabbed from '@shell/components/Tabbed';
 import Tab from '@shell/components/Tabbed/Tab';
@@ -7,16 +8,19 @@ import LabelValue from '@shell/components/LabelValue';
 import ArrayListGrouped from '@shell/components/form/ArrayListGrouped';
 import Loading from '@shell/components/Loading.vue';
 import SortableTable from '@shell/components/SortableTable';
+import Banner from '@components/Banner/Banner.vue';
 
 import metricPoller from '@shell/mixins/metric-poller';
 import {
   METRIC, NODE, LONGHORN, POD, EVENT
 } from '@shell/config/types';
 import { HCI } from '../../types';
+import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 import { allHash } from '@shell/utils/promise';
 import { formatSi } from '@shell/utils/units';
 import { findBy } from '@shell/utils/array';
 import { clone } from '@shell/utils/object';
+import { escapeHtml } from '@shell/utils/string';
 
 import Basic from './HarvesterHostBasic';
 import Instance from './VirtualMachineInstance';
@@ -45,6 +49,7 @@ export default {
     Loading,
     SortableTable,
     HarvesterSeeder,
+    Banner,
   },
   mixins: [metricPoller],
 
@@ -162,6 +167,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters({ t: 'i18n/t' }),
     longhornDisks() {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const longhornNode = this.$store.getters[`${ inStore }/byId`](LONGHORN.NODES, `longhorn-system/${ this.value.id }`);
@@ -268,6 +274,47 @@ export default {
 
       return seeder ? seeder?.spec?.enabled : false;
     },
+
+    ntpSync() {
+      const jsonString = this.value.metadata?.annotations?.[HCI_ANNOTATIONS.NODE_NTP_SYNC_STATUS];
+      let out = null;
+
+      try {
+        out = JSON.parse(jsonString);
+      } catch (err) {
+        this.$store.dispatch('growl/fromError', {
+          title: this.t('generic.notification.title.error', { name: escapeHtml(this.value.metadata.name) }),
+          err,
+        }, { root: true });
+      }
+
+      return out;
+    },
+
+    ntpSyncedStatus() {
+      const status = this.ntpSync?.ntpSyncStatus;
+
+      if (status === 'disabled') {
+        return {
+          status:  'disabled',
+          warning: { key: 'harvester.host.ntp.ntpSyncStatus.isDisabled' }
+        };
+      }
+
+      const current = this.ntpSync?.currentNtpServers || '';
+
+      if (status === 'unsynced') {
+        return {
+          status:  'unsynced',
+          warning: {
+            key: 'harvester.host.ntp.ntpSyncStatus.isUnsynced',
+            current
+          }
+        };
+      }
+
+      return {};
+    },
   },
 
   methods: {
@@ -301,6 +348,18 @@ export default {
 <template>
   <Loading v-if="$fetchState.pending" />
   <div v-else>
+    <Banner
+      v-if="ntpSyncedStatus.status === 'disabled'"
+      color="warning"
+    >
+      <span v-clean-html="t(ntpSyncedStatus.warning.key)"></span>
+    </Banner>
+    <Banner
+      v-if="ntpSyncedStatus.status === 'unsynced'"
+      color="warning"
+    >
+      <span v-clean-html="t(ntpSyncedStatus.warning.key, { current: ntpSyncedStatus.warning.current }, true)"></span>
+    </Banner>
     <Tabbed
       v-bind="$attrs"
       class="mt-15"
