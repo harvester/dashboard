@@ -757,6 +757,9 @@ harvester:
 
   setting:
     label: Settings
+    tabs:
+      advanced: Advanced
+      ui: UI
     validation:
       physicalNIC: DefaultPhysicalNIC
     placeholder:
