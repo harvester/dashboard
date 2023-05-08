@@ -99,6 +99,13 @@ export default class VirtVm extends HarvesterResource {
         bulkable: true
       },
       {
+        action:   'forceStop',
+        enabled:  !!this.actions?.forceStop,
+        icon:     'icon icon-close',
+        label:    this.t('harvester.action.forceStop'),
+        bulkable: true
+      },
+      {
         action:  'pauseVM',
         enabled: !!this.actions?.pause,
         icon:    'icon icon-pause',
@@ -375,6 +382,10 @@ export default class VirtVm extends HarvesterResource {
 
   stopVM() {
     this.doActionGrowl('stop', {});
+  }
+
+  forceStop() {
+    this.doActionGrowl('forceStop', {});
   }
 
   startVM() {

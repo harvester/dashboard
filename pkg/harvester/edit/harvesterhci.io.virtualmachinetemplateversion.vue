@@ -8,6 +8,7 @@ import NameNsDescription from '@shell/components/form/NameNsDescription';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import NodeScheduling from '@shell/components/form/NodeScheduling';
 import PodAffinity from '@shell/components/form/PodAffinity';
+import UnitInput from '@shell/components/form/UnitInput';
 
 import Reserved from './kubevirt.io.virtualmachine/VirtualMachineReserved';
 import Volume from './kubevirt.io.virtualmachine/VirtualMachineVolume';
@@ -44,6 +45,7 @@ export default {
     NodeScheduling,
     PodAffinity,
     Reserved,
+    UnitInput,
   },
 
   mixins: [CreateEditView, VM_MIXIN],
@@ -306,12 +308,25 @@ export default {
           <a v-else v-t="'harvester.generic.showMore'" role="button" @click="toggleAdvanced" />
         </div>
 
-        <div v-if="showAdvanced" class="mb-20">
-          <Reserved
-            :reserved-memory="reservedMemory"
-            :mode="mode"
-            @updateReserved="updateReserved"
-          />
+        <div v-if="showAdvanced">
+          <div class="row mb-20">
+            <div class="col span-6">
+              <Reserved
+                :reserved-memory="reservedMemory"
+                :mode="mode"
+                @updateReserved="updateReserved"
+              />
+            </div>
+            <div class="col span-6">
+              <UnitInput
+                v-model="terminationGracePeriodSeconds"
+                :suffix="terminationGracePeriodSeconds == 1 ? 'Second' : 'Seconds'"
+                :label="t('harvester.virtualMachine.terminationGracePeriodSeconds.label')"
+                :mode="mode"
+                @change="updateTerminationGracePeriodSeconds"
+              />
+            </div>
+          </div>
         </div>
 
         <CloudConfig

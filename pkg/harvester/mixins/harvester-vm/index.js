@@ -118,35 +118,36 @@ export default {
     return {
       OS,
       isClone,
-      spec:                       null,
-      osType:                     'linux',
-      sshKey:                     [],
-      runStrategy:                'RerunOnFailure',
-      installAgent:               true,
-      hasCreateVolumes:           [],
-      installUSBTablet:           true,
-      networkScript:              '',
-      userScript:                 '',
-      imageId:                    '',
-      diskRows:                   [],
-      networkRows:                [],
-      machineType:                '',
-      secretName:                 '',
-      secretRef:                  null,
-      showAdvanced:               false,
-      deleteAgent:                true,
-      memory:                     null,
-      cpu:                        '',
-      reservedMemory:             null,
-      accessCredentials:          [],
-      efiEnabled:                 false,
-      tpmEnabled:                 false,
-      secureBoot:                 false,
-      userDataTemplateId:         '',
-      saveUserDataAsClearText:    false,
-      saveNetworkDataAsClearText: false,
-      enabledPCI:                 false,
-      immutableMode:              this.realMode === _CREATE ? _CREATE : _VIEW,
+      spec:                          null,
+      osType:                        'linux',
+      sshKey:                        [],
+      runStrategy:                   'RerunOnFailure',
+      installAgent:                  true,
+      hasCreateVolumes:              [],
+      installUSBTablet:              true,
+      networkScript:                 '',
+      userScript:                    '',
+      imageId:                       '',
+      diskRows:                      [],
+      networkRows:                   [],
+      machineType:                   '',
+      secretName:                    '',
+      secretRef:                     null,
+      showAdvanced:                  false,
+      deleteAgent:                   true,
+      memory:                        null,
+      cpu:                           '',
+      reservedMemory:                null,
+      accessCredentials:             [],
+      efiEnabled:                    false,
+      tpmEnabled:                    false,
+      secureBoot:                    false,
+      userDataTemplateId:            '',
+      saveUserDataAsClearText:       false,
+      saveNetworkDataAsClearText:    false,
+      enabledPCI:                    false,
+      immutableMode:                 this.realMode === _CREATE ? _CREATE : _VIEW,
+      terminationGracePeriodSeconds: '',
     };
   },
 
@@ -226,6 +227,12 @@ export default {
       // When creating a template it is always necessary to create a new secret.
       return this.resource === HCI.VM_VERSION || this.isCreate;
     },
+
+    defaultTerminationSetting() {
+      const setting = this.$store.getters[`${ this.inStore }/all`](HCI.SETTING).find( O => O.id === HCI_SETTING.VM_TERMINATION_PERIOD) || {};
+
+      return Number(setting?.value || setting?.default);
+    },
   },
 
   async created() {
@@ -264,6 +271,7 @@ export default {
       const cpu = spec.template.spec.domain?.cpu?.cores;
       const memory = spec.template.spec.domain.resources.limits.memory;
       const reservedMemory = vm.metadata?.annotations?.[HCI_ANNOTATIONS.VM_RESERVED_MEMORY];
+      const terminationGracePeriodSeconds = spec.template.spec?.terminationGracePeriodSeconds || this.defaultTerminationSetting;
 
       const sshKey = this.getSSHFromAnnotation(spec) || [];
 
@@ -318,6 +326,7 @@ export default {
       this.$set(this, 'memory', memory);
       this.$set(this, 'reservedMemory', reservedMemory);
       this.$set(this, 'machineType', machineType);
+      this.$set(this, 'terminationGracePeriodSeconds', terminationGracePeriodSeconds);
 
       this.$set(this, 'installUSBTablet', installUSBTablet);
       this.$set(this, 'efiEnabled', efiEnabled);
@@ -504,6 +513,7 @@ export default {
       this.spec.template.spec.domain.cpu.cores = this.cpu;
       this.spec.template.spec.domain.resources.limits.cpu = this.cpu ? this.cpu.toString() : this.cpu;
       this.spec.template.spec.domain.resources.limits.memory = this.memory;
+      this.spec.template.spec.terminationGracePeriodSeconds = this.terminationGracePeriodSeconds;
 
       // parse reserved memory
       const vm = this.resource === HCI.VM ? this.value : this.value.spec.vm;
@@ -1325,6 +1335,10 @@ export default {
       const { memory } = value;
 
       this.$set(this, 'reservedMemory', memory);
+    },
+
+    updateTerminationGracePeriodSeconds(value) {
+      this.$set(this, 'terminationGracePeriodSeconds', value);
     },
   },
 

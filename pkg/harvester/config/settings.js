@@ -27,7 +27,8 @@ export const HCI_SETTING = {
   AUTO_DISK_PROVISION_PATHS: 'auto-disk-provision-paths',
   RELEASE_DOWNLOAD_URL:      'release-download-url',
   CCM_CSI_VERSION:           'harvester-csi-ccm-versions',
-  CSI_DRIVER_CONFIG:         'csi-driver-config'
+  CSI_DRIVER_CONFIG:         'csi-driver-config',
+  VM_TERMINATION_PERIOD:     'default-vm-termination-grace-period-seconds',
 };
 
 export const HCI_ALLOWED_SETTINGS = {
@@ -73,7 +74,8 @@ export const HCI_ALLOWED_SETTINGS = {
     kind:    'enum',
     options: ['auto', 'external', 'bundled']
   },
-  [HCI_SETTING.UI_INDEX]: { kind: 'url' },
+  [HCI_SETTING.UI_INDEX]:              { kind: 'url' },
+  [HCI_SETTING.VM_TERMINATION_PERIOD]: { kind: 'string', from: 'import' },
 };
 
 export const HCI_SINGLE_CLUSTER_ALLOWED_SETTING = {

@@ -10,6 +10,7 @@ import { RadioGroup } from '@components/Form/Radio';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import NameNsDescription from '@shell/components/form/NameNsDescription';
+import UnitInput from '@shell/components/form/UnitInput';
 
 import Reserved from './VirtualMachineReserved';
 import SSHKey from './VirtualMachineSSHKey';
@@ -57,7 +58,8 @@ export default {
     AccessCredentials,
     Reserved,
     PciDevices,
-    RestartVMDialog
+    RestartVMDialog,
+    UnitInput,
   },
 
   mixins: [CreateEditView, VM_MIXIN],
@@ -614,11 +616,24 @@ export default {
             </div>
           </div>
 
-          <Reserved
-            :reserved-memory="reservedMemory"
-            :mode="mode"
-            @updateReserved="updateReserved"
-          />
+          <div class="row mb-20">
+            <div class="col span-6">
+              <Reserved
+                :reserved-memory="reservedMemory"
+                :mode="mode"
+                @updateReserved="updateReserved"
+              />
+            </div>
+            <div class="col span-6">
+              <UnitInput
+                v-model="terminationGracePeriodSeconds"
+                :suffix="terminationGracePeriodSeconds == 1 ? 'Second' : 'Seconds'"
+                :label="t('harvester.virtualMachine.terminationGracePeriodSeconds.label')"
+                :mode="mode"
+                @input="updateTerminationGracePeriodSeconds"
+              />
+            </div>
+          </div>
         </div>
 
         <CloudConfig

@@ -37,18 +37,14 @@ export default {
 </script>
 
 <template>
-  <div class="row mb-20">
-    <div class="col span-6">
-      <UnitInput
-        v-model="memory"
-        v-int-number
-        :label="t('harvester.virtualMachine.input.reservedMemory')"
-        :mode="mode"
-        :input-exponent="2"
-        :increment="1024"
-        :output-modifier="true"
-        @input="change"
-      />
-    </div>
-  </div>
+  <UnitInput
+    v-model="memory"
+    v-int-number
+    :label="t('harvester.virtualMachine.input.reservedMemory')"
+    :mode="mode"
+    :input-exponent="2"
+    :increment="1024"
+    :output-modifier="true"
+    @input="change"
+  />
 </template>
