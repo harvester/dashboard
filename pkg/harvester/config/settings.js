@@ -28,6 +28,7 @@ export const HCI_SETTING = {
   CCM_CSI_VERSION:           'harvester-csi-ccm-versions',
   CSI_DRIVER_CONFIG:         'csi-driver-config',
   VM_TERMINATION_PERIOD:     'default-vm-termination-grace-period-seconds',
+  NTP_SERVERS:               'ntp-servers',
 };
 
 export const HCI_ALLOWED_SETTINGS = {
@@ -72,6 +73,9 @@ export const HCI_ALLOWED_SETTINGS = {
   },
   [HCI_SETTING.UI_INDEX]:              { kind: 'url' },
   [HCI_SETTING.VM_TERMINATION_PERIOD]: { kind: 'string', from: 'import' },
+  [HCI_SETTING.NTP_SERVERS]:           {
+    kind: 'json', from: 'import', canReset: true
+  },
 };
 
 export const HCI_SINGLE_CLUSTER_ALLOWED_SETTING = {

@@ -414,6 +414,15 @@ harvester:
     powerAction:
       message:
         success: 'Perform host { name } { operation } successfully.'
+    ntp:
+      label: Ntp Servers Addresses
+      tips: You can configure multiple IPv4 addresses or host addresses.
+      placeholder: e.g. IPv4
+      ntpSyncStatus:
+        isDisabled: 'The NTP is disabled. Please check the NTP service is active.'
+        isUnsynced: 'The NTP is not synced with the NTP server <code>{current}</code>'
+      ntpConfigSyncStatus:
+        isUnsynced: 'The NTP config is not synced. Current: <code>{current}</code>, Wanted: <code>{wanted}</code> '
 
   virtualMachine:
     label: Virtual Machines
@@ -867,6 +876,8 @@ harvester:
         retentionSize: Maximum size of metrics
     clusterRegistrationUrl:
       message: To completely unset the imported Harvester cluster, please also remove it on the Rancher dashboard UI via the <code> Virtualization Management </code> page.
+    ntpServers:
+      isNotIPV4: The address you entered is not IPv4 or host. Please enter a valid IPv4 address or a host address.
   cloudTemplate:
     label: Cloud Config Templates
     templateType: Template Type
@@ -1233,6 +1244,7 @@ advancedSettings:
     'harv-release-download-url': This setting allows you to configure the <code>upgrade release download</code> URL address. Harvester will get the ISO URL and checksum value from the (<code>$URL</code>/<code>$VERSION</code>/version.yaml) file hosted by the configured URL.
     'harv-rancher-manager-support': Multi-cluster provisioning and management of Kubernetes clusters.
     'harv-default-vm-termination-grace-period-seconds': Config the VM termination grace period for VM stop.
+    'harv-ntp-servers': Configure Ntp server. You can configure multiple IPv4 addresses or host addresses.
 
 typeLabel:
   kubevirt.io.virtualmachine: |-
