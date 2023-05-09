@@ -675,6 +675,8 @@ harvester:
     selectExisting: Select Existing Image
     createRepository: Creating Upgrade Repository
     succeeded: Succeeded
+    releaseTip: Please read the upgrade documentation carefully. You can view details on the <a href="{url}" target="_blank">Harvester Release Note</a>.
+    checkReady: I have read and understood the upgrade content related to this Harvester version.
     pending: Pending
     repoInfo:
       upgradeStatus: Upgrade Status

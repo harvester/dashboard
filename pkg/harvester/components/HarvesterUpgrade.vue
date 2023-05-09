@@ -28,12 +28,13 @@ export default {
 
   data() {
     return {
-      upgrade:        [],
-      upgradeMessage: [],
-      errors:         '',
-      selectMode:     true,
-      version:        '',
-      enableLogging:  true
+      upgrade:          [],
+      upgradeMessage:   [],
+      errors:           '',
+      selectMode:       true,
+      version:          '',
+      enableLogging:    true,
+      readyReleaseNote: false
     };
   },
 
@@ -55,6 +56,10 @@ export default {
     canEnableLogging() {
       return this.$store.getters['harvester/schemaFor'](HCI.UPGRADE_LOG);
     },
+
+    releaseLink() {
+      return `https://github.com/harvester/harvester/releases/tag/${ this.version }`;
+    }
   },
 
   watch: {
@@ -70,6 +75,10 @@ export default {
         this.$set(this, 'upgradeMessage', upgradeMessage);
       },
       deep: true
+    },
+
+    version() {
+      this.readyReleaseNote = false;
     }
   },
 
@@ -153,6 +162,12 @@ export default {
             <Checkbox v-model="enableLogging" class="check" type="checkbox" :label="t('harvester.upgradePage.enableLogging')" />
           </div>
 
+          <div v-if="version">
+            <p class="mb-10" v-html="t('harvester.upgradePage.releaseTip', {url: releaseLink}, true)"></p>
+
+            <Checkbox v-model="readyReleaseNote" class="check" type="checkbox" label-key="harvester.upgradePage.checkReady" />
+          </div>
+
           <Banner v-if="errors.length" color="warning">
             {{ errors }}
           </Banner>
@@ -164,7 +179,7 @@ export default {
           <button class="btn role-secondary mr-20" @click.prevent="cancel">
             <t k="generic.close" />
           </button>
-          <button class="btn role-tertiary bg-primary" @click.prevent="handleUpgrade">
+          <button :disabled="!readyReleaseNote" class="btn role-tertiary bg-primary" @click.prevent="handleUpgrade">
             <t k="harvester.upgradePage.upgrade" />
           </button>
         </div>
