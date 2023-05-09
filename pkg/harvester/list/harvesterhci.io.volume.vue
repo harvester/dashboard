@@ -3,7 +3,7 @@ import Loading from '@shell/components/Loading';
 import ResourceTable from '@shell/components/ResourceTable';
 import HarvesterVolumeState from '../formatters/HarvesterVolumeState';
 
-import { allHash } from '@shell/utils/promise';
+import { allSettled } from '../utils/promise';
 import { PV, PVC, SCHEMA, LONGHORN } from '@shell/config/types';
 import { HCI, VOLUME_SNAPSHOT } from '../types';
 import { STATE, AGE, NAME, NAMESPACE } from '@shell/config/table-headers';
@@ -39,7 +39,7 @@ export default {
       _hash.snapshots = this.$store.dispatch(`${ inStore }/findAll`, { type: VOLUME_SNAPSHOT });
     }
 
-    const hash = await allHash(_hash);
+    const hash = await allSettled(_hash);
 
     const pvcSchema = this.$store.getters[`${ inStore }/schemaFor`](PVC);
 
