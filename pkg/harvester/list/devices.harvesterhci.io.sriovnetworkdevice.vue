@@ -44,6 +44,7 @@ export default {
           label:       'Num VFs',
           sort:        ['spec.numVFs'],
           value:       'spec.numVFs',
+          formatter:   'HarvesterVFsNum',
           align:       'center',
           labelKey:    'harvester.sriov.numVFs',
           dashIfEmpty: true,
@@ -51,8 +52,10 @@ export default {
         {
           name:        'vfAddresses',
           label:       'VF Addresses',
+          labelKey:    'harvester.sriov.vfAddresses',
           sort:        ['status.vfAddresses'],
           value:       'status.vfAddresses',
+          formatter:   'HarvesterVFAddress',
           align:       'center',
           dashIfEmpty: true,
         },

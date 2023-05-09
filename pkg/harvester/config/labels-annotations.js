@@ -42,4 +42,5 @@ export const HCI = {
   NODE_MANUFACTURER:            'manufacturer',
   NODE_MODEL:                   'model',
   NODE_SERIAL_NUMBER:           'serialNumber',
+  PARENT_SRIOV:                 'harvesterhci.io/parent-sriov-network-device',
 };
