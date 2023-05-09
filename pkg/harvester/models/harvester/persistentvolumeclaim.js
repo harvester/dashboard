@@ -194,7 +194,9 @@ export default class HciPv extends HarvesterResource {
   }
 
   get isAvailable() {
-    return this.stateDisplay !== 'Resizing';
+    const unAvailable = ['Resizing', 'Not Ready'];
+
+    return !unAvailable.includes(this.stateDisplay);
   }
 
   get volumeSort() {
