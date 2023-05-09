@@ -1,11 +1,15 @@
 <script>
 import ResourceTable from '@shell/components/ResourceTable';
+import FilterBySriov from '../../../components/FilterBySriov';
 import { HCI } from '../../../types';
 import { STATE, SIMPLE_NAME } from '@shell/config/table-headers';
+import { defaultTableSortGenerationFn } from '@shell/components/ResourceTable.vue';
+import { allHash } from '@shell/utils/promise';
+
 export default {
   name: 'ListPciDevices',
 
-  components: { ResourceTable },
+  components: { ResourceTable, FilterBySriov },
 
   props: {
     schema: {
@@ -21,8 +25,12 @@ export default {
   },
   async fetch() {
     const inStore = this.$store.getters['currentProduct'].inStore;
+    const _hash = {
+      pciclaims: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.PCI_CLAIM }),
+      sriovs:    this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.SR_IOV }),
+    };
 
-    await this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.PCI_CLAIM });
+    await allHash(_hash);
   },
 
   data() {
@@ -73,7 +81,11 @@ export default {
       });
     }
 
-    return { headers };
+    return {
+      headers,
+      parentSriov: null,
+      filterRows:  []
+    };
   },
 
   methods: {
@@ -93,13 +105,28 @@ export default {
     },
     groupIsAllEnabled(rows = []) {
       return !rows.find(device => !device.passthroughClaim);
-    }
+    },
+
+    changeRows(filterRows, parentSriov) {
+      this.$set(this, 'filterRows', filterRows);
+      this.$set(this, 'parentSriov', parentSriov);
+    },
+
+    sortGenerationFn() {
+      let base = defaultTableSortGenerationFn(this.schema, this.$store);
+
+      if (this.parentSriov) {
+        base += this.parentSriov;
+      }
+
+      return base;
+    },
   }
 };
 </script>
 
 <template>
-  <ResourceTable :headers="headers" :schema="schema" :rows="rows" :use-query-params-for-simple-filtering="true">
+  <ResourceTable :headers="headers" :schema="schema" :rows="filterRows" :use-query-params-for-simple-filtering="true" :sort-generation-fn="sortGenerationFn">
     <template #group-by="{group}">
       <div :ref="group.key" v-trim-whitespace class="group-tab">
         <button v-if="groupIsAllEnabled(group.rows)" type="button" class="btn btn-sm role-secondary mr-5" @click="e=>{disableGroup(group.rows); e.target.blur()}">
@@ -114,6 +141,9 @@ export default {
     <template #cell:claimed="{row}">
       <span v-if="row.isEnabled">{{ row.claimedBy }}</span>
       <span v-else class="text-muted">&mdash;</span>
+    </template>
+    <template #more-header-middle>
+      <FilterBySriov ref="filterByParentSRIOV" :rows="rows" @change-rows="changeRows" />
     </template>
   </ResourceTable>
 </template>
