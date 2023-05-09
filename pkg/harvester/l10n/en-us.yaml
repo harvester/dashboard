@@ -1190,6 +1190,7 @@ harvester:
     numVFs: Number Of Virtual Functions
     vfAddresses: Virtual Functions Addresses
     showMore: Show More
+    parentSriov: Filter By Parent SR-IOV
 
   harvesterVlanConfigMigrateDialog:
     targetClusterNetwork: 
