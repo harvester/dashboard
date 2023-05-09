@@ -6,7 +6,7 @@ import { RadioGroup } from '@components/Form/Radio';
 import CreateEditView from '@shell/mixins/create-edit-view';
 
 export default {
-  name:       'EditAddonPCI',
+  name:       'EditSeederAddon',
   components: {
     Tabbed,
     Tab,

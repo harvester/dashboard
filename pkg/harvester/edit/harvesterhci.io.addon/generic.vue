@@ -6,7 +6,7 @@ import { RadioGroup } from '@components/Form/Radio';
 import CreateEditView from '@shell/mixins/create-edit-view';
 
 export default {
-  name:       'EditAddonPCI',
+  name:       'EditGenericAddon',
   components: {
     Tabbed,
     Tab,
@@ -33,7 +33,7 @@ export default {
   <Tabbed :side-tabs="true">
     <Tab
       name="basic"
-      :label="t('harvester.addons.vmImport.titles.basic')"
+      :label="t('generic.basic')"
       :weight="99"
     >
       <RadioGroup

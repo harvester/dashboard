@@ -404,7 +404,7 @@ export default class HciNode extends HarvesterResource {
   get isStopped() {
     const inventory = this.inventory || {};
 
-    return inventory.status?.powerAction?.actionRequested === 'shutdown' &&
+    return inventory.spec?.powerActionRequested === 'shutdown' &&
             inventory.status?.powerAction?.actionStatus === 'complete';
   }
 
@@ -412,7 +412,7 @@ export default class HciNode extends HarvesterResource {
     const inventory = this.inventory || {};
 
     if (!Object.prototype.hasOwnProperty.call(inventory?.status?.powerAction || {}, 'actionStatus')) {
-      return inventory.status?.powerAction?.actionRequested === 'shutdown';
+      return inventory.spec?.powerActionRequested === 'shutdown';
     } else {
       return false;
     }
@@ -421,7 +421,7 @@ export default class HciNode extends HarvesterResource {
   get isStarted() {
     const inventory = this.inventory || {};
 
-    return inventory.status?.powerAction?.actionRequested === 'poweron' &&
+    return inventory.spec?.powerActionRequested === 'poweron' &&
             inventory.status?.powerAction?.actionStatus === 'complete';
   }
 
@@ -429,7 +429,7 @@ export default class HciNode extends HarvesterResource {
     const inventory = this.inventory || {};
 
     if (!Object.prototype.hasOwnProperty.call(inventory?.status?.powerAction || {}, 'actionStatus')) {
-      return inventory.status?.powerAction?.actionRequested === 'poweron';
+      return inventory.spec?.powerActionRequested === 'poweron';
     } else {
       return false;
     }
@@ -439,7 +439,7 @@ export default class HciNode extends HarvesterResource {
     const inventory = this.inventory || {};
 
     if (!Object.prototype.hasOwnProperty.call(inventory?.status?.powerAction || {}, 'actionStatus')) {
-      return inventory.status?.powerAction?.actionRequested === 'reboot';
+      return inventory.spec?.powerActionRequested === 'reboot';
     } else {
       return false;
     }

@@ -168,10 +168,10 @@ export default {
         }
 
         if (!this.value.id) {
-          this.value.metadata.annotations['metal.harvesterhci.io/localNodeName'] = this.node.id;
+          this.value.metadata.annotations['metal.harvesterhci.io/local-node-name'] = this.node.id;
         }
 
-        this.value.metadata.annotations['metal.harvesterhci.io/localInventory'] = 'true';
+        this.value.metadata.annotations['metal.harvesterhci.io/local-inventory'] = 'true';
 
         return await this.value.save();
       } else {
