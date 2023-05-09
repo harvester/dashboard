@@ -99,7 +99,7 @@ export default {
 </script>
 
 <template>
-  <ResourceTable :headers="headers" :schema="schema" :rows="rows">
+  <ResourceTable :headers="headers" :schema="schema" :rows="rows" :use-query-params-for-simple-filtering="true">
     <template #group-by="{group}">
       <div :ref="group.key" v-trim-whitespace class="group-tab">
         <button v-if="groupIsAllEnabled(group.rows)" type="button" class="btn btn-sm role-secondary mr-5" @click="e=>{disableGroup(group.rows); e.target.blur()}">

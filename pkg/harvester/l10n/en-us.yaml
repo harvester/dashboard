@@ -1035,7 +1035,9 @@ harvester:
   sriov:
     label: SR-IOV Network Devices
     nodeName: Node
-    numVFs: Number of virtual functions
+    numVFs: Number Of Virtual Functions
+    vfAddresses: Virtual Functions Addresses
+    showMore: Show More
 
   harvesterVlanConfigMigrateDialog:
     targetClusterNetwork: 

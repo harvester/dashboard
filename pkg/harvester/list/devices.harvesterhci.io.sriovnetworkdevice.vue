@@ -51,8 +51,10 @@ export default {
         {
           name:        'vfAddresses',
           label:       'VF Addresses',
+          labelKey:    'harvester.sriov.vfAddresses',
           sort:        ['status.vfAddresses'],
           value:       'status.vfAddresses',
+          formatter:   'HarvesterVFAddress',
           align:       'center',
           dashIfEmpty: true,
         },
