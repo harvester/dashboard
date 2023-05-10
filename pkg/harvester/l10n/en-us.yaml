@@ -522,6 +522,7 @@ harvester:
         anyNode: 'Run VM on any available node'
         schedulingRules: 'Run VM on node(s) matching scheduling rules'
         specificNode: Run VM on specific node - (Live migration is not supported)
+      networkNotSupport: Network not support schedule
     accessCredentials:
       resetPwd:
         label: Add Basic Auth

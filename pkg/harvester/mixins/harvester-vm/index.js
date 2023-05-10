@@ -21,6 +21,7 @@ import { HCI_SETTING } from '../../config/settings';
 import { HOSTNAME } from '@shell/config/labels-annotations';
 import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 import impl, { QGA_JSON, USB_TABLET } from './impl';
+import { uniq } from '@shell/utils/array';
 
 export const MANAGEMENT_NETWORK = 'management Network';
 
@@ -105,6 +106,10 @@ export default {
       hash.clusterNetworks = this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.CLUSTER_NETWORK });
     }
 
+    if (this.$store.getters[`${ inStore }/schemaFor`](HCI.VLAN_CONFIG)) {
+      hash.clusterNetworks = this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VLAN_CONFIG });
+    }
+
     const res = await allHash(hash);
 
     const hasPCISchema = this.$store.getters[`${ inStore }/schemaFor`](HCI.PCI_DEVICE);
@@ -186,10 +191,31 @@ export default {
     nodesIdOptions() {
       const nodes = this.$store.getters[`${ this.inStore }/all`](NODE);
 
+      const networkNames = this.networkRows.map(n => n.networkName);
+      const vmNetworks = this.$store.getters[`${ this.inStore }/all`](NETWORK_ATTACHMENT);
+      const selectedVMNetworks = networkNames.map(name => vmNetworks.find(n => n.id === name)).filter(n => n?.id);
+      const clusterNetworks = uniq(selectedVMNetworks.map(n => n.clusterNetworkResource?.id));
+
       return nodes.filter(N => !N.isUnSchedulable).map((node) => {
+        const requireLabelKeys = [];
+        let isNetworkSchedule = true;
+
+        if (clusterNetworks.length > 0) {
+          clusterNetworks.map((clusterNetwork) => {
+            requireLabelKeys.push(`network.harvesterhci.io/${ clusterNetwork }`);
+          });
+        }
+
+        requireLabelKeys.map((requireLabelKey) => {
+          if (node.metadata?.labels?.[requireLabelKey] !== 'true') {
+            isNetworkSchedule = false;
+          }
+        });
+
         return {
-          label: node.nameDisplay,
-          value: node.id
+          label:    isNetworkSchedule ? node.nameDisplay : `${ node.nameDisplay } (${ this.t('harvester.virtualMachine.scheduling.networkNotSupport') })`,
+          value:    node.id,
+          disabled: !isNetworkSchedule,
         };
       });
     },
