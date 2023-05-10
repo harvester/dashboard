@@ -11,7 +11,7 @@ import NameNsDescription from '@shell/components/form/NameNsDescription';
 import { allHash } from '@shell/utils/promise';
 import { get } from '@shell/utils/object';
 import { HCI, VOLUME_SNAPSHOT } from '../types';
-import { STORAGE_CLASS } from '@shell/config/types';
+import { STORAGE_CLASS, LONGHORN, PV } from '@shell/config/types';
 import { sortBy } from '@shell/utils/sort';
 import { saferDump } from '@shell/utils/create-yaml';
 import { InterfaceOption, VOLUME_DATA_SOURCE_KIND } from '../config/harvester-map';
@@ -37,11 +37,22 @@ export default {
   mixins: [CreateEditView],
 
   async fetch() {
+    const inStore = this.$store.getters['currentProduct'].inStore;
     const _hash = {
-      images:    this.$store.dispatch('harvester/findAll', { type: HCI.IMAGE }),
-      snapshots: this.$store.dispatch('harvester/findAll', { type: VOLUME_SNAPSHOT }),
-      storages:  this.$store.dispatch(`harvester/findAll`, { type: STORAGE_CLASS }),
+      images:    this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.IMAGE }),
+      snapshots: this.$store.dispatch(`${ inStore }/findAll`, { type: VOLUME_SNAPSHOT }),
+      storages:  this.$store.dispatch(`${ inStore }/findAll`, { type: STORAGE_CLASS }),
+      pvs:       this.$store.dispatch(`${ inStore }/findAll`, { type: PV }),
     };
+
+    if (this.$store.getters[`${ inStore }/schemaFor`](LONGHORN.VOLUMES)) {
+      _hash.longhornVolumes = this.$store.dispatch(`${ inStore }/findAll`, { type: LONGHORN.VOLUMES });
+    }
+
+    if (this.$store.getters[`${ inStore }/schemaFor`](LONGHORN.ENGINES)) {
+      _hash.longhornEngines = this.$store.dispatch(`${ inStore }/findAll`, { type: LONGHORN.ENGINES });
+    }
+
     const hash = await allHash(_hash);
 
     this.snapshots = hash.snapshots;
@@ -160,6 +171,52 @@ export default {
 
       return out;
     },
+
+    frontend() {
+      return this.value.longhornVolume?.spec?.frontend;
+    },
+
+    frontendDisplay() {
+      const format = ['blockdev'];
+
+      if (format.includes(this.frontend)) {
+        return this.t(`harvester.volume.${ this.frontend }`);
+      }
+
+      return this.frontend;
+    },
+
+    attachedNode() {
+      return this.value.longhornVolume?.spec?.nodeID;
+    },
+
+    endpoint() {
+      return this.value.longhornEngine?.status?.endpoint;
+    },
+
+    diskTags() {
+      return this.value.longhornVolume?.spec?.diskSelector;
+    },
+
+    nodeTags() {
+      return this.value.longhornVolume?.spec?.nodeSelector;
+    },
+
+    replicasNumber() {
+      return this.value.longhornVolume?.spec?.numberOfReplicas;
+    },
+
+    lastBackup() {
+      return this.value.longhornVolume?.status?.lastBackup;
+    },
+
+    lastBackupAt() {
+      return this.value.longhornVolume?.status?.lastBackupAt;
+    },
+
+    rebuildStatus() {
+      return this.value.longhornEngine?.status?.rebuildStatus;
+    }
   },
 
   methods: {
@@ -266,6 +323,32 @@ export default {
           class="mb-20"
           @input="update"
         />
+      </Tab>
+      <Tab v-if="!isCreate" name="details" :label="t('harvester.volume.tabs.details')" :weight="2.5" class="bordered-table">
+        <LabeledInput v-model="frontendDisplay" class="mb-20" :mode="mode" :disabled="true" :label="t('harvester.volume.frontend')" />
+        <LabeledInput v-model="attachedNode" class="mb-20" :mode="mode" :disabled="true" :label="t('harvester.volume.attachedNode')" />
+        <LabeledInput v-model="endpoint" class="mb-20" :mode="mode" :disabled="true" :label="t('harvester.volume.endpoint')" />
+        <LabeledSelect
+          v-model="diskTags"
+          :multiple="true"
+          :label="t('harvester.volume.diskTags')"
+          :options="[]"
+          :disabled="true"
+          :mode="mode"
+          class="mb-20"
+        />
+        <LabeledSelect
+          v-model="nodeTags"
+          :multiple="true"
+          :label="t('harvester.volume.nodeTags')"
+          :options="[]"
+          :disabled="true"
+          :mode="mode"
+          class="mb-20"
+        />
+        <LabeledInput v-model="lastBackup" class="mb-20" :mode="mode" :disabled="true" :label="t('harvester.volume.lastBackup')" />
+        <LabeledInput v-model="lastBackupAt" class="mb-20" :mode="mode" :disabled="true" :label="t('harvester.volume.lastBackupAt')" />
+        <LabeledInput v-model="replicasNumber" class="mb-20" :mode="mode" :disabled="true" :label="t('harvester.volume.replicasNumber')" />
       </Tab>
       <Tab v-if="!isCreate" name="instances" :label="t('harvester.volume.tabs.snapshots')" :weight="2" class="bordered-table">
         <SortableTable

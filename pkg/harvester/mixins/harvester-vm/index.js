@@ -14,7 +14,7 @@ import { formatSi, parseSi } from '@shell/utils/units';
 import { SOURCE_TYPE, ACCESS_CREDENTIALS } from '../../config/harvester-map';
 import { _CLONE, _CREATE, _VIEW } from '@shell/config/query-params';
 import {
-  PV, PVC, STORAGE_CLASS, NODE, SECRET, CONFIG_MAP, NETWORK_ATTACHMENT, NAMESPACE
+  PV, PVC, STORAGE_CLASS, NODE, SECRET, CONFIG_MAP, NETWORK_ATTACHMENT, NAMESPACE, LONGHORN
 } from '@shell/config/types';
 import { HCI } from '../../types';
 import { HCI_SETTING } from '../../config/settings';
@@ -108,6 +108,10 @@ export default {
 
     if (this.$store.getters[`${ inStore }/schemaFor`](HCI.VLAN_CONFIG)) {
       hash.clusterNetworks = this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VLAN_CONFIG });
+    }
+
+    if (this.$store.getters[`${ inStore }/schemaFor`](LONGHORN.VOLUMES)) {
+      hash.longhornVolumes = this.$store.dispatch(`${ inStore }/findAll`, { type: LONGHORN.VOLUMES });
     }
 
     const res = await allHash(hash);
