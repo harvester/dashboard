@@ -27,16 +27,23 @@ export default {
   async fetch() {
     const inStore = this.$store.getters['currentProduct'].inStore;
     const _hash = {
-      pvcs:            this.$store.dispatch(`${ inStore }/findAll`, { type: PVC }),
-      pvs:             this.$store.dispatch(`${ inStore }/findAll`, { type: PV }),
-      vms:             this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VM }),
-      longhornVolumes: this.$store.dispatch(`${ inStore }/findAll`, { type: LONGHORN.VOLUMES }),
+      pvcs: this.$store.dispatch(`${ inStore }/findAll`, { type: PVC }),
+      pvs:  this.$store.dispatch(`${ inStore }/findAll`, { type: PV }),
+      vms:  this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VM }),
     };
 
     const volumeSnapshotSchema = this.$store.getters[`${ inStore }/schemaFor`](VOLUME_SNAPSHOT);
 
     if (volumeSnapshotSchema) {
       _hash.snapshots = this.$store.dispatch(`${ inStore }/findAll`, { type: VOLUME_SNAPSHOT });
+    }
+
+    if (this.$store.getters[`${ inStore }/schemaFor`](LONGHORN.VOLUMES)) {
+      _hash.longhornVolumes = this.$store.dispatch(`${ inStore }/findAll`, { type: LONGHORN.VOLUMES });
+    }
+
+    if (this.$store.getters[`${ inStore }/schemaFor`](LONGHORN.ENGINES)) {
+      _hash.longhornEngines = this.$store.dispatch(`${ inStore }/findAll`, { type: LONGHORN.ENGINES });
     }
 
     const hash = await allSettled(_hash);

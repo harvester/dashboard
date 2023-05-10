@@ -198,7 +198,7 @@ harvester:
     ipv4Address: IPv4 Address
     filterLabels: Filter Labels
     storageClass: Storage Class
-    dockerImage: Docker Image
+    dockerImage: Docker Image 
   pci:
     available: Available Devices
     compatibleNodes: Compatible Nodes
@@ -620,6 +620,7 @@ harvester:
       basics: Basics
       snapshots: Snapshots
       datasource: Data Source
+      details: Details
     size: Size
     source: Source
     kind: Kind
@@ -627,10 +628,20 @@ harvester:
       new: New
       vmImage: VM Image
     image: Image
+    frontend: Frontend
+    blockdev: Block Device
+    attachedNode: Attached Node
+    endpoint: Endpoint
+    diskTags: Disk Tags
+    nodeTags: Node Tags
+    lastBackup: Last Backup
+    lastBackupAt: Last Backup At
+    replicasNumber: Replicas Number
     promptRemove:
       tips: "Warn: The snapshots of volume will be deleted with volume."
     externalLink:
       tips: Check volume details
+    rebuildingMessage: 'Rebuilding: {percentage}%'
 
   image:
     label: Images
