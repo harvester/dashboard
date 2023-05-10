@@ -221,6 +221,12 @@ export default class HciPv extends HarvesterResource {
     return this.$rootGetters[`${ inStore }/all`](LONGHORN.VOLUMES).find(v => v.metadata?.name === this.spec?.volumeName);
   }
 
+  get longhornEngine() {
+    const inStore = this.$rootGetters['currentProduct'].inStore;
+
+    return this.$rootGetters[`${ inStore }/all`](LONGHORN.ENGINES).find(v => v.spec?.volumeName === this.spec?.volumeName);
+  }
+
   // https://github.com/longhorn/longhorn-manager/blob/master/api/model.go#L1151
   get isLonghornVolumeReady() {
     let ready = true;
