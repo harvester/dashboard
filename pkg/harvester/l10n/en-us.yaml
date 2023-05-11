@@ -705,6 +705,7 @@ harvester:
       fail:  Fail
       ongoing: on-going
       downloadLog: Download Log
+      logStatus: Log Download Status
     dismissMessage: Dismiss it
     upgradeInfo:
       warning: WARNING
