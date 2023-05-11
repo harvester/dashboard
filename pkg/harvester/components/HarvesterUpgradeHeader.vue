@@ -40,7 +40,7 @@ export default {
   data() {
     return {
       filename:       '',
-      logDownloading: false,
+      logDownloading: false
     };
   },
 
@@ -59,6 +59,16 @@ export default {
       const upgradeLogId = `${ this.latestResource.id }-upgradelog`;
 
       return this.$store.getters['harvester/all'](HCI.UPGRADE_LOG).find( U => U.id === upgradeLogId);
+    },
+
+    downloadLogFailReason() {
+      if (!this.filename) {
+        const filename = this.latestUpgradeLogResource?.latestArchivesFileName;
+
+        return this.latestUpgradeLogResource?.downloadArchivesStatus(filename);
+      }
+
+      return this.latestUpgradeLogResource?.downloadArchivesStatus(this.filename);
     },
 
     canStartedDownload() {
@@ -114,6 +124,14 @@ export default {
     repoInfo() {
       return this.latestResource.repoInfo;
     },
+
+    releaseLink() {
+      return `https://github.com/harvester/harvester/releases/tag/${ this.latestResource?.spec?.version }`;
+    },
+
+    upgradeVersion() {
+      return this.latestResource?.spec?.version;
+    }
   },
 
   methods: {
@@ -146,7 +164,7 @@ export default {
             clearInterval(timer);
             resolve();
           }
-        }, 1800);
+        }, 2500);
       });
     },
 
@@ -154,7 +172,9 @@ export default {
       this.logDownloading = true;
       await this.generateLogFileName();
       this.waitFileGeneratedReady().then(() => {
-        this.latestUpgradeLogResource.downloadLog(this.filename);
+        if (!this.downloadLogFailReason) {
+          this.latestUpgradeLogResource.downloadLog(this.filename);
+        }
         this.logDownloading = false;
       });
     }
@@ -176,10 +196,23 @@ export default {
       <template slot="popover">
         <div class="upgrade-info mb-10">
           <div v-if="repoInfo" class="repoInfo">
+            <div class="row">
+              <div class="col span-12">
+                <a :href="releaseLink" target="_blank">{{ upgradeVersion }}</a>
+              </div>
+            </div>
             <div v-if="latestResource" class="row mb-5">
               <div class="col span-12">
                 <p class="state">
                   {{ t('harvester.upgradePage.repoInfo.upgradeStatus') }}: <BadgeStateFormatter class="ml-5" :row="latestResource" />
+                </p>
+              </div>
+            </div>
+
+            <div v-if="downloadLogFailReason" class="row mb-5">
+              <div class="col span-12">
+                <p class="state">
+                  {{ t('harvester.upgradePage.repoInfo.logStatus') }}: <span class="error ml-5">{{ downloadLogFailReason }}</span>
                 </p>
               </div>
             </div>
@@ -259,6 +292,12 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+a {
+  float: right;
+  color: var(--link) !important;
+  text-decoration: none;
+}
+
 .upgrade {
   height: 100%;
   min-width: 40px;
@@ -286,6 +325,10 @@ export default {
       display: flex;
       align-items: center;
     }
+  }
+
+  .error {
+    color: var(--error);
   }
 
   .float-r {
