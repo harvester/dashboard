@@ -86,7 +86,6 @@ export default {
           blockDevice:    d,
           displayName:    d?.displayName,
           forceFormatted: d?.spec?.fileSystem?.forceFormatted || false,
-          $ctx:           d.$ctx,
         };
       });
 

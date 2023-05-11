@@ -97,6 +97,16 @@ const RESOURCES = [{
     name:            HCI.VOLUME,
     filterNamespace: ['cattle-monitoring-system']
   }
+},
+{
+  type:    HCI.BLOCK_DEVICE,
+  spoofed: {
+    location: {
+      name:   `${ HARVESTER_PRODUCT }-c-cluster-resource`,
+      params: { resource: HCI.HOST }
+    },
+    name: HCI.BLOCK_DEVICE,
+  },
 }];
 
 const CLUSTER_METRICS_DETAIL_URL = '/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/d/rancher-cluster-nodes-1/rancher-cluster-nodes?orgId=1';
@@ -141,9 +151,13 @@ export default {
       return null;
     });
 
-    if (this.$store.getters[`${ inStore }/schemaFor`](HCI.ADD_ONS )) {
-      hash.monitoring = this.$store.dispatch(`${ inStore }/find`, { type: HCI.ADD_ONS, id: MONITORING_ID });
+    if (this.$store.getters[`${ inStore }/schemaFor`](HCI.ADD_ONS)) {
+      hash.addons = this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.ADD_ONS });
     }
+
+    const addons = this.$store.getters[`${ inStore }/all`](HCI.ADD_ONS);
+
+    this.monitoring = addons.find(addon => addon.id === MONITORING_ID);
 
     const res = await allHash(hash);
 
@@ -256,6 +270,23 @@ export default {
           };
 
           out[resource.type].name = this.t(`typeLabel."${ resource.spoofed.name }"`, { count: out[resource.type].total });
+        }
+
+        if (resource.type === HCI.BLOCK_DEVICE) {
+          let total = 0;
+          let errorCount = 0;
+
+          (this.nodes || []).map((node) => {
+            total += node.diskStatusCount.total;
+            errorCount += node.diskStatusCount.errorCount;
+          });
+
+          out[resource.type] = {
+            ...out[resource.type],
+            total,
+            errorCount,
+            useful: total - errorCount,
+          };
         }
       });
 
@@ -467,6 +498,13 @@ export default {
     toEnableMonitoringAddon() {
       return `${ HCI.ADD_ONS }/cattle-monitoring-system/rancher-monitoring?mode=edit#alertmanager`;
     },
+
+    canEnableMonitoringAddon() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const hasSchema = this.$store.getters[`${ inStore }/schemaFor`](HCI.ADD_ONS);
+
+      return hasSchema && this.monitoring;
+    },
   },
 
   methods: {
@@ -571,7 +609,7 @@ export default {
       </div>
     </div>
 
-    <div v-if="!enabledMonitoringAddon">
+    <div v-if="!enabledMonitoringAddon && canEnableMonitoringAddon">
       <Banner color="info">
         <MessageLink
           :to="toEnableMonitoringAddon"
