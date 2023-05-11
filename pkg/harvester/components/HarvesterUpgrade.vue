@@ -158,7 +158,7 @@ export default {
             :clearable="true"
           />
 
-          <div v-if="canEnableLogging">
+          <div v-if="canEnableLogging" class="mb-5">
             <Checkbox v-model="enableLogging" class="check" type="checkbox" :label="t('harvester.upgradePage.enableLogging')" />
           </div>
 
