@@ -116,11 +116,14 @@ export default {
         </div>
 
         <div class="right">
-          <LiveData
-            :value="valueFor(group.group)"
-            :row="templateResource(group.group)"
-          />
-          <button type="button" class="btn btn-sm actions mr-5 role-multi-action" @click="showActions($event, group.group)">
+          <div class="age">
+            <LiveData
+              :value="valueFor(group.group)"
+              :row="templateResource(group.group)"
+            />
+          </div>
+
+          <button type="button" class="btn btn-sm actions mr-10 role-multi-action" @click="showActions($event, group.group)">
             <i class="icon icon-actions" />
           </button>
         </div>
@@ -147,8 +150,16 @@ export default {
     flex-direction: row;
     justify-content: space-between;
 
-    .live-date {
-      padding-right: 7px;
+    .right {
+      display: flex;
+      align-items: center;
+      .age {
+        width: 100px;
+      }
+
+      .actions {
+        padding-right: 7px;
+      }
     }
 
     &.has-description {
