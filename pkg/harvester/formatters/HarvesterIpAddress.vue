@@ -5,10 +5,10 @@ import { isIpv4 } from '@shell/utils/string';
 import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 import { HCI } from '../types';
 import { MANAGEMENT_NETWORK } from '../mixins/harvester-vm';
-import CopyToClipboard from '@shell/components/CopyToClipboard';
+import CopyToClipboardText from '@shell/components/CopyToClipboardText';
 
 export default {
-  components: { CopyToClipboard },
+  components: { CopyToClipboardText },
   props:      {
     value: {
       type:    String,
@@ -97,8 +97,7 @@ export default {
 <template>
   <div v-if="showIP">
     <span v-for="{ip, name} in ips" :key="ip">
-      <span v-tooltip="name">{{ ip }}</span>
-      <CopyToClipboard :text="ip" label-as="tooltip" class="icon-btn" action-color="bg-transparent" />
+      <CopyToClipboardText v-tooltip="name" :text="ip" />
     </span>
   </div>
 </template>

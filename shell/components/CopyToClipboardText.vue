@@ -39,6 +39,7 @@ export default {
 
 <template>
   <a
+    v-if="text"
     class="copy-to-clipboard-text"
     :class="{ 'copied': copied, 'plain': plain}"
     href="#"
