@@ -893,7 +893,11 @@ harvester:
       label: Configuration
     alertmanagerConfig:
       label: Alertmanager Configs
-      diabledTips:
+      diabledMonitoringTips:
+        prefix: 'You must enable'
+        middle: 'Monitoring'
+        suffix: 'addon at first.'
+      diabledAlertingTips:
         prefix: 'You must enable'
         middle: 'Alertmanager'
         suffix: 'for configs to take effect.'

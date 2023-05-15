@@ -7,7 +7,7 @@ import Loading from '@shell/components/Loading';
 import Banner from '@components/Banner/Banner.vue';
 import MessageLink from '@shell/components/MessageLink';
 import SortableTable from '@shell/components/SortableTable';
-import { allHash } from '@shell/utils/promise';
+import { allHash, setPromiseResult } from '@shell/utils/promise';
 import {
   parseSi, formatSi, exponentNeeded, UNITS, createMemoryValues
 } from '@shell/utils/units';
@@ -155,18 +155,28 @@ export default {
       hash.addons = this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.ADD_ONS });
     }
 
-    const addons = this.$store.getters[`${ inStore }/all`](HCI.ADD_ONS);
-
-    this.monitoring = addons.find(addon => addon.id === MONITORING_ID);
-
     const res = await allHash(hash);
 
     for ( const k in res ) {
       this[k] = res[k];
     }
 
-    this.showClusterMetrics = await allDashboardsExist(this.$store, this.currentCluster.id, [CLUSTER_METRICS_DETAIL_URL, CLUSTER_METRICS_SUMMARY_URL], 'harvester');
-    this.showVmMetrics = await allDashboardsExist(this.$store, this.currentCluster.id, [VM_DASHBOARD_METRICS_URL], 'harvester');
+    setPromiseResult(
+      allDashboardsExist(this.$store, this.currentCluster.id, [CLUSTER_METRICS_DETAIL_URL, CLUSTER_METRICS_SUMMARY_URL], 'harvester'),
+      this,
+      'showClusterMetrics',
+      'Determine cluster metrics'
+    );
+    setPromiseResult(
+      allDashboardsExist(this.$store, this.currentCluster.id, [VM_DASHBOARD_METRICS_URL], 'harvester'),
+      this,
+      'showVmMetrics',
+      'Determine vm metrics'
+    );
+
+    const addons = this.$store.getters[`${ inStore }/all`](HCI.ADD_ONS);
+
+    this.monitoring = addons.find(addon => addon.id === MONITORING_ID);
     this.enabledMonitoringAddon = this.monitoring?.spec?.enabled;
   },
 

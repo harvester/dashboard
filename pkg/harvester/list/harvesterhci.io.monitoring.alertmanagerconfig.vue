@@ -58,10 +58,14 @@ export default {
       return `${ HCI.ADD_ONS }/cattle-monitoring-system/rancher-monitoring?mode=edit#alertmanager`;
     },
 
+    monitoringEnabled() {
+      return this.monitoringAddon?.spec?.enabled;
+    },
+
     alertingEnabled() {
       const valueJson = jsyaml.load(this.monitoringAddon?.spec?.valuesContent);
 
-      return this.monitoringAddon?.spec?.enabled && valueJson?.alertmanager?.enabled;
+      return valueJson?.alertmanager?.enabled;
     },
   },
 
@@ -74,12 +78,20 @@ export default {
 <template>
   <Loading v-if="$fetchState.pending" />
   <div v-else>
+    <Banner v-if="monitoringEnabled === false" color="info">
+      <MessageLink
+        :to="to"
+        prefix-label="harvester.monitoring.alertmanagerConfig.diabledMonitoringTips.prefix"
+        middle-label="harvester.monitoring.alertmanagerConfig.diabledMonitoringTips.middle"
+        suffix-label="harvester.monitoring.alertmanagerConfig.diabledMonitoringTips.suffix"
+      />
+    </Banner>
     <Banner v-if="alertingEnabled === false" color="info">
       <MessageLink
         :to="to"
-        prefix-label="harvester.monitoring.alertmanagerConfig.diabledTips.prefix"
-        middle-label="harvester.monitoring.alertmanagerConfig.diabledTips.middle"
-        suffix-label="harvester.monitoring.alertmanagerConfig.diabledTips.suffix"
+        prefix-label="harvester.monitoring.alertmanagerConfig.diabledAlertingTips.prefix"
+        middle-label="harvester.monitoring.alertmanagerConfig.diabledAlertingTips.middle"
+        suffix-label="harvester.monitoring.alertmanagerConfig.diabledAlertingTips.suffix"
       />
     </Banner>
     <Banner color="info">
