@@ -191,6 +191,7 @@ export default {
         >
           <UnitInput
             v-model="value.size"
+            v-int-number
             :output-modifier="true"
             :increment="1024"
             :input-exponent="3"
