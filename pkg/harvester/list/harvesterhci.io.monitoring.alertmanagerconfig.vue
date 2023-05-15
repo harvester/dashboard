@@ -86,7 +86,7 @@ export default {
         suffix-label="harvester.monitoring.alertmanagerConfig.diabledMonitoringTips.suffix"
       />
     </Banner>
-    <Banner v-if="alertingEnabled === false" color="info">
+    <Banner v-if="monitoringEnabled && alertingEnabled === false" color="info">
       <MessageLink
         :to="to"
         prefix-label="harvester.monitoring.alertmanagerConfig.diabledAlertingTips.prefix"
