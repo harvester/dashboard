@@ -1141,6 +1141,11 @@ typeLabel:
       one { Template }
       other { Templates }
     }
+  harvesterhci.io.virtualmachinetemplate: |-
+    {count, plural,
+      one { Template }
+      other { Templates }
+    }
   harvesterhci.io.virtualmachinebackup: |-
     {count, plural,
       one { VM Backup }

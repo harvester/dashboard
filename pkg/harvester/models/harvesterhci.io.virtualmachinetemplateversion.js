@@ -7,7 +7,7 @@ import {
 import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 import HarvesterResource from './harvester';
 import { findBy } from '@shell/utils/array';
-import { get } from '@shell/utils/object';
+import { get, clone } from '@shell/utils/object';
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../config/harvester';
 import { colorForState } from '@shell/plugins/dashboard-store/resource-class';
 
@@ -135,6 +135,17 @@ export default class HciVmTemplateVersion extends HarvesterResource {
     } else {
       return 'Not Ready';
     }
+  }
+
+  get doneOverride() {
+    const detailLocation = clone(this._detailLocation);
+
+    delete detailLocation.params.namespace;
+    delete detailLocation.params.id;
+    detailLocation.params.resource = HCI.VM_TEMPLATE;
+    detailLocation.name = `${ HARVESTER_PRODUCT }-c-cluster-resource`;
+
+    return detailLocation;
   }
 
   get stateColor() {
