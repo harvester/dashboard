@@ -34,6 +34,7 @@ export default {
           out.push(entry);
         }
       }
+      console.log('-------group', out);
 
       return out;
     }

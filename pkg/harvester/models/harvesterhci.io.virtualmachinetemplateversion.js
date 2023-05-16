@@ -221,6 +221,10 @@ export default class HciVmTemplateVersion extends HarvesterResource {
     return this.defaultVersion === this?.status?.version;
   }
 
+  get groupById() {
+    return this.spec?.templateId;
+  }
+
   get customValidationRules() {
     const rules = [
       {

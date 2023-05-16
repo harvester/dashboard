@@ -34,7 +34,7 @@ import {
 
 import { IF_HAVE } from '@shell/store/type-map';
 
-const TEMPLATE = HCI.VM_VERSION;
+const TEMPLATE = HCI.VM_TEMPLATE;
 const MONITORING_GROUP = 'Monitoring & Logging::Monitoring';
 const LOGGING_GROUP = 'Monitoring & Logging::Logging';
 

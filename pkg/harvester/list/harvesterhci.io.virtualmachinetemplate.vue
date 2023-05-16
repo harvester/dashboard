@@ -54,7 +54,41 @@ export default {
     },
 
     rows() {
-      return [...this.templateVersion];
+      return this.templateVersion;
+    },
+
+    templateWithoutVersions() {
+      const out = this.template.map((T) => {
+        const hasChild = !!this.rows.find(version => version?.spec?.templateId === T.id);
+
+        return {
+          ...T,
+          hasChild
+        };
+      });
+
+      return out;
+    },
+
+    rowsWithFakeTemplate() {
+      const fakeRows = this.template.map((T) => {
+        return {
+          groupByLabel:     T.id,
+          isFake:           true,
+          mainRowKey:       T.id,
+          nameDisplay:      T.id,
+          groupById:        T.id,
+          availableActions: T.availableActions
+        };
+      });
+
+      return [...this.rows, ...fakeRows];
+    },
+
+    templateVersionSchema() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+
+      return this.$store.getters[`${ inStore }/schemaFor`](HCI.VLAN_CONFIG);
     },
 
     groupBy() {
@@ -68,27 +102,29 @@ export default {
 
   methods: {
     showActions(e, group) {
-      const template = group.rows[0].template;
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const resource = this.$store.getters[`${ inStore }/byId`](HCI.VM_TEMPLATE, group.key);
 
       this.$store.commit(`action-menu/show`, {
-        resources: [template],
+        resources: [resource],
         elem:      e.target
       });
     },
 
     valueFor(group) {
-      const resource = group?.rows?.[0].template;
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const resource = this.$store.getters[`${ inStore }/byId`](HCI.VM_TEMPLATE, group.key);
 
       return resource?.metadata?.creationTimestamp;
     },
 
-    templateLabel(group) {
-      return group.key;
+    templateResource(group) {
+      return group?.rows?.[0];
     },
 
-    templateResource(group) {
-      return group?.rows?.[0].template;
-    }
+    slotName(clusterNetwork) {
+      return `main-row:${ clusterNetwork }`;
+    },
   },
 };
 </script>
@@ -99,12 +135,10 @@ export default {
     v-else
     v-bind="$attrs"
     :headers="headers"
-    :sub-rows="true"
     :groupable="false"
-    :rows="rows"
-    :group-title-by="groupTitleBy"
-    :group-by="groupBy"
-    :schema="schema"
+    :rows="rowsWithFakeTemplate"
+    group-by="groupById"
+    :schema="templateVersionSchema"
     :group-can-action="true"
     key-field="_key"
     v-on="$listeners"
@@ -112,7 +146,7 @@ export default {
     <template #group-by="group">
       <div class="group-bar">
         <div class="group-tab">
-          <div class="project-name" v-html="templateLabel(group.group)" />
+          <div class="project-name" v-html="group.group.key" />
         </div>
 
         <div class="right">
@@ -135,6 +169,18 @@ export default {
         <i class="icon icon-checkmark" />
       </td>
       <td v-else></td>
+    </template>
+
+    <template v-for="template in templateWithoutVersions" v-slot:[`main-row:${template.id}`]>
+      <tr
+        v-show="!template.hasChild"
+        :key="template.id"
+        class="main-row"
+      >
+        <td class="empty text-center" colspan="12">
+          {{ t('harvester.vmTemplate.noVersion') }}
+        </td>
+      </tr>
     </template>
   </ResourceTable>
 </template>

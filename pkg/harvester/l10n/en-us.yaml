@@ -653,6 +653,7 @@ harvester:
       basics: Basics
     nameNsDescription:
       name: Template Name
+    noVersion: There are no version defined.
     tips:
       notExistImage:
         title: Image {name} does not exist!
