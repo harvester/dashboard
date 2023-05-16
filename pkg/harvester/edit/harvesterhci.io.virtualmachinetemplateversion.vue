@@ -196,7 +196,7 @@ export default {
         await this.applyHooks(AFTER_SAVE_HOOKS);
         this.done();
       } catch (e) {
-        this.errors = [e];
+        this.errors = Array.isArray(e) ? e : [e];
         buttonCb(false);
       }
     },

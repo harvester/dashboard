@@ -35,7 +35,6 @@ import {
 
 import { IF_HAVE } from '@shell/store/type-map';
 
-const TEMPLATE = HCI.VM_VERSION;
 const MONITORING_GROUP = 'Monitoring & Logging::Monitoring';
 const LOGGING_GROUP = 'Monitoring & Logging::Logging';
 
@@ -432,7 +431,7 @@ export function init($plugin, store) {
 
   basicType(
     [
-      TEMPLATE,
+      HCI.VM_TEMPLATE,
       HCI.SSH,
       HCI.CLOUD_TEMPLATE,
       HCI.STORAGE,
@@ -450,12 +449,12 @@ export function init($plugin, store) {
   virtualType({
     labelKey:   'harvester.vmTemplate.label',
     group:      'root',
-    name:       TEMPLATE,
+    name:       HCI.VM_TEMPLATE,
     namespaced: true,
     weight:     289,
     route:      {
       name:   `${ PRODUCT_NAME }-c-cluster-resource`,
-      params: { resource: TEMPLATE }
+      params: { resource: HCI.VM_TEMPLATE }
     },
     exact: false
   });
@@ -724,6 +723,7 @@ export function init($plugin, store) {
     hiddenNamespaceGroupButton: true,
   });
 
+  // HCI.ADD_ONS
   configureType(HCI.ADD_ONS, {
     isCreatable: false,
     isRemovable: false,

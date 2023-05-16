@@ -139,6 +139,17 @@ export default class HciVmTemplateVersion extends HarvesterResource {
     }
   }
 
+  get doneOverride() {
+    const detailLocation = clone(this._detailLocation);
+
+    delete detailLocation.params.namespace;
+    delete detailLocation.params.id;
+    detailLocation.params.resource = HCI.VM_TEMPLATE;
+    detailLocation.name = `${ HARVESTER_PRODUCT }-c-cluster-resource`;
+
+    return detailLocation;
+  }
+
   get stateColor() {
     const state = this.stateDisplay;
 
@@ -223,22 +234,26 @@ export default class HciVmTemplateVersion extends HarvesterResource {
     return this.defaultVersion === this?.status?.version;
   }
 
+  get groupById() {
+    return this.spec?.templateId;
+  }
+
   get customValidationRules() {
     const rules = [
-      // {
-      //   nullable:       false,
-      //   path:           'spec.vm.spec.template.spec.domain.cpu.cores',
-      //   min:            1,
-      //   max:            100,
-      //   required:       true,
-      //   translationKey: 'harvester.fields.cpu',
-      // },
-      // {
-      //   nullable:       false,
-      //   path:           'spec.vm.spec.template.spec.domain.resources.requests.memory',
-      //   required:       false,
-      //   translationKey: 'harvester.fields.memory',
-      // },
+      {
+        nullable:       false,
+        path:           'spec.vm.spec.template.spec.domain.cpu.cores',
+        min:            1,
+        max:            100,
+        required:       true,
+        translationKey: 'harvester.fields.cpu',
+      },
+      {
+        nullable:       false,
+        path:           'spec.vm.spec.template.spec.domain.resources.requests.memory',
+        required:       true,
+        translationKey: 'harvester.fields.memory',
+      },
       // {
       //   nullable:       false,
       //   path:           'spec.vm.spec.template.spec',
