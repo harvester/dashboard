@@ -223,20 +223,20 @@ export default class HciVmTemplateVersion extends HarvesterResource {
 
   get customValidationRules() {
     const rules = [
-      // {
-      //   nullable:       false,
-      //   path:           'spec.vm.spec.template.spec.domain.cpu.cores',
-      //   min:            1,
-      //   max:            100,
-      //   required:       true,
-      //   translationKey: 'harvester.fields.cpu',
-      // },
-      // {
-      //   nullable:       false,
-      //   path:           'spec.vm.spec.template.spec.domain.resources.requests.memory',
-      //   required:       false,
-      //   translationKey: 'harvester.fields.memory',
-      // },
+      {
+        nullable:       false,
+        path:           'spec.vm.spec.template.spec.domain.cpu.cores',
+        min:            1,
+        max:            100,
+        required:       true,
+        translationKey: 'harvester.fields.cpu',
+      },
+      {
+        nullable:       false,
+        path:           'spec.vm.spec.template.spec.domain.resources.requests.memory',
+        required:       true,
+        translationKey: 'harvester.fields.memory',
+      },
       // {
       //   nullable:       false,
       //   path:           'spec.vm.spec.template.spec',
