@@ -309,7 +309,7 @@ harvester:
       seeder: Out-of-Band Access
     detail:
       kvm:
-        disableMessage: KVM has been disabled by BIOS. KVM must be enabled before creating any Virtual Machines.
+        disableMessage: Hardware-based virtualization is disabled or not supported. Hardware-based virtualization must be enabled before creating any Virtual Machines.
       title:
         network: Network Configuration
       hostIP: Host IP
