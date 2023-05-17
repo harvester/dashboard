@@ -619,6 +619,8 @@ export default {
       </div>
     </div>
 
+    {{ enabledMonitoringAddon }}
+
     <div v-if="!enabledMonitoringAddon && canEnableMonitoringAddon">
       <Banner color="info">
         <MessageLink
