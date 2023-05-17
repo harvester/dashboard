@@ -138,7 +138,9 @@ export default class HciNode extends HarvesterResource {
   }
 
   get isKVMDisable() {
-    return this.metadata?.labels?.[HCI_ANNOTATIONS.KVM_DISABLE] === 'true';
+    const allNotExist = !this.metadata?.labels?.[HCI_ANNOTATIONS.KVM_AMD_CPU] && !this.metadata?.labels?.[HCI_ANNOTATIONS.KVM_INTEL_CPU];
+
+    return this.metadata?.labels?.[HCI_ANNOTATIONS.KVM_AMD_CPU] === 'false' || this.metadata?.labels?.[HCI_ANNOTATIONS.KVM_INTEL_CPU] === 'false' || allNotExist;
   }
 
   get stateDisplay() {
