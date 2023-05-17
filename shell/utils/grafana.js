@@ -10,7 +10,7 @@ export function getClusterPrefix(monitoringVersion, clusterId) {
     console.debug(monitoringVersion);
 
     // return `/k8s/clusters/${ isMultiCluster ? clusterId : '' }`;
-    return `/k8s/clusters%2F${ clusterId }`;
+    return `/k8s/clusters/`;
   }
 
   return clusterId === 'local' ? '' : `/k8s/clusters/${ clusterId }`;
