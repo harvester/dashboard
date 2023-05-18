@@ -11,6 +11,7 @@ import {
   SERVICE_ACCOUNT,
   CAPI,
   POD,
+  HCI,
 } from '@shell/config/types';
 import Tab from '@shell/components/Tabbed/Tab';
 import CreateEditView from '@shell/mixins/create-edit-view';
@@ -48,6 +49,7 @@ import NameNsDescription from '@shell/components/form/NameNsDescription';
 import formRulesGenerator from '@shell/utils/validators/formRules';
 import { TYPES as SECRET_TYPES } from '@shell/models/secret';
 import { defaultContainer } from '@shell/models/workload';
+import { allHash } from '@shell/utils/promise';
 
 const TAB_WEIGHT_MAP = {
   general:              99,
@@ -142,7 +144,11 @@ export default {
   },
 
   async fetch() {
-    await this.$store.dispatch('management/findAll', { type: CAPI.RANCHER_CLUSTER });
+    // TODO Should remove these lines
+    await allHash({
+      rancherClusters:  this.$store.dispatch('management/findAll', { type: CAPI.RANCHER_CLUSTER }),
+      harvesterConfigs: this.$store.dispatch('management/findAll', { type: HCI.HARVESTER_CONFIG }),
+    });
 
     // don't block UI for these resources
     this.resourceManagerFetchSecondaryResources(this.secondaryResourceData);

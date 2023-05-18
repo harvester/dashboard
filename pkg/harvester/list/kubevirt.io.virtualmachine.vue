@@ -10,6 +10,49 @@ import { HCI } from '../types';
 
 import { allHash } from '@shell/utils/promise';
 import Loading from '@shell/components/Loading';
+import { clone } from '@shell/utils/object';
+
+export const VM_HEADERS = [
+  STATE,
+  {
+    ...NAME,
+    width: 300,
+  },
+  NAMESPACE,
+  {
+    name:        'CPU',
+    label:       'CPU',
+    sort:        ['spec.template.spec.domain.cpu.cores'],
+    value:       'spec.template.spec.domain.cpu.cores',
+    align:       'center',
+    dashIfEmpty: true,
+  },
+  {
+    name:          'Memory',
+    value:         'displayMemory',
+    sort:          ['memorySort'],
+    align:         'center',
+    labelKey:      'tableHeaders.memory',
+    formatter:     'Si',
+    formatterOpts: {
+      opts: {
+        increment: 1024, addSuffix: true, maxExponent: 3, minExponent: 3, suffix: 'i',
+      },
+      needParseSi: true
+    },
+  },
+  {
+    name:      'ip',
+    label:     'IP Address',
+    value:     'id',
+    formatter: 'HarvesterIpAddress',
+    labelKey:  'tableHeaders.ipAddress'
+  },
+  {
+    ...AGE,
+    sort: 'metadata.creationTimestamp:desc',
+  }
+];
 
 export default {
   name:       'HarvesterListVM',
@@ -78,47 +121,7 @@ export default {
         labelKey:  'tableHeaders.node'
       };
 
-      const cols = [
-        STATE,
-        {
-          ...NAME,
-          width: 300,
-        },
-        NAMESPACE,
-        {
-          name:        'CPU',
-          label:       'CPU',
-          sort:        ['spec.template.spec.domain.cpu.cores'],
-          value:       'spec.template.spec.domain.cpu.cores',
-          align:       'center',
-          dashIfEmpty: true,
-        },
-        {
-          name:          'Memory',
-          value:         'displayMemory',
-          sort:          ['memorySort'],
-          align:         'center',
-          labelKey:      'tableHeaders.memory',
-          formatter:     'Si',
-          formatterOpts: {
-            opts: {
-              increment: 1024, addSuffix: true, maxExponent: 3, minExponent: 3, suffix: 'i',
-            },
-            needParseSi: true
-          },
-        },
-        {
-          name:      'ip',
-          label:     'IP Address',
-          value:     'id',
-          formatter: 'HarvesterIpAddress',
-          labelKey:  'tableHeaders.ipAddress'
-        },
-        {
-          ...AGE,
-          sort: 'metadata.creationTimestamp:desc',
-        }
-      ];
+      const cols = clone(VM_HEADERS);
 
       if (this.hasNode) {
         cols.splice(-1, 0, nodeCol);

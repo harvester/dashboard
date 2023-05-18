@@ -15,7 +15,6 @@ export const HCI_SETTING = {
   OVERCOMMIT_CONFIG:         'overcommit-config',
   CLUSTER_REGISTRATION_URL:  'cluster-registration-url',
   DEFAULT_STORAGE_CLASS:     'default-storage-class',
-  VIP:                       'vip-pools',
   RANCHER_MANAGER_SUPPORT:   'rancher-manager-support',
   SUPPORT_BUNDLE_TIMEOUT:    'support-bundle-timeout',
   SUPPORT_BUNDLE_IMAGE:      'support-bundle-image',
@@ -57,10 +56,7 @@ export const HCI_ALLOWED_SETTINGS = {
   [HCI_SETTING.VM_FORCE_RESET_POLICY]:   { kind: 'json', from: 'import' },
   [HCI_SETTING.RANCHER_MANAGER_SUPPORT]: { kind: 'boolean' },
   [HCI_SETTING.SSL_CERTIFICATES]:        { kind: 'json', from: 'import' },
-  [HCI_SETTING.VIP]:                     {
-    kind: 'json', from: 'import', canReset: true
-  },
-  [HCI_SETTING.SSL_PARAMETERS]: {
+  [HCI_SETTING.SSL_PARAMETERS]:          {
     kind: 'json', from: 'import', canReset: true
   },
   [HCI_SETTING.SUPPORT_BUNDLE_NAMESPACES]: { from: 'import', canReset: true },

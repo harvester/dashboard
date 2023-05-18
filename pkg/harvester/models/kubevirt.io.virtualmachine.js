@@ -1,14 +1,18 @@
 import Vue from 'vue';
 import { load } from 'js-yaml';
+import { omitBy, pickBy } from 'lodash';
+
 import { colorForState } from '@shell/plugins/dashboard-store/resource-class';
 import { POD, NODE, PVC } from '@shell/config/types';
 import { HCI } from '../types';
 import { findBy } from '@shell/utils/array';
 import { parseSi } from '@shell/utils/units';
-import { get } from '@shell/utils/object';
+import { get, set } from '@shell/utils/object';
 import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 import { _CLONE } from '@shell/config/query-params';
 import HarvesterResource from './harvester';
+import { matchesSomeRegex } from '@shell/utils/string';
+import { LABELS_TO_IGNORE_REGEX } from '@shell/config/labels-annotations';
 
 export const OFF = 'Off';
 
@@ -992,5 +996,26 @@ export default class VirtVm extends HarvesterResource {
 
   get warnDeletionMessage() {
     return this.t('harvester.virtualMachine.promptRemove.tips');
+  }
+
+  get instanceLabels() {
+    const all = this.spec?.template?.metadata?.labels || {};
+
+    return omitBy(all, (value, key) => {
+      return matchesSomeRegex(key, LABELS_TO_IGNORE_REGEX);
+    });
+  }
+
+  setInstanceLabels(val) {
+    if ( !this.spec?.template?.metadata?.labels ) {
+      set(this, 'spec.template.metadata.labels', {});
+    }
+
+    const all = this.spec.template.metadata.labels || {};
+    const wasIgnored = pickBy(all, (value, key) => {
+      return matchesSomeRegex(key, LABELS_TO_IGNORE_REGEX);
+    });
+
+    Vue.set(this.spec.template.metadata, 'labels', { ...wasIgnored, ...val });
   }
 }

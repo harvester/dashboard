@@ -20,6 +20,8 @@ import Events from './VirtualMachineTabs/VirtualMachineEvents';
 import Migration from './VirtualMachineTabs/VirtualMachineMigration';
 import OverviewBasics from './VirtualMachineTabs/VirtualMachineBasics';
 import OverviewKeypairs from './VirtualMachineTabs/VirtualMachineKeypairs';
+import KeyValue from '@shell/components/form/KeyValue';
+import Labels from '@shell/components/form/Labels';
 
 const VM_METRICS_DETAIL_URL = '/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/d/harvester-vm-detail-1/vm-info-detail?orgId=1';
 
@@ -40,6 +42,8 @@ export default {
     AccessCredentials,
     NodeScheduling,
     PodAffinity,
+    KeyValue,
+    Labels,
   },
 
   mixins: [CreateEditView, VM_MIXIN],
@@ -236,6 +240,35 @@ export default {
 
       <Tab name="migration" :label="t('harvester.virtualMachine.detail.tabs.migration')">
         <Migration v-model="value" :vmi-resource="vmi" />
+      </Tab>
+
+      <Tab
+        name="instanceLabel"
+        :label="t('harvester.tab.instanceLabel')"
+        :weight="-99"
+      >
+        <Labels
+          :default-container-class="'labels-and-annotations-container'"
+          :value="value"
+          :mode="mode"
+          :display-side-by-side="false"
+          :show-annotations="false"
+          :show-label-title="false"
+        >
+          <template #labels="{toggler}">
+            <KeyValue
+              key="labels"
+              :value="value.instanceLabels"
+              :protected-keys="value.systemLabels || []"
+              :toggle-filter="toggler"
+              :add-label="t('labels.addLabel')"
+              :mode="mode"
+              :read-allowed="false"
+              :value-can-be-empty="true"
+              @input="value.setInstanceLabels($event)"
+            />
+          </template>
+        </Labels>
       </Tab>
     </Tabbed>
   </div>

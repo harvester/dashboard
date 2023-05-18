@@ -3,6 +3,7 @@ generic:
   resourceExternalLinkTips: 'External Link'
   namespace: Namespace
   notReady: Not Ready
+  labels: Labels
 
 nav:
   harvesterDashboard: Harvester Dashboard
@@ -175,6 +176,7 @@ harvester:
     accessCredentials: Access Credentials
     pciDevices: PCI Devices
     vmScheduling: VM Scheduling
+    instanceLabel: Instance Labels
   fields:
     version: Version
     name: Name
@@ -1039,7 +1041,97 @@ harvester:
       titles:
         basic: Basic
         pvc: Volume
-  
+
+  loadBalancer:
+    label: Load Balancers
+    tabs:
+      basic: Basic
+      listeners: Listeners
+      healthCheck: Health Check
+      backendServer: Backend Server Selector
+    workloadType:
+      label: Workload Type
+      options:
+        cluster: Kubernetes Cluster
+        vm: Virtual Machine
+    ipam:
+      label: IPAM
+      options:
+        dhcp: DHCP
+        pool: Pool
+    ipPool:
+      label: IP Pool
+    listeners:
+      name:
+        label: Name
+      protocol:
+        label: Protocol
+      port:
+        label: Port
+      backendPort:
+        label: Backend Port
+        placeholder: e.g. 80
+    backendServerSelector:
+      matchingVMs:
+        matchesSome: |-
+          {matched, plural,
+            =0 {Matches 0 of {total, number} virtual machines in namespace which same as load balancer.}
+            =1 {Matches 1 of {total, number} virtual machines in namespace which same as load balancer: "{sample}"}
+            other {Matches {matched, number} of {total, number} existing virtual machines in namespace which same as load balancer, including "{sample}"}
+          }
+    backendServers:
+      label: Backend Servers
+
+  ipPool:
+    label: IP Pools
+    network:
+      label: Network
+    tabs:
+      range: Range
+      scope: Scope
+      selector: Selector
+    subnet:
+      label: Subnet
+    startIP:
+      label: Start IP
+    endIP:
+      label: End IP
+    gateway:
+      label: Gateway
+    namespace:
+      label: Namespace
+    project:
+      label: Project
+    guestCluster:
+      label: Kubernetes Cluster
+    availableIP:
+      label: Available IP Count
+    scope:
+      label: Scope
+      addLabel: Add Scope
+    priority:
+      label: Priority
+    cidr:
+      addLabel: Add CIDR
+    range:
+      addLabel: Add Range
+      
+  service:
+    healthCheckPort:
+      label: Health Check Port
+    healthCheckSuccessThreshold:
+      label: Health Check Success Threshold
+      description: If the number of times the prober continuously detects an address successfully reaches the success threshold, then the backend server can start to forward traffic.
+    healthCheckFailureThreshold:
+      label: Health Check Failure Threshold
+      description: The backend server will stop forwarding traffic if the number of health check failures reaches the failure threshold.
+    healthCheckPeriod:
+      label: Health Check Period
+    healthCheckTimeout:
+      label: Health Check Timeout
+    healthCheckEnabled:
+      label: Health Check
+
   secret:
     label: Secrets
 
@@ -1234,4 +1326,14 @@ typeLabel:
     {count, plural,
       one { Disk }
       other { Disks }
+    }
+  loadbalancer.harvesterhci.io.loadbalancer: |-
+    {count, plural,
+      one { Load Balancer }
+      other { Load Balancers }
+    }
+  loadbalancer.harvesterhci.io.ippool: |-
+    {count, plural,
+      one { IP Pool }
+      other { IP Pools }
     }

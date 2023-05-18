@@ -1,5 +1,5 @@
 <script>
-import isEqual from 'lodash/isEqual';
+import { isEqual } from 'lodash';
 import { mapGetters } from 'vuex';
 
 import Tabbed from '@shell/components/Tabbed';
@@ -11,6 +11,7 @@ import { LabeledInput } from '@components/Form/LabeledInput';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import NameNsDescription from '@shell/components/form/NameNsDescription';
 import UnitInput from '@shell/components/form/UnitInput';
+import Labels from '@shell/components/form/Labels';
 
 import Reserved from './VirtualMachineReserved';
 import SSHKey from './VirtualMachineSSHKey';
@@ -23,6 +24,7 @@ import PodAffinity from '@shell/components/form/PodAffinity';
 import AccessCredentials from './VirtualMachineAccessCredentials';
 import PciDevices from './VirtualMachinePciDevices/index';
 import RestartVMDialog from '../../dialog/RestartVMDialog';
+import KeyValue from '@shell/components/form/KeyValue';
 
 import { clear } from '@shell/utils/array';
 import { clone } from '@shell/utils/object';
@@ -57,9 +59,11 @@ export default {
     PodAffinity,
     AccessCredentials,
     Reserved,
+    Labels,
     PciDevices,
     RestartVMDialog,
     UnitInput,
+    KeyValue,
   },
 
   mixins: [CreateEditView, VM_MIXIN],
@@ -691,6 +695,35 @@ export default {
           :label="t('harvester.virtualMachine.secureBoot')"
           :mode="mode"
         />
+      </Tab>
+
+      <Tab
+        name="instanceLabel"
+        :label="t('harvester.tab.instanceLabel')"
+        :weight="-99"
+      >
+        <Labels
+          :default-container-class="'labels-and-annotations-container'"
+          :value="value"
+          :mode="mode"
+          :display-side-by-side="false"
+          :show-annotations="false"
+          :show-label-title="false"
+        >
+          <template #labels="{toggler}">
+            <KeyValue
+              key="labels"
+              :value="value.instanceLabels"
+              :protected-keys="value.systemLabels || []"
+              :toggle-filter="toggler"
+              :add-label="t('labels.addLabel')"
+              :mode="mode"
+              :read-allowed="false"
+              :value-can-be-empty="true"
+              @input="value.setInstanceLabels($event)"
+            />
+          </template>
+        </Labels>
       </Tab>
     </Tabbed>
 

@@ -673,7 +673,10 @@ export default {
       } else if (this.resource === HCI.VM_VERSION) {
         this.$set(this.value.spec.vm, 'spec', spec);
         this.$set(this.value.spec.vm.metadata, 'annotations', { ...this.value.spec.vm.metadata.annotations, [HCI_ANNOTATIONS.VOLUME_CLAIM_TEMPLATE]: JSON.stringify(volumeClaimTemplates) });
-        this.$set(this.value.spec.vm.metadata, 'labels', { [HCI_ANNOTATIONS.OS]: this.osType });
+        this.$set(this.value.spec.vm.metadata, 'labels', {
+          ...this.value.spec.vm.metadata.labels,
+          [HCI_ANNOTATIONS.OS]: this.osType,
+        });
         this.$set(this, 'spec', spec);
       }
     },

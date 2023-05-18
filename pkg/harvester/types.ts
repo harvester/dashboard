@@ -41,6 +41,9 @@ export const HCI = {
   LINK_MONITOR:       'network.harvesterhci.io.linkmonitor',
   SECRET:             'harvesterhci.io.secret',
   INVENTORY:          'metal.harvesterhci.io.inventory',
+  LB:                 'loadbalancer.harvesterhci.io.loadbalancer',
+  IP_POOL:            'loadbalancer.harvesterhci.io.ippool',
+  HARVESTER_CONFIG:   'rke-machine-config.cattle.io.harvesterconfig',
 };
 
 export const VOLUME_SNAPSHOT = 'snapshot.storage.k8s.io.volumesnapshot';

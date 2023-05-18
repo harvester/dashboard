@@ -22,7 +22,8 @@ import {
   OUTPUT,
   CLUSTER_OUTPUT,
   CONFIGURED_PROVIDERS,
-  SUB_TYPE
+  SUB_TYPE,
+  ADDRESS,
 } from '@shell/config/table-headers';
 
 import {
@@ -39,6 +40,22 @@ const MONITORING_GROUP = 'Monitoring & Logging::Monitoring';
 const LOGGING_GROUP = 'Monitoring & Logging::Logging';
 
 export const PRODUCT_NAME = 'harvester';
+
+export const IP_POOL_HEADERS = [
+  STATE,
+  NAME_COL,
+  {
+    name:     'subnet',
+    labelKey: 'harvester.ipPool.subnet.label',
+    value:    'subnetDisplay',
+  },
+  {
+    name:     'availableIP',
+    labelKey: 'harvester.ipPool.availableIP.label',
+    value:    'status.available',
+  },
+  AGE
+];
 
 export function init($plugin, store) {
   const {
@@ -394,6 +411,8 @@ export function init($plugin, store) {
     [
       HCI.CLUSTER_NETWORK,
       HCI.NETWORK_ATTACHMENT,
+      HCI.LB,
+      HCI.IP_POOL,
     ],
     'networks'
   );
@@ -726,4 +745,62 @@ export function init($plugin, store) {
     },
     exact: false,
   });
+
+  configureType(HCI.LB, {
+    location: {
+      name:   `${ PRODUCT_NAME }-c-cluster-resource`,
+      params: { resource: HCI.LB }
+    },
+  });
+  virtualType({
+    labelKey:   'harvester.loadBalancer.label',
+    name:       HCI.LB,
+    namespaced: true,
+    weight:     185,
+    route:      {
+      name:   `${ PRODUCT_NAME }-c-cluster-resource`,
+      params: { resource: HCI.LB }
+    },
+    exact:      false,
+    ifHaveType: HCI.LB,
+  });
+  headers(HCI.LB, [
+    STATE,
+    NAME_COL,
+    {
+      ...ADDRESS,
+      formatter: 'HarvesterListener',
+    },
+    {
+      name:     'workloadType',
+      labelKey: 'harvester.loadBalancer.workloadType.label',
+      value:    'workloadTypeDisplay',
+    },
+    {
+      name:     'ipam',
+      labelKey: 'harvester.loadBalancer.ipam.label',
+      value:    'ipamDisplay',
+    },
+    AGE
+  ]);
+
+  configureType(HCI.IP_POOL, {
+    location: {
+      name:   `${ PRODUCT_NAME }-c-cluster-resource`,
+      params: { resource: HCI.IP_POOL }
+    },
+  });
+  virtualType({
+    labelKey:   'harvester.ipPool.label',
+    name:       HCI.IP_POOL,
+    namespaced: false,
+    weight:     184,
+    route:      {
+      name:   `${ PRODUCT_NAME }-c-cluster-resource`,
+      params: { resource: HCI.IP_POOL }
+    },
+    exact:      false,
+    ifHaveType: HCI.IP_POOL,
+  });
+  headers(HCI.IP_POOL, IP_POOL_HEADERS);
 }

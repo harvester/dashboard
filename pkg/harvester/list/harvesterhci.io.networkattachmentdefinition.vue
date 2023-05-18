@@ -21,6 +21,32 @@ const schema = {
   metadata: { name: HCI.NETWORK_ATTACHMENT },
 };
 
+export const NETWORK_HEADERS = [
+  NAME,
+  NAMESPACE,
+  {
+    name:     'type',
+    value:    'vlanType',
+    sort:     'spec.config',
+    labelKey: 'tableHeaders.networkType'
+  },
+  {
+    name:     'vlan',
+    value:    'vlanId',
+    sort:     'spec.config',
+    labelKey: 'tableHeaders.networkVlan'
+  },
+  {
+    name:          'connectivity',
+    value:         'connectivity',
+    labelKey:      'tableHeaders.routeConnectivity',
+    formatter:     'BadgeStateFormatter',
+    formatterOpts: { arbitrary: true },
+    width:         130,
+  },
+  AGE
+];
+
 export default {
   name:       'HarvesterListNetworks',
   components: {

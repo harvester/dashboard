@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import find from 'lodash/find';
+import { find, pickBy, omitBy } from 'lodash';
 import { HCI } from '../types';
 import {
   AS, MODE, _VIEW, _CONFIG, _UNFLAG, _EDIT
@@ -7,9 +7,11 @@ import {
 import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 import HarvesterResource from './harvester';
 import { findBy } from '@shell/utils/array';
-import { get } from '@shell/utils/object';
+import { get, set } from '@shell/utils/object';
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../config/harvester';
 import { colorForState } from '@shell/plugins/dashboard-store/resource-class';
+import { LABELS_TO_IGNORE_REGEX } from '@shell/config/labels-annotations';
+import { matchesSomeRegex } from '@shell/utils/string';
 
 export default class HciVmTemplateVersion extends HarvesterResource {
   get availableActions() {
@@ -250,5 +252,26 @@ export default class HciVmTemplateVersion extends HarvesterResource {
     ];
 
     return rules;
+  }
+
+  get instanceLabels() {
+    const all = this.spec?.vm?.spec?.template?.metadata?.labels || {};
+
+    return omitBy(all, (value, key) => {
+      return matchesSomeRegex(key, LABELS_TO_IGNORE_REGEX);
+    });
+  }
+
+  setInstanceLabels(val) {
+    if ( !this.spec?.vm?.spec?.template?.metadata?.labels ) {
+      set(this, 'spec.vm.spec.template.metadata.labels', {});
+    }
+
+    const all = this.spec.vm.spec.template.metadata.labels || {};
+    const wasIgnored = pickBy(all, (value, key) => {
+      return matchesSomeRegex(key, LABELS_TO_IGNORE_REGEX);
+    });
+
+    Vue.set(this.spec.vm.spec.template.metadata, 'labels', { ...wasIgnored, ...val });
   }
 }
