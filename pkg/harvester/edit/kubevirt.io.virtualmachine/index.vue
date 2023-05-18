@@ -465,6 +465,7 @@ export default {
           v-if="!isSingle"
           v-model.number="count"
           v-int-number
+          :min="2"
           type="number"
           :label="t('harvester.virtualMachine.instance.multiple.count')"
           required
