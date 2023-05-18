@@ -204,7 +204,7 @@ export default {
   <Tabbed :side-tabs="true">
     <Tab
       name="basic"
-      :label="t('generic.basic')"
+      :label="t('harvester.addons.vmImport.titles.basic')"
       :weight="99"
     >
       <RadioGroup

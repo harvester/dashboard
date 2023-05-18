@@ -688,6 +688,7 @@ export function init($plugin, store) {
   basicType([HCI.SR_IOV], 'advanced');
 
   virtualType({
+    ifHaveType: HCI.SR_IOV,
     labelKey:   'harvester.sriov.label',
     group:      'advanced',
     name:       HCI.SR_IOV,
