@@ -1,14 +1,14 @@
 import { haveV2Monitoring } from '@shell/utils/monitoring';
 import { parse as parseUrl, addParam } from '@shell/utils/url';
-import { compare } from '@shell/utils/version';
+// import { compare } from '@shell/utils/version';
 import { CATALOG } from '@shell/config/types';
 
-const MONITORING_VERSION_NEW_URL_PATTERN = '102.0.0+up40.1.2';
+// const MONITORING_VERSION_NEW_URL_PATTERN = '102.0.0+up40.1.2';
 
 export function getClusterPrefix(monitoringVersion, clusterId) {
-  if (compare(monitoringVersion, MONITORING_VERSION_NEW_URL_PATTERN) >= 0) {
-    return `/k8s/clusters/${ clusterId }`;
-  }
+  // if (compare(monitoringVersion, MONITORING_VERSION_NEW_URL_PATTERN) >= 0) {
+  //   return `/k8s/clusters/${ clusterId }`;
+  // }
 
   return clusterId === 'local' ? '' : `/k8s/clusters/${ clusterId }`;
 }
