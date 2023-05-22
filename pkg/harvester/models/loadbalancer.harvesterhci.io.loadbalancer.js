@@ -20,7 +20,7 @@ export default class HciLB extends HarvesterResource {
   }
 
   get workloadTypeDisplay() {
-    const workloadType = this.spec?.workloadType;
+    const workloadType = this.spec?.workloadType || 'cluster';
 
     return this.$rootGetters['i18n/t'](`harvester.loadBalancer.workloadType.options.${ workloadType }`);
   }

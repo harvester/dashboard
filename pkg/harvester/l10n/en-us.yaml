@@ -1052,7 +1052,7 @@ harvester:
     workloadType:
       label: Workload Type
       options:
-        cluster: Kubernetes Cluster
+        cluster: Guest Kubernetes Cluster
         vm: Virtual Machine
     ipam:
       label: IPAM
@@ -1103,7 +1103,7 @@ harvester:
     project:
       label: Project
     guestCluster:
-      label: Kubernetes Cluster
+      label: Guest Kubernetes Cluster
     availableIP:
       label: Available IP Count
     scope:
