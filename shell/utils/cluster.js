@@ -7,7 +7,8 @@ import { SETTING } from '@shell/config/settings';
 // Currently this removes Harvester clusters
 export function filterOnlyKubernetesClusters(mgmtClusters) {
   return mgmtClusters.filter((c) => {
-    return !c.isHarvester;
+    // return !c.isHarvester;
+    return true;
   });
 }
 

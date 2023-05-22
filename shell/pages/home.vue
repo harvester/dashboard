@@ -8,7 +8,7 @@ import { BadgeState } from '@components/BadgeState';
 import CommunityLinks from '@shell/components/CommunityLinks';
 import SingleClusterInfo from '@shell/components/SingleClusterInfo';
 import { mapGetters, mapState } from 'vuex';
-import { MANAGEMENT, CAPI, HCI } from '@shell/config/types';
+import { MANAGEMENT, CAPI } from '@shell/config/types';
 import { NAME as MANAGER } from '@shell/config/product/manager';
 import { STATE } from '@shell/config/table-headers';
 import { MODE, _IMPORT } from '@shell/config/query-params';
@@ -18,7 +18,7 @@ import PageHeaderActions from '@shell/mixins/page-actions';
 import { getVendor } from '@shell/config/private-label';
 import { mapFeature, MULTI_CLUSTER } from '@shell/store/features';
 import { BLANK_CLUSTER } from '@shell/store';
-import { filterHiddenLocalCluster } from '@shell/utils/cluster';
+import { filterOnlyKubernetesClusters, filterHiddenLocalCluster } from '@shell/utils/cluster';
 
 import { RESET_CARDS_ACTION, SET_LOGIN_ACTION } from '@shell/config/page-actions';
 
@@ -193,19 +193,17 @@ export default {
           formatter:    'PodsUsage',
           delayLoading: true
         },
-        {
-          name:  'virtualizationManagement',
-          label: ' ',
-          width: '200',
-          align: 'right'
-        }
+        // {
+        //   name:  'explorer',
+        //   label:  this.t('landing.clusters.explorer')
+        // }
       ];
     },
 
     ...mapGetters(['currentCluster', 'defaultClusterId']),
 
     kubeClusters() {
-      return filterHiddenLocalCluster(this.provClusters || [], this.$store);
+      return filterHiddenLocalCluster(filterOnlyKubernetesClusters(this.provClusters || []), this.$store);
     }
   },
 
@@ -287,29 +285,6 @@ export default {
 
       if (retry === 0 && res?.type === 'error' && res?.status === 500) {
         await this.closeSetLoginBanner(retry + 1);
-      }
-    },
-
-    async goToHarvesterCluster(row) {
-      const harvesterCluster = await this.$store.dispatch('management/create', {
-        ...row,
-        type: HCI.CLUSTER
-      });
-
-      const timeout = setTimeout(() => {
-        // Don't show loading indicator for quickly fetched plugins
-        this.navigating = harvesterCluster.id;
-      }, 1000);
-
-      try {
-        await harvesterCluster.goToCluster();
-
-        clearTimeout(timeout);
-        this.navigating = false;
-      } catch {
-        // The error handling is carried out within goToCluster, but just in case something happens before the promise chain can catch it...
-        clearTimeout(timeout);
-        this.navigating = false;
       }
     }
   }
@@ -460,30 +435,11 @@ export default {
                     &mdash;
                   </td>
                 </template>
-                <template #cell:virtualizationManagement="{row}">
-                  <a
-                    v-if="row.isHarvester && row.mgmt && row.mgmt.isReady && !row.hasError"
-                    class="btn btn-sm role-secondary"
-                    @click="goToHarvesterCluster(row)"
-                  >
-                    <div>
-                      Virtualization Management
-                    </div>
-                  </a>
-                </template>
                 <!-- <template #cell:explorer="{row}">
-                  <n-link
-                    v-if="row && row.isReady"
-                    class="btn btn-sm role-primary"
-                    :to="{name: 'c-cluster', params: {cluster: row.id}}"
-                  >
+                  <n-link v-if="row && row.isReady" class="btn btn-sm role-primary" :to="{name: 'c-cluster', params: {cluster: row.id}}">
                     {{ t('landing.clusters.explore') }}
                   </n-link>
-                  <button
-                    v-else
-                    :disabled="true"
-                    class="btn btn-sm role-primary"
-                  >
+                  <button v-else :disabled="true" class="btn btn-sm role-primary">
                     {{ t('landing.clusters.explore') }}
                   </button>
                 </template> -->
@@ -567,10 +523,6 @@ export default {
     .conditions-alert-icon {
       color: var(--error);
       margin-left: 4px;
-    }
-
-    .cluster-icon {
-      cursor: pointer;
     }
   }
 

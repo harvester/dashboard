@@ -1,4 +1,6 @@
 <script>
+import { HCI } from '@shell/config/types';
+
 export default {
   props: {
     row: {
@@ -14,6 +16,20 @@ export default {
       // This is the workaround.
       isImported: props.row.mgmt?.providerForEmberParam === 'import'
     };
+  },
+
+  methods: {
+    async goToHarvesterCluster() {
+      const harvesterCluster = await this.$store.dispatch('management/create', {
+        ...this.row,
+        type: HCI.CLUSTER
+      });
+
+      try {
+        await harvesterCluster.goToCluster();
+      } catch {
+      }
+    }
   }
 };
 </script>
@@ -30,7 +46,18 @@ export default {
       {{ t('cluster.provider.imported') }}
     </template>
     <div class="text-muted">
-      {{ row.provisionerDisplay }}
+      {{ row.provisionerDisplay }} <span v-if="row.isHarvester && row.mgmt">/
+        <a
+          v-if="row.mgmt.isReady && !row.hasError"
+          role="button"
+          @click="goToHarvesterCluster"
+        >
+          {{ t('cluster.provider.harvester') }}
+        </a>
+        <span v-else>
+          {{ t('cluster.provider.harvester') }}
+        </span>
+      </span>
     </div>
   </div>
 </template>

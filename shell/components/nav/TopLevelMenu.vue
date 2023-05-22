@@ -12,7 +12,7 @@ import { KEY } from '@shell/utils/platform';
 import { getVersionInfo } from '@shell/utils/version';
 import { LEGACY } from '@shell/store/features';
 import { SETTING } from '@shell/config/settings';
-import { filterHiddenLocalCluster } from '@shell/utils/cluster';
+import { filterOnlyKubernetesClusters, filterHiddenLocalCluster } from '@shell/utils/cluster';
 import { isRancherPrime } from '@shell/config/version';
 
 export default {
@@ -43,7 +43,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['clusterId', 'supportRancherManage']),
+    ...mapGetters(['clusterId']),
     ...mapGetters(['clusterReady', 'isRancher', 'currentCluster', 'currentProduct', 'openRancherManagerSupport']),
     ...mapGetters('type-map', ['activeProducts']),
     ...mapGetters({ features: 'features/get' }),
@@ -64,7 +64,7 @@ export default {
 
     clusters() {
       const all = this.$store.getters['management/all'](MANAGEMENT.CLUSTER);
-      let kubeClusters = filterHiddenLocalCluster(all, this.$store);
+      let kubeClusters = filterHiddenLocalCluster(filterOnlyKubernetesClusters(all), this.$store);
       let pClusters = null;
 
       if (this.hasProvCluster) {
@@ -112,7 +112,7 @@ export default {
     multiClusterApps() {
       const options = this.options;
 
-      return options.filter(opt => (opt.inStore === 'management' || opt.isMultiClusterApp) && opt.category !== 'configuration' && opt.category !== 'legacy');
+      return options.filter(opt => (opt.inStore === 'management' || opt.isMultiClusterApp) && opt.category !== 'configuration' && opt.category !== 'legacy' && opt.category !== 'hci');
     },
 
     legacyApps() {
@@ -127,8 +127,15 @@ export default {
       return options.filter(opt => opt.category === 'configuration');
     },
 
+    hciApps() {
+      const options = this.options;
+
+      return options.filter(opt => opt.category === 'hci');
+    },
+
     options() {
       const cluster = this.clusterId || this.$store.getters['defaultClusterId'];
+
       // TODO plugin routes
       const entries = this.activeProducts.map((p) => {
         // Try product-specific index first
@@ -165,10 +172,6 @@ export default {
 
     hasSupport() {
       return isRancherPrime() || this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.SUPPORTED )?.value === 'true';
-    },
-
-    harvesterLocalCluster() {
-      return this.clusters.find(c => c.id === 'local');
     }
   },
 
@@ -282,21 +285,6 @@ export default {
           </div>
         </div>
         <div class="body">
-          <a
-            v-if="openRancherManagerSupport"
-            class="option cluster selector home"
-            @click="goToHarvesterCluster()"
-          >
-            <ClusterProviderIcon
-              :small="true"
-              :cluster="harvesterLocalCluster"
-              class="productIcon"
-            />
-            <div>
-              {{ t('nav.harvesterDashboard') }}
-            </div>
-          </a>
-
           <div @click="hide()">
             <nuxt-link
               class="option cluster selector home"
@@ -304,9 +292,9 @@ export default {
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                height="25"
-                viewBox="0 0 25 25"
-                width="25"
+                height="24"
+                viewBox="0 0 24 24"
+                width="24"
               ><path
                 d="M0 0h24v24H0z"
                 fill="none"
@@ -316,10 +304,49 @@ export default {
               </div>
             </nuxt-link>
           </div>
+
+          <template v-if="hciApps.length">
+            <div class="category">
+              {{ t('nav.categories.hci') }}
+            </div>
+            <div>
+              <a
+                v-if="openRancherManagerSupport"
+                class="option cluster selector home"
+                @click="goToHarvesterCluster()"
+              >
+                <i
+                  class="icon icon-dashboard"
+                />
+                <div>
+                  {{ t('nav.harvesterDashboard') }}
+                </div>
+              </a>
+            </div>
+
+            <div
+              v-for="a in hciApps"
+              :key="a.label"
+              @click="hide()"
+            >
+              <nuxt-link
+                class="option"
+                :to="a.to"
+              >
+                <IconOrSvg
+                  :icon="a.icon"
+                  :src="a.svg"
+                />
+                <div>{{ a.label }}</div>
+              </nuxt-link>
+            </div>
+          </template>
+
           <template v-if="clusters && !!clusters.length">
             <div class="category">
               {{ t('nav.categories.explore') }}
             </div>
+
             <div
               v-if="showClusterSearch"
               class="search"
@@ -347,7 +374,7 @@ export default {
                 <nuxt-link
                   v-if="c.ready"
                   class="cluster selector option"
-                  :to="{ name: 'c-cluster-explorer', params: { cluster: c.id } }"
+                  :to="{ name: 'c-cluster', params: { cluster: c.id } }"
                 >
                   <ClusterProviderIcon
                     :small="true"
@@ -571,10 +598,6 @@ export default {
       div {
         color: var(--primary-hover-text);
       }
-    }
-
-    .productIcon {
-      margin-right: 8px;
     }
   }
 

@@ -119,6 +119,7 @@ locale:
   none: (None)
 
 nav:
+  harvesterDashboard: Harvester Dashboard
   backToRancher: Cluster Manager
   clusterTools: Cluster Tools
   kubeconfig:
@@ -181,6 +182,7 @@ nav:
     multiCluster: Global Apps
     legacy: Legacy Apps
     configuration: Configuration
+    hci: HCI
   search:
     placeholder: Type to search clusters
     noResults: No matching clusters
