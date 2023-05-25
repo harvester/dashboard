@@ -39,6 +39,13 @@ export default {
 
       try {
         this.resources[0].spec.numVFs = this.numVFs;
+        if (this.resources[0].spec.numVFs <= 0) {
+          this.resources[0].spec.numVFs = 0;
+          this.numVFs = 0;
+          this.close();
+
+          return;
+        }
         await actionResource.save();
         buttonCb(true);
         this.close();
