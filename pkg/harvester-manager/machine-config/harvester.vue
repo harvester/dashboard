@@ -413,14 +413,16 @@ export default {
       return defaultStorageClass?.metadata?.name || '';
     },
 
-    affinityNsModeLabel() {
+    affinityLabels() {
       return {
         namespaceInputLabel:      this.t('harvesterManager.affinity.namespaces.label'),
         namespaceSelectionLabels: [
           this.t('harvesterManager.affinity.thisPodNamespace'),
+          this.t('workload.scheduling.affinity.allNamespaces'),
           this.t('harvesterManager.affinity.matchExpressions.inNamespaces')
         ],
-        addLabel: this.t('workload.scheduling.affinity.addNodeSelector')
+        addLabel:               this.t('harvesterManager.affinity.addLabel'),
+        topologyKeyPlaceholder: this.t('harvesterManager.affinity.topologyKey.placeholder')
       };
     },
   },
@@ -1195,27 +1197,6 @@ export default {
 
       <portal :to="'advanced-'+uuid">
         <h3 class="mt-20">
-          {{ t("workload.container.titles.nodeScheduling") }}
-        </h3>
-        <NodeAffinity
-          :mode="mode"
-          :value="vmAffinity.affinity.nodeAffinity"
-          @input="updateNodeScheduling"
-        />
-
-        <h3 class="mt-20">
-          {{ t("harvesterManager.affinity.vmAffinityTitle") }}
-        </h3>
-        <PodAffinity
-          :mode="mode"
-          :value="vmAffinity"
-          :nodes="allNodeObjects"
-          :namespaces="namespaces"
-          :overwrite-labels="affinityNsModeLabel"
-          @update="updateScheduling"
-        />
-
-        <h3 class="mt-20">
           {{ t("cluster.credential.harvester.userData.title") }}
         </h3>
         <div>
@@ -1270,6 +1251,32 @@ export default {
             @onInput="valuesChanged($event, 'networkData')"
           />
         </div>
+
+        <hr class="divider mt-20">
+
+        <h3 class="mt-20">
+          {{ t("workload.container.titles.nodeScheduling") }}
+        </h3>
+        <NodeAffinity
+          :mode="mode"
+          :value="vmAffinity.affinity.nodeAffinity"
+          @input="updateNodeScheduling"
+        />
+
+        <h3 class="mt-20">
+          {{ t("harvesterManager.affinity.vmAffinityTitle") }}
+        </h3>
+        <PodAffinity
+          :mode="mode"
+          :value="vmAffinity"
+          :nodes="allNodeObjects"
+          :namespaces="namespaces"
+          :overwrite-labels="affinityLabels"
+          :all-namespaces-option-available="true"
+          @update="updateScheduling"
+        />
+
+        <hr class="divider mt-20">
       </portal>
     </div>
     <div v-if="errors.length">

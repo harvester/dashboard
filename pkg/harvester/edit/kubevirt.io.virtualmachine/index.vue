@@ -552,8 +552,9 @@ export default {
             :mode="mode"
             :value="spec.template.spec"
             :nodes="nodes"
+            :all-namespaces-option-available="true"
             :namespaces="filteredNamespaces"
-            :overwrite-ns-mode-label="affinityNsModeLabel"
+            :overwrite-labels="affinityLabels"
           />
         </template>
       </Tab>

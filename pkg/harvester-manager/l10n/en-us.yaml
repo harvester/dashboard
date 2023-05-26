@@ -17,3 +17,6 @@ harvesterManager:
     namespaces:
       placeholder: e.g. default,system,base
       label: Namespaces
+    addLabel: Add Workload Selector
+    topologyKey:
+      placeholder: 'topology.kubernetes.io/zone'

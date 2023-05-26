@@ -192,6 +192,10 @@ export default {
     },
 
     namespaceSelectionLabels() {
+      if (this.overwriteLabels?.namespaceSelectionLabels) {
+        return this.overwriteLabels?.namespaceSelectionLabels;
+      }
+
       if (this.allNamespacesOptionAvailable) {
         return [
           this.t('workload.scheduling.affinity.thisPodNamespace'),
@@ -200,7 +204,7 @@ export default {
         ];
       }
 
-      return this.overwriteLabels?.namespaceSelectionLabels || [
+      return [
         this.t('workload.scheduling.affinity.thisPodNamespace'),
         this.t('workload.scheduling.affinity.matchExpressions.inNamespaces')
       ];
@@ -208,6 +212,10 @@ export default {
 
     addLabel() {
       return this.overwriteLabels?.addLabel || this.t('podAffinity.addLabel');
+    },
+
+    topologyKeyPlaceholder() {
+      return this.overwriteLabels?.topologyKeyPlaceholder || this.t('workload.scheduling.affinity.topologyKey.placeholder');
     },
 
     hasNamespaces() {
@@ -435,7 +443,7 @@ export default {
                 :mode="mode"
                 required
                 :label="t('workload.scheduling.affinity.topologyKey.label')"
-                :placeholder="t('workload.scheduling.affinity.topologyKey.placeholder')"
+                :placeholder="topologyKeyPlaceholder"
                 :options="existingNodeLabels"
                 :disabled="mode==='view'"
                 :loading="loading"
@@ -447,7 +455,7 @@ export default {
                 v-model="props.row.value.topologyKey"
                 :mode="mode"
                 :label="t('workload.scheduling.affinity.topologyKey.label')"
-                :placeholder="t('workload.scheduling.affinity.topologyKey.placeholder')"
+                :placeholder="topologyKeyPlaceholder"
                 required
                 :data-testid="`pod-affinity-topology-input-index${props.i}`"
                 @input="update"
