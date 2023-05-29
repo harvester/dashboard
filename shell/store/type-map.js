@@ -180,6 +180,7 @@ export const IF_HAVE = {
   MULTI_CLUSTER:       'multi-cluster',
   NEUVECTOR_NAMESPACE: 'neuvector-namespace',
   ADMIN:               'admin-user',
+  MCM_DISABLED:        'mcm-disabled',
 };
 
 export function DSL(store, product, module = 'type-map') {
@@ -1822,6 +1823,9 @@ function ifHave(getters, option) {
   }
   case IF_HAVE.ADMIN: {
     return isAdminUser(getters);
+  }
+  case IF_HAVE.MCM_DISABLED: {
+    return !getters['openRancherManagerSupport'];
   }
   default:
     return false;
