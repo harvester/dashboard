@@ -1159,6 +1159,13 @@ harvester:
       placeholder: Choose Target Cluster Network
 
   seeder:
+    banner:
+      enable:
+        prefix: Addon "harvester-seeder" is disabled now, 
+        middle: click here 
+        suffix: to enable it.
+      noAccess: Please contact system admin to enable the Out-of-Band Access first.
+      noAddon: Addon "harvester-seeder" is not exist, please check if it is installed.
     inventory:
       host:
         label: Host
