@@ -261,7 +261,8 @@ export function init($plugin, store) {
         name:   `${ PRODUCT_NAME }-c-cluster-resource`,
         params: { resource: NAMESPACE }
       },
-      exact: false
+      exact:  false,
+      ifHave: IF_HAVE.MCM_DISABLED,
     });
   }
 
