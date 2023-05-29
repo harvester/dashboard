@@ -635,6 +635,7 @@ export default {
                 :suffix="terminationGracePeriodSeconds == 1 ? 'Second' : 'Seconds'"
                 :label="t('harvester.virtualMachine.terminationGracePeriodSeconds.label')"
                 :mode="mode"
+                positive
                 @input="updateTerminationGracePeriodSeconds"
               />
             </div>
