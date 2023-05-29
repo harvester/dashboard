@@ -1079,6 +1079,8 @@ harvester:
         pool: Pool
     ipPool:
       label: IP Pool
+      options:
+        none: Auto (Select IP Pool automatically)
     listeners:
       name:
         label: Name
@@ -1209,7 +1211,6 @@ advancedSettings:
     'harv-http-proxy': 'HTTP proxy for Harvester to access external services.'
     'harv-additional-ca': 'Custom CA root certificates for TLS validation.'
     'harv-overcommit-config': 'Resource overcommit configuration.'
-    'harv-vip-pools': 'Config global or namespace IP address pools of the VIP by CIDR.'
     'harv-support-bundle-timeout': 'Support Bundle timeout config in minutes, use 0 to disable the timeout.'
     'harv-vm-force-reset-policy': Config the force-reset action when a VM is stuck on a node that is down.
     'harv-ssl-parameters': Custom SSL Parameters for TLS validation.

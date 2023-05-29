@@ -97,7 +97,12 @@ export default {
     ipPoolOptions() {
       const ipPools = this.$store.getters['harvester/all'](HCI.IP_POOL);
 
-      return ipPools.map(ipPool => ipPool.id);
+      const out = ipPools.map(ipPool => ipPool.id);
+
+      return [{
+        label: this.t('harvester.loadBalancer.ipPool.options.none'),
+        value: '',
+      }, ...out];
     },
 
     projectOptions() {
