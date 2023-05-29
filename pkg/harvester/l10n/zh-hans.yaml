@@ -1089,7 +1089,6 @@ advancedSettings:
     'harv-http-proxy': '用于 Harvester 访问外部服务的 HTTP 代理。'
     'harv-additional-ca': '用于 TLS 验证的自定义 CA 根证书。'
     'harv-overcommit-config': '资源超额配置。'
-    'harv-vip-pools': '使用 CIDR 配置 VIP 的全局或命名空间 IP 地址池。'
     'harv-support-bundle-timeout': 'Support Bundle 超时配置（单位：分钟），你可以使用 0 来禁用超时。'
     'harv-vm-force-reset-policy': 配置当虚拟机卡在停机的节点上时的强制重置动作。
     'harv-ssl-parameters': 用于 TLS 验证的自定义 SSL 参数。

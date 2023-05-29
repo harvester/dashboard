@@ -28,9 +28,9 @@ export default {
         listeners.forEach((p) => {
           let proxyUrl;
 
-          const stringPort = p.port.toString();
+          const hidePort = [80, 443].includes(p.port);
 
-          if (p?.protocol === 'TCP' && (stringPort.endsWith('80') || stringPort.endsWith('443'))) {
+          if (p?.protocol === 'TCP' && hidePort) {
             if (isMaybeSecure(p.port, p?.protocol)) {
               proxyUrl = `https://${ address }:${ p.port }`;
             } else {
@@ -41,7 +41,6 @@ export default {
           }
 
           let label = address;
-          const hidePort = stringPort.endsWith('80') || stringPort.endsWith('443');
 
           if (!hidePort) {
             label = `${ address }:${ p.port }`;

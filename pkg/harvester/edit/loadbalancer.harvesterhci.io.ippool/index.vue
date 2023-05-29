@@ -32,7 +32,10 @@ export default {
   async fetch() {
     const inStore = this.$store.getters['currentProduct'].inStore;
 
-    const hash = { networks: this.$store.dispatch(`${ inStore }/findAll`, { type: NETWORK_ATTACHMENT }) };
+    const hash = {
+      networks: this.$store.dispatch(`${ inStore }/findAll`, { type: NETWORK_ATTACHMENT }),
+      settings: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.SETTING }),
+    };
 
     if (this.$store.getters['management/schemaFor'](HCI.HARVESTER_CONFIG)) {
       hash.harvesterConfigs = this.$store.dispatch(`management/findAll`, { type: HCI.HARVESTER_CONFIG });
@@ -47,7 +50,6 @@ export default {
 
   created() {
     this.registerBeforeHook(this.validate, 'validate');
-    this.registerBeforeHook(this.willSave, 'willSave');
   },
 
   data() {
@@ -88,9 +90,6 @@ export default {
       } else {
         return Promise.resolve();
       }
-    },
-
-    willSave() {
     },
   }
 };
