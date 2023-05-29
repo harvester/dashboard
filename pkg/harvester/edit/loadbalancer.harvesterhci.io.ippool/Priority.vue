@@ -32,10 +32,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['isSingleProduct']),
+    ...mapGetters(['isSingleProduct', 'openRancherManagerSupport']),
 
     isSingleHarvester() {
-      return this.$store.getters['currentProduct'].inStore === HARVESTER && this.isSingleProduct;
+      return this.$store.getters['currentProduct'].inStore === HARVESTER && this.isSingleProduct && !this.openRancherManagerSupport;
     },
 
     isView() {
@@ -111,7 +111,10 @@ export default {
         <span class="pool-namespace">
           <t k="harvester.ipPool.namespace.label" />
         </span>
-        <span class="pool-guestCluster">
+        <span
+          v-if="!isSingleHarvester"
+          class="pool-guestCluster"
+        >
           <t k="harvester.ipPool.guestCluster.label" />
         </span>
         <span

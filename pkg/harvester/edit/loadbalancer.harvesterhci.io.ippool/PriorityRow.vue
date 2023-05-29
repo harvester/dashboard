@@ -36,10 +36,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['isSingleProduct', 'allNamespaces', 'currentCluster']),
+    ...mapGetters(['isSingleProduct', 'allNamespaces', 'currentCluster', 'openRancherManagerSupport']),
 
     isSingleHarvester() {
-      return this.$store.getters['currentProduct'].inStore === HARVESTER && this.isSingleProduct;
+      return this.$store.getters['currentProduct'].inStore === HARVESTER && this.isSingleProduct && !this.openRancherManagerSupport;
     },
 
     isView() {
@@ -196,7 +196,10 @@ export default {
         @input="update"
       />
     </div>
-    <div class="pool-guestCluster">
+    <div
+      v-if="!isSingleHarvester"
+      class="pool-guestCluster"
+    >
       <span v-if="isView">
         {{ row.guestCluster }}
       </span>
