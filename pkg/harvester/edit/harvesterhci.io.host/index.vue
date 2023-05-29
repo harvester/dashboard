@@ -18,6 +18,8 @@ import { clone } from '@shell/utils/object';
 import { exceptionToErrorsArray } from '@shell/utils/error';
 import KeyValue from '@shell/components/form/KeyValue';
 import Loading from '@shell/components/Loading.vue';
+import MessageLink from '@shell/components/MessageLink';
+import { ADD_ONS } from '@pkg/harvester/config/harvester-map';
 
 import { sortBy } from '@shell/utils/sort';
 import { Banner } from '@components/Banner';
@@ -45,6 +47,7 @@ export default {
     Tags,
     Loading,
     HarvesterSeeder,
+    MessageLink,
   },
   mixins: [CreateEditView],
   props:  {
@@ -96,7 +99,7 @@ export default {
     this.blockDeviceOpts = this.getBlockDeviceOpts();
 
     const addons = this.$store.getters[`${ inStore }/all`](HCI.ADD_ONS);
-    const seeder = addons.find(addon => addon.id === 'harvester-system/harvester-seeder');
+    const seeder = addons.find(addon => addon.id === `harvester-system/${ ADD_ONS.SEEDER }`);
 
     const seederEnabled = seeder ? seeder?.spec?.enabled : false;
 
@@ -207,10 +210,27 @@ export default {
     seederEnabled() {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const addons = this.$store.getters[`${ inStore }/all`](HCI.ADD_ONS);
-      const seeder = addons.find(addon => addon.id === 'harvester-system/harvester-seeder');
+      const seeder = addons.find(addon => addon.id === `harvester-system/${ ADD_ONS.HARVESTER_SEEDER }`);
 
       return seeder ? seeder?.spec?.enabled : false;
     },
+
+    toEnableSeederAddon() {
+      return `/${ HCI.ADD_ONS }/harvester-system/${ ADD_ONS.HARVESTER_SEEDER }?mode=edit`;
+    },
+
+    hasAddonSchema() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+
+      return this.$store.getters[`${ inStore }/schemaFor`](HCI.ADD_ONS);
+    },
+
+    hasSeederAddon() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const addons = this.$store.getters[`${ inStore }/all`](HCI.ADD_ONS);
+
+      return addons.find(addon => addon.id === `harvester-system/${ ADD_ONS.HARVESTER_SEEDER }`);
+    }
   },
   watch: {
     customName(neu) {
@@ -539,17 +559,40 @@ export default {
         <HarvesterKsmtuned :mode="mode" :node="value" :register-before-hook="registerBeforeHook" />
       </Tab>
       <Tab
-        v-if="seederEnabled"
         name="seeder"
         :weight="60"
         :label="t('harvester.host.tabs.seeder')"
       >
         <HarvesterSeeder
+          v-if="seederEnabled"
           :mode="mode"
           :node="value"
           :register-before-hook="registerBeforeHook"
           :inventory="inventory"
         />
+        <div v-else>
+          <Banner
+            v-if="hasAddonSchema && hasSeederAddon"
+            color="info"
+          >
+            <MessageLink
+              :to="toEnableSeederAddon"
+              prefix-label="harvester.seeder.banner.enable.prefix"
+              middle-label="harvester.seeder.banner.enable.middle"
+              suffix-label="harvester.seeder.banner.enable.suffix"
+            />
+          </Banner>
+          <Banner
+            v-else-if="!hasSeederAddon"
+            color="warning"
+            :label="t('harvester.seeder.banner.noAddon')"
+          />
+          <Banner
+            v-else
+            color="warning"
+            :label="t('harvester.seeder.banner.noAccess')"
+          />
+        </div>
       </Tab>
       <Tab name="labels" label-key="harvester.host.tabs.labels">
         <KeyValue
