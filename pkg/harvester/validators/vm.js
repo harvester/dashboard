@@ -71,7 +71,7 @@ export function vmDisks(spec, getters, errors, validatorArgs, displayKey, value)
   let requiredVolume = false;
 
   _volumes.forEach((V, idx) => {
-    const { type, typeValue } = getVolumeType(V, _volumeClaimTemplates);
+    const { type, typeValue } = getVolumeType(getters, V, _volumeClaimTemplates);
 
     const prefix = V.name || idx + 1;
 
@@ -145,11 +145,15 @@ export function vmDisks(spec, getters, errors, validatorArgs, displayKey, value)
   return errors;
 }
 
-function getVolumeType(V, DVTS) {
+function getVolumeType(getters, V, DVTS) {
   let outValue = null;
+  const allPVCs = getters['harvester/all'](PVC);
 
   if (V.persistentVolumeClaim) {
-    if (!V.persistentVolumeClaim.claimName) {
+    const selectedVolumeName = V?.persistentVolumeClaim?.claimName;
+    const hasExistingVolume = allPVCs.find(P => P.metadata.name === selectedVolumeName);
+
+    if (hasExistingVolume) {
       // In other cases, claimName will not be empty, so we can judge whether this is an exiting volume based on this attribute
       return {
         type:      SOURCE_TYPE.ATTACH_VOLUME,
