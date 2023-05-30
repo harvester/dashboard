@@ -94,6 +94,12 @@ export default {
 
     this.hasCustomComponent = !!customComponent;
     this.customComponent = customComponent;
+
+    this.registerAfterHook(() => {
+      if (this.value.id === HCI_SETTING.RANCHER_MANAGER_SUPPORT) {
+        this.$store.commit('openRancherManagerSupport', this.value.value === 'true');
+      }
+    });
   },
 
   methods: {
