@@ -7,7 +7,7 @@ import { HCI } from '../../types';
 import CreateEditView from '@shell/mixins/create-edit-view';
 import VM_MIXIN from '../../mixins/harvester-vm';
 import DashboardMetrics from '@shell/components/DashboardMetrics';
-import { allHash } from '@shell/utils/promise';
+import { allHash, setPromiseResult } from '@shell/utils/promise';
 import { allDashboardsExist } from '@shell/utils/grafana';
 
 import CloudConfig from '../../edit/kubevirt.io.virtualmachine/VirtualMachineCloudConfig';
@@ -77,7 +77,12 @@ export default {
 
     await allHash(hash);
 
-    this.showVmMetrics = await allDashboardsExist(this.$store, this.currentCluster.id, [VM_METRICS_DETAIL_URL], 'harvester');
+    setPromiseResult(
+      allDashboardsExist(this.$store, this.currentCluster.id, [VM_METRICS_DETAIL_URL], 'harvester'),
+      this,
+      'showVmMetrics',
+      'Determine vm metrics'
+    );
   },
 
   computed: {
@@ -125,12 +130,6 @@ export default {
         namespace: this.value.namespace,
         vm:        this.value.name
       };
-    },
-
-    hasMetrics() {
-      const inStore = this.$store.getters['currentProduct'].inStore;
-
-      return !!this.$store.getters[`${ inStore }/byId`]('service', 'cattle-monitoring-system/rancher-monitoring-grafana');
     },
 
     affinityNsModeLabel() {
