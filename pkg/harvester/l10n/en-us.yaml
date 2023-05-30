@@ -619,7 +619,16 @@ harvester:
         down: No events in the past hour
       console:
         down: This Virtual Machine is down. Please start it to access its console.
-        shortKeys: Shortcut Keys
+        shortcutKeys: Shortcut Keys
+        customShortcutKeys: Custom Shortcut Keys
+        management: Management Shortcut Keys
+        record:
+          start: Record
+          recording: Recording
+          stop: Stop Recording
+          tips: Pressing the record button will capture your keyboard inputs.
+          send: Send
+          preferredKeys: Preferred Custom Shortcut Keys
     terminationGracePeriodSeconds:
       label: Termination Grace Period
     affinity:

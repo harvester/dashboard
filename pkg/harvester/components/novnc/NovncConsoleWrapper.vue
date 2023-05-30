@@ -1,8 +1,15 @@
 <script>
+import { STEVE } from '@shell/config/types';
+import { escapeHtml } from '@shell/utils/string';
+import { allHash } from '@shell/utils/promise';
 import KeyTable from '@novnc/novnc/core/input/keysym';
+import * as KeyboardUtil from '@novnc/novnc/core/input/util';
 import NovncConsole from './NovncConsole';
 import NovncConsoleItem from './NovncConsoleItem';
+import NovncConsoleCustomKeys from './NovncConsoleCustomKeys';
 import { HCI } from '../../types';
+
+const PREFERED_SHORTCUT_KEYS = 'prefered-shortcut-keys';
 
 const SHORT_KEYS = {
   ControlLeft: {
@@ -97,17 +104,16 @@ const F_KEYS = {
 };
 
 export default {
-  components: { NovncConsole, NovncConsoleItem },
-
-  async fetch() {
-    this.vmResource = await this.$store.dispatch('harvester/find', { type: HCI.VM, id: this.value.id });
+  components: {
+    NovncConsole, NovncConsoleItem, NovncConsoleCustomKeys
   },
 
-  data() {
-    return {
-      keysRecord: [],
-      vmResource: {},
-    };
+  async fetch() {
+    const _hash = { vmResource: this.$store.dispatch('harvester/find', { type: HCI.VM, id: this.value.id }) };
+
+    const hash = await allHash(_hash);
+
+    this.vmResource = hash.vmResource;
   },
 
   props: {
@@ -120,7 +126,44 @@ export default {
     }
   },
 
+  data() {
+    return {
+      keysRecord:        [],
+      vmResource:        {},
+      renderKeysModal:   false,
+      currentUser:       null,
+      hideCustomKeysBar: false,
+    };
+  },
+
   computed: {
+    savedShortcutKeys() {
+      const preference = this.$store.getters['management/all'](STEVE.PREFERENCE);
+      const preferedShortcutKeys = preference?.[0]?.data?.[PREFERED_SHORTCUT_KEYS];
+      let out = [];
+
+      if (!preference?.[0]?.data) {
+        this.hideCustomKeysBar = true;
+
+        return out;
+      }
+
+      if (!preferedShortcutKeys) {
+        return out;
+      }
+
+      try {
+        out = JSON.parse(preferedShortcutKeys);
+      } catch (err) {
+        this.$store.dispatch('growl/fromError', {
+          title: this.t('generic.notification.title.error', { name: escapeHtml(this.value.metadata.name) }),
+          err,
+        }, { root: true });
+      }
+
+      return out;
+    },
+
     isDown() {
       return this.isEmpty(this.value);
     },
@@ -161,7 +204,16 @@ export default {
 
     hasSoftRebootAction() {
       return !!this.vmResource?.actions?.softreboot;
-    }
+    },
+
+    preferredShortcutKeys() {
+      return (this.savedShortcutKeys || []).map((item) => {
+        return {
+          label: item.map(K => K.key.charAt(0).toUpperCase() + K.key.slice(1)).join('+'),
+          value: item
+        };
+      });
+    },
   },
 
   methods: {
@@ -191,8 +243,31 @@ export default {
       this.keysRecord = [];
     },
 
+    sendCustomKeys(keys) {
+      const keyList = [].concat(keys);
+
+      keyList.forEach((K) => {
+        this.$refs.novncConsole.sendKey(KeyboardUtil.getKeysym(K), KeyboardUtil.getKeycode(K), true);
+      });
+
+      keyList.reverse().forEach((K) => {
+        this.$refs.novncConsole.sendKey(KeyboardUtil.getKeysym(K), KeyboardUtil.getKeycode(K), false);
+      });
+    },
+
     softReboot() {
       this.vmResource.softrebootVM();
+    },
+
+    showKeysModal() {
+      this.renderKeysModal = true;
+      this.$nextTick(() => {
+        this.$refs.keysModal.show();
+      });
+    },
+
+    hideKeysModal() {
+      this.renderKeysModal = false;
     },
   }
 };
@@ -210,17 +285,47 @@ export default {
           @auto-hide="keysRecord = []"
         >
           <button class="btn btn-sm bg-primary">
-            {{ t("harvester.virtualMachine.detail.console.shortKeys") }}
+            {{ t("harvester.virtualMachine.detail.console.shortcutKeys") }}
           </button>
 
-          <template slot="popover">
-            <novnc-console-item :items="keymap" :path="keysRecord" :pos="0" @update="update" @sendKeys="sendKeys" />
+          <template v-slot:popover>
+            <novnc-console-item :items="keymap" :path="keysRecord" :pos="0" @update="update" @send-keys="sendKeys" />
           </template>
         </v-popover>
 
         <button v-if="hasSoftRebootAction" class="btn btn-sm bg-primary" @click="softReboot">
           {{ t("harvester.action.softreboot") }}
         </button>
+
+        <v-popover
+          v-if="!hideCustomKeysBar"
+          ref="customKeyPopover"
+          placement="top"
+          trigger="click"
+          :container="false"
+        >
+          <button class="btn btn-sm bg-primary">
+            {{ t("harvester.virtualMachine.detail.console.customShortcutKeys") }}
+          </button>
+
+          <template v-slot:popover>
+            <div>
+              <button class="btn btn-sm bg-primary" @click="showKeysModal">
+                {{ t("harvester.virtualMachine.detail.console.management") }}
+              </button>
+            </div>
+
+            <hr>
+
+            <div v-for="(keys, index) in preferredShortcutKeys" :key="index" class="mb-5">
+              <button class="btn btn-sm bg-primary" @click="sendCustomKeys(keys.value)">
+                {{ keys.label }}
+              </button>
+            </div>
+          </template>
+        </v-popover>
+
+        <NovncConsoleCustomKeys v-if="renderKeysModal" ref="keysModal" :current-user="currentUser" @close="hideKeysModal" />
       </div>
       <NovncConsole v-if="url && !isDown" ref="novncConsole" :url="url" />
       <p v-if="isDown">
