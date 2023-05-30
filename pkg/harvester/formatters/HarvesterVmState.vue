@@ -54,6 +54,10 @@ export default {
         out.push(this.row?.migrationMessage.message);
       }
 
+      if (this.row.warningMessage?.message) {
+        out.push(this.row.warningMessage?.message);
+      }
+
       return out;
     }
   },
