@@ -29,6 +29,14 @@ export default {
 
   computed: { ...mapGetters({ t: 'i18n/t' }) },
 
+  watch: {
+    numVFs(neu) {
+      if (!parseFloat(neu) || parseFloat(neu) < 1) {
+        this.numVFs = 1;
+      }
+    }
+  },
+
   methods: {
     close() {
       this.$emit('close');
@@ -39,13 +47,6 @@ export default {
 
       try {
         this.resources[0].spec.numVFs = this.numVFs;
-        if (this.resources[0].spec.numVFs <= 0) {
-          this.resources[0].spec.numVFs = 0;
-          this.numVFs = 0;
-          this.close();
-
-          return;
-        }
         await actionResource.save();
         buttonCb(true);
         this.close();
@@ -75,7 +76,7 @@ export default {
       <LabeledInput
         v-model.number="numVFs"
         type="number"
-        min="0"
+        min="1"
         required
         :label="t('harvester.sriov.numVFs')"
       />
