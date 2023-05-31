@@ -39,6 +39,12 @@ export default class HciLB extends HarvesterResource {
         translationKey: 'generic.name',
         type:           'dnsLabel',
       },
+      {
+        nullable:   false,
+        path:       'spec.ranges',
+        type:       'array',
+        validators: ['ranges'],
+      }
     ];
   }
 
