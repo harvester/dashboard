@@ -65,7 +65,7 @@ export const ACTIVELY_REMOVE = [
 
 const INDENT = 2;
 
-export function createYaml(schemas, type, data, processAlwaysAdd = true, depth = 0, path = '', rootType = null) {
+export function createYaml(schemas, type, data, processAlwaysAdd = true, depth = 0, path = '', rootType = null, opt = {} ) {
   const schema = findBy(schemas, 'id', type);
 
   if ( !rootType ) {
@@ -131,7 +131,7 @@ export function createYaml(schemas, type, data, processAlwaysAdd = true, depth =
   }
 
   // ACTIVELY_REMOVE are fields that should be removed even if they are defined in data
-  for ( const entry of ACTIVELY_REMOVE ) {
+  for ( const entry of (opt.activelyRemove || ACTIVELY_REMOVE) ) {
     const parts = entry.split(/\./);
     const key = parts[parts.length - 1];
     const prefix = parts.slice(0, -1).join('.');

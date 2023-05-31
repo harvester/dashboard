@@ -4,6 +4,7 @@ import { dataVolumeSize } from './vm-datavolumes';
 import { backupTarget } from './setting';
 import { volumeSize } from './volume';
 import { rancherMonitoring, rancherLogging } from './monitoringAndLogging';
+import { ranges } from './network';
 
 export default {
   imageUrl,
@@ -14,5 +15,6 @@ export default {
   backupTarget,
   volumeSize,
   rancherMonitoring,
-  rancherLogging
+  rancherLogging,
+  ranges,
 };
