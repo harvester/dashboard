@@ -1,19 +1,25 @@
 <script>
+import { throttle, isEmpty } from 'lodash';
+
 import NameNsDescription from '@shell/components/form/NameNsDescription';
 import ResourceTabs from '@shell/components/form/ResourceTabs';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import Tab from '@shell/components/Tabbed/Tab';
-import CreateEditView from '@shell/mixins/create-edit-view';
-import { MANAGEMENT, NAMESPACE } from '@shell/config/types';
-import { allHash } from '@shell/utils/promise';
 import CruResource from '@shell/components/CruResource';
-import Listeners from './Listeners';
-import HealthCheck from './HealthCheck';
 import KeyValue from '@shell/components/form/KeyValue';
 import Banner from '@components/Banner/Banner';
-import { throttle, isEmpty } from 'lodash';
+
+import CreateEditView from '@shell/mixins/create-edit-view';
+
+import { MANAGEMENT, NAMESPACE, SCHEMA } from '@shell/config/types';
+import { allHash } from '@shell/utils/promise';
 import { matching } from '@shell/utils/selector';
 import { HCI } from '@pkg/harvester/types';
+import { clone } from '@shell/utils/object';
+import { createYaml } from '@shell/utils/create-yaml';
+
+import Listeners from './Listeners';
+import HealthCheck from './HealthCheck';
 
 const NAMESPACE_SELECTOR = 'loadbalancer.harvesterhci.io/namespace';
 const PROJECT_SELECTOR = 'loadbalancer.harvesterhci.io/project';
@@ -175,6 +181,31 @@ export default {
         };
       }
     }, 250, { leading: true }),
+
+    generateYaml() {
+      const resource = this.value;
+
+      const inStore = this.$store.getters['currentStore'](resource);
+      const schemas = this.$store.getters[`${ inStore }/all`](SCHEMA);
+      const clonedResource = clone(resource);
+
+      const activelyRemove = [
+        'metadata.managedFields',
+        'metadata.relationships',
+        'metadata.state',
+        'links',
+        'type',
+        'id'
+      ];
+
+      if (this.isCreate) {
+        activelyRemove.push('status');
+      }
+
+      const out = createYaml(schemas, resource.type, clonedResource, true, 0, '', null, { activelyRemove });
+
+      return out;
+    },
   },
 
   watch: {
@@ -191,6 +222,7 @@ export default {
     :mode="mode"
     :errors="errors"
     :apply-hooks="applyHooks"
+    :generate-yaml="generateYaml"
     @finish="save"
   >
     <NameNsDescription
