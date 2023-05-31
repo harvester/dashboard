@@ -105,9 +105,10 @@ export default {
 
     // Solve compatibility with Rancher v2.6.x, fell remove these codes after not support v2.6.x
     const definition = {
-      def:         false,
-      parseJSON:   true,
-      inheritFrom: DEV,
+      def:              false,
+      parseJSON:        true,
+      inheritFrom:      DEV,
+      asUserPreference: true,
     };
 
     commit('prefs/setDefinition', {
