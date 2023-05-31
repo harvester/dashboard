@@ -10,7 +10,6 @@ import { allHash } from '@shell/utils/promise';
 import CruResource from '@shell/components/CruResource';
 import Range from './Range';
 import Priority from './Priority';
-import { uniq } from '@shell/utils/array';
 import { HCI } from '@pkg/harvester/types';
 
 export default {
@@ -48,10 +47,6 @@ export default {
     await allHash(hash);
   },
 
-  created() {
-    this.registerBeforeHook(this.validate, 'validate');
-  },
-
   data() {
     return { namespaceRow: this.value.spec.selector.projects?.[0]?.namespaces || [] };
   },
@@ -69,29 +64,6 @@ export default {
       }))];
     },
   },
-
-  methods: {
-    validate() {
-      const errors = [];
-      const ranges = this.value.spec?.ranges || [];
-
-      if (ranges.length === 0) {
-        errors.push(this.t('validation.required', { key: this.t('harvester.ipPool.tabs.range') }, true));
-      }
-
-      ranges.map((r) => {
-        if (!r.subnet) {
-          errors.push(this.t('validation.required', { key: this.t('harvester.ipPool.subnet.label') }, true));
-        }
-      });
-
-      if (errors.length > 0) {
-        return Promise.reject(uniq(errors));
-      } else {
-        return Promise.resolve();
-      }
-    },
-  }
 };
 </script>
 
