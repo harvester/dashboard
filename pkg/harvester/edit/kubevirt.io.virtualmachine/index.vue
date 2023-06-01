@@ -171,10 +171,6 @@ export default {
     hasStartAction() {
       return this.value.hasAction('start');
     },
-
-    affinityNsModeLabel() {
-      return [this.t('cluster.credential.harvester.affinity.thisPodNamespace'), this.t('cluster.credential.harvester.affinity.matchExpressions.inNamespaces'), this.t('cluster.credential.harvester.affinity.namespaces.label')];
-    },
   },
 
   watch: {
