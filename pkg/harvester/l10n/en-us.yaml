@@ -613,6 +613,12 @@ harvester:
         shortKeys: Shortcut Keys
     terminationGracePeriodSeconds:
       label: Termination Grace Period
+    affinity:
+      thisPodNamespace: This VM's namespace
+      matchExpressions:
+        inNamespaces: "Workloads in these namespaces"
+      namespaces:
+        label: Namespaces
 
   volume:
     label: Volumes
