@@ -93,10 +93,6 @@ export default {
     secretNamePrefix() {
       return this.templateValue?.metadata?.name;
     },
-
-    affinityNsModeLabel() {
-      return [this.t('cluster.credential.harvester.affinity.thisPodNamespace'), this.t('cluster.credential.harvester.affinity.matchExpressions.inNamespaces'), this.t('cluster.credential.harvester.affinity.namespaces.label')];
-    },
   },
 
   watch: {

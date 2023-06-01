@@ -263,6 +263,10 @@ export default {
 
       return Number(setting?.value || setting?.default);
     },
+
+    affinityNsModeLabel() {
+      return [this.t('harvester.virtualMachine.affinity.thisPodNamespace'), this.t('harvester.virtualMachine.affinity.matchExpressions.inNamespaces'), this.t('harvester.virtualMachine.affinity.namespaces.label')];
+    },
   },
 
   async created() {

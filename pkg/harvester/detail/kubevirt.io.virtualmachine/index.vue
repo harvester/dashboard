@@ -131,10 +131,6 @@ export default {
         vm:        this.value.name
       };
     },
-
-    affinityNsModeLabel() {
-      return [this.t('cluster.credential.harvester.affinity.thisPodNamespace'), this.t('cluster.credential.harvester.affinity.matchExpressions.inNamespaces'), this.t('cluster.credential.harvester.affinity.namespaces.label')];
-    },
   },
 
   methods: {
@@ -206,7 +202,7 @@ export default {
         </template>
       </Tab>
 
-      <Tab :label="t('cluster.credential.harvester.affinity.vmAffinityTitle')" name="vmScheduling" :weight="2.3">
+      <Tab :label="t('harvester.tab.vmScheduling')" name="vmScheduling" :weight="2.3">
         <template #default="{active}">
           <PodAffinity
             v-if="spec"
