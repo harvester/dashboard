@@ -99,7 +99,7 @@ export default {
     this.blockDeviceOpts = this.getBlockDeviceOpts();
 
     const addons = this.$store.getters[`${ inStore }/all`](HCI.ADD_ONS);
-    const seeder = addons.find(addon => addon.id === `harvester-system/${ ADD_ONS.SEEDER }`);
+    const seeder = addons.find(addon => addon.id === `harvester-system/${ ADD_ONS.HARVESTER_SEEDER }`);
 
     const seederEnabled = seeder ? seeder?.spec?.enabled : false;
 
