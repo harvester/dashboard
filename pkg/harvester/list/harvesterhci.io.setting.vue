@@ -30,7 +30,6 @@ export default {
     }
 
     const isSingleProduct = !!this.$store.getters['isSingleProduct'];
-    const isRancherInHarvester = !!this.$store.getters['isRancherInHarvester'];
     const inStore = this.$store.getters['currentProduct'].inStore;
 
     const hash = { harvesterSettings: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.SETTING }) };
@@ -59,7 +58,7 @@ export default {
     const initSettings = [];
     let SETTINGS = HCI_ALLOWED_SETTINGS;
 
-    if (!isRancherInHarvester) {
+    if (this.isStandaloneHarvester) {
       SETTINGS = {
         ...SETTINGS,
         ...HCI_SINGLE_CLUSTER_ALLOWED_SETTING,
@@ -100,6 +99,7 @@ export default {
 
   computed: {
     ...mapGetters({ t: 'i18n/t' }),
+    ...mapGetters(['isStandaloneHarvester']),
 
     settings() {
       return this.initSettings.map((setting) => {
