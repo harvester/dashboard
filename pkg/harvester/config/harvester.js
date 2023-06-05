@@ -238,14 +238,14 @@ export function init($plugin, store) {
 
   basicType(['projects-namespaces']);
   virtualType({
-    ifHave:     IF_HAVE.MULTI_CLUSTER,
+    ifHave:     IF_HAVE.NOT_STANDALONE_HARVESTER,
     labelKey:   'harvester.projectNamespace.label',
     group:      'root',
     namespaced: true,
     name:       'projects-namespaces',
     weight:     98,
     route:      { name: `${ PRODUCT_NAME }-c-cluster-projectsnamespaces` },
-    exact:      true
+    exact:      true,
   });
 
   // singleVirtualCluster

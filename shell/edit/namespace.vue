@@ -15,7 +15,6 @@ import MoveModal from '@shell/components/MoveModal';
 import ResourceQuota from '@shell/components/form/ResourceQuota/Namespace';
 import Loading from '@shell/components/Loading';
 import { HARVESTER_TYPES, RANCHER_TYPES } from '@shell/components/form/ResourceQuota/shared';
-import { HARVESTER_NAME as HARVESTER } from '@shell/config/features';
 import Labels from '@shell/components/form/Labels';
 
 export default {
@@ -65,11 +64,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['isSingleProduct']),
-
-    isSingleHarvester() {
-      return this.$store.getters['currentProduct'].inStore === HARVESTER && this.isSingleProduct;
-    },
+    ...mapGetters(['isStandaloneHarvester', 'isRancherInHarvester']),
 
     projectOpts() {
       const clusterId = this.$store.getters['currentCluster'].id;
@@ -98,15 +93,15 @@ export default {
     },
 
     showResourceQuota() {
-      return !this.isSingleHarvester && Object.keys(this.project?.spec?.resourceQuota?.limit || {}).length > 0;
+      return (!this.isStandaloneHarvester) && Object.keys(this.project?.spec?.resourceQuota?.limit || {}).length > 0;
     },
 
     showContainerResourceLimit() {
-      return !this.isSingleHarvester;
+      return !this.isStandaloneHarvester;
     },
 
     showPodSecurityAdmission() {
-      return !this.isSingleHarvester;
+      return !this.isStandaloneHarvester;
     },
   },
 

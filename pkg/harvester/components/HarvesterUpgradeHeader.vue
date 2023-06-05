@@ -45,7 +45,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['currentProduct', 'isVirtualCluster', 'isMultiCluster']),
+    ...mapGetters(['currentProduct', 'isVirtualCluster']),
 
     enabled() {
       return this.isVirtualCluster && this.currentProduct.name === HARVESTER;

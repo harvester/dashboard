@@ -4,7 +4,6 @@ import Select from '@shell/components/form/Select';
 import { MANAGEMENT, CAPI } from '@shell/config/types';
 import { mapGetters } from 'vuex';
 import { HCI } from '@pkg/harvester/types';
-import { HARVESTER_NAME as HARVESTER } from '@shell/config/features';
 
 export default {
   components: { Select },
@@ -36,10 +35,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['isSingleProduct', 'allNamespaces', 'currentCluster', 'openRancherManagerSupport']),
+    ...mapGetters(['allNamespaces', 'currentCluster', 'isRancherInHarvester', 'isStandaloneHarvester']),
 
-    isSingleHarvester() {
-      return this.$store.getters['currentProduct'].inStore === HARVESTER && this.isSingleProduct && !this.openRancherManagerSupport;
+    showProjectAndCluster() {
+      return !this.isStandaloneHarvester;
     },
 
     isView() {
@@ -168,11 +167,11 @@ export default {
   <div
     class="pool-row"
     :class="{
-      'show-project': !isSingleHarvester,
+      'show-project-and-cluster': showProjectAndCluster,
     }"
   >
     <div
-      v-if="!isSingleHarvester"
+      v-if="showProjectAndCluster"
       class="pool-project"
     >
       <span v-if="isView">
@@ -197,7 +196,7 @@ export default {
       />
     </div>
     <div
-      v-if="!isSingleHarvester"
+      v-if="showProjectAndCluster"
       class="pool-guestCluster"
     >
       <span v-if="isView">
@@ -227,7 +226,7 @@ export default {
 
     grid-template-columns: 40% 40% 15%;
 
-    &.show-project {
+    &.show-project-and-cluster {
       grid-template-columns: 25% 25% 25% 15%;
     }
   }
