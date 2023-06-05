@@ -16,6 +16,7 @@ import ResourceQuota from '@shell/components/form/ResourceQuota/Namespace';
 import Loading from '@shell/components/Loading';
 import { HARVESTER_TYPES, RANCHER_TYPES } from '@shell/components/form/ResourceQuota/shared';
 import Labels from '@shell/components/form/Labels';
+import { HARVESTER_NAME as HARVESTER } from '@shell/config/features';
 
 export default {
   components: {
@@ -102,6 +103,10 @@ export default {
 
     showPodSecurityAdmission() {
       return !this.isStandaloneHarvester;
+    },
+
+    showHarvesterHelpText() {
+      return !this.isStandaloneHarvester && this.$store.getters['currentProduct'].inStore === HARVESTER;
     },
   },
 
@@ -198,6 +203,9 @@ export default {
                 v-else
                 k="resourceQuota.helpText"
               />
+              <span v-if="showHarvesterHelpText">
+                {{ t('resourceQuota.helpTextHarvester') }}
+              </span>
             </p>
           </div>
         </div>
@@ -205,7 +213,7 @@ export default {
           v-model="value"
           :mode="mode"
           :project="project"
-          :types="isHarvester ? HARVESTER_TYPES : RANCHER_TYPES"
+          :types="isStandaloneHarvester ? HARVESTER_TYPES : RANCHER_TYPES"
         />
       </Tab>
       <Tab
