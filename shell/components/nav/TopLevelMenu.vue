@@ -44,7 +44,7 @@ export default {
 
   computed: {
     ...mapGetters(['clusterId']),
-    ...mapGetters(['clusterReady', 'isRancher', 'currentCluster', 'currentProduct', 'openRancherManagerSupport']),
+    ...mapGetters(['clusterReady', 'isRancher', 'currentCluster', 'currentProduct', 'isRancherInHarvester']),
     ...mapGetters('type-map', ['activeProducts']),
     ...mapGetters({ features: 'features/get' }),
 
@@ -311,7 +311,7 @@ export default {
             </div>
             <div>
               <a
-                v-if="openRancherManagerSupport"
+                v-if="isRancherInHarvester"
                 class="option cluster selector home"
                 @click="goToHarvesterCluster()"
               >

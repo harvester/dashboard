@@ -5,7 +5,6 @@ import { removeAt } from '@shell/utils/array';
 import { clone } from '@shell/utils/object';
 import { mapGetters } from 'vuex';
 import PriorityRow from './PriorityRow';
-import { HARVESTER_NAME as HARVESTER } from '@shell/config/features';
 
 export default {
   components: { PriorityRow },
@@ -32,11 +31,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['isSingleProduct', 'openRancherManagerSupport']),
-
-    isSingleHarvester() {
-      return this.$store.getters['currentProduct'].inStore === HARVESTER && this.isSingleProduct && !this.openRancherManagerSupport;
-    },
+    ...mapGetters(['isRancherInHarvester', 'isStandaloneHarvester']),
 
     isView() {
       return this.mode === _VIEW;
@@ -49,6 +44,10 @@ export default {
     showRemove() {
       return !this.isView;
     },
+
+    showProjectAndCluster() {
+      return !this.isStandaloneHarvester;
+    },
   },
 
   created() {
@@ -57,17 +56,15 @@ export default {
 
   methods: {
     add() {
-      const defaultRow = {
-        namespace:    '*',
-        guestCluster: '*',
-      };
+      const defaultRow = { namespace: '*' };
 
-      if (this.isSingleHarvester) {
+      if (!this.showProjectAndCluster) {
         this.rows.push(defaultRow);
       } else {
         this.rows.push({
           ...defaultRow,
-          project: '*',
+          project:      '*',
+          guestCluster: '*',
         });
       }
 
@@ -99,11 +96,11 @@ export default {
       <div
         class="pool-headers"
         :class="{
-          'show-project': !isSingleHarvester,
+          'show-project-and-cluster': showProjectAndCluster,
         }"
       >
         <span
-          v-if="!isSingleHarvester"
+          v-if="showProjectAndCluster"
           class="pool-project"
         >
           <t k="harvester.ipPool.project.label" />
@@ -112,7 +109,7 @@ export default {
           <t k="harvester.ipPool.namespace.label" />
         </span>
         <span
-          v-if="!isSingleHarvester"
+          v-if="showProjectAndCluster"
           class="pool-guestCluster"
         >
           <t k="harvester.ipPool.guestCluster.label" />
@@ -153,7 +150,7 @@ export default {
 
     grid-template-columns: 40% 40% 15%;
 
-    &.show-project {
+    &.show-project-and-cluster {
       grid-template-columns: 25% 25% 25% 15%;
     }
   }

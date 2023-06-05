@@ -1,7 +1,6 @@
 import { set, clone } from '@shell/utils/object';
 import HarvesterResource from '@pkg/harvester/models/harvester';
 import { HCI } from '@pkg/harvester/types';
-import { HARVESTER_NAME as HARVESTER } from '@shell/config/features';
 
 const NOT_READY = 'Not Ready';
 
@@ -13,18 +12,6 @@ export default class HciLB extends HarvesterResource {
     spec.ranges = spec.ranges || [];
     spec.selector = spec.selector || {};
     spec.selector.network = spec.selector.network || '';
-
-    spec.selector.projects = spec.selector.projects || [];
-
-    const isSingleProduct = this.$rootGetters['isSingleVirtualCluster'];
-    const isSingleHarvester = this.$rootGetters['currentProduct'].inStore === HARVESTER && isSingleProduct;
-
-    if (isSingleHarvester) {
-      spec.selector.projects = [{
-        name:       '',
-        namespaces: []
-      }];
-    }
 
     set(this, 'spec', spec);
     set(this, 'metadata', meta);
