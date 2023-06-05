@@ -401,9 +401,9 @@ export default async function({
     if (!clusterId) {
       clusterId = store.getters['defaultClusterId']; // This needs the cluster list, so no parallel
       const isSingleProduct = store.getters['isSingleProduct'];
-      const openRancherManagerSupport = store.getters['openRancherManagerSupport'];
+      const isRancherInHarvester = store.getters['isRancherInHarvester'];
 
-      if (isSingleProduct?.afterLoginRoute && !openRancherManagerSupport) {
+      if (isSingleProduct?.afterLoginRoute && !isRancherInHarvester) {
         const value = {
           name:   'c-cluster-product',
           ...isSingleProduct.afterLoginRoute,
