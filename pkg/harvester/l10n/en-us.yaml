@@ -398,6 +398,7 @@ harvester:
       error: Host has unready or unschedulable disks.
       fileSystem:
         info: Current file system is {system}, You can format it manually.
+        formatting: Disk is formatting, please wait.
       tags:
         label: Disk Tags
         addLabel: Add Disk Tag
