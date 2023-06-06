@@ -53,7 +53,7 @@ export default {
     },
 
     warningMessage() {
-      const blockDevices = this.row?.blockDevices || [];
+      const blockDevices = this.row?.unProvisionedDisks || [];
 
       const out = [];
 

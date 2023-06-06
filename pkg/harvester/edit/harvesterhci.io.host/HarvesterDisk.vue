@@ -133,6 +133,14 @@ export default {
 
       return this.$store.getters[`${ inStore }/byId`](HCI.BLOCK_DEVICE, `${ LONGHORN_SYSTEM }/${ name }`) || {};
     },
+
+    isCorrupted() {
+      return this.blockDevice?.status?.deviceStatus?.fileSystem?.corrupted;
+    },
+
+    isFormatting() {
+      return this.blockDevice.isFormatting;
+    },
   },
   methods: {
     update() {
@@ -151,7 +159,12 @@ export default {
       :label="mountedMessage"
     />
     <Banner
-      v-if="isFormatted"
+      v-if="isFormatting"
+      color="info"
+      :label="t('harvester.host.disk.fileSystem.formatting')"
+    />
+    <Banner
+      v-else-if="isFormatted && !isCorrupted"
       color="info"
       :label="formattedBannerLabel"
     />
@@ -221,7 +234,7 @@ export default {
         />
       </div>
     </div>
-    <div v-if="value.isNew && !isFormatted" class="row mt-10">
+    <div v-if="(value.isNew && !isFormatted) || isCorrupted" class="row mt-10">
       <div class="col span-6">
         <RadioGroup
           v-model="value.forceFormatted"

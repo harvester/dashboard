@@ -81,6 +81,8 @@ export default {
       return provisioned && isCurrentNode && !isLonghornMounted;
     })
       .map((d) => {
+        const corrupted = d?.status?.deviceStatus?.fileSystem?.corrupted;
+
         return {
           isNew:          true,
           name:           d?.metadata?.name,
@@ -88,7 +90,7 @@ export default {
           path:           d?.spec?.fileSystem?.mountPoint,
           blockDevice:    d,
           displayName:    d?.displayName,
-          forceFormatted: d?.spec?.fileSystem?.forceFormatted || false,
+          forceFormatted: corrupted ? true : d?.spec?.fileSystem?.forceFormatted || false,
         };
       });
 
