@@ -52,4 +52,11 @@ export default class HciBlockDevice extends HarvesterResource {
   get displayName() {
     return this.status?.deviceStatus?.devPath || this?.metadata?.name;
   }
+
+  get isFormatting() {
+    const conditions = this?.status?.conditions || [];
+    const formatting = conditions.find(c => c.type === 'Formatting') || {};
+
+    return formatting.status === 'True';
+  }
 }
