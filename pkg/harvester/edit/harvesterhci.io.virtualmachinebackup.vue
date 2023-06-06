@@ -6,7 +6,6 @@ import LabeledSelect from '@shell/components/form/LabeledSelect';
 import CreateEditView from '@shell/mixins/create-edit-view';
 import { allHash } from '@shell/utils/promise';
 import { exceptionToErrorsArray } from '@shell/utils/error';
-import { NAMESPACE } from '@shell/config/types';
 import { HCI } from '../types';
 import { sortBy } from '@shell/utils/sort';
 import { clone } from '@shell/utils/object';
@@ -110,12 +109,10 @@ export default {
     },
 
     namespaces() {
-      const inStore = this.$store.getters['currentStore'](NAMESPACE);
-      const choices = this.$store.getters[`${ inStore }/all`](NAMESPACE);
-      const systemNamespaces = this.$store.getters['systemNamespaces'];
+      const allNamespaces = this.$store.getters['allNamespaces'];
 
       const out = sortBy(
-        choices.filter(N => !systemNamespaces.includes(N.metadata.name)).map((obj) => {
+        allNamespaces.map((obj) => {
           return {
             label: obj.nameDisplay,
             value: obj.id,
