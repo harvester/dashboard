@@ -689,14 +689,24 @@ export default {
       }
     },
 
+    removeTrailingHyphen(str) {
+      while (str.endsWith('-')) {
+        str = str.slice(0, -1);
+      }
+
+      return str;
+    },
+
     multiVMScheduler(spec) {
-      spec.template.metadata.labels[HCI_ANNOTATIONS.VM_NAME_PREFIX] = this.namePrefix;
+      const namePrefix = this.removeTrailingHyphen(this.namePrefix);
+
+      spec.template.metadata.labels[HCI_ANNOTATIONS.VM_NAME_PREFIX] = namePrefix;
 
       const rule = {
         weight:          1,
         podAffinityTerm: {
           topologyKey:   HOSTNAME,
-          labelSelector: { matchLabels: { [HCI_ANNOTATIONS.VM_NAME_PREFIX]: this.namePrefix } }
+          labelSelector: { matchLabels: { [HCI_ANNOTATIONS.VM_NAME_PREFIX]: namePrefix } }
         }
       };
 
