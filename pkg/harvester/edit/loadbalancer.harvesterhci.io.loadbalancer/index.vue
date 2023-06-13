@@ -11,12 +11,10 @@ import Banner from '@components/Banner/Banner';
 
 import CreateEditView from '@shell/mixins/create-edit-view';
 
-import { MANAGEMENT, NAMESPACE, SCHEMA } from '@shell/config/types';
+import { MANAGEMENT, NAMESPACE } from '@shell/config/types';
 import { allHash } from '@shell/utils/promise';
 import { matching } from '@shell/utils/selector';
 import { HCI } from '@pkg/harvester/types';
-import { clone } from '@shell/utils/object';
-import { createYamlWithOptions } from '@shell/utils/create-yaml';
 
 import Listeners from './Listeners';
 import HealthCheck from './HealthCheck';
@@ -144,6 +142,23 @@ export default {
         this.$set(this.value.spec, 'backendServerSelector', backendServerSelector);
       },
     },
+
+    yamlModifiers() {
+      const activelyRemove = [
+        'metadata.managedFields',
+        'metadata.relationships',
+        'metadata.state',
+        'links',
+        'type',
+        'id'
+      ];
+
+      if (this.isCreate) {
+        activelyRemove.push('status');
+      }
+
+      return { activelyRemove };
+    },
   },
 
   methods: {
@@ -181,31 +196,6 @@ export default {
         };
       }
     }, 250, { leading: true }),
-
-    generateYaml() {
-      const resource = this.value;
-
-      const inStore = this.$store.getters['currentStore'](resource);
-      const schemas = this.$store.getters[`${ inStore }/all`](SCHEMA);
-      const clonedResource = clone(resource);
-
-      const activelyRemove = [
-        'metadata.managedFields',
-        'metadata.relationships',
-        'metadata.state',
-        'links',
-        'type',
-        'id'
-      ];
-
-      if (this.isCreate) {
-        activelyRemove.push('status');
-      }
-
-      const out = createYamlWithOptions(schemas, resource.type, clonedResource, true, 0, '', null, { activelyRemove });
-
-      return out;
-    },
   },
 
   watch: {
@@ -222,7 +212,7 @@ export default {
     :mode="mode"
     :errors="errors"
     :apply-hooks="applyHooks"
-    :generate-yaml="generateYaml"
+    :yaml-modifiers="yamlModifiers"
     @finish="save"
   >
     <NameNsDescription
