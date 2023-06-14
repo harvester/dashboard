@@ -49,10 +49,10 @@ export default {
       return !this.isView;
     },
 
-    namespaceOptions() {
+    filteredNamespaces() {
       const namespaces = this.allNamespaces || [];
 
-      const out = namespaces.filter((namespace) => {
+      return namespaces.filter((namespace) => {
         if (this.row.project === '*') {
           return true;
         } else if (this.row.project) {
@@ -60,7 +60,11 @@ export default {
         } else {
           return true;
         }
-      }).map((namespace) => {
+      });
+    },
+
+    namespaceOptions() {
+      const out = (this.filteredNamespaces || []).map((namespace) => {
         return {
           label: namespace.metadata.name,
           value: namespace.id,
@@ -77,12 +81,9 @@ export default {
       const clusters = this.$store.getters['management/all'](CAPI.RANCHER_CLUSTER);
       const configs = this.$store.getters['management/all'](HCI.HARVESTER_CONFIG);
       const selectedClusters = this.rows.map(row => row?.guestCluster);
+      const filteredNamespaces = this.filteredNamespaces.map(n => n.id);
 
       const out = clusters.filter((c) => {
-        if (this.row.namespace === '*') {
-          return true;
-        }
-
         const machinePools = c.spec?.rkeConfig?.machinePools || [];
         const machineConfigName = machinePools[0]?.machineConfigRef?.name;
         const config = configs.find(c => c.id === `fleet-default/${ machineConfigName }`);
@@ -90,7 +91,11 @@ export default {
         if (config) {
           const vmNamespace = config?.vmNamespace;
 
-          return vmNamespace === this.row.namespace && !selectedClusters.includes(c.id);
+          if (this.row.namespace === '*' && filteredNamespaces.includes(vmNamespace)) {
+            return true;
+          } else {
+            return vmNamespace === this.row.namespace && !selectedClusters.includes(c.id);
+          }
         } else {
           return false;
         }
@@ -102,6 +107,9 @@ export default {
       });
 
       return [{
+        label: this.t('generic.none'),
+        value: '',
+      }, {
         label: this.t('generic.all'),
         value: '*',
       }, ...out];
@@ -149,7 +157,7 @@ export default {
         this.row.namespace = '';
       }
 
-      if (this.row.guestCluster !== '*') {
+      if (this.row.guestCluster !== '*' || this.row.guestCluster !== '') {
         this.row.guestCluster = '';
       }
     },
