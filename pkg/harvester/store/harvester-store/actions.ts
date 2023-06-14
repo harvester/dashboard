@@ -4,6 +4,7 @@ import { COUNT, NAMESPACE, MANAGEMENT } from '@shell/config/types';
 import { HCI } from '../../types';
 import { allHash } from '@shell/utils/promise';
 import { DEV } from '@shell/store/prefs';
+import '@shell/plugins/formatters';
 
 export default {
   async loadCluster({
