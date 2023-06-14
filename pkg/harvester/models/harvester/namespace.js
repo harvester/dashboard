@@ -55,6 +55,12 @@ export default class HciNamespace extends namespace {
   }
 
   get isSystem() {
+    const systemNamespaces = ['fleet-default'];
+
+    if (systemNamespaces.includes(this.metadata.name)) {
+      return true;
+    }
+
     if ( this.metadata?.annotations?.[SYSTEM_NAMESPACE] === 'true' ) {
       return true;
     }
