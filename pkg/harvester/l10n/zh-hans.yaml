@@ -1028,10 +1028,14 @@ harvester:
   
   addons:
     descriptions:
+      'harvester-system/vm-import-controller': vm-import-controller 是一个插件，用于将其他集群的 VM 工作负载迁移到现有的 Harvester 集群。
+      'harvester-system/pcidevices-controller': pcidevices-controller 是一个插件，用于发现集群中节点的 PCI 设备，能让用户为 PCI 透传准备设备，以便与 Harvester VM 和 Guest 集群一起使用。
+      'cattle-logging-system/rancher-logging': rancher-logging 是一个插件，用于从 Harvester 集群收集多功能日志、事件和审计，并根据流将它们路由到多种服务器。
+      'cattle-monitoring-system/rancher-monitoring': rancher-monitoring 是一个插件，用于收集 Harvester 集群和 VM 的指标。你可以在嵌入式仪表板上查看指标，并向远程服务器发送告警。
       'vm-import-controller': vm-import-controller 是一个插件，用于将其他集群的 VM 工作负载迁移到现有的 Harvester 集群。
       'pcidevices-controller': pcidevices-controller 是一个插件，用于发现集群中节点的 PCI 设备，能让用户为 PCI 透传准备设备，以便与 Harvester VM 和 Guest 集群一起使用。
-      'rancher-logging': rancher-monitoring 是一个插件，用于收集 Harvester 集群和 VM 的指标。你可以在嵌入式仪表板上查看指标，并向远程服务器发送告警。
-      'rancher-monitoring': rancher-logging 是一个插件，用于从 Harvester 集群收集多功能日志、事件和审计，并根据流将它们路由到多种服务器。
+      'rancher-logging': rancher-logging 是一个插件，用于从 Harvester 集群收集多功能日志、事件和审计，并根据流将它们路由到多种服务器。
+      'rancher-monitoring': rancher-monitoring 是一个插件，用于收集 Harvester 集群和 VM 的指标。你可以在嵌入式仪表板上查看指标，并向远程服务器发送告警。
     vmImport:
       titles:
         basic: 基本信息
