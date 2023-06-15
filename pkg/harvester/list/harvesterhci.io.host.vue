@@ -81,13 +81,6 @@ export default {
           value:     'internalIp',
           formatter: 'CopyToClipboard',
         },
-        {
-          name:      'diskState',
-          labelKey:  'tableHeaders.diskState',
-          value:     'diskState',
-          formatter: 'HarvesterDiskState',
-          width:     130,
-        },
       ];
 
       if (this.hasMetricSchema) {
@@ -121,6 +114,16 @@ export default {
         };
 
         out.splice(-1, 0, storageHeader);
+      }
+
+      if (this.hasLonghornSchema) {
+        out.push({
+          name:      'diskState',
+          labelKey:  'tableHeaders.diskState',
+          value:     'diskState',
+          formatter: 'HarvesterDiskState',
+          width:     130,
+        });
       }
 
       out.push(AGE);
