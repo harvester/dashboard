@@ -279,6 +279,10 @@ export default {
       const jsonString = this.value.metadata?.annotations?.[HCI_ANNOTATIONS.NODE_NTP_SYNC_STATUS];
       let out = null;
 
+      if (!jsonString) {
+        return out;
+      }
+
       try {
         out = JSON.parse(jsonString);
       } catch (err) {

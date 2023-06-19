@@ -47,6 +47,12 @@ export function ntpServers(value, getters, errors, validatorArgs) {
     return errors;
   }
 
+  const ntpServersSet = new Set(ntpServers);
+
+  if (ntpServers.length !== ntpServersSet.size) {
+    errors.push(t('harvester.setting.ntpServers.isDuplicate'));
+  }
+
   if (ntpServers.find(V => !ipv4Regex.test(V) && !hostRegex.test(V))) {
     errors.push(t('harvester.setting.ntpServers.isNotIPV4'));
   }

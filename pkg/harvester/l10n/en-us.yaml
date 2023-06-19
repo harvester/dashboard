@@ -878,6 +878,7 @@ harvester:
       message: To completely unset the imported Harvester cluster, please also remove it on the Rancher dashboard UI via the <code> Virtualization Management </code> page.
     ntpServers:
       isNotIPV4: The address you entered is not IPv4 or host. Please enter a valid IPv4 address or a host address.
+      isDuplicate: There are duplicate NTP server configurations.
   cloudTemplate:
     label: Cloud Config Templates
     templateType: Template Type
