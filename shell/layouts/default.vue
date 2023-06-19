@@ -855,6 +855,10 @@ export default {
 
         A { padding-left: 0; }
       }
+
+      .root.child A{
+        padding: 7.5px 7px 7.5px 8px;
+      }
     }
 
     NAV .tools {
