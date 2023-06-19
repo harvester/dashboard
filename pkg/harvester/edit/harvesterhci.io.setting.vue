@@ -103,6 +103,10 @@ export default {
   },
 
   methods: {
+    done() {
+      this.$router.go(-1);
+    },
+
     async saveSettings(done) {
       const t = this.$store.getters['i18n/t'];
 
@@ -170,6 +174,7 @@ export default {
     :resource="value"
     :subtypes="[]"
     :can-yaml="false"
+    :cancel-event="true"
     @error="e => (errors = e)"
     @finish="saveSettings"
     @cancel="done"
