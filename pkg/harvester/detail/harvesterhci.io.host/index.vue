@@ -204,6 +204,12 @@ export default {
       return longhornDisks;
     },
 
+    hasKsmtunedSchema() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+
+      return !!this.$store.getters[`${ inStore }/schemaFor`](HCI.KSTUNED);
+    },
+
     hasBlockDevicesSchema() {
       return !!this.$store.getters['harvester/schemaFor'](HCI.BLOCK_DEVICE);
     },
@@ -440,6 +446,7 @@ export default {
       </Tab>
 
       <Tab
+        v-if="hasKsmtunedSchema"
         name="ksmtuned"
         :weight="0"
         :show-header="false"
