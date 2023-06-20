@@ -1111,9 +1111,9 @@ harvester:
       matchingVMs:
         matchesSome: |-
           {matched, plural,
-            =0 {Matches 0 of {total, number} virtual machines in namespace which same as load balancer.}
-            =1 {Matches 1 of {total, number} virtual machines in namespace which same as load balancer: "{sample}"}
-            other {Matches {matched, number} of {total, number} existing virtual machines in namespace which same as load balancer, including "{sample}"}
+            =0 {Matches 0 of {total, number} virtual machines in the namespace where the load balancer is.}
+            =1 {Matches 1 of {total, number} virtual machines in the namespace where the load balancer is: "{sample}"}
+            other {Matches {matched, number} of {total, number} existing virtual machines in the namespace where the load balancer is, including "{sample}"}
           }
     backendServers:
       label: Backend Servers

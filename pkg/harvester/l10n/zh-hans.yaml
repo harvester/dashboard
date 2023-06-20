@@ -3,9 +3,9 @@ generic:
   resourceExternalLinkTips: '外部链接'
   namespace: 命名空间
   notReady: 未就绪
+  labels: 标签
 
 nav:
-  harvesterDashboard: Harvester 仪表板
   group:
     networks: 网络
     backupAndSnapshot: 备份 & 快照
@@ -143,6 +143,7 @@ harvester:
     shutdown: 关机
     powerOn: 开机
     reboot: 重启
+    forceStop: 强制停止
   tableHeaders:
     size: 大小
     progress: 进度
@@ -174,6 +175,7 @@ harvester:
     accessCredentials: 凭证管理
     pciDevices: PCI 设备
     vmScheduling: 虚拟机调度
+    instanceLabel: 实例标签
   fields:
     version: 版本
     name: 名称
@@ -306,7 +308,7 @@ harvester:
       seeder: 外部访问
     detail:
       kvm:
-        disableMessage: KVM 已被 BIOS 禁用。在创建虚拟机之前必须先启用 KVM。
+        disableMessage: 基于硬件的虚拟化已禁用或不受支持。在创建虚拟机之前必须先启用基于硬件的虚拟化。
       title:
         network: 网络配置
       hostIP: 主机 IP
@@ -395,6 +397,7 @@ harvester:
       error: 主机有未就绪或不可调度的磁盘。
       fileSystem:
         info: 当前文件系统为 {system}，你可以手动格式化。
+        formatting: 正在格式化磁盘，请稍候。
       tags:
         label: 磁盘标签
         addLabel: 添加磁盘标签
@@ -411,6 +414,15 @@ harvester:
     powerAction:
       message:
         success: '主机 { name } { operation } 成功。'
+    ntp:
+      label: Ntp 服务器地址
+      tips: 你可以配置多个 IPv4 地址或主机地址。
+      placeholder: 例如：IPv4
+      ntpSyncStatus:
+        isDisabled: 'NTP 已禁用。请检查 NTP 服务是否处于活动状态。'
+        isUnsynced: 'NTP 未同步 NTP 服务器 <code>{current}</code>'
+      ntpConfigSyncStatus:
+        isUnsynced: 'NTP 配置未同步。当前：<code>{current}</code>，需求：<code>{wanted}</code> '
 
   virtualMachine:
     label: 虚拟机
@@ -608,6 +620,14 @@ harvester:
       console:
         down: 此虚拟机已关闭。请启动虚拟机以访问其控制台。
         shortKeys: 快捷键
+    terminationGracePeriodSeconds:
+      label: 终止宽限期
+    affinity:
+      thisPodNamespace: 此虚拟机的命名空间
+      matchExpressions:
+        inNamespaces: "命名空间中的工作负载"
+      namespaces:
+        label: 命名空间
 
   volume:
     label: 卷
@@ -615,6 +635,7 @@ harvester:
       basics: 基本信息
       snapshots: 快照
       datasource: 数据源
+      details: 详情
     size: 大小
     source: 源
     kind: 类型
@@ -622,10 +643,20 @@ harvester:
       new: 创建
       vmImage: 虚拟机镜像
     image: 镜像
+    frontend: 前端
+    blockdev: 块设备
+    attachedNode: 连接的节点
+    endpoint: 端点
+    diskTags: 磁盘标签
+    nodeTags: 节点标签
+    lastBackup: 上次备份
+    lastBackupAt: 上次备份时间
+    replicasNumber: 副本数
     promptRemove:
       tips: "警告：卷的快照将随卷一起删除。"
     externalLink:
       tips: 查看卷详细信息
+    rebuildingMessage: '重建进度：{percentage}%'
 
   image:
     label: 镜像
@@ -689,6 +720,7 @@ harvester:
       fail:  失败
       ongoing: 进行中
       downloadLog: 下载日志
+      logStatus: 日志下载状态
     dismissMessage: 忽略
     upgradeInfo:
       warning: 警告
@@ -844,6 +876,8 @@ harvester:
         retentionSize: 监控数据最大占用存储
     clusterRegistrationUrl:
       message: 要完全取消导入的 Harvester 集群，也请通过<code>虚拟化管理</code>页面在 Rancher 仪表板 UI 上删除它。
+    ntpServers:
+      isNotIPV4: 你输入的不是 IPv4 或主机地址。请输入有效的 IPv4 地址或主机地址。
   cloudTemplate:
     label: Cloud Config 模板
     templateType: 模板类型
@@ -1040,7 +1074,99 @@ harvester:
       titles:
         basic: 基本信息
         pvc: 卷
-  
+
+  loadBalancer:
+    label: 负载均衡器
+    tabs:
+      basic: 基本信息
+      listeners: 监听器
+      healthCheck: 健康检查
+      backendServer: 后端服务器选择器
+    workloadType:
+      label: 工作负载类型
+      options:
+        cluster: 来宾 Kubernetes 集群
+        vm: 虚拟机
+    ipam:
+      label: IPAM
+      options:
+        dhcp: DHCP
+        pool: 池
+    ipPool:
+      label: IP 池
+      options:
+        none: 自动（自动选择 IP 池）
+    listeners:
+      name:
+        label: 名称
+      protocol:
+        label: 协议
+      port:
+        label: 端口
+      backendPort:
+        label: 后端端口
+        placeholder: 例如：80
+    backendServerSelector:
+      matchingVMs:
+        matchesSome: |-
+          {matched, plural,
+            =0 { 在负载均衡器所在的命名空间中匹配 0 个虚拟机，共 {total, number} 个。}
+            =1 {在负载均衡器所在的命名空间中匹配 1 个虚拟机 "{sample}"，共 {total, number} 个。 }
+            other { 在负载均衡器所在的命名空间中匹配的 {matched, number} 个现有虚拟机（共 {total, number} 个），包括 "{sample}"}
+          }
+    backendServers:
+      label: 后端服务器
+
+  ipPool:
+    label: IP 池
+    network:
+      label: 网络
+    tabs:
+      range: 范围
+      scope: 范围
+      selector: 选择器
+    subnet:
+      label: 子网
+    startIP:
+      label: 起始 IP
+    endIP:
+      label: 终止 IP
+    gateway:
+      label: 网关
+    namespace:
+      label: 命名空间
+    project:
+      label: 项目
+    guestCluster:
+      label: 来宾 Kubernetes 集群
+    availableIP:
+      label: 可用 IP 数
+    scope:
+      label: 范围
+      addLabel: 添加范围
+    priority:
+      label: 优先级
+    cidr:
+      addLabel: 添加 CIDR
+    range:
+      addLabel: 添加范围
+      
+  service:
+    healthCheckPort:
+      label: 健康检查端口
+    healthCheckSuccessThreshold:
+      label: 健康检查成功阙值
+      description: 如果探针连续检测到某个地址的成功次数达到成功阈值，后端服务器就可以开始转发流量。
+    healthCheckFailureThreshold:
+      label: 健康检查失败阈值
+      description: 如果健康检查失败的数量达到失败阈值，后端服务器将停止转发流量。
+    healthCheckPeriod:
+      label: 健康检查周期
+    healthCheckTimeout:
+      label: 健康检查超时
+    healthCheckEnabled:
+      label: 健康检查
+
   secret:
     label: 密文
 
@@ -1057,6 +1183,13 @@ harvester:
       placeholder: 选择目标集群网络
 
   seeder:
+    banner:
+      enable:
+        prefix: harvester-seeder 插件已被禁用，
+        middle: 单击此处
+        suffix: 启用它。
+      noAccess: 请联系管理员启用外部访问。
+      noAddon: harvester-seeder 插件不存在，请检查是否已安装。
     inventory:
       host:
         label: 主机
@@ -1074,6 +1207,18 @@ harvester:
         label: 事件
       pollingInterval:
         label: 轮询间隔
+
+  affinity:
+    thisPodNamespace: 此虚拟机的命名空间
+    matchExpressions:
+      inNamespaces: "命名空间中的工作负载"
+    vmAffinityTitle: 虚拟机调度
+    namespaces:
+      placeholder: 例如：default,system,base
+      label: 命名空间
+    addLabel: 添加工作负载选择器
+    topologyKey:
+      placeholder: 'topology.kubernetes.io/zone'
 
 advancedSettings:
   descriptions:
@@ -1102,6 +1247,8 @@ advancedSettings:
     'harv-support-bundle-image': Support Bundle 镜像配置。前往 <a href="https://hub.docker.com/r/rancher/support-bundle-kit/tags" target="_blank">rancher/support-bundle-kit</a> 查看更多版本。
     'harv-release-download-url': 此设置用于配置<code>升级版本下载</code>的 URL 地址。Harvester 将从该 URL 托管的 (<code>$URL</code>/<code>$VERSION</code>/version.yaml) 文件中获取 ISO URL 和校验和值。
     'harv-rancher-manager-support': Kubernetes 多集群配置和管理。
+    'harv-default-vm-termination-grace-period-seconds': 配置停止虚拟机的终止宽限期。
+    'harv-ntp-servers': 配置 NTP 服务器。你可以配置多个 IPv4 地址或主机地址。
 
 typeLabel:
   kubevirt.io.virtualmachine: |-
@@ -1233,4 +1380,14 @@ typeLabel:
     {count, plural,
       one { 磁盘 }
       other { 磁盘 }
+    }
+  loadbalancer.harvesterhci.io.loadbalancer: |-
+    {count, plural,
+      one { 负载均衡器 }
+      other { 负载均衡器 }
+    }
+  loadbalancer.harvesterhci.io.ippool: |-
+    {count, plural,
+      one { IP 池 }
+      other { IP 池 }
     }
