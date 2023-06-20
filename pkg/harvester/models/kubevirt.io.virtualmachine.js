@@ -714,7 +714,10 @@ export default class VirtVm extends HarvesterResource {
 
   get warningMessage() {
     if (this.metadata?.annotations[HCI_ANNOTATIONS.VM_INSUFFICIENT]) {
-      return { message: this.metadata?.annotations[HCI_ANNOTATIONS.VM_INSUFFICIENT] };
+      return {
+        message:    this.metadata?.annotations[HCI_ANNOTATIONS.VM_INSUFFICIENT],
+        canDismiss: true,
+      };
     }
 
     const conditions = get(this, 'status.conditions');
