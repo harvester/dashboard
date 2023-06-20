@@ -116,6 +116,7 @@ export default {
       :label="t('harvester.host.ksmtuned.run')"
       :options="ksmtunedRunOption"
       class="mb-20"
+      :mode="mode"
       required
     />
 

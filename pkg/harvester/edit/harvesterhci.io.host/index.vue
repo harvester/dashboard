@@ -196,6 +196,12 @@ export default {
       return out.length > 0;
     },
 
+    hasKsmtunedSchema() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+
+      return !!this.$store.getters[`${ inStore }/schemaFor`](HCI.KSTUNED);
+    },
+
     hasBlockDevicesSchema() {
       const inStore = this.$store.getters['currentProduct'].inStore;
 
@@ -557,7 +563,7 @@ export default {
           </template>
         </ArrayListGrouped>
       </Tab>
-      <Tab name="Ksmtuned" :weight="70" :label="t('harvester.host.tabs.ksmtuned')">
+      <Tab v-if="hasKsmtunedSchema" name="Ksmtuned" :weight="70" :label="t('harvester.host.tabs.ksmtuned')">
         <HarvesterKsmtuned :mode="mode" :node="value" :register-before-hook="registerBeforeHook" />
       </Tab>
       <Tab
