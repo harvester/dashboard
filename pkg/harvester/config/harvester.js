@@ -237,7 +237,7 @@ export function init($plugin, store) {
 
   basicType(['projects-namespaces']);
   virtualType({
-    ifHave:     IF_HAVE.NOT_STANDALONE_HARVESTER,
+    ifHave:     IF_HAVE.MULTI_CLUSTER,
     labelKey:   'harvester.projectNamespace.label',
     group:      'root',
     namespaced: true,
@@ -260,8 +260,7 @@ export function init($plugin, store) {
         name:   `${ PRODUCT_NAME }-c-cluster-resource`,
         params: { resource: NAMESPACE }
       },
-      exact:  false,
-      ifHave: IF_HAVE.MCM_DISABLED,
+      exact: false,
     });
   }
 
