@@ -13,6 +13,10 @@ nav:
     Logging: Logging
     'Monitoring & Logging': Monitoring & Logging
 
+members:
+  clusterMemebership: Cluster Membership
+  projectMembership: Project Membership
+
 asyncButton:
   restart:
     action: Save & Restart

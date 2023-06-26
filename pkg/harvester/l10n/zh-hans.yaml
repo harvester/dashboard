@@ -12,6 +12,9 @@ nav:
     Monitoring: 监控
     Logging: 日志
     'Monitoring & Logging': 监控 & 日志
+members:
+  clusterMemebership: 集群成员
+  projectMembership: 项目成员
 
 asyncButton:
   restart:
