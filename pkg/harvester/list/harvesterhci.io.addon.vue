@@ -63,7 +63,24 @@ export default {
       :namespaced="false"
       :schema="schema"
       :headers="headers"
-    />
+    >
+      <template slot="cell:name" slot-scope="scope">
+        <div class="cell-name">
+          <LinkDetail v-model="scope.row.displayName" :row="scope.row" />
+
+          <a
+            v-if="scope.row.metadata.name === 'rancher-vcluster' && scope.row.spec.enabled"
+            v-tooltip="t('harvester.addons.rancherVcluster.accessRancher')"
+            class="ml-5"
+            rel="nofollow noopener noreferrer"
+            target="_blank"
+            :href="scope.row.rancherHostname"
+          >
+            <i class="icon icon-external-link" />
+          </a>
+        </div>
+      </template>
+    </ResourceTable>
   </div>
 </template>
 
@@ -72,4 +89,8 @@ export default {
     max-width: 250px;
     text-overflow: clip;
   }
+
+::v-deep .cell-name {
+  white-space: nowrap;
+}
 </style>
