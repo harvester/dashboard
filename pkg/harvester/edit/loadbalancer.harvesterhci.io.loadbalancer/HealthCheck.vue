@@ -74,7 +74,7 @@ export default {
         </div>
         <div class="col span-6">
           <LabeledInput
-            v-model="value.successThreshold"
+            v-model.number="value.successThreshold"
             :mode="mode"
             type="number"
             :label="t('harvester.service.healthCheckSuccessThreshold.label')"
@@ -86,7 +86,7 @@ export default {
       <div class="row mt-10">
         <div class="col span-6">
           <LabeledInput
-            v-model="value.failureThreshold"
+            v-model.number="value.failureThreshold"
             :mode="mode"
             type="number"
             :label="t('harvester.service.healthCheckFailureThreshold.label')"
@@ -96,7 +96,7 @@ export default {
         </div>
         <div class="col span-6">
           <LabeledInput
-            v-model="value.periodSeconds"
+            v-model.number="value.periodSeconds"
             :mode="mode"
             type="number"
             :label="t('harvester.service.healthCheckPeriod.label')"
@@ -107,7 +107,7 @@ export default {
       <div class="row mt-10">
         <div class="col span-6">
           <LabeledInput
-            v-model="value.timeoutSeconds"
+            v-model.number="value.timeoutSeconds"
             :mode="mode"
             type="number"
             :label="t('harvester.service.healthCheckTimeout.label')"
