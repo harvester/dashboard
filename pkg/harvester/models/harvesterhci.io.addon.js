@@ -1,24 +1,51 @@
 import HarvesterResource from './harvester';
 import { HCI as HCI_ANNOTATIONS } from '../config/labels-annotations';
-
+import jsyaml from 'js-yaml';
 export default class HciAddonConfig extends HarvesterResource {
   get availableActions() {
     const out = super._availableActions;
 
-    return [
-      {
-        action:  'toggleAddon',
-        enabled: true,
-        icon:    this.spec.enabled ? 'icon icon-pause' : 'icon icon-play',
-        label:   this.spec.enabled ? this.t('generic.disable') : this.t('generic.enable'),
-      },
-      ...out
-    ];
+    if (this.id === 'harvester-system/rancher-vcluster') {
+      const rancherDashboard = {
+        action:  'goToRancher',
+        enabled: this.spec.enabled,
+        icon:    'icon icon-external-link',
+        label:   this.t('harvester.addons.rancherVcluster.accessRancher'),
+      };
+
+      out.push(rancherDashboard);
+    }
+
+    const toggleAddon = {
+      action:  'toggleAddon',
+      enabled: true,
+      icon:    this.spec.enabled ? 'icon icon-pause' : 'icon icon-play',
+      label:   this.spec.enabled ? this.t('generic.disable') : this.t('generic.enable'),
+    };
+
+    out.unshift(toggleAddon);
+
+    return out;
   }
 
   toggleAddon() {
     this.spec.enabled = !this.spec.enabled;
     this.save();
+  }
+
+  goToRancher() {
+    const valuesContent = jsyaml.load(this.spec.valuesContent);
+
+    window.open(
+      `https://${ valuesContent.hostname }`,
+      '_blank',
+    );
+  }
+
+  get rancherHostname() {
+    const valuesContent = jsyaml.load(this.spec.valuesContent);
+
+    return `https://${ valuesContent.hostname }`;
   }
 
   get stateColor() {
