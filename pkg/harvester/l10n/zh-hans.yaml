@@ -1120,7 +1120,7 @@ harvester:
   ipPool:
     label: IP 池
     network:
-      label: 网络
+      label: 虚拟机网络
     tabs:
       range: 范围
       scope: 范围

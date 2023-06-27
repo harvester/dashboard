@@ -1130,7 +1130,7 @@ harvester:
   ipPool:
     label: IP Pools
     network:
-      label: Network
+      label: VM Network
     tabs:
       range: Range
       scope: Scope
