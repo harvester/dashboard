@@ -224,7 +224,16 @@ export default {
      * Map namespaces from the store to options, adding divider and create button
      */
     options() {
-      const options = Object.keys(this.isCreate ? this.allowedNamespaces() : this.namespaces())
+      let namespaces = [];
+
+      if (this.allowedNamespaces) {
+        namespaces = Object.keys(this.isCreate ? this.allowedNamespaces() : this.namespaces());
+      } else {
+        // rancher v2.7.4 does not have the allowedNamespaces method, which requires compatibility with 2.7.4 import harvester v1.2.0
+        namespaces = Object.keys(this.namespaces());
+      }
+
+      const options = namespaces
         .map(namespace => ({ nameDisplay: namespace, id: namespace }))
         .map(this.namespaceMapper || (obj => ({
           label: obj.nameDisplay,
