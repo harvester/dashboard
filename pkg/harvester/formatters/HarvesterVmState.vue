@@ -47,14 +47,6 @@ export default {
     warningMessage() {
       const out = [];
 
-      if (this.row.warningMessage?.pod) {
-        const pod = this.row.warningMessage.pod;
-
-        if (pod.metadata?.state?.error && !/pod has unbound immediate PersistentVolumeClaims/.test(pod.metadata?.state?.message)) {
-          out.push(pod.metadata?.state?.message);
-        }
-      }
-
       if (this.row?.actualState === 'VM error' && this.row.warningMessage?.message) {
         out.push(this.row.warningMessage?.message);
       }
@@ -64,7 +56,15 @@ export default {
       }
 
       if (this.row.warningMessage?.message) {
-        out.push(this.row.warningMessage?.message);
+        if (this.row.warningMessage?.pod) {
+          const pod = this.row.warningMessage.pod;
+
+          if (pod.metadata?.state?.error && !/pod has unbound immediate PersistentVolumeClaims/.test(pod.metadata?.state?.message)) {
+            out.push(pod.metadata?.state?.message);
+          }
+        } else {
+          out.push(this.row.warningMessage?.message);
+        }
       }
 
       return out;
