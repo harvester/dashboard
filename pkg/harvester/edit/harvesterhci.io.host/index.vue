@@ -112,7 +112,7 @@ export default {
       const inventory = inventories.find(inv => inv.id === `harvester-system/${ this.value.id }`);
 
       if (inventory) {
-        this.inventory = clone(inventory);
+        this.inventory = inventory;
       } else {
         this.inventory = await this.$store.dispatch(`${ inStore }/create`, {
           type:     HCI.INVENTORY,

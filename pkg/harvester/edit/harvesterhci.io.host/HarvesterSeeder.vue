@@ -8,6 +8,7 @@ import ModalWithCard from '@shell/components/ModalWithCard';
 import NameNsDescription from '@shell/components/form/NameNsDescription';
 import { base64Encode, base64Decode } from '@shell/utils/crypto';
 import { exceptionToErrorsArray } from '@shell/utils/error';
+import { clone } from '@shell/utils/object';
 
 const _NEW = '_NEW';
 
@@ -50,7 +51,7 @@ export default {
 
     return {
       enableInventory,
-      value:             this.inventory,
+      value:             clone(this.inventory),
       secret:            {},
       errors:            [],
       newSecretSelected: false,
@@ -173,9 +174,11 @@ export default {
 
         this.value.metadata.annotations['metal.harvesterhci.io/local-inventory'] = 'true';
 
-        return await this.value.save();
+        Object.assign(this.inventory, this.value);
+
+        return await this.inventory.save();
       } else {
-        this.value.remove();
+        this.inventory.remove();
       }
     },
 
