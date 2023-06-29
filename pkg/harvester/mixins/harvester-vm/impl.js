@@ -132,7 +132,7 @@ export default {
     },
 
     isEfiEnabled(spec) {
-      return !!(spec?.template?.spec?.domain?.features?.smm && spec?.template?.spec?.domain?.firmware?.bootloader?.efi);
+      return !!(spec?.template?.spec?.domain?.firmware?.bootloader?.efi);
     },
 
     isTpmEnabled(spec) {
