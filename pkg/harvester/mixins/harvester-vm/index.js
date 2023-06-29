@@ -1314,7 +1314,16 @@ export default {
         set(this.spec.template.spec.domain, 'features.smm.enabled', true);
         set(this.spec.template.spec.domain, 'firmware.bootloader.efi.secureBoot', true);
       } else if (boot.efi && !boot.secureBoot) {
-        set(this.spec.template.spec.domain, 'features.smm.enabled', false);
+        // set(this.spec.template.spec.domain, 'features.smm.enabled', false);
+
+        try {
+          this.$delete(this.spec.template.spec.domain.features.smm, 'enabled');
+          const noKeys = Object.keys(this.spec.template.spec.domain.features.smm).length === 0;
+
+          if (noKeys) {
+            this.$delete(this.spec.template.spec.domain.features, 'smm');
+          }
+        } catch (e) {}
         set(this.spec.template.spec.domain, 'firmware.bootloader.efi.secureBoot', false);
       } else {
         this.$delete(this.spec.template.spec.domain, 'firmware');
