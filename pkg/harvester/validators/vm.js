@@ -71,7 +71,7 @@ export function vmDisks(spec, getters, errors, validatorArgs, displayKey, value)
   let requiredVolume = false;
 
   _volumes.forEach((V, idx) => {
-    const { type, typeValue } = getVolumeType(getters, V, _volumeClaimTemplates);
+    const { type, typeValue } = getVolumeType(getters, V, _volumeClaimTemplates, value);
 
     const prefix = V.name || idx + 1;
 
@@ -112,7 +112,7 @@ export function vmDisks(spec, getters, errors, validatorArgs, displayKey, value)
       const allPVCs = getters['harvester/all'](PVC);
 
       const selectedVolumeName = V?.persistentVolumeClaim?.claimName;
-      const hasExistingVolume = allPVCs.find(P => P.metadata.name === selectedVolumeName);
+      const hasExistingVolume = allPVCs.find(P => P.id === `${ value.metadata.namespace }/${ selectedVolumeName }`);
 
       if (!hasExistingVolume && selectedVolumeName) { // selected volume may have been deleted. e.g: use template
         const type = getters['i18n/t']('harvester.fields.volume');
@@ -145,13 +145,13 @@ export function vmDisks(spec, getters, errors, validatorArgs, displayKey, value)
   return errors;
 }
 
-function getVolumeType(getters, V, DVTS) {
+function getVolumeType(getters, V, DVTS, value) {
   let outValue = null;
   const allPVCs = getters['harvester/all'](PVC);
 
   if (V.persistentVolumeClaim) {
     const selectedVolumeName = V?.persistentVolumeClaim?.claimName;
-    const hasExistingVolume = allPVCs.find(P => P.metadata.name === selectedVolumeName);
+    const hasExistingVolume = allPVCs.find(P => P.id === `${ value.metadata.namespace }/${ selectedVolumeName }`);
 
     if (hasExistingVolume) {
       // In other cases, claimName will not be empty, so we can judge whether this is an exiting volume based on this attribute
