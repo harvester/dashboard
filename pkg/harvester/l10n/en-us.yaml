@@ -1369,7 +1369,7 @@ typeLabel:
   devices.harvesterhci.io.pcidevice: |-
     {count, plural,
       one { PCI Device }
-      other { PCI Devices (Experimental) }
+      other { PCI Devices }
     }
   persistentvolumeclaim: |-
     {count, plural,
