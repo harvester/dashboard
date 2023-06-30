@@ -10,7 +10,6 @@ import { Banner } from '@components/Banner';
 
 import { base64Encode, base64Decode } from '@shell/utils/crypto';
 import { exceptionToErrorsArray } from '@shell/utils/error';
-import { clone } from '@shell/utils/object';
 
 const _NEW = '_NEW';
 
@@ -38,7 +37,7 @@ export default {
       required: true,
     },
 
-    registerBeforeHook: {
+    registerAfterHook: {
       type:     Function,
       required: true,
     },
@@ -54,7 +53,7 @@ export default {
 
     return {
       enableInventory,
-      value:             clone(this.inventory),
+      value:             this.inventory,
       secret:            {},
       errors:            [],
       newSecretSelected: false,
@@ -62,7 +61,7 @@ export default {
   },
 
   created() {
-    this.registerBeforeHook(this.saveInventory, 'saveInventory');
+    this.registerAfterHook(this.saveInventory, 'saveInventory');
   },
 
   async fetch() {
@@ -177,11 +176,11 @@ export default {
 
         this.value.metadata.annotations['metal.harvesterhci.io/local-inventory'] = 'true';
 
-        Object.assign(this.inventory, this.value);
-
-        return await this.inventory.save();
+        return await this.value.save();
+      } else if (this.value.id) {
+        return await this.value.remove();
       } else {
-        this.inventory.remove();
+        return Promise.resolve();
       }
     },
 
