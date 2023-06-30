@@ -72,7 +72,10 @@ export default {
   computed: {
     headers() {
       const out = [
-        STATE,
+        {
+          ...STATE,
+          formatter: 'StateWithPopover',
+        },
         NAME,
         {
           name:      'host-ip',
