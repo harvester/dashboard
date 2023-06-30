@@ -112,7 +112,7 @@ export default {
       const inventory = inventories.find(inv => inv.id === `harvester-system/${ this.value.id }`);
 
       if (inventory) {
-        this.inventory = inventory;
+        this.inventory = await this.$store.dispatch(`${ inStore }/clone`, { resource: inventory });
       } else {
         this.inventory = await this.$store.dispatch(`${ inStore }/create`, {
           type:     HCI.INVENTORY,
@@ -575,7 +575,7 @@ export default {
           v-if="seederEnabled"
           :mode="mode"
           :node="value"
-          :register-before-hook="registerBeforeHook"
+          :register-after-hook="registerAfterHook"
           :inventory="inventory"
         />
         <div v-else>

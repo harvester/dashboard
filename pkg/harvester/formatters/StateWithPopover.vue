@@ -34,7 +34,7 @@ export default {
           <i class="icon icon-warning icon-lg text-warning" />
         </span>
 
-        <template slot="popover">
+        <template v-slot:popover>
           <p
             v-for="(message, index) in warningMessages"
             :key="message.text"
