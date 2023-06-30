@@ -97,7 +97,7 @@ export default {
 <template>
   <div v-if="showIP">
     <span v-for="{ip, name} in ips" :key="ip">
-      <CopyToClipboardText v-tooltip="name" :text="ip" />
+      <CopyToClipboardText v-clean-tooltip="name" :text="ip" />
     </span>
   </div>
 </template>

@@ -31,6 +31,6 @@ export default {
 
 <template>
   <div>
-    <CopyToClipboardText v-tooltip="ip" :text="nameDisplay" />
+    <CopyToClipboardText v-clean-tooltip="ip" :text="nameDisplay" />
   </div>
 </template>

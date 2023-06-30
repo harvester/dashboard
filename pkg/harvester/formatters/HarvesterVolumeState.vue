@@ -51,7 +51,7 @@ export default {
     <div>
       <ProgressBarMulti
         v-if="isRebuilding"
-        v-tooltip="rebuildingMessage"
+        v-clean-tooltip="rebuildingMessage"
         :values="percentage"
         :min="0"
         :max="100"
