@@ -218,7 +218,7 @@ export default {
     </Tab>
     <Tab v-if="value.spec.enabled" name="prometheus" :label="t('harvester.setting.harvesterMonitoring.section.prometheus')" :weight="-1">
       <a
-        v-tooltip="!externalLinks.prometheus.enabled ? t('monitoring.overview.linkedList.na') : undefined"
+        v-clean-tooltip="!externalLinks.prometheus.enabled ? t('monitoring.overview.linkedList.na') : undefined"
         :disabled="!externalLinks.prometheus.enabled"
         :href="externalLinks.prometheus.link"
         target="_blank"
@@ -365,7 +365,7 @@ export default {
     </Tab>
     <Tab v-if="value.spec.enabled && valuesContentJson.grafana.resources" name="grafana" :label="t('harvester.setting.harvesterMonitoring.section.grafana')" :weight="-3">
       <a
-        v-tooltip="!externalLinks.grafana.enabled ? t('monitoring.overview.linkedList.na') : undefined"
+        v-clean-tooltip="!externalLinks.grafana.enabled ? t('monitoring.overview.linkedList.na') : undefined"
         :disabled="!externalLinks.grafana.enabled"
         :href="externalLinks.grafana.link"
         target="_blank"
@@ -436,7 +436,7 @@ export default {
 
       <a
         v-if="valuesContentJson.alertmanager.enabled"
-        v-tooltip="!externalLinks.alertmanager.enabled ? t('monitoring.overview.linkedList.na') : undefined"
+        v-clean-tooltip="!externalLinks.alertmanager.enabled ? t('monitoring.overview.linkedList.na') : undefined"
         :disabled="!externalLinks.alertmanager.enabled"
         :href="externalLinks.alertmanager.link"
         target="_blank"

@@ -452,7 +452,7 @@ export default {
             </span>
             <a
               v-if="dev && !!resourceExternalLink"
-              v-tooltip="t(resourceExternalLink.tipsKey || 'generic.resourceExternalLinkTips')"
+              v-clean-tooltip="t(resourceExternalLink.tipsKey || 'generic.resourceExternalLinkTips')"
               class="resource-external"
               rel="nofollow noopener noreferrer"
               target="_blank"
