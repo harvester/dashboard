@@ -1,6 +1,7 @@
 <script>
 import { RadioGroup } from '@components/Form/Radio';
 import LabelValue from '@shell/components/LabelValue';
+import { Banner } from '@components/Banner';
 
 export default {
   name: 'HarvesterSeeder',
@@ -8,6 +9,7 @@ export default {
   components: {
     RadioGroup,
     LabelValue,
+    Banner,
   },
 
   props: {
@@ -53,6 +55,11 @@ export default {
 
 <template>
   <div>
+    <Banner
+      v-if="inventory.machineNotContactableCondition.message"
+      color="error"
+      :label="inventory.machineNotContactableCondition.message"
+    />
     <div v-if="enableInventory">
       <div class="row mb-20">
         <div class="col span-6">

@@ -558,4 +558,12 @@ export default class HciNode extends HarvesterResource {
 
     return inventories.find(inv => inv.id === `harvester-system/${ this.id }`);
   }
+
+  get warningMessages() {
+    let out = [];
+
+    out = out.concat(this.inventory?.warningMessages || []);
+
+    return out;
+  }
 }

@@ -6,6 +6,8 @@ import { Checkbox } from '@components/Form/Checkbox';
 import { SECRET } from '@shell/config/types';
 import ModalWithCard from '@shell/components/ModalWithCard';
 import NameNsDescription from '@shell/components/form/NameNsDescription';
+import { Banner } from '@components/Banner';
+
 import { base64Encode, base64Decode } from '@shell/utils/crypto';
 import { exceptionToErrorsArray } from '@shell/utils/error';
 import { clone } from '@shell/utils/object';
@@ -22,6 +24,7 @@ export default {
     RadioGroup,
     ModalWithCard,
     NameNsDescription,
+    Banner,
   },
 
   props: {
@@ -245,6 +248,11 @@ export default {
 
 <template>
   <div>
+    <Banner
+      v-if="inventory.machineNotContactableCondition.message"
+      color="error"
+      :label="inventory.machineNotContactableCondition.message"
+    />
     <div class="row">
       <div class="col span-6">
         <RadioGroup
