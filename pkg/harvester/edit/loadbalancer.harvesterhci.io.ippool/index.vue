@@ -1,15 +1,13 @@
 <script>
 import NameNsDescription from '@shell/components/form/NameNsDescription';
 import ResourceTabs from '@shell/components/form/ResourceTabs';
-import LabeledSelect from '@shell/components/form/LabeledSelect';
-import { LabeledInput } from '@components/Form/LabeledInput';
 import Tab from '@shell/components/Tabbed/Tab';
 import CreateEditView from '@shell/mixins/create-edit-view';
 import { NETWORK_ATTACHMENT, CAPI } from '@shell/config/types';
 import { allHash } from '@shell/utils/promise';
 import CruResource from '@shell/components/CruResource';
 import Range from './Range';
-import Priority from './Priority';
+import Selector from './Selector';
 import { HCI } from '@pkg/harvester/types';
 
 export default {
@@ -18,12 +16,10 @@ export default {
   components: {
     NameNsDescription,
     ResourceTabs,
-    LabeledSelect,
     Tab,
     CruResource,
     Range,
-    Priority,
-    LabeledInput,
+    Selector,
   },
 
   mixins: [CreateEditView],
@@ -48,20 +44,25 @@ export default {
   },
 
   data() {
-    return { namespaceRow: this.value.spec.selector.projects?.[0]?.namespaces || [] };
+    return { errors: [] };
   },
 
   computed: {
-    networkOptions() {
-      const networks = this.$store.getters['harvester/all'](NETWORK_ATTACHMENT) || [];
+    yamlModifiers() {
+      const activelyRemove = [
+        'metadata.managedFields',
+        'metadata.relationships',
+        'metadata.state',
+        'links',
+        'type',
+        'id'
+      ];
 
-      return [{
-        label: this.t('generic.none'),
-        value: '',
-      }, ...networks.map(n => ({
-        label: n.id,
-        value: n.id,
-      }))];
+      if (this.isCreate) {
+        activelyRemove.push('status');
+      }
+
+      return { activelyRemove };
     },
   },
 };
@@ -74,6 +75,7 @@ export default {
     :mode="mode"
     :errors="errors"
     :apply-hooks="applyHooks"
+    :yaml-modifiers="yamlModifiers"
     @finish="save"
   >
     <NameNsDescription
@@ -107,28 +109,8 @@ export default {
         :weight="97"
         class="bordered-table"
       >
-        <div class="row mb-20">
-          <div class="col span-6">
-            <LabeledSelect
-              v-model="value.spec.selector.network"
-              :label="t('harvester.ipPool.network.label')"
-              :options="networkOptions"
-              :mode="mode"
-            />
-          </div>
-          <div class="col span-6">
-            <LabeledInput
-              v-model.number="value.spec.selector.priority"
-              :label="t('harvester.ipPool.priority.label')"
-              :mode="mode"
-              type="number"
-              min="0"
-            />
-          </div>
-        </div>
-        <Priority
-          v-model="value.spec.selector.scope"
-          class="col span-12"
+        <Selector
+          v-model="value.spec.selector"
           :mode="mode"
         />
       </Tab>
