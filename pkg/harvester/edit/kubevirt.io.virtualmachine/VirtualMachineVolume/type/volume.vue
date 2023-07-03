@@ -26,6 +26,11 @@ export default {
       default: false
     },
 
+    namespace: {
+      type:    String,
+      default: null
+    },
+
     value: {
       type:    Object,
       default: () => {
@@ -56,7 +61,7 @@ export default {
     pvcsResource() {
       const allPVCs = this.$store.getters['harvester/all'](PVC) || [];
 
-      return allPVCs.find(P => P.metadata.name === this.value.volumeName);
+      return allPVCs.find(P => P.id === `${ this.namespace }/${ this.value.volumeName }`);
     },
 
     isDisabled() {

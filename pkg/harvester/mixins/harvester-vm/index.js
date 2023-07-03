@@ -501,7 +501,8 @@ export default {
             storageClassName,
             hotpluggable,
             volumeStatus,
-            dataSource
+            dataSource,
+            namespace
           };
         });
       }
