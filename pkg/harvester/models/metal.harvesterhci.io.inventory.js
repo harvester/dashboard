@@ -25,15 +25,11 @@ export default class HciInventory extends HarvesterResource {
     set(this, 'spec.baseboardSpec.connection.authSecretRef', this.spec?.baseboardSpec?.connection?.authSecretRef || {});
   }
 
-  get machineNotContactableCondition() {
-    return this?.status?.conditions?.find(c => c.type === 'machineNotContactable') || {};
-  }
-
   get warningMessages() {
     const out = [];
 
-    if (this.machineNotContactableCondition.message) {
-      out.push({ text: this.machineNotContactableCondition.message });
+    if (this.metadata?.state?.error) {
+      out.push({ text: this.metadata?.state.message });
     }
 
     return out;

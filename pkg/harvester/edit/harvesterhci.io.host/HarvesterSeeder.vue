@@ -247,11 +247,14 @@ export default {
 
 <template>
   <div>
-    <Banner
-      v-if="inventory.machineNotContactableCondition.message"
-      color="error"
-      :label="inventory.machineNotContactableCondition.message"
-    />
+    <div v-if="inventory.warningMessages.length > 0">
+      <Banner
+        v-for="msg in inventory.warningMessages"
+        :key="msg.text"
+        color="error"
+        :label="msg.text"
+      />
+    </div>
     <div class="row">
       <div class="col span-6">
         <RadioGroup
