@@ -28,9 +28,19 @@ export default class HciAddonConfig extends HarvesterResource {
     return out;
   }
 
-  toggleAddon() {
-    this.spec.enabled = !this.spec.enabled;
-    this.save();
+  async toggleAddon() {
+    const enableHistory = this.spec.enabled;
+
+    try {
+      this.spec.enabled = !this.spec.enabled;
+      await this.save();
+    } catch (err) {
+      this.spec.enabled = enableHistory;
+      this.$dispatch('growl/fromError', {
+        title: this.t('generic.notification.title.error', { name: (this.metadata.name) }),
+        err,
+      }, { root: true });
+    }
   }
 
   goToRancher() {
@@ -55,7 +65,7 @@ export default class HciAddonConfig extends HarvesterResource {
       return 'text-success';
     } else if (state === 'Disabled') {
       return 'text-darker';
-    } else if (state === 'Processing') {
+    } else if (state?.toLowerCase().includes('ing')) {
       return 'text-info';
     } else if (state?.toLowerCase().includes('failed') || state?.toLowerCase().includes('error')) {
       return 'text-error';
@@ -65,17 +75,23 @@ export default class HciAddonConfig extends HarvesterResource {
   }
 
   get stateDisplay() {
-    if (!this?.status?.status) {
-      return this.spec.enabled === false ? 'Disabled' : 'Processing';
-    }
-
     const out = this?.status?.status;
+
+    if (!out) {
+      return 'Disabled';
+    }
 
     if (out.startsWith('Addon')) {
       return out.replace('Addon', '');
     }
 
     return out;
+  }
+
+  get stateDescription() {
+    const failedCondition = (this.status?.conditions || []).find(C => C.type === 'Failed');
+
+    return failedCondition?.message || super.stateDescription;
   }
 
   get displayName() {
