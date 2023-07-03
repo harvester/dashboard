@@ -279,7 +279,7 @@ export default {
 
                 <BadgeStateFormatter v-if="volume.pvc" class="ml-10 state" :arbitrary="true" :row="volume.pvc" :value="volume.pvc.state" />
                 <a
-                  v-if="dev && !!volume.pvc.resourceExternalLink"
+                  v-if="dev && !!volume.pvc && !!volume.pvc.resourceExternalLink"
                   v-clean-tooltip="t(volume.pvc.resourceExternalLink.tipsKey || 'generic.resourceExternalLinkTips')"
                   class="ml-5 resource-external"
                   rel="nofollow noopener noreferrer"
