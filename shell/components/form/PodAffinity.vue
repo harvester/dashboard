@@ -294,7 +294,7 @@ export default {
     },
 
     priorityDisplay(term) {
-      return term.weight ? this.t('workload.scheduling.affinity.preferred') : this.t('workload.scheduling.affinity.required');
+      return 'weight' in term ? this.t('workload.scheduling.affinity.preferred') : this.t('workload.scheduling.affinity.required');
     },
 
     changeNamespaceMode(val, term, idx) {
@@ -476,7 +476,7 @@ export default {
               />
             </div>
             <div
-              v-if="props.row.value.weight"
+              v-if="'weight' in props.row.value"
               class="col span-3"
             >
               <LabeledInput
