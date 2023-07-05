@@ -13,6 +13,9 @@ nav:
     Logging: Logging
     'Monitoring & Logging': Monitoring & Logging
 
+validation:
+  arrayCountRequired: "At least {count} {key} {count, plural, =1 {is} other {are}} required, and {key} can not be empty."
+
 members:
   clusterMemebership: Cluster Membership
   projectMembership: Project Membership
