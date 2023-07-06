@@ -12,6 +12,7 @@ nav:
     Monitoring: 监控
     Logging: 日志
     'Monitoring & Logging': 监控 & 日志
+
 members:
   clusterMemebership: 集群成员
   projectMembership: 项目成员
@@ -622,7 +623,16 @@ harvester:
         down: 过去一小时没有事件
       console:
         down: 此虚拟机已关闭。请启动虚拟机以访问其控制台。
-        shortKeys: 快捷键
+        shortcutKeys: 快捷键
+        customShortcutKeys: 自定义快捷键
+        management: 管理快捷键
+        record:
+          start: 记录
+          recording: 记录中
+          stop: 停止记录
+          tips: 按下记录按钮后将捕获你的键盘输入。
+          send: 发送
+          preferredKeys: 首选自定义快捷键
     terminationGracePeriodSeconds:
       label: 终止宽限期
     affinity:
@@ -881,6 +891,7 @@ harvester:
       message: 要完全取消导入的 Harvester 集群，也请通过<code>虚拟化管理</code>页面在 Rancher 仪表板 UI 上删除它。
     ntpServers:
       isNotIPV4: 你输入的不是 IPv4 或主机地址。请输入有效的 IPv4 地址或主机地址。
+      isDuplicate: 存在重复的 NTP 服务器配置。
   cloudTemplate:
     label: Cloud Config 模板
     templateType: 模板类型
@@ -1068,15 +1079,23 @@ harvester:
       'harvester-system/vm-import-controller': vm-import-controller 是一个插件，用于将其他集群的 VM 工作负载迁移到现有的 Harvester 集群。
       'harvester-system/pcidevices-controller': pcidevices-controller 是一个插件，用于发现集群中节点的 PCI 设备，能让用户为 PCI 透传准备设备，以便与 Harvester VM 和 Guest 集群一起使用。
       'cattle-logging-system/rancher-logging': rancher-logging 是一个插件，用于从 Harvester 集群收集多功能日志、事件和审计，并根据流将它们路由到多种服务器。
+      'harvester-system/rancher-vcluster': rancher-vcluster 用于部署安装了 Rancher 的 vcluster。
       'cattle-monitoring-system/rancher-monitoring': rancher-monitoring 是一个插件，用于收集 Harvester 集群和 VM 的指标。你可以在嵌入式仪表板上查看指标，并向远程服务器发送告警。
       'vm-import-controller': vm-import-controller 是一个插件，用于将其他集群的 VM 工作负载迁移到现有的 Harvester 集群。
       'pcidevices-controller': pcidevices-controller 是一个插件，用于发现集群中节点的 PCI 设备，能让用户为 PCI 透传准备设备，以便与 Harvester VM 和 Guest 集群一起使用。
       'rancher-logging': rancher-logging 是一个插件，用于从 Harvester 集群收集多功能日志、事件和审计，并根据流将它们路由到多种服务器。
       'rancher-monitoring': rancher-monitoring 是一个插件，用于收集 Harvester 集群和 VM 的指标。你可以在嵌入式仪表板上查看指标，并向远程服务器发送告警。
+      'rancher-vcluster': rancher-vcluster 用于部署安装了 Rancher 的 vcluster。
     vmImport:
       titles:
         basic: 基本信息
         pvc: 卷
+    rancherVcluster:
+      accessRancher: 访问 Rancher 仪表板
+      hostname: 主机名
+      rancherVersion: Rancher 版本
+      password: Bootstrap 密码
+
 
   loadBalancer:
     label: 负载均衡器
@@ -1179,6 +1198,7 @@ harvester:
     numVFs: 虚拟数量
     vfAddresses: 虚拟地址
     showMore: 显示更多
+    parentSriov: 按父级 SR-IOV 过滤
 
   harvesterVlanConfigMigrateDialog:
     targetClusterNetwork: 
@@ -1357,7 +1377,7 @@ typeLabel:
   devices.harvesterhci.io.pcidevice: |-
     {count, plural,
       one { PCI 设备 }
-      other { PCI 设备 (实验功能) }
+      other { PCI 设备 }
     }
   persistentvolumeclaim: |-
     {count, plural,
