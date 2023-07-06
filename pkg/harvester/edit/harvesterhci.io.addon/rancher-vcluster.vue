@@ -81,6 +81,7 @@ export default {
             label-key="harvester.addons.rancherVcluster.hostname"
             :required="true"
             :mode="mode"
+            placeholder="rancher.$vip.nip.io"
           />
         </div>
 
@@ -101,6 +102,7 @@ export default {
             label-key="harvester.addons.rancherVcluster.password"
             :required="true"
             :mode="mode"
+            type="password"
           />
         </div>
       </div>
