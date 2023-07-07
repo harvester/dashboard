@@ -369,7 +369,7 @@ export default {
 
           const deviceType = d.status?.deviceStatus?.details?.deviceType;
 
-          if (deviceType !== 'disk') {
+          if (deviceType !== 'disk' || d?.status?.state !== 'Active') {
             return false;
           }
 
