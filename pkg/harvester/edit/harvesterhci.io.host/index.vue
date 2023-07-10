@@ -567,6 +567,7 @@ export default {
         <HarvesterKsmtuned :mode="mode" :node="value" :register-before-hook="registerBeforeHook" />
       </Tab>
       <Tab
+        v-if="hasAddonSchema"
         name="seeder"
         :weight="60"
         :label="t('harvester.host.tabs.seeder')"
@@ -580,7 +581,7 @@ export default {
         />
         <div v-else>
           <Banner
-            v-if="hasAddonSchema && hasSeederAddon"
+            v-if="hasSeederAddon"
             color="info"
           >
             <MessageLink
@@ -591,14 +592,9 @@ export default {
             />
           </Banner>
           <Banner
-            v-else-if="!hasSeederAddon"
-            color="warning"
-            :label="t('harvester.seeder.banner.noAddon')"
-          />
-          <Banner
             v-else
             color="warning"
-            :label="t('harvester.seeder.banner.noAccess')"
+            :label="t('harvester.seeder.banner.noAddon')"
           />
         </div>
       </Tab>

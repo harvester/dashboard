@@ -1089,6 +1089,8 @@ harvester:
       'rancher-logging': rancher-logging is an addon to collect versatile logs, events and audits from the Harvester cluster and route them to many kinds of servers based on flows.
       'rancher-monitoring': rancher-monitoring is an addon to collect Harvester cluster and VM metrics, view them on embedded dashboard, send alert to remote servers.
       'rancher-vcluster': rancher-vcluster deploys a vcluster with rancher installed.
+      'harvester-seeder': harvester-seeder is an addon that uses ipmi and redfish to discover hardware information and perform out-of-band operations.
+      'harvester-system/harvester-seeder': harvester-seeder is an addon that uses ipmi and redfish to discover hardware information and perform out-of-band operations.
     vmImport:
       titles:
         basic: Basic
