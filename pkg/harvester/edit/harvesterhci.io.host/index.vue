@@ -20,7 +20,9 @@ import KeyValue from '@shell/components/form/KeyValue';
 import Loading from '@shell/components/Loading.vue';
 import MessageLink from '@shell/components/MessageLink';
 import { ADD_ONS } from '@pkg/harvester/config/harvester-map';
+import { PRODUCT_NAME as HARVESTER_PRODUCT } from '@pkg/harvester/config/harvester';
 
+import { _EDIT } from '@shell/config/query-params';
 import { sortBy } from '@shell/utils/sort';
 import { Banner } from '@components/Banner';
 import HarvesterDisk from './HarvesterDisk';
@@ -224,7 +226,18 @@ export default {
     },
 
     toEnableSeederAddon() {
-      return `/${ HCI.ADD_ONS }/harvester-system/${ ADD_ONS.HARVESTER_SEEDER }?mode=edit`;
+      const { cluster } = this.$router?.currentRoute?.params || {};
+
+      return {
+        name:   `${ HARVESTER_PRODUCT }-c-cluster-resource-namespace-id`,
+        params: {
+          resource:  `${ HCI.ADD_ONS }`,
+          namespace: 'harvester-system',
+          cluster,
+          id:        `${ ADD_ONS.HARVESTER_SEEDER }`
+        },
+        query: { mode: _EDIT }
+      };
     },
 
     hasAddonSchema() {
