@@ -75,11 +75,11 @@ export default class HciAddonConfig extends HarvesterResource {
   }
 
   get stateDisplay() {
-    if (!this?.status?.status) {
-      return this.spec.enabled === false ? 'Disabled' : 'Processing';
-    }
-
     const out = this?.status?.status;
+
+    if (!out) {
+      return 'Disabled';
+    }
 
     if (out.startsWith('Addon')) {
       return out.replace('Addon', '');
