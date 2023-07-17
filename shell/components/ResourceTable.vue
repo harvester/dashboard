@@ -179,7 +179,7 @@ export default {
     const inStore = this.schema?.id ? this.$store.getters['currentStore'](this.schema.id) : undefined;
 
     return {
-      listGroups, listGroupMapped, inStore
+      options, listGroups, listGroupMapped, inStore
     };
   },
 

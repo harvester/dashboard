@@ -4,6 +4,8 @@ generic:
   namespace: Namespace
   notReady: Not Ready
   labels: Labels
+  inProgress: In Progress
+  basic: Basic
 
 nav:
   group:
@@ -12,6 +14,10 @@ nav:
     Monitoring: Monitoring
     Logging: Logging
     'Monitoring & Logging': Monitoring & Logging
+
+resourceTable:
+  groupBy:
+    device: Group by Device
 
 validation:
   arrayCountRequired: "At least {count} {key} {count, plural, =1 {is} other {are}} required, and {key} can not be empty."
