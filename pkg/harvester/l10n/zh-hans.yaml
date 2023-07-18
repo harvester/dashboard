@@ -397,7 +397,7 @@ harvester:
       lastFormattedAt:
         info: 此磁盘已被强制格式化。
       notification:
-        success: '已更新主机“{name}”配置。'
+        success: '已更新主机“{name}”存储配置。'
       error: 主机有未就绪或不可调度的磁盘。
       fileSystem:
         info: 当前文件系统为 {system}，你可以手动格式化。

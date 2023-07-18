@@ -406,7 +406,7 @@ harvester:
       lastFormattedAt:
         info: The disk has already been force-formatted.
       notification:
-        success: 'Update host "{name}" configurations successfully.'
+        success: 'Update host "{name}" storage configurations successfully.'
       error: Host has unready or unschedulable disks.
       fileSystem:
         info: Current file system is {system}, You can format it manually.
