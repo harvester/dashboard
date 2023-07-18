@@ -567,7 +567,7 @@ export const getters = {
     const clusters = getters['management/all'](MANAGEMENT.CLUSTER);
     const cluster = clusters.find(c => c.id === 'local') || {};
 
-    return getters['isSingleProduct'] && cluster.isHarvester && !getters['isRancherInHarvester'];
+    return getters['isSingleProduct'] && cluster.isHarvester;
   },
 
   targetRoute(state) {

@@ -15,7 +15,6 @@ export const HCI_SETTING = {
   OVERCOMMIT_CONFIG:         'overcommit-config',
   CLUSTER_REGISTRATION_URL:  'cluster-registration-url',
   DEFAULT_STORAGE_CLASS:     'default-storage-class',
-  RANCHER_MANAGER_SUPPORT:   'rancher-manager-support',
   SUPPORT_BUNDLE_TIMEOUT:    'support-bundle-timeout',
   SUPPORT_BUNDLE_IMAGE:      'support-bundle-image',
   STORAGE_NETWORK:           'storage-network',
