@@ -15,14 +15,18 @@
     "preserveSymlinks": true,
     "typeRoots": [
       "../../node_modules",
-      "../../shell/types"
-    ],
+      "../../node_modules/@rancher/shell/types",
+      "types"
+    ],    
     "types": [
       "node",
       "webpack-env",
       "@types/node",
       "@types/jest",
-      "rancher"
+      "@types/lodash",
+      "@nuxt/types",
+      "rancher",
+      "shell"
     ],
     "lib": [
       "esnext",
@@ -31,35 +35,11 @@
       "scripthost"
     ],
     "paths": {
-      "@shell/core/*": [
-        "../../shell/core/*"
+      "@shell/*": [
+        "../../node_modules/@rancher/shell/*"
       ],
-      "@shell/config/*": [
-        "../../shell/config/*"
-      ],
-      "@shell/components/*": [
-        "../../shell/components/*"
-      ],
-      "@shell/store/*": [
-        "../../shell/store/*"
-      ],
-      "@shell/plugins/*": [
-        "../../shell/plugins/*"
-      ],
-      "@shell/utils/*": [
-        "../../shell/utils/*"
-      ],
-      "@shell/models/*": [
-        "../../shell/models/*"
-      ],
-      "@shell/mixins/*": [
-        "../../shell/mixins/*"
-      ],
-      "@shell/pages/*": [
-        "../../shell/pages/*"
-      ],
-      "@shell/types/*": [
-        "../../shell/types/*"
+      "@components/*": [
+        "@rancher/components/*"
       ],
       "@pkg/*": [
         "./*"
@@ -70,11 +50,9 @@
     "**/*.ts",
     "**/*.d.ts",
     "**/*.tsx",
-    "**/*.vue",
-    "../../shell/core/types.ts",
-    "../../vue-shim.d.ts",
-  ],
+    "**/*.vue"
+, "store/harvester-store/index.js", "store/harvester-store/getters.js", "store/harvester-store/actions.js"  ],
   "exclude": [
-    "node_modules"
+    "../../node_modules",
   ]
 }

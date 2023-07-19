@@ -62,30 +62,30 @@ jobs:
   #         name: ${{github.run_number}}-${{github.run_attempt}}-screenshots
   #         path: cypress/screenshots
 
-  unit-test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 1
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '14.x'
+  # unit-test:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #       with:
+  #         fetch-depth: 1
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: '14.x'
       
-      - name: Install packages
-        run: yarn install:ci
+  #     - name: Install packages
+  #       run: yarn install:ci
       
-      - name: Run tests
-        run: |
-          yarn test:ci
-          mkdir -p coverage-artifacts/coverage
-          cp coverage/unit/coverage-final.json coverage-artifacts/coverage/coverage-unit.json
+  #     - name: Run tests
+  #       run: |
+  #         yarn test:ci
+  #         mkdir -p coverage-artifacts/coverage
+  #         cp coverage/unit/coverage-final.json coverage-artifacts/coverage/coverage-unit.json
 
-      - name: Upload coverage
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{github.run_number}}-${{github.run_attempt}}-coverage
-          path: coverage-artifacts/**/*
+  #     - name: Upload coverage
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         name: ${{github.run_number}}-${{github.run_attempt}}-coverage
+  #         path: coverage-artifacts/**/*
 
   i18n:
     runs-on: ubuntu-latest

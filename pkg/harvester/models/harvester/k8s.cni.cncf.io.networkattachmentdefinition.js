@@ -1,11 +1,11 @@
 import { clone } from '@shell/utils/object';
 import { HCI } from '../../types';
-import NetworkAttachmentDef from '@shell/models/k8s.cni.cncf.io.networkattachmentdefinition';
+import HarvesterResource from '../harvester';
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../../config/harvester';
 
 const NOT_READY = 'Not Ready';
 
-export default class HarvesterNetworkAttachmentDef extends NetworkAttachmentDef {
+export default class HarvesterNetworkAttachmentDef extends HarvesterResource {
   get listLocation() {
     return this.$rootGetters['type-map/optionsFor'](this.type).customRoute || {
       name:   `${ HARVESTER_PRODUCT }-c-cluster-resource`,

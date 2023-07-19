@@ -1,4 +1,0 @@
-{
-  "reporter": [ "json", "text-summary"],
-  "report-dir": "coverage/e2e"
-}

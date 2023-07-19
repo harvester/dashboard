@@ -1,15 +1,6 @@
-
-const config = require('./shell/vue.config');
-
-// Excludes the following plugins if there's no .env file.
-let defaultExcludes = 'epinio, rancher-components, harvester';
-
-if (process.env.RANCHER_ENV === 'harvester') {
-  defaultExcludes = defaultExcludes.replace(', harvester', '');
-}
-const excludes = process.env.EXCLUDES_PKG || defaultExcludes;
+const config = require('@rancher/shell/vue.config');
 
 module.exports = config(__dirname, {
-  excludes: excludes.replace(/\s/g, '').split(','),
+  excludes: [],
   // excludes: ['fleet', 'example']
 });

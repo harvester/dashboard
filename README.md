@@ -36,30 +36,6 @@ HARVESTER_PKG_URL=http://127.0.0.1:4500/harvester-${version}/harvester-${version
 ./scripts/build-hosted # for hosting on a static file webserver and pointing Harvester's ui-index at it
 # Output in dist/
 
-# Develop via Docker instead of a local nodejs
-docker build -f Dockerfile.dev -t dashboard:dev .
-docker run -v $(pwd):/src \
-  -v dashboard_node:/src/node_modules \
-  -p 8005:8005 \
-  -e API=https://your-rancher \
-  dashboard:dev
-# The first time will take *forever* installing node_modules into the volume; it will be faster next time.
-# Goto https://localhost:8005
-
-# Developing against a standalone "Steve" API on a Mac
-git clone https://github.com/rancher/steve.git
-cd steve
-make run-host
-
-cd dashboard
-docker build -f Dockerfile.dev -t rancher/dashboard:dev .
-docker run -v $(pwd):/src \
-  -v dashboard_node:/src/node_modules \
-  -p 8005:8005 \
-  -e API=http://172.17.0.1:8989 \
-  rancher/dashboard:dev
-# The first time will take *forever* installing node_modules into the volume; it will be faster next time.
-# Goto https://localhost:8005
 ```
 
 # What is it?

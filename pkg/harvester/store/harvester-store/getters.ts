@@ -31,7 +31,7 @@ export default {
 
       projects = sortBy(filterBy(projects, 'spec.clusterName', cluster.id), [
         'nameDisplay',
-      ]).filter((project: any) => project.nameDisplay !== 'System');
+      ], false).filter((project: any) => project.nameDisplay !== 'System');
 
       const projectsById: any = {};
       const namespacesByProject: any = {};
@@ -69,7 +69,7 @@ export default {
         }
 
         out.push({
-          id:    `project://${ id }`,
+          id:    `project://${ id }` as any,
           kind:  'project',
           label: project.nameDisplay,
         });
@@ -87,7 +87,7 @@ export default {
         }
 
         out.push({
-          id:    ALL_ORPHANS,
+          id:    ALL_ORPHANS as any,
           kind:  'project',
           label: rootGetters['i18n/t']('nav.ns.orphan'),
         });

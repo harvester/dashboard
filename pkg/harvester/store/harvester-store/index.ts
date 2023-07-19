@@ -6,7 +6,7 @@ import actions from './actions';
 
 import { PRODUCT_NAME } from '../../config/harvester';
 
-import { SteveFactory, steveStoreInit } from '../../../../shell/plugins/steve/index';
+import { SteveFactory, steveStoreInit } from '@shell/plugins/steve/index';
 
 const harvesterFactory = (): CoreStoreSpecifics => {
   const steveFactory = SteveFactory();
