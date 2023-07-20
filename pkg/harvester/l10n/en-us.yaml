@@ -851,6 +851,8 @@ harvester:
       tip: IP Range should be IPv4 CIDR format and 4 times the number of your cluster nodes.
     vmForceDeletionPolicy:
       period: Period
+    httpProxy:
+      warning: 'WARNING: <br/> If you configure "http-proxy" and "https-proxy", you must also put Harvester node&apos;s CIDR into "no-proxy", otherwise the Harvester cluster will be broken.'
     supportBundleImage:
       imagePullPolicy: Pull Policy
       repo: Repository
