@@ -1,11 +1,13 @@
 <script>
 import CreateEditView from '@shell/mixins/create-edit-view';
+
+import { Banner } from '@components/Banner';
 import { LabeledInput } from '@components/Form/LabeledInput';
 
 export default {
   name: 'HarvesterHttpProxy',
 
-  components: { LabeledInput },
+  components: { Banner, LabeledInput },
 
   mixins: [CreateEditView],
 
@@ -50,30 +52,36 @@ export default {
 </script>
 
 <template>
-  <div class="row" @input="update">
-    <div class="col span-12">
-      <template>
-        <LabeledInput
-          v-model="parseDefaultValue.httpProxy"
-          class="mb-20"
-          :mode="mode"
-          label="http-proxy"
-        />
+  <div>
+    <Banner color="warning">
+      <t k="harvester.setting.httpProxy.warning" :raw="true" />
+    </Banner>
 
-        <LabeledInput
-          v-model="parseDefaultValue.httpsProxy"
-          class="mb-20"
-          :mode="mode"
-          label="https-proxy"
-        />
+    <div class="row" @input="update">
+      <div class="col span-12">
+        <template>
+          <LabeledInput
+            v-model="parseDefaultValue.httpProxy"
+            class="mb-20"
+            :mode="mode"
+            label="http-proxy"
+          />
 
-        <LabeledInput
-          v-model="parseDefaultValue.noProxy"
-          class="mb-20"
-          :mode="mode"
-          label="no-proxy"
-        />
-      </template>
+          <LabeledInput
+            v-model="parseDefaultValue.httpsProxy"
+            class="mb-20"
+            :mode="mode"
+            label="https-proxy"
+          />
+
+          <LabeledInput
+            v-model="parseDefaultValue.noProxy"
+            class="mb-20"
+            :mode="mode"
+            label="no-proxy"
+          />
+        </template>
+      </div>
     </div>
   </div>
 </template>
