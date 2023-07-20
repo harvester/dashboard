@@ -34,4 +34,14 @@ export default class HciInventory extends HarvesterResource {
 
     return out;
   }
+
+  get customValidationRules() {
+    return [
+      {
+        path:           'spec.events.pollingInterval',
+        translationKey: 'harvester.seeder.inventory.pollingInterval.label',
+        validators:     ['interval'],
+      },
+    ];
+  }
 }
