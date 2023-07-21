@@ -1108,6 +1108,8 @@ harvester:
       hostname: Hostname
       rancherVersion: Rancher Version
       password: Bootstrap Password
+    switchFailed: "{action} {name} failed!"
+      
 
 
   loadBalancer:
