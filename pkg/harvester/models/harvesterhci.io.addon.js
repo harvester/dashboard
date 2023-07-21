@@ -37,7 +37,7 @@ export default class HciAddonConfig extends HarvesterResource {
     } catch (err) {
       this.spec.enabled = enableHistory;
       this.$dispatch('growl/fromError', {
-        title: this.t('generic.notification.title.error', { name: (this.metadata.name) }),
+        title: this.t('harvester.addons.switchFailed', { action: enableHistory ? this.t('generic.disable') : this.t('generic.enable'), name: (this.metadata.name) }),
         err,
       }, { root: true });
     }
