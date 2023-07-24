@@ -1091,11 +1091,11 @@ harvester:
       'harvester-system/pcidevices-controller': pcidevices-controller is an addon to help discover PCI devices for nodes in your cluster and allow users to prepare devices for PCI Passthrough, for use with Harvester VM and guest Clusters.
       'cattle-logging-system/rancher-logging': rancher-logging is an addon to collect versatile logs, events and audits from the Harvester cluster and route them to many kinds of servers based on flows.
       'harvester-system/rancher-vcluster': rancher-vcluster deploys a vcluster with rancher installed.
-      'cattle-monitoring-system/rancher-monitoring': rancher-monitoring is an addon to collect Harvester cluster and VM metrics, view them on embedded dashboard, send alert to remote servers.
+      'cattle-monitoring-system/rancher-monitoring': rancher-monitoring is an addon to collect Harvester cluster and VM metrics, view them on the embedded dashboard, and send alert(s) to remote servers.
       'vm-import-controller': vm-import-controller is an addon to help migrate VM workloads from other source clusters to an existing Harvester cluster.
       'pcidevices-controller': pcidevices-controller is an addon to help discover PCI devices for nodes in your cluster and allow users to prepare devices for PCI Passthrough, for use with Harvester VM and guest Clusters.
       'rancher-logging': rancher-logging is an addon to collect versatile logs, events and audits from the Harvester cluster and route them to many kinds of servers based on flows.
-      'rancher-monitoring': rancher-monitoring is an addon to collect Harvester cluster and VM metrics, view them on embedded dashboard, send alert to remote servers.
+      'rancher-monitoring': rancher-monitoring is an addon to collect Harvester cluster and VM metrics, view them on the embedded dashboard, and send alert(s) to remote servers.
       'rancher-vcluster': rancher-vcluster deploys a vcluster with rancher installed.
       'harvester-seeder': harvester-seeder is an addon that uses ipmi and redfish to discover hardware information and perform out-of-band operations.
       'harvester-system/harvester-seeder': harvester-seeder is an addon that uses ipmi and redfish to discover hardware information and perform out-of-band operations.
