@@ -430,6 +430,7 @@ export default {
         v-model="valuesContentJson.alertmanager.enabled"
         class="mb-20"
         name="model"
+        :mode="mode"
         :options="[true,false]"
         :labels="[t('generic.enabled'), t('generic.disabled')]"
       />
