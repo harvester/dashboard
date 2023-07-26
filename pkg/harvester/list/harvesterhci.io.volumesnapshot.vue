@@ -68,7 +68,6 @@ export default {
     v-else
     v-bind="$attrs"
     :groupable="true"
-    :namespaced="false"
     :schema="schema"
     :rows="filteredRows"
     key-field="_key"
