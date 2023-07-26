@@ -4,6 +4,8 @@ generic:
   namespace: 命名空间
   notReady: 未就绪
   labels: 标签
+  inProgress: 进行中
+  basic: 基本信息
 
 nav:
   group:
@@ -12,6 +14,13 @@ nav:
     Monitoring: 监控
     Logging: 日志
     'Monitoring & Logging': 监控 & 日志
+
+resourceTable:
+  groupBy:
+    device: 按设备分组
+
+validation:
+  arrayCountRequired: "至少需要 {count} 个 {key}，而且 {key} 不能为空。"
 
 members:
   clusterMemebership: 集群成员
@@ -397,7 +406,7 @@ harvester:
       lastFormattedAt:
         info: 此磁盘已被强制格式化。
       notification:
-        success: '已更新主机“{name}”存储配置。'
+        success: '已更新主机 {name} 存储配置。'
       error: 主机有未就绪或不可调度的磁盘。
       fileSystem:
         info: 当前文件系统为 {system}，你可以手动格式化。
@@ -842,6 +851,8 @@ harvester:
       tip: IP 范围格式是 IPv4 CIDR，而且是集群节点数的 4 倍。
     vmForceDeletionPolicy:
       period: 周期
+    httpProxy:
+      warning: '警告：<br/> 如果你配置了 "http-proxy" 和 "https-proxy"，那么你必须同时将 Harvester 节点的 CIDR 填入 "no-proxy"，否则 Harvester 集群将会崩溃。'
     supportBundleImage:
       imagePullPolicy: 镜像拉取策略
       repo: 仓库
@@ -1086,6 +1097,8 @@ harvester:
       'rancher-logging': rancher-logging 是一个插件，用于从 Harvester 集群收集多功能日志、事件和审计，并根据流将它们路由到多种服务器。
       'rancher-monitoring': rancher-monitoring 是一个插件，用于收集 Harvester 集群和 VM 的指标。你可以在嵌入式仪表板上查看指标，并向远程服务器发送告警。
       'rancher-vcluster': rancher-vcluster 用于部署安装了 Rancher 的 vcluster。
+      'harvester-seeder': Harvester-seeder 是一个插件，使用 ipmi 和 redfish 来发现硬件信息并执行外部操作。
+      'harvester-system/harvester-seeder': Harvester-seeder 是一个插件，使用 ipmi 和 redfish 来发现硬件信息并执行外部操作。
     vmImport:
       titles:
         basic: 基本信息
@@ -1095,6 +1108,8 @@ harvester:
       hostname: 主机名
       rancherVersion: Rancher 版本
       password: Bootstrap 密码
+    switchFailed: "{action} {name} 失败"
+      
 
 
   loadBalancer:
