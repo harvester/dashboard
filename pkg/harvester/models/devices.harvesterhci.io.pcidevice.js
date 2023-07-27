@@ -58,6 +58,14 @@ export default class PCIDevice extends SteveModel {
     return false;
   }
 
+  goToDetail() {
+    return false;
+  }
+
+  goToEdit() {
+    return false;
+  }
+
   get passthroughClaim() {
     const passthroughClaims = this.$getters['all'](HCI.PCI_CLAIM) || [];
 
