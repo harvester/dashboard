@@ -37,6 +37,14 @@ export default class SRIOVDevice extends SteveModel {
     return false;
   }
 
+  goToDetail() {
+    return false;
+  }
+
+  goToEdit() {
+    return false;
+  }
+
   get actualState() {
     return this.isEnabled ? 'Enabled' : 'Disabled';
   }
