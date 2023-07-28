@@ -89,7 +89,7 @@ export default class HciAddonConfig extends HarvesterResource {
   }
 
   get stateDescription() {
-    const failedCondition = (this.status?.conditions || []).find(C => C.type === 'Failed');
+    const failedCondition = (this.status?.conditions || []).find(C => C.type === 'OperationFailed');
 
     return failedCondition?.message || super.stateDescription;
   }
