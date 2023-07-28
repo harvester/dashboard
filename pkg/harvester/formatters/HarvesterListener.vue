@@ -1,7 +1,10 @@
 <script>
+import CopyToClipboardText from '@shell/components/CopyToClipboardText';
 import { isMaybeSecure } from '@shell/utils/url';
 
 export default {
+  components: { CopyToClipboardText },
+
   props: {
     row: {
       type:     Object,
@@ -48,10 +51,10 @@ export default {
 
           const html = `<a href="${ proxyUrl }" target="_blank" rel="noopener noreferrer nofollow">${ label }</a>`;
 
-          out.push({ html });
+          out.push({ html, label });
         });
       } else {
-        out.push({ html: address });
+        out.push({ html: address, label: address });
       }
 
       return out;
@@ -66,7 +69,7 @@ export default {
       v-for="(port, index) in parsed"
       :key="index"
     >
-      <span v-clean-html="port.html" />
+      <CopyToClipboardText :text="port.label" />
     </div>
   </div>
 </template>
