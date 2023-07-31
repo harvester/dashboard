@@ -323,6 +323,25 @@ export default {
       const addDisks = this.newDisks.filter(d => d.isNew);
       const removeDisks = this.disks.filter(d => !findBy(this.newDisks, 'name', d.name) && d.blockDevice);
 
+      if (addDisks.length === 0 && removeDisks.length === 0) {
+        return Promise.resolve();
+      } else if (addDisks.length !== 0 && removeDisks.length === 0) {
+        const updatedDisks = addDisks.filter((d) => {
+          const blockDevice = this.$store.getters[`${ inStore }/byId`](HCI.BLOCK_DEVICE, `${ LONGHORN_SYSTEM }/${ d.name }`);
+          const { provisioned, forceFormatted } = blockDevice.spec.fileSystem;
+
+          if (provisioned && forceFormatted === d.forceFormatted) {
+            return false;
+          } else {
+            return true;
+          }
+        });
+
+        if (updatedDisks.length === 0) {
+          return Promise.resolve();
+        }
+      }
+
       try {
         await Promise.all(addDisks.map((d) => {
           const blockDevice = this.$store.getters[`${ inStore }/byId`](HCI.BLOCK_DEVICE, `${ LONGHORN_SYSTEM }/${ d.name }`);
