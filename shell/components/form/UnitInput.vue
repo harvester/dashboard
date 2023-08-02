@@ -210,7 +210,6 @@ export default {
       } else if (out) {
         out = this.unit ? parseSi(`${ out }${ this.unit }`) : parseInt(out);
       }
-
       this.$emit('input', out);
     },
   }

@@ -232,6 +232,10 @@ export default (
       this.onBlurLabeled();
     },
 
+    onChange(event: string): void {
+      this.$emit('blur', event);
+    },
+
     escapeHtml
   }
 });
@@ -299,6 +303,7 @@ export default (
         @input="onInput($event.target.value)"
         @focus="onFocus"
         @blur="onBlur"
+        @change="onChange"
       >
     </slot>
 
