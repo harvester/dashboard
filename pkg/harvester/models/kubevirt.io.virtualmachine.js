@@ -915,7 +915,8 @@ export default class VirtVm extends HarvesterResource {
         required:       true,
         minLength:      1,
         maxLength:      63,
-        translationKey: 'harvester.fields.name'
+        translationKey: 'harvester.fields.name',
+        validators:     ['validateRfc1123Label']
       },
       {
         nullable:       false,
@@ -934,6 +935,12 @@ export default class VirtVm extends HarvesterResource {
         nullable:   false,
         path:       'spec.template.spec',
         validators: ['vmNetworks']
+      },
+      {
+        nullable:       false,
+        path:           'spec.template.spec.hostname',
+        validators:     ['validateRfc1123Label'],
+        translationKey: 'harvester.virtualMachine.instance.single.host.label'
       },
       {
         nullable:   false,

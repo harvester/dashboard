@@ -297,6 +297,13 @@ export default class HciPv extends HarvesterResource {
   get customValidationRules() {
     return [
       {
+        nullable:       false,
+        path:           'metadata.name',
+        required:       true,
+        translationKey: 'harvester.fields.name',
+        validators:     ['validateDnsSubdomainRfc1123']
+      },
+      {
         nullable:   false,
         path:       'spec.resources.requests.storage',
         required:   true,
