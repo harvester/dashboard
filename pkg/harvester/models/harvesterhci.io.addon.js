@@ -32,6 +32,16 @@ export default class HciAddonConfig extends HarvesterResource {
     const enableHistory = this.spec.enabled;
 
     try {
+      if (!this.spec.enabled && this.id === 'rancher-vcluster/rancher-vcluster') {
+        const valuesContent = jsyaml.load(this.spec.valuesContent);
+
+        if (!valuesContent.hostname) {
+          this.goToEdit();
+
+          return;
+        }
+      }
+
       this.spec.enabled = !this.spec.enabled;
       await this.save();
     } catch (err) {

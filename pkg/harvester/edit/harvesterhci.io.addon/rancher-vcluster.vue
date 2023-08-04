@@ -2,7 +2,6 @@
 import merge from 'lodash/merge';
 import jsyaml from 'js-yaml';
 import { LabeledInput } from '@components/Form/LabeledInput';
-import CreateEditView from '@shell/mixins/create-edit-view';
 import { RadioGroup } from '@components/Form/Radio';
 
 const DEFAUL_VALUE = {
@@ -15,8 +14,6 @@ export default {
   name:       'EditAddonVcluster',
   components: { LabeledInput, RadioGroup },
 
-  mixins: [CreateEditView],
-
   props: {
     value: {
       type:     Object,
@@ -26,6 +23,10 @@ export default {
     mode: {
       type:     String,
       required: true
+    },
+    registerBeforeHook: {
+      type:     Function,
+      required: true,
     },
   },
 
@@ -44,6 +45,32 @@ export default {
     }
 
     return { valuesContentJson };
+  },
+
+  created() {
+    if (this.registerBeforeHook) {
+      this.registerBeforeHook(this.willSave, 'willSave');
+    }
+  },
+
+  methods: {
+    willSave() {
+      const errors = [];
+
+      if (!this.value.spec.enabled) {
+        return Promise.resolve();
+      }
+
+      if (!this.valuesContentJson.hostname) {
+        errors.push(this.t('validation.required', { key: this.t('harvester.addons.rancherVcluster.hostname') }, true));
+      }
+
+      if (errors.length > 0) {
+        return Promise.reject(errors);
+      } else {
+        return Promise.resolve();
+      }
+    },
   },
 
   watch: {
@@ -100,7 +127,6 @@ export default {
           <LabeledInput
             v-model="valuesContentJson.bootstrapPassword"
             label-key="harvester.addons.rancherVcluster.password"
-            :required="true"
             :mode="mode"
             type="password"
           />
