@@ -40,6 +40,7 @@ export default {
     <component
       :is="currentComponent"
       :value="value"
+      :register-before-hook="registerBeforeHook"
       :mode="mode"
     />
   </CruResource>
