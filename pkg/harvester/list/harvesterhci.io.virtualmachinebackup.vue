@@ -6,7 +6,7 @@ import Masthead from '@shell/components/ResourceList/Masthead';
 import ResourceTable from '@shell/components/ResourceTable';
 
 import { HCI } from '../types';
-import { allHash } from '@shell/utils/promise';
+import { allSettled } from '../utils/promise';
 import { STATE, AGE, NAME, NAMESPACE } from '@shell/config/table-headers';
 
 export default {
@@ -24,7 +24,7 @@ export default {
 
   async fetch() {
     const inStore = this.$store.getters['currentProduct'].inStore;
-    const hash = await allHash({
+    const hash = await allSettled({
       vms:      this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VM }),
       settings: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.SETTING }),
       rows:     this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.BACKUP }),
@@ -32,11 +32,14 @@ export default {
 
     this.rows = hash.rows;
     this.settings = hash.settings;
-    const backupTargetResource = hash.settings.find( O => O.id === 'backup-target');
-    const isEmpty = this.getBackupTargetValueIsEmpty(backupTargetResource);
 
-    if (!isEmpty) {
-      this.testConnect();
+    if (this.$store.getters[`${ inStore }/schemaFor`](HCI.SETTING)) {
+      const backupTargetResource = hash.settings.find( O => O.id === 'backup-target');
+      const isEmpty = this.getBackupTargetValueIsEmpty(backupTargetResource);
+
+      if (backupTargetResource && !isEmpty) {
+        this.testConnect();
+      }
     }
   },
 
@@ -56,7 +59,9 @@ export default {
   methods: {
     async testConnect() {
       try {
-        await this.$store.dispatch('harvester/request', { url: 'v1/harvester/backuptarget/healthz' });
+        const url = this.$store.getters['harvester-common/getHarvesterClusterUrl']('v1/harvester/backuptarget/healthz');
+
+        await this.$store.dispatch('harvester/request', { url });
       } catch (err) {
         if (err?._status === 400 || err?._status === 503) {
           this.$store.dispatch('growl/error', {
