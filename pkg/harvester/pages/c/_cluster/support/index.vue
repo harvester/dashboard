@@ -108,7 +108,7 @@ export default {
               </button>
             </div>
           </div>
-          <div class="box box-primary mb-20">
+          <div class="box box-primary" :class="{'mb-20': dev }">
             <h2>
               {{ t('harvester.support.kubeconfig.title') }}
             </h2>
@@ -125,7 +125,7 @@ export default {
               </button>
             </div>
           </div>
-          <div class="row">
+          <div v-if="dev" class="row">
             <div class="col span-6 box box-primary">
               <h2>
                 <a rel="nofollow noopener noreferrer" target="_blank" :href="rancherLink">{{ t('harvester.support.internal.rancher.title') }} <i class="icon icon-external-link" /></a>
