@@ -51,4 +51,38 @@ export default class HciSecret extends Secret {
   get parentLocationOverride() {
     return this.doneOverride;
   }
+
+  get details() {
+    const out = [
+      {
+        label:   this.t('secret.type'),
+        content: this.typeDisplay
+      }
+    ];
+
+    if (this.cn) {
+      out.push({
+        label:   this.t('secret.certificate.cn'),
+        content: this.plusMoreNames ? `${ this.cn } ${ this.t('secret.certificate.plusMore', { n: this.plusMoreNames }) }` : this.cn
+      });
+    }
+
+    if (this.issuer) {
+      out.push({
+        label:   this.t('secret.certificate.issuer'),
+        content: this.issuer
+      });
+    }
+
+    if (this.notAfter) {
+      out.push({
+        label:         'Expires',
+        formatter:     'Date',
+        formatterOpts: { class: this.dateClass },
+        content:       this.notAfter
+      });
+    }
+
+    return out;
+  }
 }
