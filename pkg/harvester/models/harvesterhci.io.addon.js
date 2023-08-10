@@ -35,7 +35,7 @@ export default class HciAddonConfig extends HarvesterResource {
       if (!this.spec.enabled && this.id === 'rancher-vcluster/rancher-vcluster') {
         const valuesContent = jsyaml.load(this.spec.valuesContent);
 
-        if (!valuesContent.hostname) {
+        if (!valuesContent.hostname || !valuesContent.bootstrapPassword) {
           this.goToEdit();
 
           return;
