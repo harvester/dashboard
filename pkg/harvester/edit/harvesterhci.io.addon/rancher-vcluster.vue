@@ -65,6 +65,10 @@ export default {
         errors.push(this.t('validation.required', { key: this.t('harvester.addons.rancherVcluster.hostname') }, true));
       }
 
+      if (!this.valuesContentJson.bootstrapPassword) {
+        errors.push(this.t('validation.required', { key: this.t('harvester.addons.rancherVcluster.password') }, true));
+      }
+
       if (errors.length > 0) {
         return Promise.reject(errors);
       } else {
@@ -128,6 +132,7 @@ export default {
             v-model="valuesContentJson.bootstrapPassword"
             label-key="harvester.addons.rancherVcluster.password"
             :mode="mode"
+            :required="true"
             type="password"
           />
         </div>
