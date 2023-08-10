@@ -112,6 +112,10 @@ export default {
         }
       }
     },
+
+    canMiss(row, message) {
+      return row.warningMessage?.message === message && row.warningMessage?.canDismiss;
+    }
   },
 };
 </script>
@@ -143,7 +147,7 @@ export default {
             <p v-for="(message, index) in warningMessage" :key="message">
               {{ index + 1 }}.
               <a
-                v-if="row.warningMessage.message === message && row.warningMessage.canDismiss"
+                v-if="canMiss(row, message)"
                 class="text-link"
                 role="button"
                 @click="dismiss"
