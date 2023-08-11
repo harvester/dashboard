@@ -1228,6 +1228,7 @@ harvester:
         suffix: to enable it.
       noAccess: Please contact system admin to enable the Out-of-Band Access first.
       noAddon: Addon "harvester-seeder" is not exist, please check if it is installed.
+      noInventory: Waiting for "inventories.metal.harvesterhci.io" to be ready.
     inventory:
       host:
         label: Host
