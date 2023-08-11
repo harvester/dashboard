@@ -251,7 +251,13 @@ export default {
       const addons = this.$store.getters[`${ inStore }/all`](HCI.ADD_ONS);
 
       return addons.find(addon => addon.id === `harvester-system/${ ADD_ONS.HARVESTER_SEEDER }`);
-    }
+    },
+
+    hasInventorySchema() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+
+      return this.$store.getters[`${ inStore }/schemaFor`](HCI.INVENTORY);
+    },
   },
   watch: {
     customName(neu) {
@@ -605,12 +611,18 @@ export default {
         :label="t('harvester.host.tabs.seeder')"
       >
         <HarvesterSeeder
-          v-if="seederEnabled"
+          v-if="seederEnabled && hasInventorySchema"
           :mode="mode"
           :node="value"
           :register-after-hook="registerAfterHook"
           :inventory="inventory"
         />
+        <div v-else-if="seederEnabled && !hasInventorySchema">
+          <Banner
+            color="info"
+            :label="t('harvester.seeder.banner.noInventory')"
+          />
+        </div>
         <div v-else>
           <Banner
             v-if="hasSeederAddon"
