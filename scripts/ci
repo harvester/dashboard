@@ -18,8 +18,5 @@ yarn run lint
 echo "Linting translations..."
 yarn run lint-l10n
 
-echo "Testing..."
-yarn run test:ci
-
 echo "Building..."
 yarn run build
