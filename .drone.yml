@@ -360,11 +360,16 @@ platform:
   arch: amd64
 
 steps:
+- name: install_dependencies
+  image: node:16
+  commands:
+  - yarn install
+
 - name: build-pkg
   pull: default
   image: node:14
   commands:
-  - ./shell/scripts/drone-build-pkg.sh harvester
+  - ./scripts/drone-build-pkg.sh harvester
 
 - name: upload-gate
   pull: default
@@ -416,7 +421,7 @@ steps:
   pull: default
   image: node:14
   commands:
-  - ./shell/scripts/drone-build-pkg.sh harvester
+  - ./scripts/drone-build-pkg.sh harvester
 
 - name: upload-gate
   pull: default

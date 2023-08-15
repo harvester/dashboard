@@ -32,6 +32,7 @@
     "build": "./node_modules/.bin/vue-cli-service build",
     "clean": "./node_modules/@rancher/shell/scripts/clean",
     "build-pkg": "./node_modules/@rancher/shell/scripts/build-pkg.sh",
+    "drone-build-pkg": "./node_modules/@rancher/shell/scripts/drone-build-pkg.sh harvester",
     "serve-pkgs": "./node_modules/@rancher/shell/scripts/serve-pkgs",
     "publish-pkgs": "./node_modules/@rancher/shell/scripts/extension/publish",
     "lint": "./node_modules/.bin/eslint --max-warnings 0 --ext .js,.ts,.vue .",
