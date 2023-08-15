@@ -80,13 +80,13 @@ export default {
     guestClusterOptions() {
       const clusters = this.$store.getters['management/all'](CAPI.RANCHER_CLUSTER);
       const configs = this.$store.getters['management/all'](HCI.HARVESTER_CONFIG);
-      const selectedClusters = this.rows.map(row => row?.guestCluster);
-      const filteredNamespaces = this.filteredNamespaces.map(n => n.id);
+      const selectedClusters = this.rows.map((row) => row?.guestCluster);
+      const filteredNamespaces = this.filteredNamespaces.map((n) => n.id);
 
       const out = clusters.filter((c) => {
         const machinePools = c.spec?.rkeConfig?.machinePools || [];
         const machineConfigName = machinePools[0]?.machineConfigRef?.name;
-        const config = configs.find(c => c.id === `fleet-default/${ machineConfigName }`);
+        const config = configs.find((c) => c.id === `fleet-default/${ machineConfigName }`);
 
         if (config) {
           const vmNamespace = config?.vmNamespace;
@@ -118,7 +118,7 @@ export default {
     projectOptions() {
       const projects = this.$store.getters['management/all'](MANAGEMENT.PROJECT);
 
-      const out = projects.filter(p => p.metadata.namespace === this.currentCluster.id).map((project) => {
+      const out = projects.filter((p) => p.metadata.namespace === this.currentCluster.id).map((project) => {
         return {
           label: project.nameDisplay,
           value: project.id,
@@ -217,8 +217,15 @@ export default {
         @input="update"
       />
     </div>
-    <div v-if="showRemove" class="remove">
-      <button type="button" class="btn role-link" @click="remove(idx)">
+    <div
+      v-if="showRemove"
+      class="remove"
+    >
+      <button
+        type="button"
+        class="btn role-link"
+        @click="remove(idx)"
+      >
         <t k="generic.remove" />
       </button>
     </div>

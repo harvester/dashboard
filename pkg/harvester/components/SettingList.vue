@@ -36,11 +36,11 @@ export default {
   data() {
     const categorySettings = this.settings.filter((s) => {
       if (this.category !== 'advanced') {
-        return (CATEGORY[this.category] || []).find(item => item === s.id);
+        return (CATEGORY[this.category] || []).find((item) => item === s.id);
       } else if (this.category === 'advanced') {
         const allCategory = Object.keys(CATEGORY);
 
-        return !allCategory.some(category => (CATEGORY[category] || []).find(item => item === s.id));
+        return !allCategory.some((category) => (CATEGORY[category] || []).find((item) => item === s.id));
       }
     }) || [];
 
@@ -63,7 +63,7 @@ export default {
     },
 
     getSettingOption(id) {
-      return HCI_ALLOWED_SETTINGS.find(setting => setting.id === id);
+      return HCI_ALLOWED_SETTINGS.find((setting) => setting.id === id);
     },
 
     toggleHide(s) {
@@ -104,40 +104,70 @@ export default {
 
 <template>
   <div>
-    <div v-for="setting in categorySettings" :key="setting.id" class="advanced-setting mb-20">
+    <div
+      v-for="setting in categorySettings"
+      :key="setting.id"
+      class="advanced-setting mb-20"
+    >
       <div class="header">
         <div class="title">
           <h1>
             {{ setting.id }}
-            <span v-if="setting.customized" class="modified">
+            <span
+              v-if="setting.customized"
+              class="modified"
+            >
               Modified
             </span>
           </h1>
-          <h2 v-clean-html="t(setting.description, {}, true)">
-          </h2>
+          <h2 v-clean-html="t(setting.description, {}, true)" />
         </div>
-        <div v-if="setting.hasActions" :id="setting.id" class="action">
-          <button aria-haspopup="true" aria-expanded="false" type="button" class="btn btn-sm role-multi-action actions" @click="showActionMenu($event, setting)">
+        <div
+          v-if="setting.hasActions"
+          :id="setting.id"
+          class="action"
+        >
+          <button
+            aria-haspopup="true"
+            aria-expanded="false"
+            type="button"
+            class="btn btn-sm role-multi-action actions"
+            @click="showActionMenu($event, setting)"
+          >
             <i class="icon icon-actions" />
           </button>
         </div>
       </div>
       <div value>
-        <div v-if="!setting.hide" class="settings-value">
+        <div
+          v-if="!setting.hide"
+          class="settings-value"
+        >
           <pre v-if="setting.kind === 'json'">{{ setting.json }}</pre>
           <pre v-else-if="setting.kind === 'multiline'">{{ setting.data.value || setting.data.default }}</pre>
           <pre v-else-if="setting.kind === 'enum'">{{ t(setting.enum) }}</pre>
           <pre v-else-if="setting.kind === 'custom' && setting.custom">{{ setting.custom }}</pre>
           <pre v-else-if="setting.data.value || setting.data.default">{{ setting.data.value || setting.data.default }}</pre>
-          <pre v-else class="text-muted">&lt;{{ t('advancedSettings.none') }}&gt;</pre>
+          <pre
+            v-else
+            class="text-muted"
+          >&lt;{{ t('advancedSettings.none') }}&gt;</pre>
         </div>
 
         <div class="mt-5">
-          <button v-if="setting.hide" class="btn btn-sm role-primary" @click="toggleHide(setting)">
+          <button
+            v-if="setting.hide"
+            class="btn btn-sm role-primary"
+            @click="toggleHide(setting)"
+          >
             {{ t('advancedSettings.show') }} {{ setting.id }}
           </button>
 
-          <button v-if="setting.canHide && !setting.hide" class="btn btn-sm role-primary" @click="toggleHide(setting)">
+          <button
+            v-if="setting.canHide && !setting.hide"
+            class="btn btn-sm role-primary"
+            @click="toggleHide(setting)"
+          >
             {{ t('advancedSettings.hide') }} {{ setting.id }}
           </button>
 
@@ -154,7 +184,11 @@ export default {
           />
         </div>
       </div>
-      <Banner v-if="setting.data.errMessage" color="error mt-5" class="settings-banner">
+      <Banner
+        v-if="setting.data.errMessage"
+        color="error mt-5"
+        class="settings-banner"
+      >
         {{ setting.data.errMessage }}
       </Banner>
     </div>

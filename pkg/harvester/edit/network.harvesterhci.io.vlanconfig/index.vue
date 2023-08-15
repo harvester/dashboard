@@ -150,7 +150,7 @@ export default {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const linkMonitor = this.$store.getters[`${ inStore }/byId`](HCI.LINK_MONITOR, 'nic') || {};
       const linkStatus = linkMonitor?.status?.linkStatus || {};
-      const nodes = this.nodes.map(n => n.id);
+      const nodes = this.nodes.map((n) => n.id);
 
       const out = [];
 
@@ -190,7 +190,7 @@ export default {
         }
       });
 
-      return out.filter(o => !map[o.name].masterIndex).map((o) => {
+      return out.filter((o) => !map[o.name].masterIndex).map((o) => {
         let label = '';
 
         if (map[o.name].down === 0) {
@@ -232,7 +232,7 @@ export default {
             errors.push(nicRequired);
           }
 
-          const option = this.nicOptions.find(option => option.value === n);
+          const option = this.nicOptions.find((option) => option.value === n);
 
           if (option && option?.disabled) {
             errors.push(this.t('harvester.vlanConfig.uplink.nics.validate.available', { nic: n }, true));
@@ -276,15 +276,15 @@ export default {
 
       if (isEmpty(nodeSelector)) {
         matchNICs = clone(allNICs);
-        commonNodes = (this.nodes || []).map(n => n.id);
+        commonNodes = (this.nodes || []).map((n) => n.id);
       } else if (nodeSelector[HOSTNAME] && Object.keys(nodeSelector).length === 1) {
-        matchNICs = allNICs.filter(n => n.nodeName === nodeSelector[HOSTNAME]);
+        matchNICs = allNICs.filter((n) => n.nodeName === nodeSelector[HOSTNAME]);
         commonNodes = [nodeSelector[HOSTNAME]];
       } else {
-        const matchNodes = matching(this.nodes || [], nodeSelector).map(n => n.id);
+        const matchNodes = matching(this.nodes || [], nodeSelector).map((n) => n.id);
 
-        matchNICs = allNICs.filter(n => matchNodes.includes(n.nodeName));
-        commonNodes = matchNodes.map(n => n.id);
+        matchNICs = allNICs.filter((n) => matchNodes.includes(n.nodeName));
+        commonNodes = matchNodes.map((n) => n.id);
       }
 
       this.matchNICs = this.intersection(matchNICs, commonNodes) || [];
@@ -297,7 +297,7 @@ export default {
         map[n.name] = (map[n.name] || 0) + 1;
       });
 
-      return nics.filter(n => map[n.name] === commonNodes.length);
+      return nics.filter((n) => map[n.name] === commonNodes.length);
     },
 
     updateMatchingNodes: throttle(function() {
@@ -312,7 +312,7 @@ export default {
           sample:  allNodes[0] ? allNodes[0].nameDisplay : null,
         };
       } else if (selector[HOSTNAME] && Object.keys(selector).length === 1) {
-        const matchNode = allNodes.find(n => n.id === selector[HOSTNAME]);
+        const matchNode = allNodes.find((n) => n.id === selector[HOSTNAME]);
 
         this.matchingNodes = {
           matched: 1,
@@ -339,7 +339,7 @@ export default {
       const nicErrors = [];
 
       nics.map((n) => {
-        const option = options.find(option => option.value === n);
+        const option = options.find((option) => option.value === n);
 
         if ((option && option?.disabled) || !option) {
           nicErrors.push(this.t('harvester.vlanConfig.uplink.nics.validate.available', { nic: n }, true));
@@ -354,7 +354,7 @@ export default {
       const options = this.nicOptions || [];
 
       nics.map((n) => {
-        const option = options.find(option => option.value === n);
+        const option = options.find((option) => option.value === n);
 
         if ((option && option?.disabled) || !option) {
           nicErrors.push(this.t('harvester.vlanConfig.uplink.nics.validate.available', { nic: n }, true));

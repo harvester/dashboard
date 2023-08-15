@@ -31,7 +31,7 @@ export default class HciPv extends HarvesterResource {
 
   get availableActions() {
     const out = super._availableActions;
-    const clone = out.find(action => action.action === 'goToClone');
+    const clone = out.find((action) => action.action === 'goToClone');
 
     if (clone) {
       clone.action = 'goToCloneVolume';
@@ -190,7 +190,7 @@ export default class HciPv extends HarvesterResource {
 
     const ownedId = JSON.parse(ownedBy)[0]?.refs?.[0];
 
-    return allVMs.find(D => D.id === ownedId);
+    return allVMs.find((D) => D.id === ownedId);
   }
 
   get isAvailable() {
@@ -218,13 +218,13 @@ export default class HciPv extends HarvesterResource {
   get longhornVolume() {
     const inStore = this.$rootGetters['currentProduct'].inStore;
 
-    return this.$rootGetters[`${ inStore }/all`](LONGHORN.VOLUMES).find(v => v.metadata?.name === this.spec?.volumeName);
+    return this.$rootGetters[`${ inStore }/all`](LONGHORN.VOLUMES).find((v) => v.metadata?.name === this.spec?.volumeName);
   }
 
   get longhornEngine() {
     const inStore = this.$rootGetters['currentProduct'].inStore;
 
-    return this.$rootGetters[`${ inStore }/all`](LONGHORN.ENGINES).find(v => v.spec?.volumeName === this.spec?.volumeName);
+    return this.$rootGetters[`${ inStore }/all`](LONGHORN.ENGINES).find((v) => v.spec?.volumeName === this.spec?.volumeName);
   }
 
   // https://github.com/longhorn/longhorn-manager/blob/master/api/model.go#L1151
@@ -232,7 +232,7 @@ export default class HciPv extends HarvesterResource {
     let ready = true;
     const longhornVolume = this.longhornVolume || {};
 
-    const scheduledCondition = (longhornVolume?.status?.conditions || []).find(c => c.type === 'scheduled') || {};
+    const scheduledCondition = (longhornVolume?.status?.conditions || []).find((c) => c.type === 'scheduled') || {};
 
     if ((longhornVolume?.spec?.nodeID === '' && longhornVolume?.status?.state !== 'detached') ||
           (longhornVolume?.status?.state === 'detached' && scheduledCondition.status !== 'True') ||
@@ -259,7 +259,7 @@ export default class HciPv extends HarvesterResource {
 
   get originalSnapshot() {
     if (this.spec?.dataSource) {
-      return this.$rootGetters['harvester/all'](VOLUME_SNAPSHOT).find(V => V.metadata?.name === this.spec.dataSource.name);
+      return this.$rootGetters['harvester/all'](VOLUME_SNAPSHOT).find((V) => V.metadata?.name === this.spec.dataSource.name);
     } else {
       return null;
     }
@@ -276,7 +276,7 @@ export default class HciPv extends HarvesterResource {
   }
 
   get relatedPV() {
-    return this.$rootGetters['harvester/all'](PV).find(pv => pv.metadata?.name === this.spec?.volumeName);
+    return this.$rootGetters['harvester/all'](PV).find((pv) => pv.metadata?.name === this.spec?.volumeName);
   }
 
   get resourceExternalLink() {

@@ -126,9 +126,9 @@ export default {
     },
 
     abnormalNetwork() {
-      const notReadyCrd = this.hostNetworks.filter( O => !O.isReady);
+      const notReadyCrd = this.hostNetworks.filter( (O) => !O.isReady);
 
-      return notReadyCrd.map( O => O.linkMessage);
+      return notReadyCrd.map( (O) => O.linkMessage);
     },
 
     filterRows() {

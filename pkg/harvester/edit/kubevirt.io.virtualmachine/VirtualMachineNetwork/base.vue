@@ -136,7 +136,7 @@ export default {
   watch: {
     rows: {
       handler(neu) {
-        const hasManagementNetwork = !!neu.some(N => N.isPod);
+        const hasManagementNetwork = !!neu.some((N) => N.isPod);
 
         this.$set(this, 'hasManagementNetwork', hasManagementNetwork);
       },
@@ -230,7 +230,10 @@ export default {
       </div>
     </div>
 
-    <div class="row" :class="{'mb-20': !isMasquerade}">
+    <div
+      class="row"
+      :class="{'mb-20': !isMasquerade}"
+    >
       <div
         data-testid="input-hen-networkName"
         class="col span-6"
@@ -275,7 +278,10 @@ export default {
 
     <div v-if="!isMasquerade && isSingle">
       <div class="row mb-20">
-        <a role="button" @click="toggleAdvanced">
+        <a
+          role="button"
+          @click="toggleAdvanced"
+        >
           {{ showAdvanced ? t('harvester.generic.hideMore') : t('harvester.generic.showMore') }}
         </a>
       </div>

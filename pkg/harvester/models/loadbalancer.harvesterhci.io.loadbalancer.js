@@ -89,7 +89,7 @@ export default class HciLB extends HarvesterResource {
   }
 
   get isReady() {
-    const readyCondition = (this?.status?.conditions || []).find(c => c.type === 'Ready') || {};
+    const readyCondition = (this?.status?.conditions || []).find((c) => c.type === 'Ready') || {};
 
     return readyCondition?.status === 'True';
   }

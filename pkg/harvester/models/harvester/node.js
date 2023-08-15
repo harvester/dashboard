@@ -243,7 +243,7 @@ export default class HciNode extends HarvesterResource {
   get internalIp() {
     const addresses = this.status?.addresses || [];
 
-    return findLast(addresses, address => address.type === 'InternalIP')
+    return findLast(addresses, (address) => address.type === 'InternalIP')
       ?.address;
   }
 
@@ -361,7 +361,7 @@ export default class HciNode extends HarvesterResource {
     const pods = this.$rootGetters[`${ inStore }/all`](POD) || [];
 
     return pods.filter(
-      p => p?.spec?.nodeName === this.id && p?.metadata?.name !== 'removing'
+      (p) => p?.spec?.nodeName === this.id && p?.metadata?.name !== 'removing'
     );
   }
 
@@ -392,7 +392,7 @@ export default class HciNode extends HarvesterResource {
     const nodeId = this.id;
     const vlanStatuses = this.$rootGetters[`${ inStore }/all`](HCI.VLAN_STATUS);
 
-    return vlanStatuses.filter(s => s?.status?.node === nodeId) || [];
+    return vlanStatuses.filter((s) => s?.status?.node === nodeId) || [];
   }
 
   get blockDevices() {
@@ -400,17 +400,17 @@ export default class HciNode extends HarvesterResource {
     const nodeId = this.id;
     const blockDevices = this.$rootGetters[`${ inStore }/all`](HCI.BLOCK_DEVICE);
 
-    return blockDevices.filter(s => s?.spec?.nodeName === nodeId) || [];
+    return blockDevices.filter((s) => s?.spec?.nodeName === nodeId) || [];
   }
 
   get unProvisionedDisks() {
     const blockDevices = this.blockDevices || [];
 
-    return blockDevices.filter(d => d?.spec?.fileSystem?.provisioned && d?.status?.provisionPhase !== 'Provisioned');
+    return blockDevices.filter((d) => d?.spec?.fileSystem?.provisioned && d?.status?.provisionPhase !== 'Provisioned');
   }
 
   get diskStatusCount() {
-    const errorBlockDevices = this.unProvisionedDisks.filter(b => b.metadata.state.error) || [];
+    const errorBlockDevices = this.unProvisionedDisks.filter((b) => b.metadata.state.error) || [];
 
     let errorCount = 0;
 
@@ -556,7 +556,7 @@ export default class HciNode extends HarvesterResource {
     const inStore = this.$rootGetters['currentProduct'].inStore;
     const inventories = this.$rootGetters[`${ inStore }/all`](HCI.INVENTORY) || [];
 
-    return inventories.find(inv => inv.id === `harvester-system/${ this.id }`);
+    return inventories.find((inv) => inv.id === `harvester-system/${ this.id }`);
   }
 
   get warningMessages() {

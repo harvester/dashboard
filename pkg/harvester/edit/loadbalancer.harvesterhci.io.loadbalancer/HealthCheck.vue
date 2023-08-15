@@ -40,7 +40,7 @@ export default {
     portOptions() {
       const ports = this.model?.spec?.listeners || [];
 
-      return ports.filter(p => p.port && p.protocol === 'TCP').map(p => p.port) || [];
+      return ports.filter((p) => p.port && p.protocol === 'TCP').map((p) => p.port) || [];
     },
   },
 };
@@ -62,7 +62,10 @@ export default {
     </div>
     <div v-if="healthCheckEnabled">
       <div class="row mt-10">
-        <div v-if="healthCheckEnabled" class="col span-6">
+        <div
+          v-if="healthCheckEnabled"
+          class="col span-6"
+        >
           <LabeledSelect
             v-model="value.port"
             :mode="mode"

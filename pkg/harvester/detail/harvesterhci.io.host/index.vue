@@ -93,7 +93,7 @@ export default {
     }
 
     const res = await allHash(hash);
-    const hostNetworkResource = (res.hostNetworks || []).find( O => this.value.id === O.attachNodeName);
+    const hostNetworkResource = (res.hostNetworks || []).find( (O) => this.value.id === O.attachNodeName);
 
     this.loadMetrics();
 
@@ -127,7 +127,7 @@ export default {
     this.newDisks = clone(disks);
 
     const addons = this.$store.getters[`${ inStore }/all`](HCI.ADD_ONS);
-    const seeder = addons.find(addon => addon.id === 'harvester-system/harvester-seeder');
+    const seeder = addons.find((addon) => addon.id === 'harvester-system/harvester-seeder');
 
     const seederEnabled = seeder ? seeder?.spec?.enabled : false;
 
@@ -135,7 +135,7 @@ export default {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const inventories = this.$store.getters[`${ inStore }/all`](HCI.INVENTORY) || [];
 
-      const inventory = inventories.find(inv => inv.id === `harvester-system/${ this.value.id }`);
+      const inventory = inventories.find((inv) => inv.id === `harvester-system/${ this.value.id }`);
 
       if (inventory) {
         this.inventory = inventory;
@@ -223,14 +223,14 @@ export default {
       const nodeId = this.value.id;
       const vlanStatuses = this.$store.getters[`${ inStore }/all`](HCI.VLAN_STATUS);
 
-      return vlanStatuses.filter(s => s?.status?.node === nodeId) || [];
+      return vlanStatuses.filter((s) => s?.status?.node === nodeId) || [];
     },
 
     longhornNode() {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const longhornNodes = this.$store.getters[`${ inStore }/all`](LONGHORN.NODES);
 
-      return longhornNodes.find(node => node.id === `${ LONGHORN_SYSTEM }/${ this.value.id }`);
+      return longhornNodes.find((node) => node.id === `${ LONGHORN_SYSTEM }/${ this.value.id }`);
     },
 
     events() {
@@ -276,7 +276,7 @@ export default {
     seederEnabled() {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const addons = this.$store.getters[`${ inStore }/all`](HCI.ADD_ONS);
-      const seeder = addons.find(addon => addon.id === 'harvester-system/harvester-seeder');
+      const seeder = addons.find((addon) => addon.id === 'harvester-system/harvester-seeder');
 
       return seeder ? seeder?.spec?.enabled : false;
     },
@@ -362,13 +362,13 @@ export default {
       v-if="ntpSyncedStatus.status === 'disabled'"
       color="warning"
     >
-      <span v-clean-html="t(ntpSyncedStatus.warning.key)"></span>
+      <span v-clean-html="t(ntpSyncedStatus.warning.key)" />
     </Banner>
     <Banner
       v-if="ntpSyncedStatus.status === 'unsynced'"
       color="warning"
     >
-      <span v-clean-html="t(ntpSyncedStatus.warning.key, { current: ntpSyncedStatus.warning.current }, true)"></span>
+      <span v-clean-html="t(ntpSyncedStatus.warning.key, { current: ntpSyncedStatus.warning.current }, true)" />
     </Banner>
     <Tabbed
       v-bind="$attrs"
@@ -376,14 +376,24 @@ export default {
       :side-tabs="true"
       @changed="tabChange"
     >
-      <Tab name="basics" :label="t('harvester.host.tabs.basics')" :weight="4" class="bordered-table">
+      <Tab
+        name="basics"
+        :label="t('harvester.host.tabs.basics')"
+        :weight="4"
+        class="bordered-table"
+      >
         <Basic
           v-model="value"
           :metrics="metrics"
           :mode="mode"
         />
       </Tab>
-      <Tab name="instance" :label="t('harvester.host.tabs.instance')" :weight="3" class="bordered-table">
+      <Tab
+        name="instance"
+        :label="t('harvester.host.tabs.instance')"
+        :weight="3"
+        class="bordered-table"
+      >
         <Instance :node="value" />
       </Tab>
       <Tab
@@ -420,7 +430,11 @@ export default {
             >
               <template #value>
                 <div class="mt-5">
-                  <Tag v-for="(prop, key) in longhornNode.spec.tags" :key="key + prop" class="mr-5">
+                  <Tag
+                    v-for="(prop, key) in longhornNode.spec.tags"
+                    :key="key + prop"
+                    class="mr-5"
+                  >
                     {{ prop }}
                   </Tag>
                 </div>
@@ -452,7 +466,10 @@ export default {
         :show-header="false"
         :label="t('harvester.host.tabs.ksmtuned')"
       >
-        <HarvesterKsmtuned :mode="mode" :node="value" />
+        <HarvesterKsmtuned
+          :mode="mode"
+          :node="value"
+        />
       </Tab>
 
       <Tab

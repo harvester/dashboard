@@ -79,7 +79,7 @@ export default class HciVlanConfig extends HarvesterResource {
   }
 
   get vlanStatuses() {
-    const nodes = this.nodes.map(n => n.id) || [];
+    const nodes = this.nodes.map((n) => n.id) || [];
     const vlanStatuses = this.$rootGetters[`${ this.inStore }/all`](HCI.VLAN_STATUS);
 
     return vlanStatuses.filter((s) => {
@@ -107,16 +107,16 @@ export default class HciVlanConfig extends HarvesterResource {
     if (isEmpty(nodeSelector)) {
       return nodes;
     } else if (nodeSelector[HOSTNAME] && Object.keys(nodeSelector).length === 1) {
-      return nodes.filter(n => n.id === nodeSelector[HOSTNAME]) || [];
+      return nodes.filter((n) => n.id === nodeSelector[HOSTNAME]) || [];
     } else {
-      const matchNodes = matching(nodes || [], nodeSelector).map(n => n.id);
+      const matchNodes = matching(nodes || [], nodeSelector).map((n) => n.id);
 
-      return nodes.filter(n => matchNodes.includes(n.id));
+      return nodes.filter((n) => matchNodes.includes(n.id));
     }
   }
 
   get nodes() {
-    return this.selectedNodes.filter(n => !n.isUnSchedulable);
+    return this.selectedNodes.filter((n) => !n.isUnSchedulable);
   }
 
   get stateDisplay() {

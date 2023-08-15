@@ -153,7 +153,7 @@ export default {
               v-model="row.subnet"
               type="text"
               @input="queueUpdate"
-            />
+            >
           </div>
           <div
             class="pool-gateway"
@@ -166,7 +166,7 @@ export default {
               v-model="row.gateway"
               type="text"
               @input="queueUpdate"
-            />
+            >
           </div>
           <div
             v-if="row.type === 'range'"
@@ -180,7 +180,7 @@ export default {
               v-model="row.rangeStart"
               type="text"
               @input="queueUpdate"
-            />
+            >
           </div>
           <div
             v-if="row.type === 'range'"
@@ -194,21 +194,39 @@ export default {
               v-model="row.rangeEnd"
               type="text"
               @input="queueUpdate"
-            />
+            >
           </div>
-          <div v-if="showRemove" class="remove">
-            <button type="button" class="btn role-link" @click="remove(idx)">
+          <div
+            v-if="showRemove"
+            class="remove"
+          >
+            <button
+              type="button"
+              class="btn role-link"
+              @click="remove(idx)"
+            >
               <t k="generic.remove" />
             </button>
           </div>
         </div>
       </div>
     </div>
-    <div v-if="showAdd" class="footer">
-      <button type="button" class="btn role-tertiary add" @click="addCIDR()">
+    <div
+      v-if="showAdd"
+      class="footer"
+    >
+      <button
+        type="button"
+        class="btn role-tertiary add"
+        @click="addCIDR()"
+      >
         <t k="harvester.ipPool.cidr.addLabel" />
       </button>
-      <button type="button" class="btn role-tertiary add" @click="addRange()">
+      <button
+        type="button"
+        class="btn role-tertiary add"
+        @click="addRange()"
+      >
         <t k="harvester.ipPool.range.addLabel" />
       </button>
     </div>

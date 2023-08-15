@@ -53,7 +53,7 @@ export function ntpServers(value, getters, errors, validatorArgs) {
     errors.push(t('harvester.setting.ntpServers.isDuplicate'));
   }
 
-  if (ntpServers.find(V => !ipv4Regex.test(V) && !hostRegex.test(V))) {
+  if (ntpServers.find((V) => !ipv4Regex.test(V) && !hostRegex.test(V))) {
     errors.push(t('harvester.setting.ntpServers.isNotIPV4'));
   }
 

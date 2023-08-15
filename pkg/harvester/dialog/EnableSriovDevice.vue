@@ -84,11 +84,17 @@ export default {
 
     <template v-slot:actions>
       <div class="buttons actions">
-        <button class="btn role-secondary mr-10" @click="close">
+        <button
+          class="btn role-secondary mr-10"
+          @click="close"
+        >
           {{ t('generic.cancel') }}
         </button>
 
-        <AsyncButton mode="enable" @click="save" />
+        <AsyncButton
+          mode="enable"
+          @click="save"
+        />
       </div>
     </template>
   </Card>

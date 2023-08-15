@@ -191,7 +191,12 @@ export default {
       v-on="$listeners"
     >
       <template #cell:console="{row}">
-        <button type="button" class="btn btn-sm role-primary" :disabled="!row.consoleUrl" @click="goto(row)">
+        <button
+          type="button"
+          class="btn btn-sm role-primary"
+          :disabled="!row.consoleUrl"
+          @click="goto(row)"
+        >
           {{ t('harvester.host.console') }}
         </button>
       </template>

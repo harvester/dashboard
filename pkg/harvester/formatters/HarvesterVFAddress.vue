@@ -48,7 +48,10 @@ export default {
 
 <template>
   <div class="vfs">
-    <span v-for="(vf, index) in rows.visible" :key="vf.name">
+    <span
+      v-for="(vf, index) in rows.visible"
+      :key="vf.name"
+    >
       <n-link
         :to="vf.to"
       >
@@ -75,7 +78,10 @@ export default {
       <template v-slot:popover>
         <div class="vfs-popup">
           <div>
-            <span v-for="(vf, index) in rows.invisible" :key="vf.name">
+            <span
+              v-for="(vf, index) in rows.invisible"
+              :key="vf.name"
+            >
               <n-link
                 :to="vf.to"
               >

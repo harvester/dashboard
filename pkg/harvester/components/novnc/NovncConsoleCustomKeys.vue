@@ -44,7 +44,7 @@ export default {
 
     displayedKeys() {
       const out = this.addedShortcutKeys.concat(this.preferredShortcutKeys).map((item) => {
-        const out = item.map(K => ` <code>${ K.key.charAt(0).toUpperCase() + K.key.slice(1) }</code>`);
+        const out = item.map((K) => ` <code>${ K.key.charAt(0).toUpperCase() + K.key.slice(1) }</code>`);
 
         return out.join(',');
       });
@@ -65,7 +65,7 @@ export default {
         return this.t('harvester.virtualMachine.detail.console.record.tips');
       }
 
-      const out = this.keysRecord.map(item => ` <code>${ item.key.charAt(0).toUpperCase() + item.key.slice(1) }</code>`);
+      const out = this.keysRecord.map((item) => ` <code>${ item.key.charAt(0).toUpperCase() + item.key.slice(1) }</code>`);
 
       return `Keys: ${ out.join(',') }`;
     },
@@ -81,7 +81,7 @@ export default {
       validationList.push(this.keysRecord);
 
       validationList = validationList.map((item) => {
-        const out = item.map(K => K.key);
+        const out = item.map((K) => K.key);
 
         return out.join(',');
       });
@@ -140,13 +140,13 @@ export default {
       const key = keys.replace(/(\s*)<code>|<\/code>/g, '').replace(/\s*,\s*/g, ',');
 
       this.addedShortcutKeys = this.addedShortcutKeys.filter((item) => {
-        const formatkey = item.map(K => K.key.charAt(0).toUpperCase() + K.key.slice(1)).join(',');
+        const formatkey = item.map((K) => K.key.charAt(0).toUpperCase() + K.key.slice(1)).join(',');
 
         return formatkey !== key;
       });
 
       this.preferredShortcutKeys = this.preferredShortcutKeys.filter((item) => {
-        const formatkey = item.map(K => K.key.charAt(0).toUpperCase() + K.key.slice(1)).join(',');
+        const formatkey = item.map((K) => K.key.charAt(0).toUpperCase() + K.key.slice(1)).join(',');
 
         return formatkey !== key;
       });
@@ -170,7 +170,11 @@ export default {
 </script>
 
 <template>
-  <ModalWithCard ref="recordShortcutKeys" name="recordShortcutKeys" :width="550">
+  <ModalWithCard
+    ref="recordShortcutKeys"
+    name="recordShortcutKeys"
+    :width="550"
+  >
     <template #title>
       <t k="harvester.virtualMachine.detail.console.customShortcutKeys" />
     </template>
@@ -179,17 +183,27 @@ export default {
       <div class="row">
         <div class="col span-12">
           <Banner color="info">
-            <span v-clean-html="keysRecordFormat"></span>
+            <span v-clean-html="keysRecordFormat" />
           </Banner>
         </div>
       </div>
       <div class="row">
         <div class="col span-12">
-          <button class="btn bg-primary" @click="toggleRecording">
+          <button
+            class="btn bg-primary"
+            @click="toggleRecording"
+          >
             <t :k="recordButton" />
-            <i class="icon icon-fw" :class="isRecording ? 'icon-dot-open' : 'icon-dot'" />
+            <i
+              class="icon icon-fw"
+              :class="isRecording ? 'icon-dot-open' : 'icon-dot'"
+            />
           </button>
-          <button :disabled="!canAdd" class="btn bg-primary" @click="addShortcutKey">
+          <button
+            :disabled="!canAdd"
+            class="btn bg-primary"
+            @click="addShortcutKey"
+          >
             <t k="generic.add" />
           </button>
         </div>
@@ -204,8 +218,14 @@ export default {
         />
 
         <div class="displayed-banners">
-          <Banner v-for="(keys,index) in displayedKeys" :key="index" color="info" :closable="true" @close="removeKey(keys)">
-            <span v-clean-html="keys"></span>
+          <Banner
+            v-for="(keys,index) in displayedKeys"
+            :key="index"
+            color="info"
+            :closable="true"
+            @close="removeKey(keys)"
+          >
+            <span v-clean-html="keys" />
           </Banner>
         </div>
       </div>
@@ -213,7 +233,10 @@ export default {
 
     <template #footer>
       <div class="actions">
-        <button class="btn role-secondary mr-20" @click.prevent="closeRecordingModal">
+        <button
+          class="btn role-secondary mr-20"
+          @click.prevent="closeRecordingModal"
+        >
           <t k="generic.close" />
         </button>
         <AsyncButton
@@ -240,6 +263,6 @@ export default {
   .actions {
     width: 100%;
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
   }
 </style>

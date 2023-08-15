@@ -53,7 +53,7 @@ export default {
       try {
         const out = JSON.parse(annotationIp);
 
-        return out.map( ip => ({
+        return out.map( (ip) => ({
           ip:   ip.replace(/\/[\d\D]*/, ''),
           name: ''
         }));
@@ -64,7 +64,7 @@ export default {
 
     vmiIp() {
       const vmiResources = this.$store.getters[`${ this.inStore }/all`](HCI.VMI);
-      const resource = vmiResources.find(VMI => VMI.id === this.value) || null;
+      const resource = vmiResources.find((VMI) => VMI.id === this.value) || null;
       const networksName = this.row.networksName || [];
       const vmiNetworks = resource?.spec?.networks || [];
 
@@ -72,7 +72,7 @@ export default {
         return isIpv4(intf.ipAddress) && networksName.includes(intf.name);
       }).map((intf) => {
         let name;
-        const network = vmiNetworks.find(network => network.name === intf.name);
+        const network = vmiNetworks.find((network) => network.name === intf.name);
 
         if (network && network.multus) {
           name = network.multus.networkName;
@@ -96,8 +96,14 @@ export default {
 
 <template>
   <div v-if="showIP">
-    <span v-for="{ip, name} in ips" :key="ip">
-      <CopyToClipboardText v-clean-tooltip="name" :text="ip" />
+    <span
+      v-for="{ip, name} in ips"
+      :key="ip"
+    >
+      <CopyToClipboardText
+        v-clean-tooltip="name"
+        :text="ip"
+      />
     </span>
   </div>
 </template>

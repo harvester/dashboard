@@ -63,7 +63,7 @@ export default {
     vmi() {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const vmiResources = this.$store.getters[`${ inStore }/all`](HCI.VMI);
-      const resource = vmiResources.find(VMI => VMI.id === this.actionResource?.id) || null;
+      const resource = vmiResources.find((VMI) => VMI.id === this.actionResource?.id) || null;
 
       return resource;
     },
@@ -148,9 +148,15 @@ export default {
       />
     </template>
 
-    <div slot="actions" class="actions">
+    <div
+      slot="actions"
+      class="actions"
+    >
       <div class="buttons">
-        <button class="btn role-secondary mr-10" @click="close">
+        <button
+          class="btn role-secondary mr-10"
+          @click="close"
+        >
           {{ t('generic.cancel') }}
         </button>
 
@@ -161,7 +167,12 @@ export default {
         />
       </div>
 
-      <Banner v-for="(err, i) in errors" :key="i" color="error" :label="err" />
+      <Banner
+        v-for="(err, i) in errors"
+        :key="i"
+        color="error"
+        :label="err"
+      />
     </div>
   </Card>
 </template>

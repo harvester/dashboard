@@ -32,7 +32,7 @@ export default {
 
     this.rows = hash.rows;
     this.settings = hash.settings;
-    const backupTargetResource = hash.settings.find( O => O.id === 'backup-target');
+    const backupTargetResource = hash.settings.find( (O) => O.id === 'backup-target');
     const isEmpty = this.getBackupTargetValueIsEmpty(backupTargetResource);
 
     if (!isEmpty) {
@@ -114,11 +114,11 @@ export default {
     },
 
     filterdRows() {
-      return this.rows.filter(R => R.spec?.type !== 'snapshot');
+      return this.rows.filter((R) => R.spec?.type !== 'snapshot');
     },
 
     backupTargetResource() {
-      return this.settings.find( O => O.id === 'backup-target');
+      return this.settings.find( (O) => O.id === 'backup-target');
     },
 
     isEmptyValue() {

@@ -7,7 +7,7 @@ export default class LonghornNode extends SteveModel {
   get used() {
     let out = 0;
 
-    this.disks.filter(d => d.allowScheduling).map((disk) => {
+    this.disks.filter((d) => d.allowScheduling).map((disk) => {
       if (disk?.storageAvailable && disk?.storageMaximum) {
         out += disk.storageMaximum - disk.storageAvailable;
       }
@@ -22,8 +22,8 @@ export default class LonghornNode extends SteveModel {
 
     return Object.keys(diskSpec).map((key) => {
       const conditions = diskStatus[key]?.conditions || [];
-      const readyCondition = conditions.find(c => c.type === 'Ready') || {};
-      const schedulableCondition = conditions.find(c => c.type === 'Schedulable') || {};
+      const readyCondition = conditions.find((c) => c.type === 'Ready') || {};
+      const schedulableCondition = conditions.find((c) => c.type === 'Schedulable') || {};
 
       let state;
 

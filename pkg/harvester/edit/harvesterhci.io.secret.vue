@@ -156,7 +156,7 @@ export default {
   created() {
     this.registerAfterHook(() => {
       const allNamespaces = this.$store.getters['allNamespaces'];
-      const defaultNamepsace = allNamespaces.find(N => N.id === 'default');
+      const defaultNamepsace = allNamespaces.find((N) => N.id === 'default');
       const ns = defaultNamepsace?.id || allNamespaces?.[0]?.id || '';
 
       this.value.$dispatch('prefs/set', { key: LAST_NAMESPACE, value: ns }, { root: true });

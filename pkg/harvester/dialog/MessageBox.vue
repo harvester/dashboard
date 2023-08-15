@@ -33,7 +33,11 @@ export default {
 </script>
 
 <template>
-  <Card ref="modal" name="modal" :show-highlight-border="false">
+  <Card
+    ref="modal"
+    name="modal"
+    :show-highlight-border="false"
+  >
     <h4
       slot="title"
       class="text-default-text"
@@ -42,12 +46,19 @@ export default {
     </h4>
 
     <template #body>
-      <p v-clean-html="t(modalData.contentKey)"></p>
+      <p v-clean-html="t(modalData.contentKey)" />
     </template>
 
-    <div slot="actions" class="actions">
+    <div
+      slot="actions"
+      class="actions"
+    >
       <div class="buttons">
-        <button type="button" class="btn role-secondary mr-10" @click="ok">
+        <button
+          type="button"
+          class="btn role-secondary mr-10"
+          @click="ok"
+        >
           {{ t('generic.ok') }}
         </button>
       </div>

@@ -91,13 +91,22 @@ export default {
       {{ t('harvester.pci.enablePassthroughWarning') }}
     </template>
 
-    <div slot="actions" class="actions">
+    <div
+      slot="actions"
+      class="actions"
+    >
       <div class="buttons">
-        <button class="btn role-secondary mr-10" @click="close">
+        <button
+          class="btn role-secondary mr-10"
+          @click="close"
+        >
           {{ t('generic.cancel') }}
         </button>
 
-        <AsyncButton mode="enable" @click="save" />
+        <AsyncButton
+          mode="enable"
+          @click="save"
+        />
       </div>
     </div>
   </Card>

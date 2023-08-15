@@ -34,7 +34,7 @@ export default {
 
     const storageSchema = this.$store.getters[`${ inStore }/schemaFor`](STORAGE_CLASS);
 
-    if ( storageSchema && !storageSchema?.collectionMethods.find(x => ['blocked-post', 'post'].includes(x.toLowerCase())) ) {
+    if ( storageSchema && !storageSchema?.collectionMethods.find((x) => ['blocked-post', 'post'].includes(x.toLowerCase())) ) {
       this.$store.dispatch('type-map/configureType', { match: HCI.STORAGE, isCreatable: false });
     }
   },
@@ -49,7 +49,7 @@ export default {
 
       const storages = this.$store.getters[`${ inStore }/all`](STORAGE_CLASS);
 
-      return storages.filter(s => !s.parameters?.backingImage);
+      return storages.filter((s) => !s.parameters?.backingImage);
     },
 
     headers() {

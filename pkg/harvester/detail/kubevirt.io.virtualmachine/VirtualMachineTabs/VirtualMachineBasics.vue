@@ -139,11 +139,17 @@ export default {
   <div class="overview-basics">
     <div class="row">
       <div class="col span-6">
-        <LabelValue :name="t('harvester.virtualMachine.detail.details.name')" :value="value.nameDisplay">
+        <LabelValue
+          :name="t('harvester.virtualMachine.detail.details.name')"
+          :value="value.nameDisplay"
+        >
           <template #value>
             <div class="smart-row">
               <div class="console">
-                {{ value.nameDisplay }} <VMConsoleBar :resource="value" class="consoleBut" />
+                {{ value.nameDisplay }} <VMConsoleBar
+                  :resource="value"
+                  class="consoleBut"
+                />
               </div>
             </div>
           </template>
@@ -151,13 +157,19 @@ export default {
       </div>
 
       <div class="col span-6">
-        <LabelValue :name="t('harvester.fields.image')" :value="imageName" />
+        <LabelValue
+          :name="t('harvester.fields.image')"
+          :value="imageName"
+        />
       </div>
     </div>
 
     <div class="row">
       <div class="col span-6">
-        <LabelValue :name="t('harvester.virtualMachine.detail.details.hostname')" :value="hostname">
+        <LabelValue
+          :name="t('harvester.virtualMachine.detail.details.hostname')"
+          :value="hostname"
+        >
           <template #value>
             <div>
               {{ hostname }}
@@ -167,7 +179,10 @@ export default {
       </div>
 
       <div class="col span-6">
-        <LabelValue :name="t('harvester.virtualMachine.detail.details.node')" :value="node">
+        <LabelValue
+          :name="t('harvester.virtualMachine.detail.details.node')"
+          :value="node"
+        >
           <template #value>
             <div>
               {{ node }}
@@ -181,26 +196,39 @@ export default {
       <div class="col span-6">
         <LabelValue :name="t('harvester.virtualMachine.detail.details.ipAddress')">
           <template #value>
-            <HarvesterIpAddress v-model="value.id" :row="value" />
+            <HarvesterIpAddress
+              v-model="value.id"
+              :row="value"
+            />
           </template>
         </LabelValue>
       </div>
 
       <div class="col span-6">
-        <LabelValue :name="t('harvester.virtualMachine.detail.details.created')" :value="creationTimestamp" />
+        <LabelValue
+          :name="t('harvester.virtualMachine.detail.details.created')"
+          :value="creationTimestamp"
+        />
       </div>
     </div>
 
-    <hr class="section-divider" />
+    <hr class="section-divider">
 
     <h2>{{ t('harvester.virtualMachine.detail.tabs.configurations') }}</h2>
 
     <div class="row">
       <div class="col span-6">
-        <InputOrDisplay :name="t('harvester.virtualMachine.detail.details.bootOrder')" :value="disks" :mode="mode">
+        <InputOrDisplay
+          :name="t('harvester.virtualMachine.detail.details.bootOrder')"
+          :value="disks"
+          :mode="mode"
+        >
           <template #value>
             <ul>
-              <li v-for="(disk) in disks" :key="disk.bootOrder">
+              <li
+                v-for="(disk) in disks"
+                :key="disk.bootOrder"
+              >
                 {{ disk.bootOrder }}. {{ disk.name }} ({{ getDeviceType(disk) }})
               </li>
             </ul>
@@ -208,11 +236,18 @@ export default {
         </InputOrDisplay>
       </div>
       <div class="col span-6">
-        <InputOrDisplay :name="t('harvester.virtualMachine.detail.details.CDROMs')" :value="cdroms" :mode="mode">
+        <InputOrDisplay
+          :name="t('harvester.virtualMachine.detail.details.CDROMs')"
+          :value="cdroms"
+          :mode="mode"
+        >
           <template #value>
             <div>
               <ul v-if="cdroms.length > 0">
-                <li v-for="(rom) in cdroms" :key="rom.name">
+                <li
+                  v-for="(rom) in cdroms"
+                  :key="rom.name"
+                >
                   {{ rom.name }}
                 </li>
               </ul>
@@ -226,17 +261,29 @@ export default {
     </div>
     <div class="row">
       <div class="col span-6">
-        <LabelValue :name="t('harvester.virtualMachine.detail.details.operatingSystem')" :value="operatingSystem" />
+        <LabelValue
+          :name="t('harvester.virtualMachine.detail.details.operatingSystem')"
+          :value="operatingSystem"
+        />
       </div>
-      <LabelValue :name="t('harvester.virtualMachine.detail.details.flavor')" :value="flavor" />
+      <LabelValue
+        :name="t('harvester.virtualMachine.detail.details.flavor')"
+        :value="flavor"
+      />
     </div>
     <div class="row">
       <div class="col span-6">
-        <LabelValue :name="t('harvester.virtualMachine.detail.details.kernelRelease')" :value="kernelRelease" />
+        <LabelValue
+          :name="t('harvester.virtualMachine.detail.details.kernelRelease')"
+          :value="kernelRelease"
+        />
       </div>
 
       <div class="col span-6">
-        <LabelValue :name="t('harvester.virtualMachine.input.MachineType')" :value="machineType" />
+        <LabelValue
+          :name="t('harvester.virtualMachine.input.MachineType')"
+          :value="machineType"
+        />
       </div>
     </div>
   </div>

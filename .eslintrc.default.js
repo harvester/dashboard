@@ -5,7 +5,7 @@ module.exports = {
     node:    true
   },
   globals: { NodeJS: true, Timer: true },
-  plugins: ['jest', '@typescript-eslint'],
+  plugins: ['@typescript-eslint'],
   extends: [
     'standard',
     'eslint:recommended',
@@ -13,7 +13,6 @@ module.exports = {
     '@vue/standard',
     '@vue/typescript/recommended',
     'plugin:vue/recommended',
-    'plugin:cypress/recommended',
   ],
   rules: {
 
@@ -128,23 +127,8 @@ module.exports = {
         // Errors
         '@typescript-eslint/no-empty-function': 'off', // Opinionated?
         '@typescript-eslint/ban-types':         'off', // This does not seems to work well with Vue2
+        'prefer-rest-params':                   'off'
       }
-    },
-
-    // Tests exceptions due mocks
-    {
-      files: [
-        '**/*.test.{js,ts}',
-        '**/__tests__/**/*.{js,ts}',
-        '**/__mocks__/**/*.{js,ts}'
-      ],
-      rules: {
-        '@typescript-eslint/no-empty-function':              'off',
-        '@typescript-eslint/no-non-null-assertion':          'off',
-        '@typescript-eslint/explicit-module-boundary-types': 'off',
-        'jest/prefer-expect-assertions':                     'off',
-      },
-      extends: ['plugin:jest/all']
     },
 
     // bug?

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { ClusterNotFoundError } from '@shell/utils/error';
 import { SETTING } from '@shell/config/settings';
 import { COUNT, NAMESPACE, MANAGEMENT } from '@shell/config/types';

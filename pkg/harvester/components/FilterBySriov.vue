@@ -65,8 +65,14 @@ export default {
 
 <template>
   <div class="filter">
-    <span v-if="parentSriov" class="banner-item bg-warning">
-      {{ parentSriov }} <i class="icon icon-close" @click="remove()" />
+    <span
+      v-if="parentSriov"
+      class="banner-item bg-warning"
+    >
+      {{ parentSriov }} <i
+        class="icon icon-close"
+        @click="remove()"
+      />
     </span>
 
     <v-popover
@@ -74,7 +80,10 @@ export default {
       placement="bottom-end"
     >
       <slot name="header">
-        <button ref="actionDropDown" class="btn bg-primary mr-10">
+        <button
+          ref="actionDropDown"
+          class="btn bg-primary mr-10"
+        >
           <slot name="title">
             {{ t('harvester.sriov.parentSriov') }}
           </slot>

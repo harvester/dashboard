@@ -225,8 +225,16 @@ export default {
   <div>
     <h3>{{ t('harvester.setting.containerdRegistry.mirrors.mirrors') }}</h3>
     <div>
-      <InfoBox v-for="mirror, idx in mirrors" :key="mirror.idx" class="box">
-        <button type="button" class="role-link btn btn-sm remove" @click="remove('mirrors', idx)">
+      <InfoBox
+        v-for="mirror, idx in mirrors"
+        :key="mirror.idx"
+        class="box"
+      >
+        <button
+          type="button"
+          class="role-link btn btn-sm remove"
+          @click="remove('mirrors', idx)"
+        >
           <i class="icon icon-2x icon-x" />
         </button>
 
@@ -274,16 +282,27 @@ export default {
       </infobox>
     </div>
 
-    <button class="btn btn-sm role-primary" @click.self="addMirror">
+    <button
+      class="btn btn-sm role-primary"
+      @click.self="addMirror"
+    >
       {{ t('harvester.setting.containerdRegistry.mirrors.addMirror') }}
     </button>
 
-    <hr class="divider mt-20 mb-20" />
+    <hr class="divider mt-20 mb-20">
 
     <h3>{{ t('harvester.setting.containerdRegistry.configs.configs') }}</h3>
     <div>
-      <InfoBox v-for="config, idx in configs" :key="config.idx" class="box">
-        <button type="button" class="role-link btn btn-sm remove" @click="remove('configs', idx)">
+      <InfoBox
+        v-for="config, idx in configs"
+        :key="config.idx"
+        class="box"
+      >
+        <button
+          type="button"
+          class="role-link btn btn-sm remove"
+          @click="remove('configs', idx)"
+        >
           <i class="icon icon-2x icon-x" />
         </button>
 
@@ -356,7 +375,10 @@ export default {
         </div>
       </infobox>
 
-      <button class="btn btn-sm role-primary" @click="addConfig">
+      <button
+        class="btn btn-sm role-primary"
+        @click="addConfig"
+      >
         {{ t('harvester.setting.containerdRegistry.configs.addConfig') }}
       </button>
     </div>

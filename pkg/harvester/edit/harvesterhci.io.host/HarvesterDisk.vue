@@ -151,7 +151,10 @@ export default {
 </script>
 
 <template>
-  <div class="disk" @input="update">
+  <div
+    class="disk"
+    @input="update"
+  >
     <div class="mt-10" />
     <Banner
       v-if="mountedMessage && isProvisioned"
@@ -207,7 +210,10 @@ export default {
           </div>
         </div>
       </div>
-      <div v-if="!value.isNew" class="row mt-30">
+      <div
+        v-if="!value.isNew"
+        class="row mt-30"
+      >
         <div class="col flex span-12">
           <LabelValue
             :name="t('harvester.host.disk.storageAvailable.label')"
@@ -223,7 +229,7 @@ export default {
           />
         </div>
       </div>
-      <hr class="mt-10" />
+      <hr class="mt-10">
     </div>
     <div class="row mt-10">
       <div class="col span-12">
@@ -234,7 +240,10 @@ export default {
         />
       </div>
     </div>
-    <div v-if="(value.isNew && !isFormatted) || isCorrupted" class="row mt-10">
+    <div
+      v-if="(value.isNew && !isFormatted) || isCorrupted"
+      class="row mt-10"
+    >
       <div class="col span-6">
         <RadioGroup
           v-model="value.forceFormatted"

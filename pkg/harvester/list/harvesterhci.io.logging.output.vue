@@ -44,7 +44,7 @@ export default {
     this.rows = hash.rows;
     this.loggingAddon = hash.loggingAddon;
 
-    this.$store.dispatch('type-map/configureType', { match: HCI.OUTPUT, isCreatable: this.listSchema && this.listSchema?.collectionMethods.find(x => x.toLowerCase() === 'post') });
+    this.$store.dispatch('type-map/configureType', { match: HCI.OUTPUT, isCreatable: this.listSchema && this.listSchema?.collectionMethods.find((x) => x.toLowerCase() === 'post') });
   },
 
   data() {
@@ -76,7 +76,10 @@ export default {
 <template>
   <Loading v-if="$fetchState.pending" />
   <div v-else-if="listSchema">
-    <Banner v-if="loggingEnabled === false" color="info">
+    <Banner
+      v-if="loggingEnabled === false"
+      color="info"
+    >
       <MessageLink
         :to="to"
         prefix-label="harvester.logging.diabledTips.prefix"
@@ -85,9 +88,17 @@ export default {
       />
     </Banner>
 
-    <ResourceTable :schema="schema" :rows="rows" :ignore-filter="true" :groupable="false" />
+    <ResourceTable
+      :schema="schema"
+      :rows="rows"
+      :ignore-filter="true"
+      :groupable="false"
+    />
   </div>
-  <Banner v-else color="warning">
+  <Banner
+    v-else
+    color="warning"
+  >
     {{ t('harvester.generic.noSchema', {schema: schema.id}) }}
   </Banner>
 </template>

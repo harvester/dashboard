@@ -47,7 +47,7 @@ export default {
           name:     'type',
           labelKey: 'tableHeaders.type',
           value:    'typeDisplay',
-          getValue: row => row.typeDisplay,
+          getValue: (row) => row.typeDisplay,
           sort:     ['typeDisplay'],
         },
         AGE,
@@ -96,7 +96,7 @@ export default {
       const clusterNetworks = this.$store.getters[`${ inStore }/all`](HCI.CLUSTER_NETWORK);
 
       const out = clusterNetworks.map((network) => {
-        const hasChild = !!this.rows.find(config => config?.spec?.clusterNetwork === network.id);
+        const hasChild = !!this.rows.find((config) => config?.spec?.clusterNetwork === network.id);
 
         return {
           ...network,
@@ -226,13 +226,19 @@ export default {
             </div>
           </div>
         </template>
-        <template v-for="clusterNetwork in clusterNetworkWithoutConfigs" v-slot:[slotName(clusterNetwork.id)]>
+        <template
+          v-for="clusterNetwork in clusterNetworkWithoutConfigs"
+          v-slot:[slotName(clusterNetwork.id)]
+        >
           <tr
             v-show="!clusterNetwork.hasChild"
             :key="clusterNetwork.id"
             class="main-row"
           >
-            <td class="empty text-center" colspan="12">
+            <td
+              class="empty text-center"
+              colspan="12"
+            >
               {{ clusterNetwork.id === 'mgmt' ? t('harvester.clusterNetwork.mgmt') : t('harvester.clusterNetwork.clusterNetwork') }}
             </td>
           </tr>

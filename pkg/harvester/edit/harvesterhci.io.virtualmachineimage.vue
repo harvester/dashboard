@@ -54,7 +54,7 @@ export default {
       storageClasses: this.$store.dispatch(`${ inStore }/findAll`, { type: STORAGE_CLASS }),
     });
 
-    const defaultStorage = this.$store.getters[`${ inStore }/all`](STORAGE_CLASS).find(s => s.isDefault);
+    const defaultStorage = this.$store.getters[`${ inStore }/all`](STORAGE_CLASS).find((s) => s.isDefault);
 
     this.$set(this, 'storageClassName', this.storageClassName || defaultStorage?.metadata?.name || 'longhorn');
   },
@@ -99,7 +99,7 @@ export default {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const storages = this.$store.getters[`${ inStore }/all`](STORAGE_CLASS);
 
-      const out = storages.filter(s => !s.parameters?.backingImage).map((s) => {
+      const out = storages.filter((s) => !s.parameters?.backingImage).map((s) => {
         const label = s.isDefault ? `${ s.name } (${ this.t('generic.default') })` : s.name;
 
         return {
@@ -228,7 +228,7 @@ export default {
     internalAnnotations(option) {
       const optionKeys = [HCI_ANNOTATIONS.OS_TYPE, HCI_ANNOTATIONS.IMAGE_SUFFIX];
 
-      return optionKeys.find(O => O === option.key);
+      return optionKeys.find((O) => O === option.key);
     },
 
     calculateOptions(keyName) {
@@ -258,7 +258,7 @@ export default {
 
       return OS.find( (os) => {
         if (os.match) {
-          return os.match.find(matchValue => str.toLowerCase().includes(matchValue)) ? os.value : false;
+          return os.match.find((matchValue) => str.toLowerCase().includes(matchValue)) ? os.value : false;
         } else {
           return str.toLowerCase().includes(os.value.toLowerCase()) ? os.value : false;
         }
@@ -286,7 +286,11 @@ export default {
       name-key="spec.displayName"
     />
 
-    <Tabbed v-bind="$attrs" class="mt-15" :side-tabs="true">
+    <Tabbed
+      v-bind="$attrs"
+      class="mt-15"
+      :side-tabs="true"
+    >
       <Tab
         name="basic"
         :label="t('harvester.image.tabs.basics')"
@@ -354,7 +358,7 @@ export default {
                   type="file"
                   accept=".qcow, .qcow2, .raw, .img, .iso"
                   @change="handleFileUpload()"
-                />
+                >
               </button>
 
               <div
@@ -389,7 +393,12 @@ export default {
         </div>
       </Tab>
 
-      <Tab name="labels" :label="t('labels.labels.title')" :weight="2" class="bordered-table">
+      <Tab
+        name="labels"
+        :label="t('labels.labels.title')"
+        :weight="2"
+        class="bordered-table"
+      >
         <KeyValue
           key="labels"
           ref="labels"
@@ -407,7 +416,7 @@ export default {
               v-model="row[keyName]"
               :placeholder="t('keyValue.keyPlaceholder')"
               @input="queueUpdate"
-            />
+            >
           </template>
 
           <template #value="{row, keyName, valueName, queueUpdate}">
@@ -429,7 +438,7 @@ export default {
               autocapitalize="off"
               spellcheck="false"
               @input="queueUpdate"
-            />
+            >
           </template>
         </KeyValue>
       </Tab>

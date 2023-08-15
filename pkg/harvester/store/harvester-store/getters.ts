@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import {
   NAMESPACE_FILTER_KINDS,
   NAMESPACE_FILTER_ALL as ALL,

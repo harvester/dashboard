@@ -39,19 +39,19 @@ export default class HciLB extends HarvesterResource {
   get subnetDisplay() {
     const ranges = this.spec?.ranges || [];
 
-    return ranges.map(r => r.subnet).join(', ');
+    return ranges.map((r) => r.subnet).join(', ');
   }
 
   get startIPDisplay() {
     const ranges = this.spec?.ranges || [];
 
-    return ranges.filter(r => r.startIP).map(r => r.startIP).join(', ');
+    return ranges.filter((r) => r.startIP).map((r) => r.startIP).join(', ');
   }
 
   get endIPDisplay() {
     const ranges = this.spec?.ranges || [];
 
-    return ranges.filter(r => r.endIP).map(r => r.endIP).join(', ');
+    return ranges.filter((r) => r.endIP).map((r) => r.endIP).join(', ');
   }
 
   get details() {
@@ -82,7 +82,7 @@ export default class HciLB extends HarvesterResource {
   }
 
   get isReady() {
-    const readyCondition = (this?.status?.conditions || []).find(c => c.type === 'Ready') || {};
+    const readyCondition = (this?.status?.conditions || []).find((c) => c.type === 'Ready') || {};
 
     return readyCondition?.status === 'True';
   }

@@ -31,10 +31,21 @@ export default {
 
 <template>
   <div>
-    <div v-if="value !== 'N/A'" class="text">
-      <BadgeStateFormatter class="ml-10" :arbitrary="arbitrary" :row="row" :value="value" />
+    <div
+      v-if="value !== 'N/A'"
+      class="text"
+    >
+      <BadgeStateFormatter
+        class="ml-10"
+        :arbitrary="arbitrary"
+        :row="row"
+        :value="value"
+      />
     </div>
-    <div v-else class="text">
+    <div
+      v-else
+      class="text"
+    >
       {{ value }}
     </div>
   </div>

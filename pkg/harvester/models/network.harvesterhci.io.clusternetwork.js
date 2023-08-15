@@ -31,7 +31,7 @@ export default class HciClusterNetwork extends HarvesterResource {
   }
 
   get isReady() {
-    const readyCondition = (this?.status?.conditions || []).find(c => c.type === 'ready') || {};
+    const readyCondition = (this?.status?.conditions || []).find((c) => c.type === 'ready') || {};
 
     return readyCondition?.status === 'True';
   }
@@ -43,12 +43,12 @@ export default class HciClusterNetwork extends HarvesterResource {
   get nodes() {
     const nodes = this.$rootGetters[`${ this.inStore }/all`](NODE);
 
-    return nodes.filter(n => !n.isUnSchedulable);
+    return nodes.filter((n) => !n.isUnSchedulable);
   }
 
   get vlanStatuses() {
     const vlanStatuses = this.$rootGetters[`${ this.inStore }/all`](HCI.VLAN_STATUS);
-    const nodeIds = this.nodes.map(n => n.id);
+    const nodeIds = this.nodes.map((n) => n.id);
 
     return vlanStatuses.filter((s) => {
       return nodeIds.includes(s?.status?.node) &&
@@ -60,7 +60,7 @@ export default class HciClusterNetwork extends HarvesterResource {
     if (this.id === 'mgmt') {
       return true;
     } else {
-      const readyStatuses = this.vlanStatuses.filter(s => s.isReady) || [];
+      const readyStatuses = this.vlanStatuses.filter((s) => s.isReady) || [];
 
       return readyStatuses.length === this.nodes.length && this.isReady;
     }

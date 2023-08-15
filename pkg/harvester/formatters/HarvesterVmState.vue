@@ -122,8 +122,15 @@ export default {
 
 <template>
   <span>
-    <HarvesterMigrationState v-show="isMigrating" :vm-resource="row" @state-changed="migrationStateChanged" />
-    <div v-show="!isMigrating" class="state">
+    <HarvesterMigrationState
+      v-show="isMigrating"
+      :vm-resource="row"
+      @state-changed="migrationStateChanged"
+    />
+    <div
+      v-show="!isMigrating"
+      class="state"
+    >
       <VMState :row="row" />
       <v-popover
         v-if="warningMessage.length"
@@ -144,7 +151,10 @@ export default {
             @mouseenter="showMessage(true)"
             @mouseleave="showMessage(false)"
           >
-            <p v-for="(message, index) in warningMessage" :key="message">
+            <p
+              v-for="(message, index) in warningMessage"
+              :key="message"
+            >
               {{ index + 1 }}.
               <a
                 v-if="canMiss(row, message)"

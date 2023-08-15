@@ -103,7 +103,7 @@ export default {
     this.blockDeviceOpts = this.getBlockDeviceOpts();
 
     const addons = this.$store.getters[`${ inStore }/all`](HCI.ADD_ONS);
-    const seeder = addons.find(addon => addon.id === `harvester-system/${ ADD_ONS.HARVESTER_SEEDER }`);
+    const seeder = addons.find((addon) => addon.id === `harvester-system/${ ADD_ONS.HARVESTER_SEEDER }`);
 
     const seederEnabled = seeder ? seeder?.spec?.enabled : false;
 
@@ -111,7 +111,7 @@ export default {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const inventories = this.$store.getters[`${ inStore }/all`](HCI.INVENTORY) || [];
 
-      const inventory = inventories.find(inv => inv.id === `harvester-system/${ this.value.id }`);
+      const inventory = inventories.find((inv) => inv.id === `harvester-system/${ this.value.id }`);
 
       if (inventory) {
         this.inventory = await this.$store.dispatch(`${ inStore }/clone`, { resource: inventory });
@@ -193,7 +193,7 @@ export default {
     },
 
     showFormattedWarning() {
-      const out = this.newDisks.filter(d => d.forceFormatted && d.isNew) || [];
+      const out = this.newDisks.filter((d) => d.forceFormatted && d.isNew) || [];
 
       return out.length > 0;
     },
@@ -214,13 +214,13 @@ export default {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const longhornNodes = this.$store.getters[`${ inStore }/all`](LONGHORN.NODES);
 
-      return longhornNodes.find(node => node.id === `${ LONGHORN_SYSTEM }/${ this.value.id }`);
+      return longhornNodes.find((node) => node.id === `${ LONGHORN_SYSTEM }/${ this.value.id }`);
     },
 
     seederEnabled() {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const addons = this.$store.getters[`${ inStore }/all`](HCI.ADD_ONS);
-      const seeder = addons.find(addon => addon.id === `harvester-system/${ ADD_ONS.HARVESTER_SEEDER }`);
+      const seeder = addons.find((addon) => addon.id === `harvester-system/${ ADD_ONS.HARVESTER_SEEDER }`);
 
       return seeder ? seeder?.spec?.enabled : false;
     },
@@ -250,7 +250,7 @@ export default {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const addons = this.$store.getters[`${ inStore }/all`](HCI.ADD_ONS);
 
-      return addons.find(addon => addon.id === `harvester-system/${ ADD_ONS.HARVESTER_SEEDER }`);
+      return addons.find((addon) => addon.id === `harvester-system/${ ADD_ONS.HARVESTER_SEEDER }`);
     },
 
     hasInventorySchema() {
@@ -326,8 +326,8 @@ export default {
 
     async saveDisk() {
       const inStore = this.$store.getters['currentProduct'].inStore;
-      const addDisks = this.newDisks.filter(d => d.isNew);
-      const removeDisks = this.disks.filter(d => !findBy(this.newDisks, 'name', d.name) && d.blockDevice);
+      const addDisks = this.newDisks.filter((d) => d.isNew);
+      const removeDisks = this.disks.filter((d) => !findBy(this.newDisks, 'name', d.name) && d.blockDevice);
 
       if (addDisks.length === 0 && removeDisks.length === 0) {
         return Promise.resolve();
@@ -429,7 +429,7 @@ export default {
           const sizeBytes = d.status?.deviceStatus?.capacity?.sizeBytes;
           const size = formatSi(sizeBytes, { increment: 1024 });
           const parentDevice = d.status?.deviceStatus?.parentDevice;
-          const isChildAdded = this.newDisks.find(newDisk => newDisk.blockDevice?.status?.deviceStatus?.parentDevice === devPath);
+          const isChildAdded = this.newDisks.find((newDisk) => newDisk.blockDevice?.status?.deviceStatus?.parentDevice === devPath);
           const name = d.displayName;
 
           let label = `${ name } (Type: ${ deviceType }, Size: ${ size })`;
@@ -497,7 +497,7 @@ export default {
               opt:  { force: true },
             });
 
-            await new Promise(resolve => setTimeout(resolve, '5000'));
+            await new Promise((resolve) => setTimeout(resolve, '5000'));
             await retrySave();
           } else {
             return Promise.reject(exceptionToErrorsArray(err));
@@ -512,14 +512,25 @@ export default {
 </script>
 <template>
   <Loading v-if="$fetchState.pending" />
-  <div v-else class="node">
+  <div
+    v-else
+    class="node"
+  >
     <NameNsDescription
       :value="value"
       :namespaced="false"
       :mode="mode"
     />
-    <Tabbed ref="tabbed" class="mt-15" :side-tabs="true">
-      <Tab name="basics" :weight="100" :label="t('harvester.host.tabs.basics')">
+    <Tabbed
+      ref="tabbed"
+      class="mt-15"
+      :side-tabs="true"
+    >
+      <Tab
+        name="basics"
+        :weight="100"
+        :label="t('harvester.host.tabs.basics')"
+      >
         <LabeledInput
           v-model="customName"
           :label="t('harvester.host.detail.customName')"
@@ -601,8 +612,17 @@ export default {
           </template>
         </ArrayListGrouped>
       </Tab>
-      <Tab v-if="hasKsmtunedSchema" name="Ksmtuned" :weight="70" :label="t('harvester.host.tabs.ksmtuned')">
-        <HarvesterKsmtuned :mode="mode" :node="value" :register-before-hook="registerBeforeHook" />
+      <Tab
+        v-if="hasKsmtunedSchema"
+        name="Ksmtuned"
+        :weight="70"
+        :label="t('harvester.host.tabs.ksmtuned')"
+      >
+        <HarvesterKsmtuned
+          :mode="mode"
+          :node="value"
+          :register-before-hook="registerBeforeHook"
+        />
       </Tab>
       <Tab
         v-if="hasAddonSchema"
@@ -642,7 +662,10 @@ export default {
           />
         </div>
       </Tab>
-      <Tab name="labels" label-key="harvester.host.tabs.labels">
+      <Tab
+        name="labels"
+        label-key="harvester.host.tabs.labels"
+      >
         <KeyValue
           key="labels"
           :value="filteredLabels"
@@ -660,7 +683,12 @@ export default {
       color="warning"
       :label="t('harvester.host.disk.forceFormatted.toolTip')"
     />
-    <Footer :mode="mode" :errors="errors" @save="save" @done="done" />
+    <Footer
+      :mode="mode"
+      :errors="errors"
+      @save="save"
+      @done="done"
+    />
   </div>
 </template>
 <style lang="scss" scoped>

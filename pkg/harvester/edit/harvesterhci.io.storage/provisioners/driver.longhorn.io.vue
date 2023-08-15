@@ -198,7 +198,10 @@ export default {
           :mode="mode"
         >
           <template #no-options="{ searching }">
-            <span v-if="!searching" class="text-muted">
+            <span
+              v-if="!searching"
+              class="text-muted"
+            >
               {{ t('harvester.storage.parameters.nodeSelector.no-options', null, true) }}
             </span>
           </template>
@@ -214,7 +217,10 @@ export default {
           :mode="mode"
         >
           <template #no-options="{ searching }">
-            <span v-if="!searching" class="text-muted">
+            <span
+              v-if="!searching"
+              class="text-muted"
+            >
               {{ t('harvester.storage.parameters.diskSelector.no-options', null, true) }}
             </span>
           </template>

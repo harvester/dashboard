@@ -57,7 +57,7 @@ export default {
 
     this.snapshots = hash.snapshots;
 
-    const defaultStorage = this.$store.getters[`harvester/all`](STORAGE_CLASS).find( O => O.isDefault);
+    const defaultStorage = this.$store.getters[`harvester/all`](STORAGE_CLASS).find( (O) => O.isDefault);
 
     this.$set(this.value.spec, 'storageClassName', this.value?.spec?.storageClassName || defaultStorage?.metadata?.name || 'longhorn');
   },
@@ -112,7 +112,7 @@ export default {
 
       return sortBy(
         choices
-          .filter(obj => obj.isReady)
+          .filter((obj) => obj.isReady)
           .map((obj) => {
             return {
               label: `${ obj.metadata.namespace }/${ obj.spec.displayName }`,
@@ -160,7 +160,7 @@ export default {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const storages = this.$store.getters[`${ inStore }/all`](STORAGE_CLASS);
 
-      const out = storages.filter(s => !s.parameters?.backingImage).map((s) => {
+      const out = storages.filter((s) => !s.parameters?.backingImage).map((s) => {
         const label = s.isDefault ? `${ s.name } (${ this.t('generic.default') })` : s.name;
 
         return {
@@ -267,7 +267,11 @@ export default {
     :apply-hooks="applyHooks"
     @finish="save"
   >
-    <NameNsDescription :value="value" :namespaced="true" :mode="mode" />
+    <NameNsDescription
+      :value="value"
+      :namespaced="true"
+      :mode="mode"
+    />
 
     <ResourceTabs
       v-model="value"
@@ -277,7 +281,12 @@ export default {
       :side-tabs="true"
       :mode="mode"
     >
-      <Tab name="basic" :label="t('harvester.volume.tabs.basics')" :weight="3" class="bordered-table">
+      <Tab
+        name="basic"
+        :label="t('harvester.volume.tabs.basics')"
+        :weight="3"
+        class="bordered-table"
+      >
         <LabeledSelect
           v-model="source"
           :label="t('harvester.volume.source')"
@@ -325,10 +334,34 @@ export default {
           @input="update"
         />
       </Tab>
-      <Tab v-if="!isCreate" name="details" :label="t('harvester.volume.tabs.details')" :weight="2.5" class="bordered-table">
-        <LabeledInput v-model="frontendDisplay" class="mb-20" :mode="mode" :disabled="true" :label="t('harvester.volume.frontend')" />
-        <LabeledInput v-model="attachedNode" class="mb-20" :mode="mode" :disabled="true" :label="t('harvester.volume.attachedNode')" />
-        <LabeledInput v-model="endpoint" class="mb-20" :mode="mode" :disabled="true" :label="t('harvester.volume.endpoint')" />
+      <Tab
+        v-if="!isCreate"
+        name="details"
+        :label="t('harvester.volume.tabs.details')"
+        :weight="2.5"
+        class="bordered-table"
+      >
+        <LabeledInput
+          v-model="frontendDisplay"
+          class="mb-20"
+          :mode="mode"
+          :disabled="true"
+          :label="t('harvester.volume.frontend')"
+        />
+        <LabeledInput
+          v-model="attachedNode"
+          class="mb-20"
+          :mode="mode"
+          :disabled="true"
+          :label="t('harvester.volume.attachedNode')"
+        />
+        <LabeledInput
+          v-model="endpoint"
+          class="mb-20"
+          :mode="mode"
+          :disabled="true"
+          :label="t('harvester.volume.endpoint')"
+        />
         <LabeledSelect
           v-model="diskTags"
           :multiple="true"
@@ -347,11 +380,35 @@ export default {
           :mode="mode"
           class="mb-20"
         />
-        <LabeledInput v-model="lastBackup" class="mb-20" :mode="mode" :disabled="true" :label="t('harvester.volume.lastBackup')" />
-        <LabeledInput v-model="lastBackupAt" class="mb-20" :mode="mode" :disabled="true" :label="t('harvester.volume.lastBackupAt')" />
-        <LabeledInput v-model="replicasNumber" class="mb-20" :mode="mode" :disabled="true" :label="t('harvester.volume.replicasNumber')" />
+        <LabeledInput
+          v-model="lastBackup"
+          class="mb-20"
+          :mode="mode"
+          :disabled="true"
+          :label="t('harvester.volume.lastBackup')"
+        />
+        <LabeledInput
+          v-model="lastBackupAt"
+          class="mb-20"
+          :mode="mode"
+          :disabled="true"
+          :label="t('harvester.volume.lastBackupAt')"
+        />
+        <LabeledInput
+          v-model="replicasNumber"
+          class="mb-20"
+          :mode="mode"
+          :disabled="true"
+          :label="t('harvester.volume.replicasNumber')"
+        />
       </Tab>
-      <Tab v-if="!isCreate" name="instances" :label="t('harvester.volume.tabs.snapshots')" :weight="2" class="bordered-table">
+      <Tab
+        v-if="!isCreate"
+        name="instances"
+        :label="t('harvester.volume.tabs.snapshots')"
+        :weight="2"
+        class="bordered-table"
+      >
         <SortableTable
           v-bind="$attrs"
           :headers="snapshotHeaders"
@@ -361,9 +418,26 @@ export default {
           v-on="$listeners"
         />
       </Tab>
-      <Tab v-if="!isCreate && value.spec.dataSource" name="datasource" :label="t('harvester.volume.tabs.datasource')" :weight="1" class="bordered-table">
-        <LabeledInput v-model="dataSourceKind" class="mb-20" :mode="mode" :disabled="true" :label="t('harvester.volume.kind')" />
-        <LabeledInput v-model="value.spec.dataSource.name" :mode="mode" :disabled="true" :label="t('nameNsDescription.name.label')" />
+      <Tab
+        v-if="!isCreate && value.spec.dataSource"
+        name="datasource"
+        :label="t('harvester.volume.tabs.datasource')"
+        :weight="1"
+        class="bordered-table"
+      >
+        <LabeledInput
+          v-model="dataSourceKind"
+          class="mb-20"
+          :mode="mode"
+          :disabled="true"
+          :label="t('harvester.volume.kind')"
+        />
+        <LabeledInput
+          v-model="value.spec.dataSource.name"
+          :mode="mode"
+          :disabled="true"
+          :label="t('nameNsDescription.name.label')"
+        />
       </Tab>
     </ResourceTabs>
   </CruResource>

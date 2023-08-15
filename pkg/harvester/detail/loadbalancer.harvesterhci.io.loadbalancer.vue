@@ -41,7 +41,7 @@ export default {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const ipPools = this.$store.getters[`${ inStore }/all`](HCI.IP_POOL);
 
-      return ipPools.filter(i => i.id === this.value.status.allocatedAddress.ipPool);
+      return ipPools.filter((i) => i.id === this.value.status.allocatedAddress.ipPool);
     },
 
     ipPoolHeaders() {
@@ -84,7 +84,7 @@ export default {
     },
 
     backendServerSelectors() {
-      return Object.keys(this.value.spec?.backendServerSelector || {}).map(key => ({
+      return Object.keys(this.value.spec?.backendServerSelector || {}).map((key) => ({
         key,
         value: this.value.spec.backendServerSelector[key],
       }));
@@ -103,12 +103,12 @@ export default {
     vmHeaders() {
       const filterNames = ['state', 'ip', 'node'];
 
-      return VM_HEADERS.filter(h => !filterNames.includes(h.name));
+      return VM_HEADERS.filter((h) => !filterNames.includes(h.name));
     },
 
     vms() {
       const inStore = this.$store.getters['currentProduct'].inStore;
-      const vms = this.$store.getters[`${ inStore }/all`](HCI.VM).filter(vm => vm.metadata.namespace === this.value.metadata.namespace);
+      const vms = this.$store.getters[`${ inStore }/all`](HCI.VM).filter((vm) => vm.metadata.namespace === this.value.metadata.namespace);
       const match = matching(vms, this.value?.spec?.backendServerSelector, 'spec.template.metadata.labels');
 
       return match;

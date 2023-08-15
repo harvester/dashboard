@@ -33,7 +33,7 @@ export default {
 
     const schema = this.$store.getters[`${ inStore }/schemaFor`](HCI.BACKUP);
 
-    if (!schema?.collectionMethods.find(x => x.toLowerCase() === 'post')) {
+    if (!schema?.collectionMethods.find((x) => x.toLowerCase() === 'post')) {
       this.$store.dispatch('type-map/configureType', { match: HCI.VM_SNAPSHOT, isCreatable: false });
     }
 
@@ -84,7 +84,7 @@ export default {
     },
 
     filterdRows() {
-      return this.rows.filter(R => R.spec?.type !== 'backup');
+      return this.rows.filter((R) => R.spec?.type !== 'backup');
     },
   },
 };

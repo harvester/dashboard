@@ -86,7 +86,7 @@ export default {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const storages = this.$store.getters[`${ inStore }/all`](STORAGE_CLASS);
 
-      const out = storages.filter(s => !s.parameters?.backingImage).map((s) => {
+      const out = storages.filter((s) => !s.parameters?.backingImage).map((s) => {
         const label = s.isDefault ? `${ s.name } (${ this.t('generic.default') })` : s.name;
 
         return {
@@ -106,7 +106,7 @@ export default {
 
     setDefaultClassName() {
       const inStore = this.$store.getters['currentProduct'].inStore;
-      const defaultStorage = this.$store.getters[`${ inStore }/all`](STORAGE_CLASS).find( s => s.isDefault);
+      const defaultStorage = this.$store.getters[`${ inStore }/all`](STORAGE_CLASS).find( (s) => s.isDefault);
 
       this.$set(this.valuesContent.pvcClaim, 'storageClassName', this.valuesContent?.pvcClaim?.storageClassName || defaultStorage?.metadata?.name || 'longhorn');
 
@@ -182,7 +182,7 @@ export default {
           </div>
         </div>
 
-        <br />
+        <br>
         <h2>{{ t('harvester.addons.vmImport.titles.pvc') }}</h2>
         <div v-if="value.spec.enabled">
           <RadioGroup

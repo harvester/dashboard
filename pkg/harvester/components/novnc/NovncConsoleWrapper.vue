@@ -209,7 +209,7 @@ export default {
     preferredShortcutKeys() {
       return (this.savedShortcutKeys || []).map((item) => {
         return {
-          label: item.map(K => K.key.charAt(0).toUpperCase() + K.key.slice(1)).join('+'),
+          label: item.map((K) => K.key.charAt(0).toUpperCase() + K.key.slice(1)).join('+'),
           value: item
         };
       });
@@ -289,11 +289,21 @@ export default {
           </button>
 
           <template v-slot:popover>
-            <novnc-console-item :items="keymap" :path="keysRecord" :pos="0" @update="update" @send-keys="sendKeys" />
+            <novnc-console-item
+              :items="keymap"
+              :path="keysRecord"
+              :pos="0"
+              @update="update"
+              @send-keys="sendKeys"
+            />
           </template>
         </v-popover>
 
-        <button v-if="hasSoftRebootAction" class="btn btn-sm bg-primary" @click="softReboot">
+        <button
+          v-if="hasSoftRebootAction"
+          class="btn btn-sm bg-primary"
+          @click="softReboot"
+        >
           {{ t("harvester.action.softreboot") }}
         </button>
 
@@ -310,24 +320,43 @@ export default {
 
           <template v-slot:popover>
             <div>
-              <button class="btn btn-sm bg-primary" @click="showKeysModal">
+              <button
+                class="btn btn-sm bg-primary"
+                @click="showKeysModal"
+              >
                 {{ t("harvester.virtualMachine.detail.console.management") }}
               </button>
             </div>
 
             <hr>
 
-            <div v-for="(keys, index) in preferredShortcutKeys" :key="index" class="mb-5">
-              <button class="btn btn-sm bg-primary" @click="sendCustomKeys(keys.value)">
+            <div
+              v-for="(keys, index) in preferredShortcutKeys"
+              :key="index"
+              class="mb-5"
+            >
+              <button
+                class="btn btn-sm bg-primary"
+                @click="sendCustomKeys(keys.value)"
+              >
                 {{ keys.label }}
               </button>
             </div>
           </template>
         </v-popover>
 
-        <NovncConsoleCustomKeys v-if="renderKeysModal" ref="keysModal" :current-user="currentUser" @close="hideKeysModal" />
+        <NovncConsoleCustomKeys
+          v-if="renderKeysModal"
+          ref="keysModal"
+          :current-user="currentUser"
+          @close="hideKeysModal"
+        />
       </div>
-      <NovncConsole v-if="url && !isDown" ref="novncConsole" :url="url" />
+      <NovncConsole
+        v-if="url && !isDown"
+        ref="novncConsole"
+        :url="url"
+      />
       <p v-if="isDown">
         {{ t("harvester.virtualMachine.detail.console.down") }}
       </p>

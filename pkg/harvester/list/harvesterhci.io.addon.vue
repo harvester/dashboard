@@ -64,9 +64,15 @@ export default {
       :schema="schema"
       :headers="headers"
     >
-      <template slot="cell:name" slot-scope="scope">
+      <template
+        slot="cell:name"
+        slot-scope="scope"
+      >
         <div class="cell-name">
-          <LinkDetail v-model="scope.row.displayName" :row="scope.row" />
+          <LinkDetail
+            v-model="scope.row.displayName"
+            :row="scope.row"
+          />
 
           <a
             v-if="scope.row.metadata.name === 'rancher-vcluster' && scope.row.spec.enabled"

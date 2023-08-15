@@ -112,7 +112,10 @@ export default {
     <template #group-by="group">
       <div class="group-bar">
         <div class="group-tab">
-          <div v-clean-html="templateLabel(group.group)" class="project-name" />
+          <div
+            v-clean-html="templateLabel(group.group)"
+            class="project-name"
+          />
         </div>
 
         <div class="right">
@@ -123,7 +126,11 @@ export default {
             />
           </div>
 
-          <button type="button" class="btn btn-sm actions mr-10 role-multi-action" @click="showActions($event, group.group)">
+          <button
+            type="button"
+            class="btn btn-sm actions mr-10 role-multi-action"
+            @click="showActions($event, group.group)"
+          >
             <i class="icon icon-actions" />
           </button>
         </div>
@@ -134,7 +141,7 @@ export default {
       <td v-if="row.isDefaultVersion">
         <i class="icon icon-checkmark" />
       </td>
-      <td v-else></td>
+      <td v-else />
     </template>
   </ResourceTable>
 </template>

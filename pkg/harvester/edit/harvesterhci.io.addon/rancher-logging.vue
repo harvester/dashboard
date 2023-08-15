@@ -102,7 +102,12 @@ export default {
         :labels="[t('generic.enabled'), t('generic.disabled')]"
       />
     </Tab>
-    <Tab v-if="value.spec.enabled" name="fluentbit" :label="t('harvester.logging.configuration.section.fluentbit')" :weight="-1">
+    <Tab
+      v-if="value.spec.enabled"
+      name="fluentbit"
+      :label="t('harvester.logging.configuration.section.fluentbit')"
+      :weight="-1"
+    >
       <div class="row mt-20">
         <div class="col span-6">
           <LabeledInput
@@ -140,7 +145,12 @@ export default {
         </div>
       </div>
     </Tab>
-    <Tab v-if="value.spec.enabled" name="fluentd" :label="t('harvester.logging.configuration.section.fluentd')" :weight="-1">
+    <Tab
+      v-if="value.spec.enabled"
+      name="fluentd"
+      :label="t('harvester.logging.configuration.section.fluentd')"
+      :weight="-1"
+    >
       <div class="row mt-20">
         <div class="col span-6">
           <LabeledInput

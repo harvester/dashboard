@@ -103,7 +103,7 @@ export default {
 
   methods: {
     update() {
-      const exclude = this.exclude.filter(ip => ip);
+      const exclude = this.exclude.filter((ip) => ip);
 
       if (Array.isArray(exclude) && exclude.length > 0) {
         this.parsedDefaultValue.exclude = exclude;
@@ -168,7 +168,10 @@ export default {
     @input="update"
   >
     <Banner color="warning">
-      <t k="harvester.setting.storageNetwork.warning" :raw="true" />
+      <t
+        k="harvester.setting.storageNetwork.warning"
+        :raw="true"
+      />
     </Banner>
 
     <RadioGroup
@@ -206,7 +209,11 @@ export default {
         :placeholder="t('harvester.setting.storageNetwork.range.placeholder')"
         label-key="harvester.setting.storageNetwork.range.label"
       />
-      <Tip class="mb-20" icon="icon icon-info" :text="t('harvester.setting.storageNetwork.tip')" />
+      <Tip
+        class="mb-20"
+        icon="icon icon-info"
+        :text="t('harvester.setting.storageNetwork.tip')"
+      />
 
       <ArrayList
         v-model="exclude"
@@ -229,7 +236,7 @@ export default {
               v-model="scope.row.value"
               :placeholder="t('harvester.setting.storageNetwork.exclude.placeholder')"
               @input="update"
-            />
+            >
           </div>
         </template>
       </ArrayList>

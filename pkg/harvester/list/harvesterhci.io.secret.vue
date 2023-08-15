@@ -25,7 +25,7 @@ export default {
 
     const configSchema = this.$store.getters[`${ inStore }/schemaFor`](SECRET);
 
-    if (!configSchema?.collectionMethods.find(x => x.toLowerCase() === 'post')) {
+    if (!configSchema?.collectionMethods.find((x) => x.toLowerCase() === 'post')) {
       this.$store.dispatch('type-map/configureType', { match: HCI.SECRET, isCreatable: false });
     }
   },

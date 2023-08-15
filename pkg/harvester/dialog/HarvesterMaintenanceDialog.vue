@@ -97,8 +97,17 @@ export default {
           label-key="harvester.host.enableMaintenance.force"
         />
       </div>
-      <Banner color="warning" :label="t('harvester.host.enableMaintenance.protip')" class="mb-0" />
-      <Banner v-for="(err, i) in errors" :key="i" color="error" :label="err" />
+      <Banner
+        color="warning"
+        :label="t('harvester.host.enableMaintenance.protip')"
+        class="mb-0"
+      />
+      <Banner
+        v-for="(err, i) in errors"
+        :key="i"
+        color="error"
+        :label="err"
+      />
 
       <div v-if="unhealthyVM">
         <Banner color="error mb-5">
@@ -118,9 +127,15 @@ export default {
       </div>
     </template>
 
-    <div slot="actions" class="actions">
+    <div
+      slot="actions"
+      class="actions"
+    >
       <div class="buttons">
-        <button class="btn role-secondary mr-10" @click="close">
+        <button
+          class="btn role-secondary mr-10"
+          @click="close"
+        >
           {{ t('generic.cancel') }}
         </button>
 

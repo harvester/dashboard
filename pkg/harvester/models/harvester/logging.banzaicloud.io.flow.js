@@ -63,7 +63,7 @@ export default class HarvesterLogFlow extends Flow {
       return FLOW_TYPE.AUDIT;
     }
 
-    if ((this.spec.match || []).find(M => !!M?.select?.labels?.['app.kubernetes.io/name'])) {
+    if ((this.spec.match || []).find((M) => !!M?.select?.labels?.['app.kubernetes.io/name'])) {
       return FLOW_TYPE.EVENT;
     }
 

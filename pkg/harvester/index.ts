@@ -6,7 +6,7 @@ import harvesterStore from './store/harvester-store';
 import customValidators from './validators';
 
 // Init the package
-export default function(plugin: IPlugin) {
+export default function(plugin: IPlugin): void {
   // Auto-import model, detail, edit from the folders
   importTypes(plugin);
 

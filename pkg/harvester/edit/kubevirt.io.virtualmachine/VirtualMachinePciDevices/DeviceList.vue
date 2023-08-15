@@ -1,9 +1,9 @@
 <script>
-import ResourceTable from '@shell/components/ResourceTable';
+import ResourceTable, { defaultTableSortGenerationFn } from '@shell/components/ResourceTable';
 import FilterBySriov from '../../../components/FilterBySriov';
 import { HCI } from '../../../types';
 import { STATE, SIMPLE_NAME } from '@shell/config/table-headers';
-import { defaultTableSortGenerationFn } from '@shell/components/ResourceTable.vue';
+
 import { allHash } from '@shell/utils/promise';
 
 export default {
@@ -104,7 +104,7 @@ export default {
       });
     },
     groupIsAllEnabled(rows = []) {
-      return !rows.find(device => !device.passthroughClaim);
+      return !rows.find((device) => !device.passthroughClaim);
     },
 
     changeRows(filterRows, parentSriov) {
@@ -126,13 +126,33 @@ export default {
 </script>
 
 <template>
-  <ResourceTable :headers="headers" :schema="schema" :rows="filterRows" :use-query-params-for-simple-filtering="true" :sort-generation-fn="sortGenerationFn">
+  <ResourceTable
+    :headers="headers"
+    :schema="schema"
+    :rows="filterRows"
+    :use-query-params-for-simple-filtering="true"
+    :sort-generation-fn="sortGenerationFn"
+  >
     <template #group-by="{group}">
-      <div :ref="group.key" v-trim-whitespace class="group-tab">
-        <button v-if="groupIsAllEnabled(group.rows)" type="button" class="btn btn-sm role-secondary mr-5" @click="e=>{disableGroup(group.rows); e.target.blur()}">
+      <div
+        :ref="group.key"
+        v-trim-whitespace
+        class="group-tab"
+      >
+        <button
+          v-if="groupIsAllEnabled(group.rows)"
+          type="button"
+          class="btn btn-sm role-secondary mr-5"
+          @click="e=>{disableGroup(group.rows); e.target.blur()}"
+        >
           {{ t('harvester.pci.disableGroup') }}
         </button>
-        <button v-else type="button" class="btn btn-sm role-secondary mr-5" @click="e=>{enableGroup(group.rows); e.target.blur()}">
+        <button
+          v-else
+          type="button"
+          class="btn btn-sm role-secondary mr-5"
+          @click="e=>{enableGroup(group.rows); e.target.blur()}"
+        >
           {{ t('harvester.pci.enableGroup') }}
         </button>
         <span v-clean-html="group.key" />
@@ -140,10 +160,17 @@ export default {
     </template>
     <template #cell:claimed="{row}">
       <span v-if="row.isEnabled">{{ row.claimedBy }}</span>
-      <span v-else class="text-muted">&mdash;</span>
+      <span
+        v-else
+        class="text-muted"
+      >&mdash;</span>
     </template>
     <template #more-header-middle>
-      <FilterBySriov ref="filterByParentSRIOV" :rows="rows" @change-rows="changeRows" />
+      <FilterBySriov
+        ref="filterByParentSRIOV"
+        :rows="rows"
+        @change-rows="changeRows"
+      />
     </template>
   </ResourceTable>
 </template>

@@ -45,7 +45,7 @@ export default {
       return [{
         label: this.t('generic.none'),
         value: '',
-      }, ...networks.map(n => ({
+      }, ...networks.map((n) => ({
         label: n.id,
         value: n.id,
       }))];

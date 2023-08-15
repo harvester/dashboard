@@ -142,7 +142,7 @@ export default {
               query: { mode: _EDIT }
             };
 
-            V.pvc = this.pvcs.find(pvc => pvc.metadata.name === V.realName);
+            V.pvc = this.pvcs.find((pvc) => pvc.metadata.name === V.realName);
           }
 
           return V;
@@ -173,7 +173,7 @@ export default {
 
       if (type === SOURCE_TYPE.NEW) {
         const inStore = this.$store.getters['currentProduct'].inStore;
-        const defaultStorage = this.$store.getters[`${ inStore }/all`](STORAGE_CLASS).find( O => O.isDefault);
+        const defaultStorage = this.$store.getters[`${ inStore }/all`](STORAGE_CLASS).find( (O) => O.isDefault);
 
         neu.storageClassName = defaultStorage?.metadata?.name || 'longhorn';
       }
@@ -188,7 +188,7 @@ export default {
 
       while (hasName) {
         name = `disk-${ this.nameIdx }`;
-        hasName = this.rows.find(O => O.name === name);
+        hasName = this.rows.find((O) => O.name === name);
         this.nameIdx++;
       }
 
@@ -252,7 +252,7 @@ export default {
     },
 
     getImageDisplayName(id) {
-      return this.$store.getters['harvester/all'](HCI.IMAGE).find(image => image.id === id)?.spec?.displayName;
+      return this.$store.getters['harvester/all'](HCI.IMAGE).find((image) => image.id === id)?.spec?.displayName;
     }
   },
 };
@@ -260,24 +260,54 @@ export default {
 
 <template>
   <div>
-    <Banner v-if="!isView" color="info" label-key="harvester.virtualMachine.volume.dragTip" />
-    <draggable v-model="rows" :disabled="isView" @end="update">
+    <Banner
+      v-if="!isView"
+      color="info"
+      label-key="harvester.virtualMachine.volume.dragTip"
+    />
+    <draggable
+      v-model="rows"
+      :disabled="isView"
+      @end="update"
+    >
       <transition-group>
-        <div v-for="(volume, i) in rows" :key="volume.id">
+        <div
+          v-for="(volume, i) in rows"
+          :key="volume.id"
+        >
           <InfoBox class="box">
-            <button v-if="!isView" type="button" class="role-link btn btn-sm remove" @click="removeVolume(volume)">
+            <button
+              v-if="!isView"
+              type="button"
+              class="role-link btn btn-sm remove"
+              @click="removeVolume(volume)"
+            >
               <i class="icon icon-x" />
             </button>
-            <button v-if="volume.hotpluggable && isView" type="button" class="role-link btn remove" @click="unplugVolume(volume)">
+            <button
+              v-if="volume.hotpluggable && isView"
+              type="button"
+              class="role-link btn remove"
+              @click="unplugVolume(volume)"
+            >
               {{ t('harvester.virtualMachine.unplug.detachVolume') }}
             </button>
             <h3>
-              <span v-if="volume.to && isVirtualType" class="title">
+              <span
+                v-if="volume.to && isVirtualType"
+                class="title"
+              >
                 <n-link :to="volume.to">
                   {{ t('harvester.virtualMachine.volume.edit') }} {{ headerFor(volume.source) }}
                 </n-link>
 
-                <BadgeStateFormatter v-if="volume.pvc" class="ml-10 state" :arbitrary="true" :row="volume.pvc" :value="volume.pvc.state" />
+                <BadgeStateFormatter
+                  v-if="volume.pvc"
+                  class="ml-10 state"
+                  :arbitrary="true"
+                  :row="volume.pvc"
+                  :value="volume.pvc.state"
+                />
                 <a
                   v-if="dev && !!volume.pvc && !!volume.pvc.resourceExternalLink"
                   v-clean-tooltip="t(volume.pvc.resourceExternalLink.tipsKey || 'generic.resourceExternalLinkTips')"
@@ -312,13 +342,24 @@ export default {
             </div>
 
             <div class="bootOrder">
-              <div v-if="!isView" class="mr-15">
-                <button :disabled="i === 0" class="btn btn-sm role-primary" @click.prevent="changeSort(i, false)">
-                  <i class="icon icon-lg icon-chevron-up"></i>
+              <div
+                v-if="!isView"
+                class="mr-15"
+              >
+                <button
+                  :disabled="i === 0"
+                  class="btn btn-sm role-primary"
+                  @click.prevent="changeSort(i, false)"
+                >
+                  <i class="icon icon-lg icon-chevron-up" />
                 </button>
 
-                <button :disabled="i === rows.length -1" class="btn btn-sm role-primary" @click.prevent="changeSort(i, true)">
-                  <i class="icon icon-lg icon-chevron-down"></i>
+                <button
+                  :disabled="i === rows.length -1"
+                  class="btn btn-sm role-primary"
+                  @click.prevent="changeSort(i, true)"
+                >
+                  <i class="icon icon-lg icon-chevron-down" />
                 </button>
               </div>
 
@@ -327,12 +368,21 @@ export default {
               </div>
             </div>
 
-            <Banner v-if="volume.volumeStatus && !isCreate" class="mt-15 volume-status" color="warning" :label="volume.volumeStatus" />
+            <Banner
+              v-if="volume.volumeStatus && !isCreate"
+              class="mt-15 volume-status"
+              color="warning"
+              :label="volume.volumeStatus"
+            />
           </InfoBox>
         </div>
       </transition-group>
     </draggable>
-    <Banner v-if="showVolumeTip" color="warning" :label="t('harvester.virtualMachine.volume.volumeTip')" />
+    <Banner
+      v-if="showVolumeTip"
+      color="warning"
+      :label="t('harvester.virtualMachine.volume.volumeTip')"
+    />
 
     <div v-if="!isView">
       <button
@@ -344,11 +394,20 @@ export default {
         {{ t('harvester.virtualMachine.volume.addVolume') }}
       </button>
 
-      <button v-if="!existingVolumeDisabled" type="button" class="btn btn-sm bg-primary mr-15 mb-10" @click="addVolume(SOURCE_TYPE.ATTACH_VOLUME)">
+      <button
+        v-if="!existingVolumeDisabled"
+        type="button"
+        class="btn btn-sm bg-primary mr-15 mb-10"
+        @click="addVolume(SOURCE_TYPE.ATTACH_VOLUME)"
+      >
         {{ t('harvester.virtualMachine.volume.addExistingVolume') }}
       </button>
 
-      <button type="button" class="btn btn-sm bg-primary mr-15 mb-10" @click="addVolume(SOURCE_TYPE.IMAGE)">
+      <button
+        type="button"
+        class="btn btn-sm bg-primary mr-15 mb-10"
+        @click="addVolume(SOURCE_TYPE.IMAGE)"
+      >
         {{ t('harvester.virtualMachine.volume.addVmImage') }}
       </button>
 
@@ -361,7 +420,11 @@ export default {
       </button>
     </div>
 
-    <ModalWithCard ref="deleteTip" name="deleteTip" :width="400">
+    <ModalWithCard
+      ref="deleteTip"
+      name="deleteTip"
+      :width="400"
+    >
       <template #title>
         {{ t('harvester.virtualMachine.volume.unmount.title') }}
       </template>
@@ -372,11 +435,17 @@ export default {
 
       <template #footer>
         <div class="buttons">
-          <button class="btn role-secondary mr-20" @click.prevent="cancel">
+          <button
+            class="btn role-secondary mr-20"
+            @click.prevent="cancel"
+          >
             {{ t('generic.no') }}
           </button>
 
-          <button class="btn bg-primary mr-20" @click.prevent="deleteVolume">
+          <button
+            class="btn bg-primary mr-20"
+            @click.prevent="deleteVolume"
+          >
             {{ t('generic.yes') }}
           </button>
         </div>

@@ -61,7 +61,7 @@ export default {
     pvcsResource() {
       const allPVCs = this.$store.getters['harvester/all'](PVC) || [];
 
-      return allPVCs.find(P => P.id === `${ this.namespace }/${ this.value.volumeName }`);
+      return allPVCs.find((P) => P.id === `${ this.namespace }/${ this.value.volumeName }`);
     },
 
     isDisabled() {
@@ -71,7 +71,7 @@ export default {
     storageClassOptions() {
       const storages = this.$store.getters[`harvester/all`](STORAGE_CLASS) || [];
 
-      const out = storages.filter(s => !s.parameters?.backingImage).map((s) => {
+      const out = storages.filter((s) => !s.parameters?.backingImage).map((s) => {
         const label = s.isDefault ? `${ s.name } (${ this.t('generic.default') })` : s.name;
 
         return {
@@ -122,7 +122,10 @@ export default {
 
 <template>
   <div>
-    <Loading mode="relative" :loading="loading" />
+    <Loading
+      mode="relative"
+      :loading="loading"
+    />
     <div class="row mb-20">
       <div
         class="col span-6"
@@ -214,7 +217,11 @@ export default {
         data-testid="input-hev-bus"
         class="col span-3"
       >
-        <InputOrDisplay :name="t('harvester.virtualMachine.volume.bus')" :value="value.bus" :mode="mode">
+        <InputOrDisplay
+          :name="t('harvester.virtualMachine.volume.bus')"
+          :value="value.bus"
+          :mode="mode"
+        >
           <LabeledSelect
             v-model="value.bus"
             :label="t('harvester.virtualMachine.volume.bus')"

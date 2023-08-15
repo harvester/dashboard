@@ -61,18 +61,14 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.js'],
+      files: ['**/pkg/harvester/*.js'],
       rules: {
         // FIXME: The following is disabled due to new linter and old JS code. These should all be enabled and underlying issues fixed
         'prefer-regex-literals':                'off',
         'vue/component-definition-name-casing': 'off',
         'no-unreachable-loop':                  'off',
-        'computed-property-spacing':            'off',
+        'computed-property-spacing':            'off'
       }
-    },
-    {
-      files: ['docusaurus/**/*.{js,ts}'],
-      rules: { 'no-use-before-define': 'off' },
     },
     {
       files:         ['**/*.vue'],
@@ -104,18 +100,6 @@ module.exports = {
       }
     },
 
-    // Legacies
-    {
-      files: [
-        '**/shell/utils/**/*.{js,ts}',
-        '**/shell/scripts/**/*.{js,ts}'
-      ],
-      rules: {
-        '@typescript-eslint/no-empty-function': 'off',
-        '@typescript-eslint/no-var-requires':   'off',
-      }
-    },
-
     // TS Exceptions
     {
       files: ['**/*.{js,ts,vue}'],
@@ -130,22 +114,13 @@ module.exports = {
 
     // Harvester
     {
-      files: ['**/{harvester,harvester-manager}/**/*.{js,ts,vue}'],
+      files: ['**/{harvester}/**/*.{js,ts,vue}'],
       rules: {
         // Warnings
         '@typescript-eslint/explicit-module-boundary-types': 'off',
         'vue/html-self-closing':                             'off',
         'vue/no-v-html':                                     'error',
       }
-    },
-
-    // Cypress PO
-    {
-      files: ['**/po/**/*.{js,ts,vue}'],
-      rules: {
-        // Warnings
-        '@typescript-eslint/explicit-module-boundary-types': 'off',
-      }
-    },
+    }
   ]
 };

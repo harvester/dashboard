@@ -42,7 +42,7 @@ export default {
 
     const configSchema = this.$store.getters[`${ inStore }/schemaFor`](MONITORING.ALERTMANAGERCONFIG);
 
-    this.$store.dispatch('type-map/configureType', { match: HCI.ALERTMANAGERCONFIG, isCreatable: configSchema?.collectionMethods.find(x => x.toLowerCase() === 'post') });
+    this.$store.dispatch('type-map/configureType', { match: HCI.ALERTMANAGERCONFIG, isCreatable: configSchema?.collectionMethods.find((x) => x.toLowerCase() === 'post') });
   },
 
   data() {
@@ -78,7 +78,10 @@ export default {
 <template>
   <Loading v-if="$fetchState.pending" />
   <div v-else>
-    <Banner v-if="monitoringEnabled === false" color="info">
+    <Banner
+      v-if="monitoringEnabled === false"
+      color="info"
+    >
       <MessageLink
         :to="to"
         prefix-label="harvester.monitoring.alertmanagerConfig.diabledMonitoringTips.prefix"
@@ -86,7 +89,10 @@ export default {
         suffix-label="harvester.monitoring.alertmanagerConfig.diabledMonitoringTips.suffix"
       />
     </Banner>
-    <Banner v-if="alertingEnabled === false" color="info">
+    <Banner
+      v-if="alertingEnabled === false"
+      color="info"
+    >
       <MessageLink
         :to="to"
         prefix-label="harvester.monitoring.alertmanagerConfig.diabledAlertingTips.prefix"

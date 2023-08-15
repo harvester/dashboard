@@ -100,7 +100,7 @@ export default {
     },
 
     onRemoveTag(tag) {
-      this.tags = this.tags.filter(v => v !== tag);
+      this.tags = this.tags.filter((v) => v !== tag);
       this.$emit('input', this.tags);
     },
   }
@@ -162,7 +162,7 @@ export default {
           size="small"
           @blur="confirmAdd"
           @keydown.enter.prevent="confirmAdd"
-        />
+        >
       </span>
     </div>
   </div>

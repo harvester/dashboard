@@ -11,7 +11,7 @@ export function vmNetworks(spec, getters, errors, validatorArgs) {
   const networkNames = [];
 
   interfaces.map( (I, index) => {
-    const N = networks.find( N => I.name === N.name);
+    const N = networks.find( (N) => I.name === N.name);
     const prefix = (I.name || N.name) || `Network ${ index + 1 }`;
 
     const type = getters['i18n/t']('harvester.fields.network');
@@ -112,7 +112,7 @@ export function vmDisks(spec, getters, errors, validatorArgs, displayKey, value)
       const allPVCs = getters['harvester/all'](PVC);
 
       const selectedVolumeName = V?.persistentVolumeClaim?.claimName;
-      const hasExistingVolume = allPVCs.find(P => P.id === `${ value.metadata.namespace }/${ selectedVolumeName }`);
+      const hasExistingVolume = allPVCs.find((P) => P.id === `${ value.metadata.namespace }/${ selectedVolumeName }`);
 
       if (!hasExistingVolume && selectedVolumeName) { // selected volume may have been deleted. e.g: use template
         const type = getters['i18n/t']('harvester.fields.volume');
@@ -151,7 +151,7 @@ function getVolumeType(getters, V, DVTS, value) {
 
   if (V.persistentVolumeClaim) {
     const selectedVolumeName = V?.persistentVolumeClaim?.claimName;
-    const hasExistingVolume = allPVCs.find(P => P.id === `${ value.metadata.namespace }/${ selectedVolumeName }`);
+    const hasExistingVolume = allPVCs.find((P) => P.id === `${ value.metadata.namespace }/${ selectedVolumeName }`);
 
     if (hasExistingVolume) {
       // In other cases, claimName will not be empty, so we can judge whether this is an exiting volume based on this attribute
@@ -173,7 +173,7 @@ function getVolumeType(getters, V, DVTS, value) {
     }
 
     // new type
-    outValue = DVTS.find(DVT => V.persistentVolumeClaim.claimName === DVT.metadata.name);
+    outValue = DVTS.find((DVT) => V.persistentVolumeClaim.claimName === DVT.metadata.name);
 
     if (outValue) {
       return {
@@ -195,7 +195,7 @@ function getVolumeType(getters, V, DVTS, value) {
 
 function validName(getters, errors, name, names = [], prefix, type, lowerType, upperType) {
   // Verify that the name is duplicate
-  if (names.findIndex( N => name === N) !== -1) {
+  if (names.findIndex( (N) => name === N) !== -1) {
     errors.push(getters['i18n/t']('harvester.validation.vm.duplicatedName', { type, name }));
   }
 

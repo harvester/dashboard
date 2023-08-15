@@ -56,7 +56,7 @@ export default class HarvesterNetworkAttachmentDef extends HarvesterResource {
   get clusterNetworkResource() {
     const clusterNetworks = this.$rootGetters[`${ this.inStore }/all`](HCI.CLUSTER_NETWORK);
 
-    return clusterNetworks.find(c => c.id === this.clusterNetwork);
+    return clusterNetworks.find((c) => c.id === this.clusterNetwork);
   }
 
   get clusterNetworkErrorMessage() {

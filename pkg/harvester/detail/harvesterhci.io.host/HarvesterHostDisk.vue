@@ -92,7 +92,10 @@ export default {
 </script>
 
 <template>
-  <div class="disk" @input="update">
+  <div
+    class="disk"
+    @input="update"
+  >
     <Banner
       v-if="mountedMessage"
       color="error"
@@ -107,7 +110,11 @@ export default {
           >
             <template #value>
               <div class="mt-5">
-                <Tag v-for="(prop, key) in value.tags" :key="key + prop" class="mr-5">
+                <Tag
+                  v-for="(prop, key) in value.tags"
+                  :key="key + prop"
+                  class="mr-5"
+                >
                   {{ prop }}
                 </Tag>
               </div>
@@ -143,7 +150,10 @@ export default {
           </div>
         </div>
       </div>
-      <div v-if="!value.isNew" class="row mt-30">
+      <div
+        v-if="!value.isNew"
+        class="row mt-30"
+      >
         <div class="col span-4">
           <LabelValue
             :name="t('harvester.host.disk.storageAvailable.label')"
@@ -163,7 +173,7 @@ export default {
           />
         </div>
       </div>
-      <hr class="mt-10" />
+      <hr class="mt-10">
     </div>
     <div class="row mt-10">
       <div class="col span-4">

@@ -132,10 +132,19 @@ export default {
         class="mb-20"
       />
 
-      <Checkbox v-model="enableMergeAcrossNodes" :mode="mode" class="check mb-20" type="checkbox" :label="t('harvester.host.ksmtuned.enableMergeNodes')" />
+      <Checkbox
+        v-model="enableMergeAcrossNodes"
+        :mode="mode"
+        class="check mb-20"
+        type="checkbox"
+        :label="t('harvester.host.ksmtuned.enableMergeNodes')"
+      />
 
       <h3>
-        <t k="harvester.host.ksmtuned.modeLink" :raw="true" />
+        <t
+          k="harvester.host.ksmtuned.modeLink"
+          :raw="true"
+        />
       </h3>
       <RadioGroup
         v-model="spec.mode"

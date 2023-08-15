@@ -64,7 +64,7 @@ export default {
       const csiDrivers = this.$store.getters[`${ inStore }/all`](CSI_DRIVER) || [];
 
       return csiDrivers.filter((provisioner) => {
-        return !this.configArr.map(config => config.key).includes(provisioner.name);
+        return !this.configArr.map((config) => config.key).includes(provisioner.name);
       }).map((provisioner) => {
         return provisioner.name;
       });
@@ -181,8 +181,17 @@ export default {
 
 <template>
   <div>
-    <InfoBox v-for="(driver, idx) in configArr" :key="driver.key" class="box">
-      <button :disabled="disableEdit(driver.key)" type="button" class="role-link btn btn-sm remove" @click="remove(idx)">
+    <InfoBox
+      v-for="(driver, idx) in configArr"
+      :key="driver.key"
+      class="box"
+    >
+      <button
+        :disabled="disableEdit(driver.key)"
+        type="button"
+        class="role-link btn btn-sm remove"
+        @click="remove(idx)"
+      >
         <i class="icon icon-x" />
       </button>
 
@@ -229,7 +238,11 @@ export default {
       </div>
     </infobox>
 
-    <button class="btn btn-sm role-primary" :disabled="disableAdd" @click.self="add">
+    <button
+      class="btn btn-sm role-primary"
+      :disabled="disableAdd"
+      @click.self="add"
+    >
       {{ t('generic.add') }}
     </button>
   </div>

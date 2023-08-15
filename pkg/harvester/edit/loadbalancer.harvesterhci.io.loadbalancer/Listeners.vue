@@ -142,7 +142,7 @@ export default {
             type="text"
             :placeholder="t('servicePorts.rules.name.placeholder')"
             @input="queueUpdate"
-          />
+          >
         </div>
         <div class="port-protocol">
           <span v-if="isView">
@@ -168,7 +168,7 @@ export default {
             max="65535"
             :placeholder="t('servicePorts.rules.listening.placeholder')"
             @input="queueUpdate"
-          />
+          >
         </div>
         <div class="target-port">
           <span v-if="isView">{{ row.backendPort }}</span>
@@ -177,17 +177,31 @@ export default {
             v-model.number="row.backendPort"
             :placeholder="t('harvester.loadBalancer.listeners.backendPort.placeholder')"
             @input="queueUpdate"
-          />
+          >
         </div>
-        <div v-if="showRemove" class="remove">
-          <button type="button" class="btn role-link" @click="remove(idx)">
+        <div
+          v-if="showRemove"
+          class="remove"
+        >
+          <button
+            type="button"
+            class="btn role-link"
+            @click="remove(idx)"
+          >
             <t k="generic.remove" />
           </button>
         </div>
       </div>
     </div>
-    <div v-if="showAdd" class="footer">
-      <button type="button" class="btn role-tertiary add" @click="add()">
+    <div
+      v-if="showAdd"
+      class="footer"
+    >
+      <button
+        type="button"
+        class="btn role-tertiary add"
+        @click="add()"
+      >
         <t k="generic.add" />
       </button>
     </div>

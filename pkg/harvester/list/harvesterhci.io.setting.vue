@@ -136,7 +136,10 @@ export default {
 <template>
   <Loading v-if="$fetchState.pending" />
   <div v-else>
-    <Banner color="warning" class="settings-banner">
+    <Banner
+      color="warning"
+      class="settings-banner"
+    >
       <div>
         {{ t('advancedSettings.subtext') }}
       </div>

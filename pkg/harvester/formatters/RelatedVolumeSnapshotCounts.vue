@@ -28,7 +28,10 @@ export default {
 </script>
 
 <template>
-  <n-link v-if="value.length > 0" :to="to">
+  <n-link
+    v-if="value.length > 0"
+    :to="to"
+  >
     {{ value.length }}
   </n-link>
 </template>

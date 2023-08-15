@@ -39,7 +39,7 @@ export default {
           addons:    this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.ADD_ONS }),
         });
 
-        this.enabledPCI = hash.addons.find(addon => addon.name === 'pcidevices-controller')?.spec?.enabled === true;
+        this.enabledPCI = hash.addons.find((addon) => addon.name === 'pcidevices-controller')?.spec?.enabled === true;
 
         this.$store.dispatch('type-map/configureType', { match: HCI.PCI_DEVICE, isCreatable: this.enabledPCI });
       } catch (e) {}
@@ -80,7 +80,11 @@ export default {
       {{ t('harvester.pci.noPCIPermission') }}
     </Banner>
   </div>
-  <DeviceList v-else-if="hasSchema && enabledPCI" :rows="rows" :schema="schema" />
+  <DeviceList
+    v-else-if="hasSchema && enabledPCI"
+    :rows="rows"
+    :schema="schema"
+  />
   <div v-else>
     <Banner color="warning">
       <MessageLink

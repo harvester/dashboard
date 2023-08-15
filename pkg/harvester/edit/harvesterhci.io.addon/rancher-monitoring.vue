@@ -216,7 +216,12 @@ export default {
         :labels="[t('generic.enabled'), t('generic.disabled')]"
       />
     </Tab>
-    <Tab v-if="value.spec.enabled" name="prometheus" :label="t('harvester.setting.harvesterMonitoring.section.prometheus')" :weight="-1">
+    <Tab
+      v-if="value.spec.enabled"
+      name="prometheus"
+      :label="t('harvester.setting.harvesterMonitoring.section.prometheus')"
+      :weight="-1"
+    >
       <a
         v-clean-tooltip="!externalLinks.prometheus.enabled ? t('monitoring.overview.linkedList.na') : undefined"
         :disabled="!externalLinks.prometheus.enabled"
@@ -325,7 +330,12 @@ export default {
         </div>
       </div>
     </Tab>
-    <Tab v-if="value.spec.enabled" name="nodeExporter" :label="t('harvester.setting.harvesterMonitoring.section.prometheusNodeExporter')" :weight="-2">
+    <Tab
+      v-if="value.spec.enabled"
+      name="nodeExporter"
+      :label="t('harvester.setting.harvesterMonitoring.section.prometheusNodeExporter')"
+      :weight="-2"
+    >
       <div class="row mt-10">
         <div class="col span-6">
           <LabeledInput
@@ -363,7 +373,12 @@ export default {
         </div>
       </div>
     </Tab>
-    <Tab v-if="value.spec.enabled && valuesContentJson.grafana.resources" name="grafana" :label="t('harvester.setting.harvesterMonitoring.section.grafana')" :weight="-3">
+    <Tab
+      v-if="value.spec.enabled && valuesContentJson.grafana.resources"
+      name="grafana"
+      :label="t('harvester.setting.harvesterMonitoring.section.grafana')"
+      :weight="-3"
+    >
       <a
         v-clean-tooltip="!externalLinks.grafana.enabled ? t('monitoring.overview.linkedList.na') : undefined"
         :disabled="!externalLinks.grafana.enabled"
@@ -425,7 +440,12 @@ export default {
         </div>
       </div>
     </Tab>
-    <Tab v-if="value.spec.enabled" name="alertmanager" :label="t('harvester.setting.harvesterMonitoring.section.alertmanager')" :weight="-4">
+    <Tab
+      v-if="value.spec.enabled"
+      name="alertmanager"
+      :label="t('harvester.setting.harvesterMonitoring.section.alertmanager')"
+      :weight="-4"
+    >
       <RadioGroup
         v-model="valuesContentJson.alertmanager.enabled"
         class="mb-20"

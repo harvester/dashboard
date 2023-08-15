@@ -46,7 +46,7 @@ export default {
 
       const inStore = this.$store.getters['currentProduct'].inStore;
       const linkMonitors = this.$store.getters[`${ inStore }/all`](HCI.LINK_MONITOR);
-      const linkMonitor = (linkMonitors.filter(l => l.id === linkMonitorId) || [])[0] || {};
+      const linkMonitor = (linkMonitors.filter((l) => l.id === linkMonitorId) || [])[0] || {};
 
       return linkMonitor?.status?.linkStatus?.[nodeName] || [];
     },

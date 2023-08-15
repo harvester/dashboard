@@ -182,7 +182,7 @@ export default {
         return;
       }
 
-      const matchLabelExpressions = neu.filter(R => !!R.key.trim() && (R.values.length > 0 && !R.values.find(V => !V.trim())));
+      const matchLabelExpressions = neu.filter((R) => !!R.key.trim() && (R.values.length > 0 && !R.values.find((V) => !V.trim())));
 
       if (matchLabelExpressions.length > 0) {
         this.value.allowedTopologies = [{ matchLabelExpressions }];
@@ -225,7 +225,11 @@ export default {
       @input="updateProvisioner($event)"
     />
     <Tabbed :side-tabs="true">
-      <Tab name="parameters" :label="t('storageClass.parameters.label')" :weight="2">
+      <Tab
+        name="parameters"
+        :label="t('storageClass.parameters.label')"
+        :weight="2"
+      >
         <component
           :is="getComponent(value.provisioner)"
           :key="value.provisioner"
@@ -234,7 +238,10 @@ export default {
           :real-mode="realMode"
         />
       </Tab>
-      <Tab name="customize" :label="t('storageClass.customize.label')">
+      <Tab
+        name="customize"
+        :label="t('storageClass.customize.label')"
+      >
         <div class="row mt-20">
           <div class="col span-6">
             <RadioGroup
