@@ -1,4 +1,3 @@
-assets/fonts
 coverage
 .nyc_output
 node_modules/
@@ -11,8 +10,19 @@ node_modules/
 dist
 dist-pkg
 .DS_Store
-dynamic-importer.js
-ksconfig.json
-nuxt.config.js
 shell/utils/dynamic-importer.js
+ksconfig.json
+nuxt
+storybook-static/
+utils/dynamic-importer.js
 shell/assets/fonts
+assets/fonts
+shell/pkg/import.js
+pkg/rancher-components/
+shell/rancher-components/
+shell/types/shell/index.d.ts
+dist/
+coverage/
+build/
+public/
+pkg/**/node_modules
