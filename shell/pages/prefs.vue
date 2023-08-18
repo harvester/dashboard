@@ -254,7 +254,7 @@ export default {
             placeholder="Select a row count"
           />
         </div>
-        <div class="col span-4">
+        <!-- <div class="col span-4">
           <LabeledSelect
             v-model.number="menuMaxClusters"
             data-testid="prefs__displaySetting__menuMaxClusters"
@@ -264,7 +264,7 @@ export default {
             option-label="label"
             placeholder="Select a row count"
           />
-        </div>
+        </div> -->
       </div>
     </div>
     <!-- Confirmation setting -->
@@ -291,13 +291,13 @@ export default {
         :label="t('prefs.advFeatures.viewInApi', {}, true)"
         class="mt-10"
       />
-      <br>
+      <!-- <br>
       <Checkbox
         v-model="allNamespaces"
         data-testid="prefs__allNamespaces"
         :label="t('prefs.advFeatures.allNamespaces', {}, true)"
         class="mt-20"
-      />
+      /> -->
       <br>
       <Checkbox
         v-model="themeShortcut"
@@ -305,14 +305,18 @@ export default {
         :label="t('prefs.advFeatures.themeShortcut', {}, true)"
         class="mt-20"
       />
-      <br>
-      <Checkbox
-        v-if="!isSingleProduct"
-        v-model="hideDescriptions"
-        data-testid="prefs__hideDescriptions"
-        :label="t('prefs.hideDesc.label')"
-        class="mt-20"
-      />
+
+      <template v-if="!isSingleProduct">
+        <br>
+        <Checkbox
+
+          v-model="hideDescriptions"
+          data-testid="prefs__hideDescriptions"
+          :label="t('prefs.hideDesc.label')"
+          class="mt-20"
+        />
+      </template>
+
       <template v-if="admin">
         <br>
         <Checkbox
