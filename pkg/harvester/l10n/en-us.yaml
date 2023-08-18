@@ -1181,6 +1181,7 @@ harvester:
     scope:
       label: Scope
       addLabel: Add Scope
+      overlap: scope overlap
     priority:
       label: Priority
     cidr:
