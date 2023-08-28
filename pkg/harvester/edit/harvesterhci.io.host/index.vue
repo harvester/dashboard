@@ -512,163 +512,177 @@ export default {
 </script>
 <template>
   <Loading v-if="$fetchState.pending" />
-  <div v-else class="node">
-    <NameNsDescription
-      :value="value"
-      :namespaced="false"
-      :mode="mode"
-    />
-    <Tabbed ref="tabbed" class="mt-15" :side-tabs="true">
-      <Tab name="basics" :weight="100" :label="t('harvester.host.tabs.basics')">
-        <LabeledInput
-          v-model="customName"
-          :label="t('harvester.host.detail.customName')"
-          class="mb-20"
-          :mode="mode"
-        />
+  <div v-else id="node">
+    <div class="content">
+      <NameNsDescription
+        :value="value"
+        :namespaced="false"
+        :mode="mode"
+      />
+      <Tabbed ref="tabbed" class="mt-15" :side-tabs="true">
+        <Tab name="basics" :weight="100" :label="t('harvester.host.tabs.basics')">
+          <LabeledInput
+            v-model="customName"
+            :label="t('harvester.host.detail.customName')"
+            class="mb-20"
+            :mode="mode"
+          />
 
-        <LabeledInput
-          v-model="consoleUrl"
-          :label="t('harvester.host.detail.consoleUrl')"
-          class="mb-20"
-          :mode="mode"
-        />
-      </Tab>
-      <Tab
-        v-if="hasBlockDevicesSchema"
-        name="disk"
-        :weight="80"
-        :label="t('harvester.host.tabs.storage')"
-      >
-        <div
-          v-if="longhornNode"
-          class="row mb-20"
+          <LabeledInput
+            v-model="consoleUrl"
+            :label="t('harvester.host.detail.consoleUrl')"
+            class="mb-20"
+            :mode="mode"
+          />
+        </Tab>
+        <Tab
+          v-if="hasBlockDevicesSchema"
+          name="disk"
+          :weight="80"
+          :label="t('harvester.host.tabs.storage')"
         >
-          <div class="col span-12">
-            <Tags
-              v-model="longhornNode.spec.tags"
-              :label="t('harvester.host.tags.label')"
-              :add-label="t('harvester.host.tags.addLabel')"
-              :mode="mode"
+          <div
+            v-if="longhornNode"
+            class="row mb-20"
+          >
+            <div class="col span-12">
+              <Tags
+                v-model="longhornNode.spec.tags"
+                :label="t('harvester.host.tags.label')"
+                :add-label="t('harvester.host.tags.addLabel')"
+                :mode="mode"
+              />
+            </div>
+          </div>
+          <ArrayListGrouped
+            v-model="newDisks"
+            :mode="mode"
+            :initial-empty-row="false"
+          >
+            <template #default="props">
+              <HarvesterDisk
+                v-model="props.row.value"
+                class="mb-20"
+                :mode="mode"
+                :disks="disks"
+              />
+            </template>
+            <template #add>
+              <ButtonDropdown
+                v-if="!isView"
+                :button-label="t('harvester.host.disk.add')"
+                :dropdown-options="blockDeviceOpts"
+                size="sm"
+                :selectable="selectable"
+                @click-action="e=>addDisk(e.value)"
+                @dd-button-action="ddButtonAction"
+              >
+                <template #option="option">
+                  <template v-if="option.kind === 'group'">
+                    <b>
+                      {{ option.label }}
+                    </b>
+                  </template>
+                  <div v-else>
+                    {{ option.label }}
+                  </div>
+                </template>
+              </ButtonDropdown>
+            </template>
+            <template #remove-button="scope">
+              <button
+                v-if="canRemove(scope.row, scope.i) && !isView"
+                type="button"
+                class="btn role-link close btn-sm"
+                @click="() => onRemove(scope)"
+              >
+                <i class="icon icon-x" />
+              </button>
+              <span v-else />
+            </template>
+          </ArrayListGrouped>
+        </Tab>
+        <Tab v-if="hasKsmtunedSchema" name="Ksmtuned" :weight="70" :label="t('harvester.host.tabs.ksmtuned')">
+          <HarvesterKsmtuned :mode="mode" :node="value" :register-before-hook="registerBeforeHook" />
+        </Tab>
+        <Tab
+          v-if="hasAddonSchema"
+          name="seeder"
+          :weight="60"
+          :label="t('harvester.host.tabs.seeder')"
+        >
+          <HarvesterSeeder
+            v-if="seederEnabled && hasInventorySchema"
+            :mode="mode"
+            :node="value"
+            :register-after-hook="registerAfterHook"
+            :inventory="inventory"
+          />
+          <div v-else-if="seederEnabled && !hasInventorySchema">
+            <Banner
+              color="info"
+              :label="t('harvester.seeder.banner.noInventory')"
             />
           </div>
-        </div>
-        <ArrayListGrouped
-          v-model="newDisks"
-          :mode="mode"
-          :initial-empty-row="false"
-        >
-          <template #default="props">
-            <HarvesterDisk
-              v-model="props.row.value"
-              class="mb-20"
-              :mode="mode"
-              :disks="disks"
-            />
-          </template>
-          <template #add>
-            <ButtonDropdown
-              v-if="!isView"
-              :button-label="t('harvester.host.disk.add')"
-              :dropdown-options="blockDeviceOpts"
-              size="sm"
-              :selectable="selectable"
-              @click-action="e=>addDisk(e.value)"
-              @dd-button-action="ddButtonAction"
+          <div v-else>
+            <Banner
+              v-if="hasSeederAddon"
+              color="info"
             >
-              <template #option="option">
-                <template v-if="option.kind === 'group'">
-                  <b>
-                    {{ option.label }}
-                  </b>
-                </template>
-                <div v-else>
-                  {{ option.label }}
-                </div>
-              </template>
-            </ButtonDropdown>
-          </template>
-          <template #remove-button="scope">
-            <button
-              v-if="canRemove(scope.row, scope.i) && !isView"
-              type="button"
-              class="btn role-link close btn-sm"
-              @click="() => onRemove(scope)"
-            >
-              <i class="icon icon-x" />
-            </button>
-            <span v-else />
-          </template>
-        </ArrayListGrouped>
-      </Tab>
-      <Tab v-if="hasKsmtunedSchema" name="Ksmtuned" :weight="70" :label="t('harvester.host.tabs.ksmtuned')">
-        <HarvesterKsmtuned :mode="mode" :node="value" :register-before-hook="registerBeforeHook" />
-      </Tab>
-      <Tab
-        v-if="hasAddonSchema"
-        name="seeder"
-        :weight="60"
-        :label="t('harvester.host.tabs.seeder')"
-      >
-        <HarvesterSeeder
-          v-if="seederEnabled && hasInventorySchema"
-          :mode="mode"
-          :node="value"
-          :register-after-hook="registerAfterHook"
-          :inventory="inventory"
-        />
-        <div v-else-if="seederEnabled && !hasInventorySchema">
-          <Banner
-            color="info"
-            :label="t('harvester.seeder.banner.noInventory')"
-          />
-        </div>
-        <div v-else>
-          <Banner
-            v-if="hasSeederAddon"
-            color="info"
-          >
-            <MessageLink
-              :to="toEnableSeederAddon"
-              prefix-label="harvester.seeder.banner.enable.prefix"
-              middle-label="harvester.seeder.banner.enable.middle"
-              suffix-label="harvester.seeder.banner.enable.suffix"
+              <MessageLink
+                :to="toEnableSeederAddon"
+                prefix-label="harvester.seeder.banner.enable.prefix"
+                middle-label="harvester.seeder.banner.enable.middle"
+                suffix-label="harvester.seeder.banner.enable.suffix"
+              />
+            </Banner>
+            <Banner
+              v-else
+              color="warning"
+              :label="t('harvester.seeder.banner.noAddon')"
             />
-          </Banner>
-          <Banner
-            v-else
-            color="warning"
-            :label="t('harvester.seeder.banner.noAddon')"
+          </div>
+        </Tab>
+        <Tab name="labels" label-key="harvester.host.tabs.labels">
+          <KeyValue
+            key="labels"
+            :value="filteredLabels"
+            :add-label="t('labels.addLabel')"
+            :mode="mode"
+            :title="t('labels.labels.title')"
+            :read-allowed="false"
+            :value-can-be-empty="true"
+            @input="updateHostLabels"
           />
-        </div>
-      </Tab>
-      <Tab name="labels" label-key="harvester.host.tabs.labels">
-        <KeyValue
-          key="labels"
-          :value="filteredLabels"
-          :add-label="t('labels.addLabel')"
-          :mode="mode"
-          :title="t('labels.labels.title')"
-          :read-allowed="false"
-          :value-can-be-empty="true"
-          @input="updateHostLabels"
-        />
-      </Tab>
-    </Tabbed>
-    <Banner
-      v-if="showFormattedWarning"
-      color="warning"
-      :label="t('harvester.host.disk.forceFormatted.toolTip')"
-    />
-    <Footer :mode="mode" :errors="errors" @save="save" @done="done" />
+        </Tab>
+      </Tabbed>
+      <Banner
+        v-if="showFormattedWarning"
+        color="warning"
+        :label="t('harvester.host.disk.forceFormatted.toolTip')"
+      />
+    </div>
+
+    <Footer class="footer" :mode="mode" :errors="errors" @save="save" @done="done" />
   </div>
 </template>
 <style lang="scss" scoped>
-.wrapper{
-  position: relative;
-}
-.nicOption {
+#node {
   display: flex;
-  justify-content: space-between;
+  flex-grow: 1;
+  flex-direction: column;
+
+  .content {
+    flex-grow: 1
+  }
+
+  .wrapper{
+    position: relative;
+  }
+  .nicOption {
+    display: flex;
+    justify-content: space-between;
+  }
 }
+
 </style>
