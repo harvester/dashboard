@@ -67,7 +67,7 @@ export default {
     },
 
     toggleHide(s) {
-      this.settings.find((setting) => {
+      this.categorySettings.find((setting) => {
         if (setting.id === s.id) {
           setting.hide = !setting.hide;
         }
