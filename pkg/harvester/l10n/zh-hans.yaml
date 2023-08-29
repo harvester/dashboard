@@ -848,7 +848,7 @@ harvester:
         invalid: '"排除列表"无效。'
         addIp: 添加排除 IP
       warning: '警告：<br/>如果要更改存储网络，你需要在应用此设置之前关闭所有虚拟机。<br/>用户必须确保配置了集群网络，VLAN 配置能覆盖所有节点，而且所有节点的网络正常。'
-      tip: IP 范围格式是 IPv4 CIDR，而且是集群节点数的 4 倍。
+      tip: IP 范围应为 IPv4 CIDR 格式，并且是集群节点数的 4 倍加上要添加到集群的 VM 镜像数量。
     vmForceDeletionPolicy:
       period: 周期
     httpProxy:
@@ -1228,6 +1228,7 @@ harvester:
         suffix: 启用它。
       noAccess: 请联系管理员启用外部访问。
       noAddon: harvester-seeder 插件不存在，请检查是否已安装。
+      noInventory: 正在等待 "inventories.metal.harvesterhci.io" 就绪。
     inventory:
       host:
         label: 主机
