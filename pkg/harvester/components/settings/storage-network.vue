@@ -206,7 +206,9 @@ export default {
         :placeholder="t('harvester.setting.storageNetwork.range.placeholder')"
         label-key="harvester.setting.storageNetwork.range.label"
       />
-      <Tip class="mb-20" icon="icon icon-info" :text="t('harvester.setting.storageNetwork.tip')" />
+      <Tip class="mb-20" icon="icon icon-info" :text="t('harvester.setting.storageNetwork.tip')">
+        <t k="harvester.setting.storageNetwork.tip" :raw="true" />
+      </Tip>
 
       <ArrayList
         v-model="exclude"
