@@ -848,7 +848,7 @@ harvester:
         invalid: '"排除列表"无效。'
         addIp: 添加排除 IP
       warning: '警告：<br/>如果要更改存储网络，你需要在应用此设置之前关闭所有虚拟机。<br/>用户必须确保配置了集群网络，VLAN 配置能覆盖所有节点，而且所有节点的网络正常。'
-      tip: IP 范围应为 IPv4 CIDR 格式，并且是集群节点数的 4 倍加上要添加到集群的 VM 镜像数量。
+      tip: IP 范围应为 IPV4 格式。<code>所需 IP 数量 = 节点数量 * 4 + 磁盘数量 * 2 + 要下载/上传的镜像数量</code>。详见<a href="https://docs.harvesterhci.io/v1.2/advanced/storagenetwork#configuration-example" target="_blank">此文档</a>。
     vmForceDeletionPolicy:
       period: 周期
     httpProxy:

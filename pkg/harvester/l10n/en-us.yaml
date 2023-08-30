@@ -848,7 +848,7 @@ harvester:
         invalid: '"Exclude list" is invalid.'
         addIp: Add Exclude IP
       warning: 'WARNING: <br/> Any change to storage-network requires shutting down all VMs before applying this setting. <br/> Users have to ensure the Cluster Network is configured and VLAN Config will cover all nodes and ensure the network connectivity is working and expected in all nodes.'
-      tip: IP Range should be IPv4 CIDR format and 4 times the number of your cluster nodes and plus the number of VM images that you will add to the cluster.
+      tip: 'IP Range should be in IPV4 format. <code>Number of IPs Required = Number of Nodes * 4 + Number of Disks * 2 + Number of Images to Download/Upload </code>. See <a href="https://docs.harvesterhci.io/v1.2/advanced/storagenetwork#configuration-example" target="_blank">doc</a> for more details.'
     vmForceDeletionPolicy:
       period: Period
     httpProxy:
