@@ -24,7 +24,13 @@ export default {
       const harvesterSettings = this.$store.getters['harvester/all'](HCI.SETTING) || [];
       const resource = harvesterSettings.find( V => V.id === 'backup-target');
 
-      return this.value === resource?.parseValue?.endpoint;
+      let isMatch = false;
+
+      try {
+        isMatch = this.value === resource?.parseValue?.endpoint;
+      } catch (e) {}
+
+      return isMatch;
     }
   }
 };
