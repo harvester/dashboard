@@ -917,7 +917,7 @@ harvester:
     internal:
       rancher:
         title: 访问内嵌的 Rancher UI
-        titleDescription: 仅支持使用内嵌的 Rancher 仪表板来进行调试和验证。有关 Rancher 的多集群和多租户集成，请参阅<a target="_blank" href="https://docs.harvesterhci.io/v1.1/rancher/rancher-integration" rel="noopener noreferrer nofollow">此文档</a>。
+        titleDescription: 仅支持使用内嵌的 Rancher 仪表板来进行调试和验证。有关 Rancher 的多集群和多租户集成，请参阅<a target="_blank" href="https://docs.harvesterhci.io/v1.2/rancher/index" rel="noopener noreferrer nofollow">此文档</a>。
       longhorn:
         title: 访问内嵌的 Longhorn UI
         titleDescription: 仅支持使用内嵌的 Longhorn UI 来进行调试和验证。
