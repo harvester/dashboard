@@ -193,7 +193,7 @@ export default {
         <i class="warning icon-fw icon icon-dot-open dot-icon" />
       </slot>
 
-      <template slot="popover">
+      <template v-slot:popover>
         <div class="upgrade-info mb-10">
           <div v-if="repoInfo" class="repoInfo">
             <div class="row">
