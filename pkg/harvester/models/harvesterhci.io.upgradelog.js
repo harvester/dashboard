@@ -25,6 +25,30 @@ export default class HciUpgradeLog extends HarvesterResource {
   }
 
   fileIsReady(filename) {
-    return (this.status?.archives || {})[filename]?.ready === true;
+    const fileArchive = (this.status?.archives || {})[filename];
+
+    return fileArchive?.ready === true || fileArchive?.reason;
+  }
+
+  downloadArchivesStatus(filename) {
+    return (this.status?.archives || {})[filename]?.reason;
+  }
+
+  get latestArchivesFileName() {
+    const archives = this.status?.archives || {};
+    const fileNamePrefix = `${ this.metadata.name }-archive-`;
+    const fileNames = Object.keys(archives).map((filename) => {
+      return filename.replace(fileNamePrefix, '');
+    });
+    const latestFileName = fileNames.sort((a, b) => {
+      const _a = a.replace(/(\d{2})-(\d{2})-(\d{2})T(\d{2})-(\d{2})-(\d{2})Z/, '$1-$2-$3T$4:$5:$6Z');
+      const _b = b.replace(/(\d{2})-(\d{2})-(\d{2})T(\d{2})-(\d{2})-(\d{2})Z/, '$1-$2-$3T$4:$5:$6Z');
+
+      return Date.parse(_b) - Date.parse(_a);
+    }).map((filename) => {
+      return `${ fileNamePrefix }${ filename }`;
+    });
+
+    return latestFileName[0];
   }
 }
