@@ -77,7 +77,7 @@ harvester:
           label: Target Node
           placeholder: Choose Target Node
     ejectCDROM:
-      title: Eject CDROM
+      title: Eject CD-ROM
       warnTip: Eject volume will restart the virtual machine.
       operationTip: 'Select the volume you want to delete:'
       delete: Delete
@@ -130,11 +130,11 @@ harvester:
     deepClone: Clone
     shallowClone: Clone Template
     unpause: Unpause
-    ejectCDROM: Eject CDROM
+    ejectCDROM: Eject CD-ROM
     launchFormTemplate: Launch instance from template
     modifyTemplate: Modify template (Create new version)
     setDefaultVersion: Set default version
-    addTemplateVersion: Add templateVersion
+    addTemplateVersion: Add template version
     backup: Take Backup
     restore: Restore
     restoreNewVM: Restore New
@@ -198,7 +198,7 @@ harvester:
     volume: Volume
     network: Network
     model: Model
-    macAddress: Mac Address
+    macAddress: MAC Address
     port: Port
     protocol: Protocol
     remove: REMOVE
@@ -241,7 +241,7 @@ harvester:
     disableGroup: Disable Group
     labelRequired: "This rule should not be manually altered: it ensures that the PCI devices selected for this virtual machine are available on the VM's host."
     goSetting:
-      prefix: The pcidevices-controller addon is not enabled, click
+      prefix: The pcidevices-controller add-on is not enabled, click
       middle: here
       suffix: to enable it to manage your PCI devices.
     noPCIPermission: Please contact system admin to enable the PCI devices first.
@@ -363,7 +363,7 @@ harvester:
       ksmStatus: KSM Status
       modeOption:
         standard: Standard
-        high: High-Perfomanace
+        high: High-Performance
         customized: Customized
       parameters: 
         title: Ksmtuned Parameters
@@ -399,7 +399,7 @@ harvester:
         label: Eviction Requested
       forceFormatted:
         label: Force Formatted
-        toolTip: Force formatted will cleanup disk data, make sure you backup all available data to prevent data loss.
+        toolTip: Force formatted will clean up disk data, make sure you backup all available data to prevent data loss.
         yes: Yes (Ext4 File System)
       description:
         label: Description
@@ -432,8 +432,8 @@ harvester:
       tips: You can configure multiple IPv4 addresses or host addresses.
       placeholder: e.g. IPv4
       ntpSyncStatus:
-        isDisabled: 'The NTP is disabled. Please check the NTP service is active.'
-        isUnsynced: 'The NTP is not synced with the NTP server <code>{current}</code>'
+        isDisabled: 'NTP is disabled. Please check the NTP service is active.'
+        isUnsynced: 'NTP is not synced with the NTP server <code>{current}</code>'
       ntpConfigSyncStatus:
         isUnsynced: 'The NTP config is not synced. Current: <code>{current}</code>, Wanted: <code>{wanted}</code> '
 
@@ -465,7 +465,7 @@ harvester:
       version:
         label: Version
     console:
-      novnc: Open in Web VNC
+      novnc: Open in WebVNC
       serial: Open in Serial Console
     promptRemove:
       title: 'Select the volume you want to delete:'
@@ -499,7 +499,7 @@ harvester:
     secureBoot: Secure Boot
     volume:
       dragTip: Drag and drop volumes, or use the volume's arrows, to change the boot order.
-      volumeTip: The VM only contains a cd-rom volume. You may want to add additional disk volumes.
+      volumeTip: The VM only contains a CD-ROM volume. You may want to add additional disk volumes.
       macTip: "MAC address as seen inside the guest system."
       volumeUpdate: 'Set volume { name } successfully'
       type: Type
@@ -541,7 +541,7 @@ harvester:
       network:
         label: Network Data Template
         title: "Network Data:"
-        tip: "The network-data configuration allows you to customize the instance’s networking interfaces by assigning subnet configuration, virtual device creation (bonds, bridges, vlans) routes and DNS configuration. <a href='https://cloudinit.readthedocs.io/en/latest/reference/network-config-format-v1.html' target='_blank'>Learn more</a>"
+        tip: "The network-data configuration allows you to customize the instance’s networking interfaces by assigning subnet configuration, virtual device creation (bonds, bridges, VLANs) routes and DNS configuration. <a href='https://cloudinit.readthedocs.io/en/latest/reference/network-config-format-v1.html' target='_blank'>Learn more</a>"
     scheduling:
       affinity:
         anyNode: 'Run VM on any available node'
@@ -825,7 +825,7 @@ harvester:
       cert: upload a self-signed SSL certificate
     vlanChangeTip: The newly modified default network interface only applies to newly added nodes, not existing ones.
     defaultPhysicalNIC: Default Network Interface
-    percentTip: The value in parentheses represents the distribution percentage of the network interface on all hosts. If an interface less than 100% is selected, the user needs to manually specify the network interface on the host where the vlan network configuration fails.
+    percentTip: The value in parentheses represents the distribution percentage of the network interface on all hosts. If an interface less than 100% is selected, the user needs to manually specify the network interface on the host where the VLAN network configuration fails.
     message:
       ca:
         prefix: 'Click'
@@ -883,7 +883,7 @@ harvester:
 
     upgrade:
       selectExitImage: Please select the OS image to upgrade.
-      imageUrl: Please input a valid image url.
+      imageUrl: Please input a valid image URL.
       chooseFile: Please select to upload an image.
       checksum: Checksum
     harvesterMonitoring:
@@ -937,7 +937,7 @@ harvester:
     cidr:
       label: CIDR/IP Range
       invalid: '"CIDR/IP Range" is invalid.'
-      toolTip: "We can apply multiple pools or ranges by seperating them with commas. i.e. 192.168.0.200/30,192.168.0.200/29 or 192.168.0.10-192.168.0.11"
+      toolTip: "We can apply multiple pools or ranges by separating them with commas. i.e. 192.168.0.200/30,192.168.0.200/29 or 192.168.0.10-192.168.0.11"
     add:
       label: Add IP Pools
 
@@ -955,13 +955,13 @@ harvester:
       diabledMonitoringTips:
         prefix: 'You must enable'
         middle: 'Monitoring'
-        suffix: 'addon at first.'
+        suffix: 'add-on at first.'
       diabledAlertingTips:
         prefix: 'You must enable'
         middle: 'Alertmanager'
         suffix: 'for configs to take effect.'
       disabledAddon:
-        prefix: 'Monitoring Addon is disabled now, click'
+        prefix: 'Monitoring Add-on is disabled now, click'
         middle: 'here'
         suffix: 'to enable it.'
 
@@ -1087,18 +1087,18 @@ harvester:
   
   addons:
     descriptions:
-      'harvester-system/vm-import-controller': vm-import-controller is an addon to help migrate VM workloads from other source clusters to an existing Harvester cluster.
-      'harvester-system/pcidevices-controller': pcidevices-controller is an addon to help discover PCI devices for nodes in your cluster and allow users to prepare devices for PCI Passthrough, for use with Harvester VM and guest Clusters.
-      'cattle-logging-system/rancher-logging': rancher-logging is an addon to collect versatile logs, events and audits from the Harvester cluster and route them to many kinds of servers based on flows.
+      'harvester-system/vm-import-controller': vm-import-controller is an add-on to help migrate VM workloads from other source clusters to an existing Harvester cluster.
+      'harvester-system/pcidevices-controller': pcidevices-controller is an add-on to help discover PCI devices for nodes in your cluster and allow users to prepare devices for PCI Passthrough, for use with Harvester VM and guest Clusters.
+      'cattle-logging-system/rancher-logging': rancher-logging is an add-on to collect versatile logs, events and audits from the Harvester cluster and route them to many kinds of servers based on flows.
       'harvester-system/rancher-vcluster': rancher-vcluster deploys a vcluster with rancher installed.
-      'cattle-monitoring-system/rancher-monitoring': rancher-monitoring is an addon to collect Harvester cluster and VM metrics, view them on the embedded dashboard, and send alert(s) to remote servers.
-      'vm-import-controller': vm-import-controller is an addon to help migrate VM workloads from other source clusters to an existing Harvester cluster.
-      'pcidevices-controller': pcidevices-controller is an addon to help discover PCI devices for nodes in your cluster and allow users to prepare devices for PCI Passthrough, for use with Harvester VM and guest Clusters.
-      'rancher-logging': rancher-logging is an addon to collect versatile logs, events and audits from the Harvester cluster and route them to many kinds of servers based on flows.
-      'rancher-monitoring': rancher-monitoring is an addon to collect Harvester cluster and VM metrics, view them on the embedded dashboard, and send alert(s) to remote servers.
+      'cattle-monitoring-system/rancher-monitoring': rancher-monitoring is an add-on to collect Harvester cluster and VM metrics, view them on the embedded dashboard, and send alert(s) to remote servers.
+      'vm-import-controller': vm-import-controller is an add-on to help migrate VM workloads from other source clusters to an existing Harvester cluster.
+      'pcidevices-controller': pcidevices-controller is an add-on to help discover PCI devices for nodes in your cluster and allow users to prepare devices for PCI Passthrough, for use with Harvester VM and guest Clusters.
+      'rancher-logging': rancher-logging is an add-on to collect versatile logs, events and audits from the Harvester cluster and route them to many kinds of servers based on flows.
+      'rancher-monitoring': rancher-monitoring is an add-on to collect Harvester cluster and VM metrics, view them on the embedded dashboard, and send alert(s) to remote servers.
       'rancher-vcluster': rancher-vcluster deploys a vcluster with rancher installed.
-      'harvester-seeder': harvester-seeder is an addon that uses ipmi and redfish to discover hardware information and perform out-of-band operations.
-      'harvester-system/harvester-seeder': harvester-seeder is an addon that uses ipmi and redfish to discover hardware information and perform out-of-band operations.
+      'harvester-seeder': harvester-seeder is an add-on that uses IPMI and Redfish to discover hardware information and perform out-of-band operations.
+      'harvester-system/harvester-seeder': harvester-seeder is an add-on that uses IPMI and Redfish to discover hardware information and perform out-of-band operations.
     vmImport:
       titles:
         basic: Basic
@@ -1223,11 +1223,11 @@ harvester:
   seeder:
     banner:
       enable:
-        prefix: Addon "harvester-seeder" is disabled now, 
+        prefix: Add-on "harvester-seeder" is disabled now, 
         middle: click here 
         suffix: to enable it.
       noAccess: Please contact system admin to enable the Out-of-Band Access first.
-      noAddon: Addon "harvester-seeder" is not exist, please check if it is installed.
+      noAddon: Add-on "harvester-seeder" is not exist, please check if it is installed.
       noInventory: Waiting for "inventories.metal.harvesterhci.io" to be ready.
     inventory:
       host:
@@ -1264,28 +1264,28 @@ advancedSettings:
     'harv-vlan': Default Network Interface name of the VLAN network.
     'harv-backup-target': Custom backup target to store VM backups.
     'branding': Branding allows administrators to globally re-brand the UI by customizing the Harvester product name, logos and color scheme.
-    'harv-csi-driver-config': Configure additional information for csi drivers.
+    'harv-csi-driver-config': Configure additional information for CSI drivers.
     'harv-containerd-registry': Containerd Registry Configuration to connect private registries.
     'harv-log-level': Configure Harvester server log level. Default to info.
     'harv-server-version': Harvester server version.
     'harv-upgrade-checker-enabled': Specify whether to enable Harvester upgrade check or not. Default is true.
-    'harv-upgrade-checker-url': Default Harvester upgrade check url. Only used when the <code>upgrade-checker-enabled</code>  is equal to true.
-    'harv-ui-source': Config how to load the UI source.
+    'harv-upgrade-checker-url': Default Harvester upgrade check URL. Only used when the <code>upgrade-checker-enabled</code> is equal to true.
+    'harv-ui-source': Configure how to load the UI source.
     'harv-ui-index': 'HTML index location for the UI.'
     'harv-ui-plugin-index': 'JS index location for the harvester plugin UI.'
-    'harv-cluster-registration-url': Registration URL for mutil-cluster management.
+    'harv-cluster-registration-url': Registration URL for multi-cluster management.
     'harv-http-proxy': 'HTTP proxy for Harvester to access external services.'
     'harv-additional-ca': 'Custom CA root certificates for TLS validation.'
     'harv-overcommit-config': 'Resource overcommit configuration.'
     'harv-support-bundle-timeout': 'Support Bundle timeout config in minutes, use 0 to disable the timeout.'
-    'harv-vm-force-reset-policy': Config the force-reset action when a VM is stuck on a node that is down.
+    'harv-vm-force-reset-policy': Configure the force-reset action when a VM is stuck on a node that is down.
     'harv-ssl-parameters': Custom SSL Parameters for TLS validation.
     'harv-storage-network': 'Longhorn storage-network setting.'
     'harv-support-bundle-namespaces': Specify resources in other namespaces to be collected by the support package.
     'harv-auto-disk-provision-paths': Specify the disks(using glob pattern) that Harvester will automatically add as VM storage.
     'harv-support-bundle-image': Support bundle image configuration. Find different versions in <a href="https://hub.docker.com/r/rancher/support-bundle-kit/tags" target="_blank">rancher/support-bundle-kit</a>.
     'harv-release-download-url': This setting allows you to configure the <code>upgrade release download</code> URL address. Harvester will get the ISO URL and checksum value from the (<code>$URL</code>/<code>$VERSION</code>/version.yaml) file hosted by the configured URL.
-    'harv-default-vm-termination-grace-period-seconds': Config the VM termination grace period for VM stop.
+    'harv-default-vm-termination-grace-period-seconds': Configure the VM termination grace period for VM stop.
     'harv-ntp-servers': Configure NTP server. You can configure multiple IPv4 addresses or host addresses.
 
 typeLabel:
