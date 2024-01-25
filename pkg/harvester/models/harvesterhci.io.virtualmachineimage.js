@@ -104,11 +104,17 @@ export default class HciVmImage extends HarvesterResource {
     if (imported?.status === 'Unknown') {
       if (this.spec.sourceType === 'download') {
         return 'Downloading';
-      } else if (this.spec.sourceType === 'upload') {
-        return 'Uploading';
-      } else {
-        return 'Exporting';
       }
+
+      if (this.spec.sourceType === 'upload') {
+        if (this.uploadError) {
+          return 'Failed';
+        }
+
+        return 'Uploading';
+      }
+
+      return 'Exporting';
     }
 
     if (initialized?.message || imported?.message) {
