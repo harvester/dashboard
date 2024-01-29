@@ -5,11 +5,12 @@ import { PRODUCT_NAME } from '../config/harvester';
 
 const state = function() {
   return {
-    latestBundleId:   '',
-    bundlePending:    false,
-    showBundleModal:  false,
-    bundlePercentage: 0,
-    uploadingImages:  [],
+    latestBundleId:      '',
+    bundlePending:       false,
+    showBundleModal:     false,
+    bundlePercentage:    0,
+    uploadingImages:     [],
+    uploadingImageError: {},
   };
 };
 
@@ -32,6 +33,10 @@ const mutations = {
 
   uploadStart(state, value) {
     state.uploadingImages.push(value);
+  },
+
+  uploadError(state, { name, message }) {
+    state.uploadingImageError[name] = message;
   },
 
   uploadEnd(state, value) {
@@ -60,6 +65,10 @@ const getters = {
 
   uploadingImages(state) {
     return state.uploadingImages;
+  },
+
+  uploadingImageError(state) {
+    return name => state.uploadingImageError[name];
   },
 
   getHarvesterClusterUrl: (state, getters, rootState, rootGetters) => (url) => {
