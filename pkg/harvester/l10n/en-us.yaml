@@ -181,6 +181,7 @@ harvester:
     volumeSnapshotCounts: Snapshot Counts
     networkState: Network State
     storageClass: Storage Class
+    restore: Restore
   tab:
     volume: Volumes
     network: Networks
