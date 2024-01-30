@@ -691,6 +691,17 @@ export default class VirtVm extends HarvesterResource {
   }
 
   get restoreProgress() {
+    const inStore = this.productInStore;
+    const allBackups = this.$rootGetters[`${ inStore }/all`](HCI.BACKUP);
+
+    const isSnapshotRestore = !!allBackups
+      .filter(b => b.spec?.type !== 'backup')
+      .find(s => s.id === `${ this.restoreResource?.spec?.virtualMachineBackupNamespace }/${ this.restoreResource?.spec?.virtualMachineBackupName }`);
+
+    if (isSnapshotRestore) {
+      return {};
+    }
+
     const status = this.restoreResource?.status;
 
     if (status !== undefined) {

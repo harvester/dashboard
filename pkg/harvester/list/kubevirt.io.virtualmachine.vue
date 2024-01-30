@@ -77,6 +77,7 @@ export default {
       vms:     this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VM }),
       pod:     this.$store.dispatch(`${ inStore }/findAll`, { type: POD }),
       restore: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.RESTORE }),
+      backups: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.BACKUP }),
     };
 
     if (this.$store.getters[`${ inStore }/schemaFor`](NODE)) {
