@@ -1278,6 +1278,7 @@ advancedSettings:
     'harv-additional-ca': '用于 TLS 验证的自定义 CA 根证书。'
     'harv-overcommit-config': '资源超额配置。'
     'harv-support-bundle-timeout': 'Support Bundle 超时配置（单位：分钟），你可以使用 0 来禁用超时。'
+    'harv-support-bundle-expiration': 'Support Bundle 过期配置（单位：分钟）。'
     'harv-vm-force-reset-policy': 配置当虚拟机卡在停机的节点上时的强制重置动作。
     'harv-ssl-parameters': 用于 TLS 验证的自定义 SSL 参数。
     'harv-storage-network': 'Longhorn 存储网络设置。'
