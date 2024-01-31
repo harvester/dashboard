@@ -76,7 +76,10 @@ export default {
           ...STATE,
           formatter: 'StateWithPopover',
         },
-        NAME,
+        {
+          ...NAME,
+          width: 130,
+        },
         {
           name:      'host-ip',
           labelKey:  'tableHeaders.hostIp',

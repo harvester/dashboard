@@ -102,6 +102,7 @@ export default {
           value:     'relatedVolumeSnapshotCounts',
           formatter: 'RelatedVolumeSnapshotCounts',
           sort:      'name',
+          align:     'center',
         },
         {
           ...STATE,

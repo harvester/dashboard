@@ -16,7 +16,7 @@ export const VM_HEADERS = [
   STATE,
   {
     ...NAME,
-    width: 300,
+    width: 350,
   },
   NAMESPACE,
   {
@@ -191,7 +191,7 @@ export default {
             {{ scope.row.metadata.name }}
           </span>
 
-          <ConsoleBar :resource="scope.row" class="console mr-10" />
+          <ConsoleBar :resource="scope.row" class="console mr-10 ml-10" />
         </div>
       </template>
     </ResourceTable>

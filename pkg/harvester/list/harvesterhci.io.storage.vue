@@ -63,6 +63,7 @@ export default {
           labelKey: 'harvester.storage.numberOfReplicas.label',
           value:    'parameters.numberOfReplicas',
           sort:     ['parameters.numberOfReplicas'],
+          align:    'center'
         },
         AGE,
       ];

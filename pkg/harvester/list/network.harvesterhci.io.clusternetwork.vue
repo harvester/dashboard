@@ -42,7 +42,10 @@ export default {
     headers() {
       return [
         STATE,
-        NAME,
+        {
+          ...NAME,
+          width: 300,
+        },
         {
           name:     'type',
           labelKey: 'tableHeaders.type',
