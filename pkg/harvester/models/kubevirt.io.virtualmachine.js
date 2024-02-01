@@ -13,6 +13,7 @@ import { _CLONE } from '@shell/config/query-params';
 import HarvesterResource from './harvester';
 import { matchesSomeRegex } from '@shell/utils/string';
 import { LABELS_TO_IGNORE_REGEX } from '@shell/config/labels-annotations';
+import { BACKUP_TYPE } from '../config/types';
 
 export const OFF = 'Off';
 
@@ -695,7 +696,7 @@ export default class VirtVm extends HarvesterResource {
     const allBackups = this.$rootGetters[`${ inStore }/all`](HCI.BACKUP);
 
     const isSnapshotRestore = !!allBackups
-      .filter(b => b.spec?.type !== 'backup')
+      .filter(b => b.spec?.type !== BACKUP_TYPE.BACKUP)
       .find(s => s.id === `${ this.restoreResource?.spec?.virtualMachineBackupNamespace }/${ this.restoreResource?.spec?.virtualMachineBackupName }`);
 
     if (isSnapshotRestore) {

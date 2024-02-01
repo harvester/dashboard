@@ -5,6 +5,7 @@ import { colorForState } from '@shell/plugins/dashboard-store/resource-class';
 import { _CREATE } from '@shell/config/query-params';
 import HarvesterResource from './harvester';
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../config/harvester';
+import { BACKUP_TYPE } from '../config/types';
 
 export default class HciVmBackup extends HarvesterResource {
   detailPageHeaderActionOverride(realMode) {
@@ -134,7 +135,7 @@ export default class HciVmBackup extends HarvesterResource {
 
   get backupProgress() {
     return {
-      type:       'backup',
+      type:       BACKUP_TYPE.BACKUP,
       percentage: this.status?.progress || 0,
       details:    { volumes: this.status?.volumeBackups || [] }
     };

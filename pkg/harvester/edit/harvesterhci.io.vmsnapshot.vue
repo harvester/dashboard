@@ -10,6 +10,7 @@ import { NAMESPACE } from '@shell/config/types';
 import { HCI } from '../types';
 import { sortBy } from '@shell/utils/sort';
 import { clone } from '@shell/utils/object';
+import { BACKUP_TYPE } from '../config/types';
 
 const createObject = {
   apiVersion: 'harvesterhci.io/v1beta1',
@@ -72,7 +73,7 @@ export default {
       return choices.filter( (T) => {
         const hasVM = this.restoreNewVm || T.attachVmExisting;
 
-        return hasVM && T?.status?.readyToUse && T.spec?.type === 'snapshot';
+        return hasVM && T?.status?.readyToUse && T.spec?.type === BACKUP_TYPE.SNAPSHOT;
       }).map( (T) => {
         return {
           label: T.metadata.name,

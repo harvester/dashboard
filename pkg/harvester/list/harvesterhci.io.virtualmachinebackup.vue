@@ -8,6 +8,7 @@ import ResourceTable from '@shell/components/ResourceTable';
 import { HCI } from '../types';
 import { allSettled } from '../utils/promise';
 import { STATE, AGE, NAME, NAMESPACE } from '@shell/config/table-headers';
+import { BACKUP_TYPE } from '../config/types';
 
 export default {
   name:       'HarvesterListBackup',
@@ -126,8 +127,8 @@ export default {
       ];
     },
 
-    filterdRows() {
-      return this.rows.filter(R => R.spec?.type !== 'snapshot');
+    filteredRows() {
+      return this.rows.filter(R => R.spec?.type !== BACKUP_TYPE.SNAPSHOT);
     },
 
     backupTargetResource() {
@@ -199,7 +200,7 @@ export default {
       v-bind="$attrs"
       :headers="headers"
       :groupable="true"
-      :rows="filterdRows"
+      :rows="filteredRows"
       :schema="schema"
       key-field="_key"
       default-sort-by="age"

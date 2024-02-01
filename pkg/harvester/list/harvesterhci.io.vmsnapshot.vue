@@ -7,6 +7,7 @@ import { HCI } from '../types';
 import { SCHEMA } from '@shell/config/types';
 import { allHash } from '@shell/utils/promise';
 import { STATE, AGE, NAME, NAMESPACE } from '@shell/config/table-headers';
+import { BACKUP_TYPE } from '../config/types';
 
 const schema = {
   id:         HCI.VM_SNAPSHOT,
@@ -83,8 +84,8 @@ export default {
       return this.$store.getters['type-map/labelFor'](schema, 99);
     },
 
-    filterdRows() {
-      return this.rows.filter(R => R.spec?.type !== 'backup');
+    filteredRows() {
+      return this.rows.filter(R => R.spec?.type !== BACKUP_TYPE.BACKUP);
     },
   },
 };
@@ -104,7 +105,7 @@ export default {
       v-bind="$attrs"
       :headers="headers"
       :groupable="true"
-      :rows="filterdRows"
+      :rows="filteredRows"
       :schema="schema"
       key-field="_key"
       default-sort-by="age"

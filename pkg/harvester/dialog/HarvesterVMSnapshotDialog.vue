@@ -6,6 +6,7 @@ import { Banner } from '@components/Banner';
 import AsyncButton from '@shell/components/AsyncButton';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import { HCI } from '../types';
+import { BACKUP_TYPE } from '../config/types';
 
 export default {
   name: 'HarvesterVMSnapshotDialog',
@@ -62,7 +63,7 @@ export default {
                 kind:     'VirtualMachine',
                 name:     this.actionResource.metadata.name
               },
-              type: 'snapshot'
+              type: BACKUP_TYPE.SNAPSHOT
             },
             type: HCI.BACKUP
           });
