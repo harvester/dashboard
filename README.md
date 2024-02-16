@@ -8,23 +8,35 @@ Harvester Dashboard UI, Harvester is an open-source hyper-converged infrastructu
 
 This is what you probably want to get started.
 
+### Standalone Mode
+
 ```bash
 # Install dependencies
 yarn install
 
 # For development, serve with hot reload at https://localhost:8005
 # using the endpoint for your Harvester API
-API=https://your-harvester yarn dev
+RANCHER_ENV=harvester API=https://your-harvester-ip yarn dev
 # or put the variable into a .env file
 # Goto https://localhost:8005
+
+# Example 
+RANCHER_ENV=harvester API=https://192.168.1.123 yarn dev
 ```
 
-```
+### Integration Mode
+
+In this mode, you need to have Rancher and import Harvester, more detail in [Harvester Integration | Rancher](https://ranchermanager.docs.rancher.com/v2.6/integrations-in-rancher/harvester).
+
+```bash
 # build harvester plugin
 yarn build-pkg harvester && yarn serve-pkgs
 
 # Open another terminal
-HARVESTER_PKG_URL=http://127.0.0.1:4500/harvester-${version}/harvester-${version}.umd.min.js API=https://your-harvester yarn mem-dev
+HARVESTER_PKG_URL=http://127.0.0.1:4500/harvester-${version}/harvester-${version}.umd.min.js API=https://your-rancher-ip yarn mem-dev
+
+# Example 
+# HARVESTER_PKG_URL=http://127.0.0.1:4500/harvester-1.2.0/harvester-1.2.0.umd.min.js API=https://192.168.1.122 yarn mem-dev
 ```
 
 ## Other Building Modes
