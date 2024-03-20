@@ -141,14 +141,12 @@ export default {
     onImageChange() {
       const imageResource = this.$store.getters['harvester/all'](HCI.IMAGE)?.find( I => this.value.image === I.id);
 
-      if (this.idx === 0) {
-        if (/iso$/i.test(imageResource?.imageSuffix)) {
-          this.$set(this.value, 'type', 'cd-rom');
-          this.$set(this.value, 'bus', 'sata');
-        } else {
-          this.$set(this.value, 'type', 'disk');
-          this.$set(this.value, 'bus', 'virtio');
-        }
+      if (/iso$/i.test(imageResource?.imageSuffix)) {
+        this.$set(this.value, 'type', 'cd-rom');
+        this.$set(this.value, 'bus', 'sata');
+      } else {
+        this.$set(this.value, 'type', 'disk');
+        this.$set(this.value, 'bus', 'virtio');
       }
 
       this.update();
