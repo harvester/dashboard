@@ -159,6 +159,7 @@ harvester:
     forceStop: Force Stop
   tableHeaders:
     size: Size
+    virtualSize: Virtual Size
     progress: Progress
     message: Message
     phase: Phase
