@@ -28,6 +28,7 @@ import {
 
 import {
   IMAGE_DOWNLOAD_SIZE,
+  IMAGE_VIRTUAL_SIZE,
   FINGERPRINT,
   IMAGE_PROGRESS,
   SNAPSHOT_TARGET_VOLUME,
@@ -220,6 +221,7 @@ export function init($plugin, store) {
     NAMESPACE_COL,
     IMAGE_PROGRESS,
     IMAGE_DOWNLOAD_SIZE,
+    IMAGE_VIRTUAL_SIZE,
     AGE
   ]);
   virtualType({

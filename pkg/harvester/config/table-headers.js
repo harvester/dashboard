@@ -11,6 +11,14 @@ export const IMAGE_DOWNLOAD_SIZE = {
   width:    120
 };
 
+export const IMAGE_VIRTUAL_SIZE = {
+  name:     'virtualSize',
+  labelKey: 'harvester.tableHeaders.virtualSize',
+  value:    'virtualSize',
+  sort:     'status.virtualSize',
+  width:    120
+};
+
 export const IMAGE_PROGRESS = {
   name:      'Uploaded',
   labelKey:  'tableHeaders.progress',
