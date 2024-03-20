@@ -168,6 +168,21 @@ export default class HciVmImage extends HarvesterResource {
     });
   }
 
+  get virtualSize() {
+    const virtualSize = this.status?.virtualSize;
+
+    if (!virtualSize) {
+      return '-';
+    }
+
+    return formatSi(virtualSize, {
+      increment:    1024,
+      maxPrecision: 2,
+      suffix:       'B',
+      firstSuffix:  'B',
+    });
+  }
+
   getStatusConditionOfType(type, defaultValue = []) {
     const conditions = Array.isArray(get(this, 'status.conditions')) ? this.status.conditions : defaultValue;
 
