@@ -401,15 +401,25 @@ export default {
       let out = [];
 
       if (_disks.length === 0) {
+        let bus = 'virtio';
+        let type = HARD_DISK;
+
+        const imageResource = this.images.find( I => this.imageId === I.id);
+
+        if (/iso$/i.test(imageResource?.imageSuffix)) {
+          bus = 'sata';
+          type = CD_ROM;
+        }
+
         out.push({
           id:               randomStr(5),
           source:           SOURCE_TYPE.IMAGE,
           name:             'disk-0',
           accessMode:       'ReadWriteMany',
-          bus:              'virtio',
+          bus,
           volumeName:       '',
           size:             '10Gi',
-          type:             HARD_DISK,
+          type,
           storageClassName: '',
           image:            this.imageId,
           volumeMode:       'Block',
