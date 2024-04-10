@@ -50,13 +50,11 @@ export default {
 
       const splitSSH = trimNeu.split(/\s+/);
 
-      if (splitSSH.length === 3) {
+      if (splitSSH.length === 3 && !this.value.metadata.name) {
         const keyComment = splitSSH[2];
 
-        if (keyComment.includes('@') && !this.value.metadata.name) {
-          this.value.metadata.name = keyComment.split('@')[0];
-          this.randomString = randomStr(10).toLowerCase();
-        }
+        this.randomString = randomStr(10).toLowerCase();
+        this.value.metadata.name = keyComment.includes('@') ? keyComment.split('@')[0] : keyComment;
       }
     }
   },

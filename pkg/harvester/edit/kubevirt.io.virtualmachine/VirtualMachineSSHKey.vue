@@ -104,16 +104,11 @@ export default {
       const trimNeu = neu.trim();
       const splitSSH = trimNeu.split(/\s+/);
 
-      if (splitSSH.length === 3) {
+      if (splitSSH.length === 3 && !this.sshName) {
         const keyComment = splitSSH[2];
 
-        if (keyComment.includes('@')) {
-          if (keyComment.split('@')) {
-            if (!this.sshName) {
-              this.sshName = keyComment.split('@')[0];
-            }
-          }
-        }
+        this.randomStr = randomStr(10).toLowerCase();
+        this.sshName = keyComment.includes('@') ? keyComment.split('@')[0] : keyComment;
       }
     },
 
