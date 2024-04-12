@@ -921,7 +921,7 @@ export default {
         const image = this.images.find( (I) => R.image === I.id);
 
         if (image) {
-          out.spec.storageClassName = `longhorn-${ image.metadata.name }`;
+          out.spec.storageClassName = image.storageClassName;
           out.metadata.annotations = { [HCI_ANNOTATIONS.IMAGE_ID]: image.id };
         } else {
           out.metadata.annotations = { [HCI_ANNOTATIONS.IMAGE_ID]: '' };

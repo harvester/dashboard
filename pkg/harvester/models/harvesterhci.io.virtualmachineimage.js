@@ -184,6 +184,10 @@ export default class HciVmImage extends HarvesterResource {
     return this.spec?.displayName;
   }
 
+  get storageClassName() {
+    return this.status?.storageClassName || '';
+  }
+
   get uploadImage() {
     return async(file) => {
       const formData = new FormData();

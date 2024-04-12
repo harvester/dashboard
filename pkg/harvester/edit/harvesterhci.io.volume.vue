@@ -228,11 +228,13 @@ export default {
       let storageClassName = this.value.spec.storageClassName;
 
       if (this.isVMImage && this.imageId) {
+        const images = this.$store.getters['harvester/all'](HCI.IMAGE);
+
         imageAnnotations = {
           ...this.value.metadata.annotations,
           [HCI_ANNOTATIONS.IMAGE_ID]: this.imageId
         };
-        storageClassName = `longhorn-${ this.imageId.split('/')[1] }`;
+        storageClassName = images?.find(image => this.imageId === image.id)?.storageClassName;
       } else {
         imageAnnotations = { ...this.value.metadata.annotations };
       }
