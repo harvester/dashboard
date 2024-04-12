@@ -7331,7 +7331,9 @@ auth:
     label: Auth Provider
 vncConsole:
   error:
-    message: Web VNC console connection is disconnected
+    message: Web VNC console is disconnected
+  reconnecting:
+    message: Web VNC console reconnection attempt
 
 networkAttachmentDefinition:
   tabs:
