@@ -61,6 +61,10 @@ export default {
     });
   },
 
+  beforeDestroy() {
+    this.clearTimeout();
+  },
+
   methods: {
     connect() {
       const rfb = new RFB(this.$refs.view, this.url);
