@@ -18,7 +18,7 @@ const VALUES_YAML_KEYS = [
   'resources.limits.memory',
   'pvcClaim.enabled',
   'pvcClaim.size',
-  'pvcClaim.storageClassName',
+  'pvcClaim.storageClass',
 ];
 
 const DEFAULT_VALUES = {
@@ -28,7 +28,7 @@ const DEFAULT_VALUES = {
   'resources.limits.memory':   '4Gi',
   'pvcClaim.enabled':          false,
   'pvcClaim.size':             '200Gi',
-  'pvcClaim.storageClassName': '',
+  'pvcClaim.storageClass': '',
 };
 
 export default {
@@ -108,7 +108,7 @@ export default {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const defaultStorage = this.$store.getters[`${ inStore }/all`](STORAGE_CLASS).find( s => s.isDefault);
 
-      this.$set(this.valuesContent.pvcClaim, 'storageClassName', this.valuesContent?.pvcClaim?.storageClassName || defaultStorage?.metadata?.name || 'longhorn');
+      this.$set(this.valuesContent.pvcClaim, 'storageClass', this.valuesContent?.pvcClaim?.storageClass || defaultStorage?.metadata?.name || 'longhorn');
 
       this.update();
     },
@@ -208,7 +208,7 @@ export default {
               </div>
               <div class="col span-6">
                 <LabeledSelect
-                  v-model="valuesContent.pvcClaim.storageClassName"
+                  v-model="valuesContent.pvcClaim.storageClass"
                   :options="storageClassOptions"
                   :label="t('harvester.storage.storageClass.label')"
                   :mode="mode"
