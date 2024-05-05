@@ -410,15 +410,6 @@ export default {
           @focusKey="focusKey"
           @input="value.setLabels($event)"
         >
-          <template #key="{ row, keyName, queueUpdate}">
-            <input
-              ref="key"
-              v-model="row[keyName]"
-              :placeholder="t('keyValue.keyPlaceholder')"
-              @input="queueUpdate"
-            />
-          </template>
-
           <template #value="{row, keyName, valueName, queueUpdate}">
             <Select
               v-if="internalAnnotations(row)"
