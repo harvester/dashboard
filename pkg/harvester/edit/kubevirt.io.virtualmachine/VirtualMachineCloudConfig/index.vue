@@ -11,7 +11,6 @@ import { _VIEW } from '@shell/config/query-params';
 import DataTemplate from './DataTemplate';
 
 const _NEW = '_NEW';
-const _NONE = '_NONE';
 
 export default {
   components: {
@@ -81,19 +80,9 @@ export default {
       value: _NEW,
     });
 
-    optionUser.unshift({
-      label: this.t('harvester.virtualMachine.cloudConfig.cloudInit.placeholder'),
-      value: _NONE,
-    });
-
     optionNetwork.unshift({
       label: this.t('harvester.virtualMachine.cloudConfig.createNew'),
       value: _NEW,
-    });
-
-    optionNetwork.unshift({
-      label: this.t('harvester.virtualMachine.cloudConfig.cloudInit.placeholder'),
-      value: _NONE,
     });
 
     this.optionUser = optionUser;
