@@ -105,9 +105,6 @@ export default {
       }, {
         label: 'q35',
         value: 'q35'
-      }, {
-        label: 'pc-q35',
-        value: 'pc-q35'
       }];
     },
 
