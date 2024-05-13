@@ -87,7 +87,7 @@ export function vmDisks(spec, getters, errors, validatorArgs, displayKey, value)
         errors.push(getters['i18n/t']('harvester.validation.generic.tabError', { prefix, message }));
       }
 
-      if (typeValue?.spec?.resources?.requests?.storage && !/^([1-9][0-9]{0,8})[a-zA-Z]+$/.test(typeValue?.spec?.resources?.requests?.storage)) {
+      if (typeValue?.spec?.resources?.requests?.storage && !/^([0-9][0-9]{0,8})[a-zA-Z]+$/.test(typeValue?.spec?.resources?.requests?.storage)) {
         const message = getters['i18n/t']('harvester.validation.generic.maximumSize', { max: '999999999 GiB' });
 
         errors.push(getters['i18n/t']('harvester.validation.generic.tabError', { prefix, message }));
