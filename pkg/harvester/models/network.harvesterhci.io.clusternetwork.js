@@ -43,7 +43,8 @@ export default class HciClusterNetwork extends HarvesterResource {
   get nodes() {
     const nodes = this.$rootGetters[`${ this.inStore }/all`](NODE);
 
-    return nodes.filter(n => !n.isUnSchedulable);
+    // filter out witness nodes and unschedulable nodes
+    return nodes.filter(n => !n.isUnSchedulable && n.isEtcd !== 'true');
   }
 
   get vlanStatuses() {
