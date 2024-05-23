@@ -116,7 +116,7 @@ export default class HciVlanConfig extends HarvesterResource {
   }
 
   get nodes() {
-    return this.selectedNodes.filter(n => !n.isUnSchedulable);
+    return this.selectedNodes.filter(n => !n.isUnSchedulable && n.isEtcd !== 'true');
   }
 
   get stateDisplay() {
