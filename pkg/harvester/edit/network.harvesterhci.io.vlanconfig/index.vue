@@ -92,7 +92,7 @@ export default {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const nodes = this.$store.getters[`${ inStore }/all`](NODE);
 
-      return nodes.map((node) => {
+      return nodes.filter(n => n.isEtcd !== 'true').map((node) => {
         return {
           label: node.nameDisplay,
           value: node.id
@@ -213,7 +213,7 @@ export default {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const nodes = this.$store.getters[`${ inStore }/all`](NODE);
 
-      return nodes;
+      return nodes.filter(n => n.isEtcd !== 'true');
     },
   },
 
