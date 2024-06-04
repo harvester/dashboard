@@ -30,7 +30,8 @@ export const HCI_SETTING = {
   CSI_DRIVER_CONFIG:                      'csi-driver-config',
   VM_TERMINATION_PERIOD:                  'default-vm-termination-grace-period-seconds',
   NTP_SERVERS:                            'ntp-servers',
-  AUTO_ROTATE_RKE2_CERTS:                 'auto-rotate-rke2-certs'
+  AUTO_ROTATE_RKE2_CERTS:                 'auto-rotate-rke2-certs',
+  KUBECONFIG_DEFAULT_TOKEN_TTL_MINUTES:   'kubeconfig-default-token-ttl-minutes'
 };
 
 export const HCI_ALLOWED_SETTINGS = {
@@ -81,6 +82,7 @@ export const HCI_ALLOWED_SETTINGS = {
   [HCI_SETTING.NTP_SERVERS]:           {
     kind: 'json', from: 'import', canReset: true
   },
+  [HCI_SETTING.KUBECONFIG_DEFAULT_TOKEN_TTL_MINUTES]: {},
 };
 
 export const HCI_SINGLE_CLUSTER_ALLOWED_SETTING = {
