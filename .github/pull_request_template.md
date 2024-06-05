@@ -9,7 +9,7 @@
 - Are backend engineers aware of UI changes?
     - [ ] Yes, the backend owner is:
 
-Fixes #
+Related Issue #
 <!-- Define findings related to the feature or bug issue. -->
 
 ### Occurred changes and/or fixed issues
