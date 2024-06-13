@@ -117,10 +117,10 @@ export default class HciUpgrade extends HarvesterResource {
   get upgradeImageMessage() {
     const conditions = this?.status?.conditions || [];
     const imageReady = conditions.find( cond => cond.type === 'ImageReady');
-    const hasError = imageReady?.status === 'False';
+    const success = imageReady?.status === 'True';
     const message = imageReady?.message || imageReady?.reason;
 
-    return hasError ? message : '';
+    return success ? '' : message;
   }
 
   get nodeUpgradeMessage() {

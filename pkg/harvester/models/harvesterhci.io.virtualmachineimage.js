@@ -132,7 +132,8 @@ export default class HciVmImage extends HarvesterResource {
     const conditions = this?.status?.conditions || [];
     const initialized = conditions.find( cond => cond.type === 'Initialized');
     const imported = conditions.find( cond => cond.type === 'Imported');
-    const message = initialized?.message || imported?.message;
+    const retryLimitExceeded = conditions.find( cond => cond.type === 'RetryLimitExceeded');
+    const message = initialized?.message || imported?.message || retryLimitExceeded?.message;
 
     return ucFirst(message);
   }
