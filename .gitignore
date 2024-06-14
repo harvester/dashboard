@@ -113,3 +113,8 @@ shell/types/shell
 scripts/standalone/ui
 scripts/standalone/cert
 scripts/standalone/node
+
+# Ignoring .npmrc file
+# x-ref: https://docs.npmjs.com/cli/v10/configuring-npm/npmrc
+# x-ref: https://docs.npmjs.com/cli/v10/using-npm/config
+.npmrc
