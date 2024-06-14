@@ -107,6 +107,14 @@ export default {
 
         const isHarvester = s.data?.type?.includes('harvesterhci');
 
+        if (isHarvester) {
+          const setting = this.$store.getters['harvester/all'](HCI.SETTING)?.find(item => item.id === s.id);
+
+          if (setting) {
+            s.data = setting;
+          }
+        }
+
         if (s.kind === 'json') {
           try {
             s.json = JSON.stringify(JSON.parse(s.data.value || s.data.default || '{}'), null, 2);
