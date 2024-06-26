@@ -10,7 +10,7 @@ import remove from 'lodash/remove';
 import { get, set } from '@shell/utils/object';
 
 export default {
-  name:       'VirtualMachinedevices',
+  name:       'VirtualMachineVGpuDevices',
   components: {
     Banner,
     LabeledSelect,
