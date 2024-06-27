@@ -168,7 +168,7 @@ export default {
       color="info"
       :label="formattedBannerLabel"
     />
-    <div v-if="!value.isNew">
+    <div>
       <div class="row">
         <div class="col span-12">
           <Tags
@@ -179,7 +179,7 @@ export default {
           />
         </div>
       </div>
-      <div class="row mt-10">
+      <div v-if="!value.isNew" class="row mt-10">
         <div class="col span-12">
           <div class="pull-right">
             {{ t('harvester.host.disk.conditions') }}:

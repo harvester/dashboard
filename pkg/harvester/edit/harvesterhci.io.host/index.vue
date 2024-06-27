@@ -1,4 +1,5 @@
 <script>
+import { isEqual } from 'lodash';
 import { mapGetters } from 'vuex';
 import Tabbed from '@shell/components/Tabbed';
 import Tab from '@shell/components/Tabbed/Tab';
@@ -93,6 +94,7 @@ export default {
           blockDevice:    d,
           displayName:    d?.displayName,
           forceFormatted: corrupted ? true : d?.spec?.fileSystem?.forceFormatted || false,
+          tags:           d?.spec?.tags || [],
         };
       });
 
@@ -321,6 +323,7 @@ export default {
         blockDevice:       disk,
         displayName:       disk?.displayName,
         forceFormatted,
+        tags:              []
       });
     },
 
@@ -328,9 +331,14 @@ export default {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const addDisks = this.newDisks.filter(d => d.isNew);
       const removeDisks = this.disks.filter(d => !findBy(this.newDisks, 'name', d.name) && d.blockDevice);
+      let tagDisks = [];
 
       if (addDisks.length === 0 && removeDisks.length === 0) {
-        return Promise.resolve();
+        tagDisks = this.newDisks.filter(d => d.blockDevice && !isEqual(d.blockDevice.spec.tags, d.tags));
+
+        if (tagDisks.length === 0) {
+          return Promise.resolve();
+        }
       } else if (addDisks.length !== 0 && removeDisks.length === 0) {
         const updatedDisks = addDisks.filter((d) => {
           const blockDevice = this.$store.getters[`${ inStore }/byId`](HCI.BLOCK_DEVICE, `${ LONGHORN_SYSTEM }/${ d.name }`);
@@ -354,6 +362,7 @@ export default {
 
           blockDevice.spec.fileSystem.provisioned = true;
           blockDevice.spec.fileSystem.forceFormatted = d.forceFormatted;
+          blockDevice.spec.tags = d.tags;
 
           return blockDevice.save();
         }));
@@ -362,6 +371,14 @@ export default {
           const blockDevice = this.$store.getters[`${ inStore }/byId`](HCI.BLOCK_DEVICE, `${ LONGHORN_SYSTEM }/${ d.name }`);
 
           blockDevice.spec.fileSystem.provisioned = false;
+
+          return blockDevice.save();
+        }));
+
+        await Promise.all(tagDisks.map((d) => {
+          const blockDevice = this.$store.getters[`${ inStore }/byId`](HCI.BLOCK_DEVICE, `${ LONGHORN_SYSTEM }/${ d.name }`);
+
+          blockDevice.spec.tags = d.tags;
 
           return blockDevice.save();
         }));
@@ -476,16 +493,17 @@ export default {
     async saveLonghornNode() {
       const inStore = this.$store.getters['currentProduct'].inStore;
 
-      const disks = this.longhornNode?.spec?.disks || {};
-
-      this.newDisks.map((disk) => {
-        (disks[disk.name] || {}).tags = disk.tags;
-      });
+      const storageTags = clone(this.longhornNode?.spec?.tags);
 
       let count = 0;
 
       const retrySave = async() => {
         try {
+          this.longhornNode.spec.tags = storageTags;
+          this.newDisks.forEach((disk) => {
+            (this.longhornNode?.spec?.disks?.[disk.name] || {}).tags = disk.tags;
+          });
+
           await this.longhornNode.save();
         } catch (err) {
           if ((err.status === 409 || err.status === 403) && count < 3) {
