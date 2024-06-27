@@ -13,6 +13,7 @@ import { allDashboardsExist } from '@shell/utils/grafana';
 import CloudConfig from '../../edit/kubevirt.io.virtualmachine/VirtualMachineCloudConfig';
 import Volume from '../../edit/kubevirt.io.virtualmachine/VirtualMachineVolume';
 import Network from '../../edit/kubevirt.io.virtualmachine/VirtualMachineNetwork';
+import BootOrder from '../../edit/kubevirt.io.virtualmachine/VirtualMachineBootOrder';
 import NodeScheduling from '@shell/components/form/NodeScheduling';
 import PodAffinity from '@shell/components/form/PodAffinity';
 import AccessCredentials from '../../edit/kubevirt.io.virtualmachine/VirtualMachineAccessCredentials';
@@ -29,6 +30,7 @@ export default {
   name: 'VMIDetailsPage',
 
   components: {
+    BootOrder,
     Tab,
     Tabbed,
     Events,
@@ -173,6 +175,13 @@ export default {
 
       <Tab name="networks" :label="t('harvester.virtualMachine.detail.tabs.networks')" class="bordered-table" :weight="5">
         <Network v-model="networkRows" mode="view" />
+      </Tab>
+
+      <Tab name="BootOrder" :label="t('harvester.tab.boot-order')" :weight="4">
+        <BootOrder
+          :value="bootOrderDevices"
+          :mode="mode"
+        />
       </Tab>
 
       <Tab name="keypairs" :label="t('harvester.virtualMachine.detail.tabs.keypairs')" class="bordered-table" :weight="3">
