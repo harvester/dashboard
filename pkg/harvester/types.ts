@@ -38,6 +38,7 @@ export const HCI = {
   SR_IOV:             'devices.harvesterhci.io.sriovnetworkdevice',
   VGPU_DEVICE:        'devices.harvesterhci.io.vgpudevice',
   SR_IOVGPU_DEVICE:   'devices.harvesterhci.io.sriovgpudevice',
+  USB_DEVICE:         'devices.harvesterhci.io.usbdevice',
   VLAN_CONFIG:        'network.harvesterhci.io.vlanconfig',
   VLAN_STATUS:        'network.harvesterhci.io.vlanstatus',
   ADD_ONS:            'harvesterhci.io.addon',

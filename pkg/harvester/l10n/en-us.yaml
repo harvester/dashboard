@@ -201,6 +201,7 @@ harvester:
     accessCredentials: Access Credentials
     pciDevices: PCI Devices
     vGpuDevices: vGPU Devices
+    usbDevices: USB Devices
     vmScheduling: Virtual Machine Scheduling
     quotas: Quotas
     snapshots: Snapshots
@@ -1195,6 +1196,9 @@ harvester:
         location: Driver Location
       parsingSpecError:
         The field 'spec.valuesContent' has invalid format.
+    usbController:
+      titles:
+        basic: Basic
 
   loadBalancer:
     label: Load Balancers
@@ -1333,6 +1337,14 @@ harvester:
     impossibleSelection: 'There are no hosts with all of the selected devices.'
     howToUseDevice: 'Use the table below to enable vGPU devices you want to use in this virtual machine.'
     deviceInTheSameHost: 'You can only select devices on the same host.'
+
+  usb:
+    label: USB Devices
+    noPermission: Please contact system admin to add Harvester addons first
+    goSetting:
+      prefix: The usb addon is not enabled, click
+      middle: here
+      suffix: to enable it to manage your USB devices.
 
   harvesterVlanConfigMigrateDialog:
     targetClusterNetwork:
