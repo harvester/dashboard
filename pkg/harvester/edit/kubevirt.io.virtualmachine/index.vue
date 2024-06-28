@@ -30,7 +30,7 @@ import KeyValue from '@shell/components/form/KeyValue';
 import { clear } from '@shell/utils/array';
 import { clone } from '@shell/utils/object';
 import { HCI } from '../../types';
-import { RunStrategys } from '../../config/harvester-map';
+import { runStrategies } from '../../config/harvester-map';
 import { saferDump } from '@shell/utils/create-yaml';
 import { exceptionToErrorsArray } from '@shell/utils/error';
 import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
@@ -95,7 +95,7 @@ export default {
       useTemplate:       false,
       hostname,
       isRestartImmediately,
-      RunStrategys,
+      runStrategies,
     };
   },
 
@@ -610,7 +610,7 @@ export default {
             <LabeledSelect
               v-model="runStrategy"
               label-key="harvester.virtualMachine.runStrategy"
-              :options="RunStrategys"
+              :options="runStrategies"
               :mode="mode"
             />
           </div>

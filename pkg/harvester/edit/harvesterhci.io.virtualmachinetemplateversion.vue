@@ -21,7 +21,7 @@ import SSHKey from './kubevirt.io.virtualmachine/VirtualMachineSSHKey';
 
 import { HCI } from '../types';
 import { randomStr } from '@shell/utils/string';
-import { RunStrategys } from '../config/harvester-map';
+import { runStrategies } from '../config/harvester-map';
 import { _CONFIG, _EDIT, _VIEW } from '@shell/config/query-params';
 import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 
@@ -76,7 +76,7 @@ export default {
       description:      '',
       defaultVersion:   null,
       isDefaultVersion: false,
-      RunStrategys,
+      runStrategies,
     };
   },
 
@@ -296,7 +296,7 @@ export default {
             <LabeledSelect
               v-model="runStrategy"
               label-key="harvester.virtualMachine.runStrategy"
-              :options="RunStrategys"
+              :options="runStrategies"
               :mode="mode"
             />
           </div>
