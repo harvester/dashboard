@@ -485,6 +485,13 @@ harvester:
         other {Start}
       } the virtual machine now to take effect of the configuration changes.
     runStrategy: Run Strategy
+    maintenanceStrategy:
+      label: Maintenance Strategy
+      options:
+        Migrate: Migrate
+        RestartOnEnable: RestartOnEnable
+        RestartOnDisable: RestartOnDisable
+        StayOff: StayOff
     restartNow: |-
       {restart, select,
         true {Restart}

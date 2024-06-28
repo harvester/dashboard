@@ -339,6 +339,17 @@ export default {
         </div>
 
         <div class="row mb-20">
+          <div class="col span-6">
+            <LabeledSelect
+              v-model="maintenanceStrategy"
+              label-key="harvester.virtualMachine.maintenanceStrategy.label"
+              :options="maintenanceStrategyOptions"
+              :mode="mode"
+            />
+          </div>
+        </div>
+
+        <div class="row mb-20">
           <a v-if="showAdvanced" v-t="'harvester.generic.showMore'" role="button" @click="toggleAdvanced" />
           <a v-else v-t="'harvester.generic.showMore'" role="button" @click="toggleAdvanced" />
         </div>

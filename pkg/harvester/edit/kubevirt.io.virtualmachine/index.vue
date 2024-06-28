@@ -30,7 +30,6 @@ import KeyValue from '@shell/components/form/KeyValue';
 import { clear } from '@shell/utils/array';
 import { clone } from '@shell/utils/object';
 import { HCI } from '../../types';
-import { runStrategies } from '../../config/harvester-map';
 import { saferDump } from '@shell/utils/create-yaml';
 import { exceptionToErrorsArray } from '@shell/utils/error';
 import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
@@ -95,7 +94,6 @@ export default {
       useTemplate:       false,
       hostname,
       isRestartImmediately,
-      runStrategies,
     };
   },
 
@@ -626,6 +624,17 @@ export default {
         </div>
 
         <div class="row mb-20">
+          <div class="col span-6">
+            <LabeledSelect
+              v-model="maintenanceStrategy"
+              label-key="harvester.virtualMachine.maintenanceStrategy.label"
+              :options="maintenanceStrategyOptions"
+              :mode="mode"
+            />
+          </div>
+        </div>
+
+        <div class="row mb-20">
           <a v-if="showAdvanced" v-t="'harvester.generic.showMore'" role="button" @click="toggleAdvanced" />
           <a v-else v-t="'harvester.generic.showMore'" role="button" @click="toggleAdvanced" />
         </div>
@@ -728,7 +737,6 @@ export default {
           :mode="mode"
         />
       </Tab>
-
     </Tabbed>
 
     <RestartVMDialog ref="restartDialog" :vm="value" />

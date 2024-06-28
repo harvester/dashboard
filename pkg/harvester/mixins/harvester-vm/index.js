@@ -11,7 +11,9 @@ import { allHash } from '@shell/utils/promise';
 import { randomStr } from '@shell/utils/string';
 import { base64Decode } from '@shell/utils/crypto';
 import { formatSi, parseSi } from '@shell/utils/units';
-import { ADD_ONS, SOURCE_TYPE, ACCESS_CREDENTIALS } from '../../config/harvester-map';
+import {
+  ADD_ONS, SOURCE_TYPE, ACCESS_CREDENTIALS, maintenanceStrategies, runStrategies
+} from '../../config/harvester-map';
 import { _CLONE, _CREATE, _VIEW } from '@shell/config/query-params';
 import {
   PV, PVC, STORAGE_CLASS, NODE, SECRET, CONFIG_MAP, NETWORK_ATTACHMENT, NAMESPACE, LONGHORN
@@ -136,6 +138,9 @@ export default {
       spec:                          null,
       osType:                        'linux',
       sshKey:                        [],
+      maintenanceStrategies,
+      maintenanceStrategy:           'Migrate',
+      runStrategies,
       runStrategy:                   'RerunOnFailure',
       installAgent:                  true,
       hasCreateVolumes:              [],
@@ -283,6 +288,10 @@ export default {
         topologyKeyPlaceholder: this.t('harvesterManager.affinity.topologyKey.placeholder')
       };
     },
+
+    maintenanceStrategyOptions() {
+      return this.maintenanceStrategies.map(m => this.t(`harvester.virtualMachine.maintenanceStrategy.options.${ m }`));
+    },
   },
 
   async created() {
@@ -315,6 +324,11 @@ export default {
           }
         };
       }
+
+      if (!spec.template.metadata.labels) {
+        spec.template.metadata.labels = {};
+      }
+      const maintenanceStrategy = spec.template?.metadata?.labels?.[HCI_ANNOTATIONS.VM_MAINTENANCE_MODE_STRATEGY] || 'Migrate';
 
       const runStrategy = spec.runStrategy || 'RerunOnFailure';
       const machineType = value.machineType;
@@ -362,6 +376,7 @@ export default {
       }
 
       this.$set(this, 'spec', spec);
+      this.$set(this, 'maintenanceStrategy', maintenanceStrategy);
       this.$set(this, 'runStrategy', runStrategy);
       this.$set(this, 'secretRef', secretRef);
       this.$set(this, 'accessCredentials', accessCredentials);
@@ -573,6 +588,12 @@ export default {
         delete vm.metadata.annotations[HCI_ANNOTATIONS.VM_RESERVED_MEMORY];
       } else {
         vm.metadata.annotations[HCI_ANNOTATIONS.VM_RESERVED_MEMORY] = this.reservedMemory;
+      }
+
+      if (this.maintenanceStrategy === 'Migrate') {
+        delete this.spec.template.metadata.labels[HCI_ANNOTATIONS.VM_MAINTENANCE_MODE_STRATEGY];
+      } else {
+        this.spec.template.metadata.labels[HCI_ANNOTATIONS.VM_MAINTENANCE_MODE_STRATEGY] = this.maintenanceStrategy;
       }
     },
 
