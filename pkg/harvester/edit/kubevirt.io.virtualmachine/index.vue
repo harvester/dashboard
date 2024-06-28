@@ -572,9 +572,38 @@ export default {
       </Tab>
 
       <Tab
+        name="instanceLabel"
+        :label="t('harvester.tab.instanceLabel')"
+        :weight="-8"
+      >
+        <Labels
+          :default-container-class="'labels-and-annotations-container'"
+          :value="value"
+          :mode="mode"
+          :display-side-by-side="false"
+          :show-annotations="false"
+          :show-label-title="false"
+        >
+          <template #labels="{toggler}">
+            <KeyValue
+              key="labels"
+              :value="value.instanceLabels"
+              :protected-keys="value.systemLabels || []"
+              :toggle-filter="toggler"
+              :add-label="t('labels.addLabel')"
+              :mode="mode"
+              :read-allowed="false"
+              :value-can-be-empty="true"
+              @input="value.setInstanceLabels($event)"
+            />
+          </template>
+        </Labels>
+      </Tab>
+
+      <Tab
         name="advanced"
         :label="t('harvester.tab.advanced')"
-        :weight="-8"
+        :weight="-9"
       >
         <div class="row mb-20">
           <div class="col span-6">
@@ -700,34 +729,6 @@ export default {
         />
       </Tab>
 
-      <Tab
-        name="instanceLabel"
-        :label="t('harvester.tab.instanceLabel')"
-        :weight="-99"
-      >
-        <Labels
-          :default-container-class="'labels-and-annotations-container'"
-          :value="value"
-          :mode="mode"
-          :display-side-by-side="false"
-          :show-annotations="false"
-          :show-label-title="false"
-        >
-          <template #labels="{toggler}">
-            <KeyValue
-              key="labels"
-              :value="value.instanceLabels"
-              :protected-keys="value.systemLabels || []"
-              :toggle-filter="toggler"
-              :add-label="t('labels.addLabel')"
-              :mode="mode"
-              :read-allowed="false"
-              :value-can-be-empty="true"
-              @input="value.setInstanceLabels($event)"
-            />
-          </template>
-        </Labels>
-      </Tab>
     </Tabbed>
 
     <RestartVMDialog ref="restartDialog" :vm="value" />
