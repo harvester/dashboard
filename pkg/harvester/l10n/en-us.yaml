@@ -1288,6 +1288,7 @@ advancedSettings:
     'harv-release-download-url': This setting allows you to configure the <code>upgrade release download</code> URL address. Harvester will get the ISO URL and checksum value from the (<code>$URL</code>/<code>$VERSION</code>/version.yaml) file hosted by the configured URL.
     'harv-default-vm-termination-grace-period-seconds': Config the VM termination grace period for VM stop.
     'harv-ntp-servers': Configure NTP server. You can configure multiple IPv4 addresses or host addresses.
+    'harv-kubeconfig-default-token-ttl-minutes': 'TTL (in minutes) applied on Harvester admin kubeconfig files. Default is 0, which means to never expire.'
 
 typeLabel:
   kubevirt.io.virtualmachine: |-
