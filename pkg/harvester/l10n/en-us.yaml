@@ -1358,6 +1358,7 @@ advancedSettings:
     'harv-default-vm-termination-grace-period-seconds': Config the VM termination grace period for VM stop.
     'harv-ntp-servers': Configure NTP server. You can configure multiple IPv4 addresses or host addresses.
     'harv-auto-rotate-rke2-certs': The certificate rotation mechanism relies on Rancher. Harvester will automatically update certificates generation to trigger rotation.
+    'harv-kubeconfig-default-token-ttl-minutes': 'TTL (in minutes) applied on Harvester admin kubeconfig files. Default is 0, which means to never expire.'
 
 typeLabel:
   kubevirt.io.virtualmachine: |-

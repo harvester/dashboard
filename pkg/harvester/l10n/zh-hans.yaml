@@ -1288,6 +1288,7 @@ advancedSettings:
     'harv-release-download-url': 此设置用于配置<code>升级版本下载</code>的 URL 地址。Harvester 将从该 URL 托管的 (<code>$URL</code>/<code>$VERSION</code>/version.yaml) 文件中获取 ISO URL 和校验和值。
     'harv-default-vm-termination-grace-period-seconds': 配置停止虚拟机的终止宽限期。
     'harv-ntp-servers': 配置 NTP 服务器。你可以配置多个 IPv4 地址或主机地址。
+    'harv-kubeconfig-default-token-ttl-minutes': 'Harvester的管理kubeconfig文件有一个TTL（单位：分钟）参数，用来设置该文件经过多长时间失效过期。默认值是0，意味着永不过期。'
 
 typeLabel:
   kubevirt.io.virtualmachine: |-
