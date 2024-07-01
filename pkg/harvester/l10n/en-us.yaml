@@ -489,9 +489,9 @@ harvester:
       label: Maintenance Strategy
       options:
         Migrate: Migrate
-        RestartOnEnable: RestartOnEnable
-        RestartOnDisable: RestartOnDisable
-        StayOff: StayOff
+        ShutdownAndRestartAfterEnable: Shutdown And Restart After Enable
+        ShutdownAndRestartAfterDisable: Shutdown And Restart After Disable
+        Shutdown: Shutdown
     restartNow: |-
       {restart, select,
         true {Restart}

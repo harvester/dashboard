@@ -43,7 +43,12 @@ export const ACCESS_CREDENTIALS = {
 
 export const runStrategies = ['Always', 'RerunOnFailure', 'Manual', 'Halted'];
 
-export const maintenanceStrategies = ['Migrate', 'RestartOnEnable', 'RestartOnDisable', 'StayOff'];
+export const maintenanceStrategies = [
+  'Migrate',
+  'ShutdownAndRestartAfterEnable',
+  'ShutdownAndRestartAfterDisable',
+  'Shutdown'
+];
 
 export const VOLUME_DATA_SOURCE_KIND = {
   VolumeSnapshot:        'VolumeSnapshot',

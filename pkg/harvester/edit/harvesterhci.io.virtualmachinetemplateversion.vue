@@ -343,7 +343,8 @@ export default {
             <LabeledSelect
               v-model="maintenanceStrategy"
               label-key="harvester.virtualMachine.maintenanceStrategy.label"
-              :options="maintenanceStrategyOptions"
+              :options="maintenanceStrategies"
+              :get-option-label="getMaintenanceStrategyOptionLabel"
               :mode="mode"
             />
           </div>

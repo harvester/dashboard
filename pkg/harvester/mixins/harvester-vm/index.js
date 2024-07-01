@@ -288,10 +288,6 @@ export default {
         topologyKeyPlaceholder: this.t('harvesterManager.affinity.topologyKey.placeholder')
       };
     },
-
-    maintenanceStrategyOptions() {
-      return this.maintenanceStrategies.map(m => this.t(`harvester.virtualMachine.maintenanceStrategy.options.${ m }`));
-    },
   },
 
   async created() {
@@ -838,6 +834,10 @@ export default {
         this.spec.template.metadata.annotations[HCI_ANNOTATIONS.DYNAMIC_SSHKEYS_USERS] = JSON.stringify(Array.from(new Set(users)));
         this.spec.template.metadata.annotations[HCI_ANNOTATIONS.DYNAMIC_SSHKEYS_NAMES] = JSON.stringify(annotations);
       }
+    },
+
+    getMaintenanceStrategyOptionLabel(opt) {
+      return this.t(`harvester.virtualMachine.maintenanceStrategy.options.${ opt.label || opt }`);
     },
 
     getInitUserData(config) {
