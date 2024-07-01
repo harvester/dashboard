@@ -321,10 +321,10 @@ export default {
         };
       }
 
-      if (!spec.template.metadata.labels) {
-        spec.template.metadata.labels = {};
+      if (!vm.metadata.labels) {
+        vm.metadata.labels = {};
       }
-      const maintenanceStrategy = spec.template?.metadata?.labels?.[HCI_ANNOTATIONS.VM_MAINTENANCE_MODE_STRATEGY] || 'Migrate';
+      const maintenanceStrategy = vm.metadata.labels?.[HCI_ANNOTATIONS.VM_MAINTENANCE_MODE_STRATEGY] || 'Migrate';
 
       const runStrategy = spec.runStrategy || 'RerunOnFailure';
       const machineType = value.machineType;
@@ -587,9 +587,9 @@ export default {
       }
 
       if (this.maintenanceStrategy === 'Migrate') {
-        delete this.spec.template.metadata.labels[HCI_ANNOTATIONS.VM_MAINTENANCE_MODE_STRATEGY];
+        delete vm.metadata.labels[HCI_ANNOTATIONS.VM_MAINTENANCE_MODE_STRATEGY];
       } else {
-        this.spec.template.metadata.labels[HCI_ANNOTATIONS.VM_MAINTENANCE_MODE_STRATEGY] = this.maintenanceStrategy;
+        vm.metadata.labels[HCI_ANNOTATIONS.VM_MAINTENANCE_MODE_STRATEGY] = this.maintenanceStrategy;
       }
     },
 
