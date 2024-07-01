@@ -11,7 +11,9 @@ import { allHash } from '@shell/utils/promise';
 import { randomStr } from '@shell/utils/string';
 import { base64Decode } from '@shell/utils/crypto';
 import { formatSi, parseSi } from '@shell/utils/units';
-import { ADD_ONS, SOURCE_TYPE, ACCESS_CREDENTIALS } from '../../config/harvester-map';
+import {
+  ADD_ONS, SOURCE_TYPE, ACCESS_CREDENTIALS, maintenanceStrategies, runStrategies
+} from '../../config/harvester-map';
 import { _CLONE, _CREATE, _VIEW } from '@shell/config/query-params';
 import {
   PV, PVC, STORAGE_CLASS, NODE, SECRET, CONFIG_MAP, NETWORK_ATTACHMENT, NAMESPACE, LONGHORN
@@ -136,6 +138,9 @@ export default {
       spec:                          null,
       osType:                        'linux',
       sshKey:                        [],
+      maintenanceStrategies,
+      maintenanceStrategy:           'Migrate',
+      runStrategies,
       runStrategy:                   'RerunOnFailure',
       installAgent:                  true,
       hasCreateVolumes:              [],
@@ -316,6 +321,11 @@ export default {
         };
       }
 
+      if (!vm.metadata.labels) {
+        vm.metadata.labels = {};
+      }
+      const maintenanceStrategy = vm.metadata.labels?.[HCI_ANNOTATIONS.VM_MAINTENANCE_MODE_STRATEGY] || 'Migrate';
+
       const runStrategy = spec.runStrategy || 'RerunOnFailure';
       const machineType = value.machineType;
       const cpu = spec.template.spec.domain?.cpu?.cores;
@@ -362,6 +372,7 @@ export default {
       }
 
       this.$set(this, 'spec', spec);
+      this.$set(this, 'maintenanceStrategy', maintenanceStrategy);
       this.$set(this, 'runStrategy', runStrategy);
       this.$set(this, 'secretRef', secretRef);
       this.$set(this, 'accessCredentials', accessCredentials);
@@ -573,6 +584,12 @@ export default {
         delete vm.metadata.annotations[HCI_ANNOTATIONS.VM_RESERVED_MEMORY];
       } else {
         vm.metadata.annotations[HCI_ANNOTATIONS.VM_RESERVED_MEMORY] = this.reservedMemory;
+      }
+
+      if (this.maintenanceStrategy === 'Migrate') {
+        delete vm.metadata.labels[HCI_ANNOTATIONS.VM_MAINTENANCE_MODE_STRATEGY];
+      } else {
+        vm.metadata.labels[HCI_ANNOTATIONS.VM_MAINTENANCE_MODE_STRATEGY] = this.maintenanceStrategy;
       }
     },
 
@@ -817,6 +834,10 @@ export default {
         this.spec.template.metadata.annotations[HCI_ANNOTATIONS.DYNAMIC_SSHKEYS_USERS] = JSON.stringify(Array.from(new Set(users)));
         this.spec.template.metadata.annotations[HCI_ANNOTATIONS.DYNAMIC_SSHKEYS_NAMES] = JSON.stringify(annotations);
       }
+    },
+
+    getMaintenanceStrategyOptionLabel(opt) {
+      return this.t(`harvester.virtualMachine.maintenanceStrategy.options.${ opt.label || opt }`);
     },
 
     getInitUserData(config) {

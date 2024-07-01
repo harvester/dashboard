@@ -30,7 +30,6 @@ import KeyValue from '@shell/components/form/KeyValue';
 import { clear } from '@shell/utils/array';
 import { clone } from '@shell/utils/object';
 import { HCI } from '../../types';
-import { RunStrategys } from '../../config/harvester-map';
 import { saferDump } from '@shell/utils/create-yaml';
 import { exceptionToErrorsArray } from '@shell/utils/error';
 import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
@@ -95,7 +94,6 @@ export default {
       useTemplate:       false,
       hostname,
       isRestartImmediately,
-      RunStrategys,
     };
   },
 
@@ -572,16 +570,45 @@ export default {
       </Tab>
 
       <Tab
+        name="instanceLabel"
+        :label="t('harvester.tab.instanceLabel')"
+        :weight="-8"
+      >
+        <Labels
+          :default-container-class="'labels-and-annotations-container'"
+          :value="value"
+          :mode="mode"
+          :display-side-by-side="false"
+          :show-annotations="false"
+          :show-label-title="false"
+        >
+          <template #labels="{toggler}">
+            <KeyValue
+              key="labels"
+              :value="value.instanceLabels"
+              :protected-keys="value.systemLabels || []"
+              :toggle-filter="toggler"
+              :add-label="t('labels.addLabel')"
+              :mode="mode"
+              :read-allowed="false"
+              :value-can-be-empty="true"
+              @input="value.setInstanceLabels($event)"
+            />
+          </template>
+        </Labels>
+      </Tab>
+
+      <Tab
         name="advanced"
         :label="t('harvester.tab.advanced')"
-        :weight="-8"
+        :weight="-9"
       >
         <div class="row mb-20">
           <div class="col span-6">
             <LabeledSelect
               v-model="runStrategy"
               label-key="harvester.virtualMachine.runStrategy"
-              :options="RunStrategys"
+              :options="runStrategies"
               :mode="mode"
             />
           </div>
@@ -592,6 +619,18 @@ export default {
               label-key="harvester.virtualMachine.osType"
               :options="OS"
               :disabled="!isCreate"
+            />
+          </div>
+        </div>
+
+        <div class="row mb-20">
+          <div class="col span-6">
+            <LabeledSelect
+              v-model="maintenanceStrategy"
+              label-key="harvester.virtualMachine.maintenanceStrategy.label"
+              :options="maintenanceStrategies"
+              :get-option-label="getMaintenanceStrategyOptionLabel"
+              :mode="mode"
             />
           </div>
         </div>
@@ -698,35 +737,6 @@ export default {
           :label="t('harvester.virtualMachine.secureBoot')"
           :mode="mode"
         />
-      </Tab>
-
-      <Tab
-        name="instanceLabel"
-        :label="t('harvester.tab.instanceLabel')"
-        :weight="-99"
-      >
-        <Labels
-          :default-container-class="'labels-and-annotations-container'"
-          :value="value"
-          :mode="mode"
-          :display-side-by-side="false"
-          :show-annotations="false"
-          :show-label-title="false"
-        >
-          <template #labels="{toggler}">
-            <KeyValue
-              key="labels"
-              :value="value.instanceLabels"
-              :protected-keys="value.systemLabels || []"
-              :toggle-filter="toggler"
-              :add-label="t('labels.addLabel')"
-              :mode="mode"
-              :read-allowed="false"
-              :value-can-be-empty="true"
-              @input="value.setInstanceLabels($event)"
-            />
-          </template>
-        </Labels>
       </Tab>
     </Tabbed>
 
