@@ -505,7 +505,9 @@ export default {
         }
       };
 
-      await retrySave();
+      if (this.longhornNode) {
+        await retrySave();
+      }
     },
   },
 };
