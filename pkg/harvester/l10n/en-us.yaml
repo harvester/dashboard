@@ -490,7 +490,7 @@ harvester:
       options:
         Migrate: Migrate
         ShutdownAndRestartAfterEnable: Shutdown and Restart After Enable
-        ShutdownAndRestartAfterDisable: Shutdown And Restart After Disable
+        ShutdownAndRestartAfterDisable: Shutdown and Restart After Disable
         Shutdown: Shutdown
     restartNow: |-
       {restart, select,
