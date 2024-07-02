@@ -489,7 +489,7 @@ harvester:
       label: Maintenance Strategy
       options:
         Migrate: Migrate
-        ShutdownAndRestartAfterEnable: Shutdown And Restart After Enable
+        ShutdownAndRestartAfterEnable: Shutdown and Restart After Enable
         ShutdownAndRestartAfterDisable: Shutdown And Restart After Disable
         Shutdown: Shutdown
     restartNow: |-
