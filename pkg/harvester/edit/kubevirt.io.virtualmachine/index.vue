@@ -825,6 +825,7 @@ export default {
           :mode="mode"
           :read-allowed="false"
           :value-can-be-empty="true"
+          :description="t(`harvester.virtualMachine.labels.description`)"
           @input="value.setLabels($event)"
         />
       </Tab>
@@ -841,6 +842,7 @@ export default {
           :display-side-by-side="false"
           :show-annotations="false"
           :show-label-title="false"
+          :label-description="t(`harvester.virtualMachine.instanceLabels.description`)"
         >
           <template #labels="{toggler}">
             <KeyValue
