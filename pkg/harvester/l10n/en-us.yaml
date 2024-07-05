@@ -653,6 +653,10 @@ harvester:
         inNamespaces: "Workloads in these namespaces"
       namespaces:
         label: Namespaces
+    labels:
+      description: Foo bar baz
+    instanceLabels:
+      description: These labels are automatically synchronized to the Virtual Machine Instance.
 
   volume:
     label: Volumes

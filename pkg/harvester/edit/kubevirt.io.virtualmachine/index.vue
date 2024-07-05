@@ -701,6 +701,23 @@ export default {
       </Tab>
 
       <Tab
+        name="labels"
+        :label="t('generic.labels')"
+        :weight="-98"
+      >
+        <KeyValue
+          key="labels"
+          :value="value.labels"
+          :add-label="t('labels.addLabel')"
+          :mode="mode"
+          :read-allowed="false"
+          :value-can-be-empty="true"
+          :description="t(`harvester.virtualMachine.labels.description`)"
+          @input="value.setLabels($event)"
+        />
+      </Tab>
+
+      <Tab
         name="instanceLabel"
         :label="t('harvester.tab.instanceLabel')"
         :weight="-99"
@@ -712,6 +729,7 @@ export default {
           :display-side-by-side="false"
           :show-annotations="false"
           :show-label-title="false"
+          :label-description="t(`harvester.virtualMachine.instanceLabels.description`)"
         >
           <template #labels="{toggler}">
             <KeyValue
