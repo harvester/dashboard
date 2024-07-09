@@ -99,7 +99,6 @@ export default class HciPv extends HarvesterResource {
   }
 
   get stateDisplay() {
-    const ownedBy = this?.metadata?.annotations?.[HCI_ANNOTATIONS.OWNED_BY];
     const volumeError = this.relatedPV?.metadata?.annotations?.[HCI_ANNOTATIONS.VOLUME_ERROR];
     const degradedVolume = volumeError === DEGRADED_ERROR;
     const status = this?.status?.phase === 'Bound' && !volumeError && this.isLonghornVolumeReady ? 'Ready' : 'Not Ready';
@@ -108,7 +107,7 @@ export default class HciPv extends HarvesterResource {
 
     if (findBy(conditions, 'type', 'Resizing')?.status === 'True') {
       return 'Resizing';
-    } else if (ownedBy && !volumeError) {
+    } else if (!!this.attachVM && !volumeError) {
       return 'In-use';
     } else if (degradedVolume) {
       return 'Degraded';
@@ -180,17 +179,9 @@ export default class HciPv extends HarvesterResource {
   }
 
   get attachVM() {
-    const allVMs = this.$rootGetters['harvester/all'](HCI.VM);
-    const ownedBy =
-      get(this, `metadata.annotations."${ HCI_ANNOTATIONS.OWNED_BY }"`) || '';
+    const allVMs = this.$rootGetters['harvester/all'](HCI.VM) || [];
 
-    if (!ownedBy) {
-      return null;
-    }
-
-    const ownedId = JSON.parse(ownedBy)[0]?.refs?.[0];
-
-    return allVMs.find(D => D.id === ownedId);
+    return allVMs.find(vm => (vm.spec.template?.spec?.volumes || []).find(vol => vol.persistentVolumeClaim?.claimName === this.name));
   }
 
   get isAvailable() {

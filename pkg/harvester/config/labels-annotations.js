@@ -1,7 +1,6 @@
 export const HCI = {
   CLOUD_INIT:                   'harvesterhci.io/cloud-init-template',
   CURRENT_IP:                   'rke2.io/internal-ip',
-  OWNED_BY:                     'harvesterhci.io/owned-by',
   IMAGE_ID:                     'harvesterhci.io/imageId',
   SSH_NAMES:                    'harvesterhci.io/sshNames',
   NETWORK_IPS:                  'network.harvesterhci.io/ips',
