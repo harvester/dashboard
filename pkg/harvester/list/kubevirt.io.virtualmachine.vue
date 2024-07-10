@@ -116,7 +116,7 @@ export default {
     headers() {
       const restoreCol = {
         name:      'restoreProgress',
-        labelKey:  'tableHeaders.restore',
+        labelKey:  'harvester.tableHeaders.restore',
         value:     'restoreProgress',
         align:     'left',
         formatter: 'HarvesterBackupProgressBar',
@@ -128,7 +128,7 @@ export default {
         value:     'nodeName',
         sort:      ['realAttachNodeName'],
         formatter: 'HarvesterHost',
-        labelKey:  'tableHeaders.node'
+        labelKey:  'harvester.tableHeaders.vm.node'
       };
 
       const cols = clone(VM_HEADERS);
