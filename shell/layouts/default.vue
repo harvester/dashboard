@@ -84,7 +84,9 @@ export default {
   computed: {
     ...mapState(['managementReady', 'clusterReady']),
     ...mapGetters(['productId', 'clusterId', 'namespaceMode', 'isExplorer', 'currentProduct', 'isSingleProduct', 'isRancherInHarvester', 'isVirtualCluster']),
-    ...mapGetters({ locale: 'i18n/selectedLocaleLabel', availableLocales: 'i18n/availableLocales' }),
+    ...mapGetters({
+      locale: 'i18n/selectedLocaleLabel', availableLocales: 'i18n/availableLocales', hasMultipleLocales: 'i18n/hasMultipleLocales'
+    }),
     ...mapGetters('type-map', ['activeProducts']),
 
     afterLoginRoute: mapPref(AFTER_LOGIN_ROUTE),
@@ -678,9 +680,9 @@ export default {
           >
             {{ displayVersion }}
           </span>
-
           <span v-if="isSingleProduct">
             <v-popover
+              v-if="hasMultipleLocales"
               popover-class="localeSelector"
               placement="top"
               trigger="click"
@@ -901,10 +903,10 @@ export default {
 
     NAV .footer {
       margin: 20px;
-
       display: flex;
       flex: 0;
       flex-direction: row;
+
       > * {
         flex: 1;
         color: var(--link);
