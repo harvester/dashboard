@@ -144,6 +144,8 @@ harvester:
     createTemplate: Generate Template
     enableMaintenance: Enable Maintenance Mode
     disableMaintenance: Disable Maintenance Mode
+    enableCPUManager: Enable CPU Manager
+    disableCPUManager: Disable CPU Manager
     cordon: Cordon
     uncordon: Uncordon
     addHotplug: Add Volume
