@@ -49,6 +49,10 @@ export default {
       return this.value.metadata?.annotations?.[HCI_ANNOTATIONS.HOST_CUSTOM_NAME];
     },
 
+    cpuManager() {
+      return this.t(`generic.${ this.value.isCPUManagerEnabled ? 'enabled' : 'disabled' }`);
+    },
+
     consoleUrl() {
       const consoleUrl = this.value.metadata?.annotations?.[HCI_ANNOTATIONS.HOST_CONSOLE_URL];
       let value = consoleUrl;
@@ -224,6 +228,9 @@ export default {
     </div>
 
     <div class="row mb-20">
+      <div class="col span-6">
+        <LabelValue :name="t('harvester.host.detail.cpuManager')" :value="cpuManager"/>
+      </div>
       <div class="col span-6">
         <LabelValue :name="t('harvester.host.detail.consoleUrl')" :value="consoleUrl.value">
           <a slot="value" :href="consoleUrl.value" target="_blank">{{ consoleUrl.display }}</a>

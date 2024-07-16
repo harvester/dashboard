@@ -144,6 +144,10 @@ export default {
       return !!spec?.template?.spec?.domain?.firmware?.bootloader?.efi?.secureBoot;
     },
 
+    isCpuPinning(spec) {
+      return !!spec?.template?.spec?.domain?.cpu?.dedicatedCpuPlacement;
+    },
+
     getCloudInitNoCloud(spec) {
       const secret = this.getSecret(spec);
       let userData = secret?.decodedData?.userdata;

@@ -353,6 +353,7 @@ harvester:
       serialNumber: Serial Number
       model: Model
       etcd: Witness Node
+      cpuManager: CPU Manager
     enableMaintenance:
       title: Enable Maintenance Mode
       protip: The operation will migrate all virtual machines on this node to other nodes.
@@ -498,6 +499,8 @@ harvester:
         ShutdownAndRestartAfterEnable: Shutdown and Restart After Enable
         ShutdownAndRestartAfterDisable: Shutdown and Restart After Disable
         Shutdown: Shutdown
+    cpuPinning:
+      label: CPU Pinning
     restartNow: |-
       {restart, select,
         true {Restart}
