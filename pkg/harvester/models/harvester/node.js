@@ -59,6 +59,22 @@ export default class HciNode extends HarvesterResource {
       total:   1
     };
 
+    const enableCPUManager = {
+      action:  'enableCPUManager',
+      enabled: this.hasAction('enableCPUManager'), // || !this.isCPUManagerEnabled,
+      icon:    'icon icon-fw icon-os-management',
+      label:   this.t('harvester.action.enableCPUManager'),
+      total:   1
+    };
+
+    const disableCPUManager = {
+      action:  'disableCPUManager',
+      enabled: this.hasAction('disableCPUManager'), // || this.isCPUManagerEnabled,
+      icon:    'icon icon-fw icon-os-management',
+      label:   this.t('harvester.action.disableCPUManager'),
+      total:   1
+    };
+
     const shutDown = {
       action:  'shutDown',
       enabled: this.hasAction('powerActionPossible') && this.hasAction('powerAction') && !this.isStopped && !!this.inventory,
@@ -88,6 +104,8 @@ export default class HciNode extends HarvesterResource {
       uncordon,
       enableMaintenance,
       disableMaintenance,
+      enableCPUManager,
+      disableCPUManager,
       shutDown,
       powerOn,
       reboot,
@@ -305,6 +323,14 @@ export default class HciNode extends HarvesterResource {
     this.doAction('disableMaintenanceMode', {});
   }
 
+  enableCPUManager() {
+    this.doActionGrowl('enableCPUManager', {});
+  }
+
+  disableCPUManager() {
+    this.doActionGrowl('disableCPUManager', {});
+  }
+
   get isUnSchedulable() {
     return (
       this.metadata?.labels?.[HCI_ANNOTATIONS.NODE_SCHEDULABLE] === 'false' ||
@@ -342,6 +368,10 @@ export default class HciNode extends HarvesterResource {
       this.metadata?.annotations?.[HCI_ANNOTATIONS.MAINTENANCE_STATUS] ===
       'completed'
     );
+  }
+
+  get isCPUManagerEnabled() {
+    return this.metadata?.labels?.[HCI_ANNOTATIONS.NODE_CPU_MANAGER] === 'true';
   }
 
   get longhornDisks() {
