@@ -61,7 +61,7 @@ export default class HciNode extends HarvesterResource {
 
     const enableCPUManager = {
       action:  'enableCPUManager',
-      enabled: this.hasAction('enableCPUManager'), // || !this.isCPUManagerEnabled,
+      enabled: this.hasAction('enableCPUManager'),
       icon:    'icon icon-fw icon-os-management',
       label:   this.t('harvester.action.enableCPUManager'),
       total:   1
@@ -69,7 +69,7 @@ export default class HciNode extends HarvesterResource {
 
     const disableCPUManager = {
       action:  'disableCPUManager',
-      enabled: this.hasAction('disableCPUManager'), // || this.isCPUManagerEnabled,
+      enabled: this.hasAction('disableCPUManager'),
       icon:    'icon icon-fw icon-os-management',
       label:   this.t('harvester.action.disableCPUManager'),
       total:   1
