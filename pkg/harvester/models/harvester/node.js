@@ -61,7 +61,7 @@ export default class HciNode extends HarvesterResource {
 
     const enableCPUManager = {
       action:  'enableCPUManager',
-      enabled: this.hasAction('enableCPUManager'),
+      enabled: this.hasAction('enableCPUManager') && !this.isCPUManagerEnableInProgress && !this.isCPUManagerEnabled && !this.isEtcd, // witness node doesn't have CPU manager
       icon:    'icon icon-fw icon-os-management',
       label:   this.t('harvester.action.enableCPUManager'),
       total:   1
@@ -69,7 +69,7 @@ export default class HciNode extends HarvesterResource {
 
     const disableCPUManager = {
       action:  'disableCPUManager',
-      enabled: this.hasAction('disableCPUManager'),
+      enabled: this.hasAction('disableCPUManager') && !this.isCPUManagerEnableInProgress && this.isCPUManagerEnabled && !this.isEtcd,
       icon:    'icon icon-fw icon-os-management',
       label:   this.t('harvester.action.disableCPUManager'),
       total:   1
@@ -371,7 +371,29 @@ export default class HciNode extends HarvesterResource {
   }
 
   get isCPUManagerEnabled() {
-    return this.metadata?.labels?.[HCI_ANNOTATIONS.NODE_CPU_MANAGER] === 'true';
+    return this.metadata?.labels?.[HCI_ANNOTATIONS.NODE_CPU_MANAGER_ENABLED] === 'true';
+  }
+
+  get isCPUManagerEnableInProgress() {
+    return this.cpuManagerUpdateStatus === 'requested' || this.cpuManagerUpdateStatus === 'running';
+  }
+
+  get isCPUManagerEnableFailed() {
+    return this.cpuManagerUpdateStatus === 'failed';
+  }
+
+  get cpuManagerUpdateStatus() {
+    try {
+      const cpuManagerUpdate = JSON.parse(this.metadata.annotations[HCI_ANNOTATIONS.NODE_CPU_MANAGER_UPDATE_STATUS] || '{}');
+
+      return cpuManagerUpdate.status || '';
+    } catch {
+      return '';
+    }
+  }
+
+  get cpuManagerInProgressStatus() {
+    return this.value.isCPUManagerEnabled ? this.t('generic.disabling') : this.t('generic.enabling');
   }
 
   get longhornDisks() {

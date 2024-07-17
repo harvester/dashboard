@@ -171,6 +171,7 @@ harvester:
     message: Message
     phase: Phase
     attachedVM: Attached Virtual Machine
+    cpuManager: CPU Manager
     fingerprint: Fingerprint
     value: Value
     actions: Actions
@@ -508,7 +509,9 @@ harvester:
         ShutdownAndRestartAfterDisable: Shutdown and Restart After Disable
         Shutdown: Shutdown
     cpuPinning:
-      label: CPU Pinning
+      label: Enable CPU Pinning
+      tooltip: Enable CPU pinning brings better performance and reduce latency for the virtual machine 
+      restartVMMessage: Changing the CPU Pinning setting requires a virtual machine reboot for the change to take effect
     restartNow: |-
       {restart, select,
         true {Restart}
@@ -519,6 +522,10 @@ harvester:
     enableUsb: Enable USB Tablet
     advancedOptions:
       tpm: Enable TPM
+      cpuManager:
+        prefix: You must enable CPU Manager for at least one node in
+        middle: 'host page' 
+        suffix: to enable CPU Pinning feature
     usbTip: Provides an absolute pointer device which often helps with getting a consistent mouse cursor position in VNC.
     sshTitle: Add Public SSH Key
     imageTip: An external URL to the .iso, .img, .qcow2 or .raw that the virtual machine should be created from.

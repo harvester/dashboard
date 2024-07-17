@@ -1,7 +1,7 @@
 <script>
 import { isEqual } from 'lodash';
 import { mapGetters } from 'vuex';
-
+import { Banner } from '@components/Banner';
 import Tabbed from '@shell/components/Tabbed';
 import Tab from '@shell/components/Tabbed/Tab';
 import { Checkbox } from '@components/Form/Checkbox';
@@ -12,7 +12,7 @@ import LabeledSelect from '@shell/components/form/LabeledSelect';
 import NameNsDescription from '@shell/components/form/NameNsDescription';
 import UnitInput from '@shell/components/form/UnitInput';
 import Labels from '@shell/components/form/Labels';
-
+import MessageLink from '@shell/components/MessageLink';
 import Reserved from './VirtualMachineReserved';
 import SSHKey from './VirtualMachineSSHKey';
 import Volume from './VirtualMachineVolume';
@@ -67,6 +67,8 @@ export default {
     UnitInput,
     VirtualMachineVGpuDevices,
     KeyValue,
+    Banner,
+    MessageLink
   },
 
   mixins: [CreateEditView, VM_MIXIN],
@@ -99,6 +101,13 @@ export default {
 
   computed: {
     ...mapGetters({ t: 'i18n/t' }),
+
+    to() {
+      return {
+        name:   'harvester-c-cluster-resource',
+        params: { cluster: this.$store.getters['clusterId'], resource: HCI.HOST },
+      };
+    },
 
     machineTypeOptions() {
       return [{
@@ -170,6 +179,30 @@ export default {
     hasStartAction() {
       return this.value.hasAction('start');
     },
+
+    enableCpuPinning() {
+      if (this.mode === 'create') {
+        return this.nodes.some(node => node.isCPUManagerEnabled); // any one of nodes has label cpuManager=true
+      }
+
+      return true;
+    },
+
+    showCpuPinningBanner() {
+      if (this.mode === 'edit') {
+        console.log('old dedicatedCpuPlacement = ', !!this.cloneVM.spec.template.spec.domain.cpu.dedicatedCpuPlacement);
+
+        return this.cpuPinning !== !!this.cloneVM.spec.template.spec.domain.cpu.dedicatedCpuPlacement;
+      }
+
+      if (this.mode === 'create') {
+        const hasOneNodeCPUManagerEnabled = this.nodes.some(node => node.isCPUManagerEnabled);
+
+        return !hasOneNodeCPUManagerEnabled;
+      }
+
+      return false;
+    }
   },
 
   watch: {
@@ -358,9 +391,11 @@ export default {
     },
 
     restartVM() {
+      console.log('restartVM this.mode=', this.mode);
       if (this.mode !== 'edit') {
         return;
       }
+      console.log('this.value.isRunning=', this.value.isRunning);
       if (!this.value.isRunning) {
         return;
       }
@@ -373,9 +408,11 @@ export default {
       const oldVM = JSON.parse(JSON.stringify(this.cloneVM));
       const newVM = JSON.parse(JSON.stringify(cloneDeepNewVM));
 
+      console.log('isEqual(oldVM, newVM)=', isEqual(oldVM, newVM));
       if (isEqual(oldVM, newVM)) {
         return;
       }
+      console.log('new Promise show restartDialog');
 
       return new Promise((resolve) => {
         this.$modal.show('restartDialog');
@@ -654,18 +691,6 @@ export default {
         </div>
 
         <div class="row mb-20">
-          <div class="col span-6">
-            <Checkbox
-              v-model="cpuPinning"
-              class="check"
-              type="checkbox"
-              label-key="harvester.virtualMachine.cpuPinning.label"
-              :mode="mode"
-            />
-          </div>
-        </div>
-
-        <div class="row mb-20">
           <a v-if="showAdvanced" v-t="'harvester.generic.showMore'" role="button" @click="toggleAdvanced" />
           <a v-else v-t="'harvester.generic.showMore'" role="button" @click="toggleAdvanced" />
         </div>
@@ -718,6 +743,16 @@ export default {
         />
 
         <Checkbox
+          v-model="cpuPinning"
+          :disabled="!enableCpuPinning"
+          class="check"
+          type="checkbox"
+          tooltip-key="harvester.virtualMachine.cpuPinning.tooltip"
+          label-key="harvester.virtualMachine.cpuPinning.label"
+          :mode="mode"
+        />
+
+        <Checkbox
           v-model="installUSBTablet"
           class="check mt-20"
           type="checkbox"
@@ -760,6 +795,21 @@ export default {
           :label="t('harvester.virtualMachine.secureBoot')"
           :mode="mode"
         />
+        <Banner
+          v-if="showCpuPinningBanner"
+          color="warning"
+        >
+          <MessageLink
+            v-if="mode === 'create'"
+            :to="to"
+            prefix-label="harvester.virtualMachine.advancedOptions.cpuManager.prefix"
+            middle-label="harvester.virtualMachine.advancedOptions.cpuManager.middle"
+            suffix-label="harvester.virtualMachine.advancedOptions.cpuManager.suffix"
+          />
+          <span v-if="mode==='edit'">
+            {{ t('harvester.virtualMachine.cpuPinning.restartVMMessage') }}
+          </span>
+        </Banner>
       </Tab>
     </Tabbed>
 
