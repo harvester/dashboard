@@ -64,6 +64,7 @@ export default {
     const hash = await allHash(_hash);
 
     this.rows = hash.nodes;
+    console.log('🚀 ~ fetch ~ this.row:', this.rows);
   },
 
   data() {
@@ -92,6 +93,7 @@ export default {
           value:     'internalIp',
           formatter: 'CopyToClipboard',
           sort:      ['internalIp'],
+          align:     'center',
         },
       ];
 
@@ -128,6 +130,16 @@ export default {
         out.splice(-1, 0, storageHeader);
       }
 
+      out.push({
+        name:      'cpuManager',
+        labelKey:  'harvester.tableHeaders.cpuManager',
+        value:     'isCPUManagerEnabled',
+        formatter: 'HarvesterCPUPinning',
+        width:     150,
+        align:     'center',
+
+      });
+
       if (this.hasLonghornSchema) {
         out.push({
           name:      'diskState',
@@ -157,7 +169,6 @@ export default {
     consoleDocLink() {
       return DOC_LINKS.CONSOLE_URL;
     }
-
   },
   methods: {
     async loadMetrics() {

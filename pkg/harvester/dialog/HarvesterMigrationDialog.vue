@@ -72,8 +72,11 @@ export default {
       const nodes = this.$store.getters['harvester/all'](NODE);
 
       return nodes.filter((n) => {
-        // do not allow to migrate to self node and witness node
-        return n.isEtcd !== 'true' && !!this.availableNodes.includes(n.id);
+        const isNotSelfNode = !!this.availableNodes.includes(n.id);
+        const isNotWitnessNode = n.isEtcd !== 'true'; // do not allow to migrate to self node and witness node
+        const matchingCpuManagerConfig = !this.actionResource.isCpuPinning || n.isCPUManagerEnabled; // If cpu-pinning is enabled, filter-out non-enabled CPU manager nodes.
+
+        return isNotSelfNode && isNotWitnessNode && matchingCpuManagerConfig;
       }).map((n) => {
         let label = n?.metadata?.name;
         const value = n?.metadata?.name;
