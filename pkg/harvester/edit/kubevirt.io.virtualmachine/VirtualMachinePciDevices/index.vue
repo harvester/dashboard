@@ -4,7 +4,7 @@ import { allHash } from '@shell/utils/promise';
 import { HCI } from '../../../types';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import Banner from '@components/Banner/Banner.vue';
-import CompatibilityMatrix from './CompatibilityMatrix';
+import CompatibilityMatrix from '../CompatibilityMatrix';
 import DeviceList from './DeviceList';
 
 import remove from 'lodash/remove';
