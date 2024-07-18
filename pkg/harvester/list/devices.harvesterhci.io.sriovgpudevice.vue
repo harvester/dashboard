@@ -27,8 +27,6 @@ export default {
 
     if (this.hasSchema) {
       try {
-        const inStore = this.$store.getters['currentProduct'].inStore;
-
         const hash = await allHash({
           sriovgpus:   this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.SR_IOVGPU_DEVICE }),
           vGpuDevices: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VGPU_DEVICE }),

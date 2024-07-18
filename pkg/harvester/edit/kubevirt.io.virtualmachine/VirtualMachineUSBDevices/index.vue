@@ -2,19 +2,19 @@
 import { _EDIT } from '@shell/config/query-params';
 import { allHash } from '@shell/utils/promise';
 import { HCI } from '../../../types';
+import { STATE, SIMPLE_NAME } from '@shell/config/table-headers';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import Banner from '@components/Banner/Banner.vue';
-import VGpuDeviceList from './VGpuDeviceList';
-
-import remove from 'lodash/remove';
-import { get, set } from '@shell/utils/object';
+import CompatibilityMatrix from '../CompatibilityMatrix';
+import DeviceList from './DeviceList';
 
 export default {
-  name:       'VirtualMachineVGpuDevices',
+  name:       'VirtualMachineUSBDevices',
   components: {
     Banner,
+    CompatibilityMatrix,
+    DeviceList,
     LabeledSelect,
-    VGpuDeviceList
   },
   props: {
     mode: {
@@ -35,7 +35,7 @@ export default {
 
   async fetch() {
     const hash = {
-      devices: this.$store.dispatch('harvester/findAll', { type: HCI.VGPU_DEVICE }),
+      devices: this.$store.dispatch('harvester/findAll', { type: HCI.USB_DEVICE }),
       vms:     this.$store.dispatch(`harvester/findAll`, { type: HCI.VM })
     };
 
@@ -44,40 +44,43 @@ export default {
     for (const key in res) {
       this[key] = res[key];
     }
-
-    (this.value?.domain?.devices?.gpus || []).forEach(({ name }) => {
-      if (this.enabledDevices.find(device => device?.metadata?.name === name)) {
-        this.selectedDevices.push(name);
-      }
-    });
   },
 
   data() {
     return {
-      deviceSchema:    this.$store.getters['harvester/schemaFor'](HCI.VGPU_DEVICE),
+      deviceSchema:    this.$store.getters['harvester/schemaFor'](HCI.USB_DEVICE),
+      deviceHeaders: [
+        { ...STATE },
+        SIMPLE_NAME,
+      ],
       devices:         [],
       vms:             [],
       selectedDevices: [],
+      showMatrix:      false,
     };
   },
 
-  watch: {
-    selectedDevices(neu) {
-      const formatted = neu.map((selectedDevice) => {
-        const deviceCRD = this.enabledDevices.find(device => device.metadata.name === selectedDevice);
-        const deviceName = `nvidia.com/${ deviceCRD?.status?.configureVGPUTypeName?.replace(/\s+/g, '_') }`;
+  computed: {
+    deviceOpts() {
+      const filteredOptions = this.enabledDevices.filter((deviceCRD) => {
+        if (this.selectedDevices.length > 0) {
+          const selectedDevice = this.enabledDevices.find(device => device.metadata.name === this.selectedDevices[0]);
 
-        return {
-          deviceName,
-          name: deviceCRD?.metadata.name,
-        };
+          return !this.devicesInUse[deviceCRD?.metadata.name] && deviceCRD.status.nodeName === selectedDevice.status.nodeName;
+        }
+
+        return !this.devicesInUse[deviceCRD?.metadata.name];
       });
 
-      set(this.value.domain.devices, 'gpus', formatted);
-    }
-  },
+      return filteredOptions.map((deviceCRD) => {
+        return {
+          value:        deviceCRD?.metadata.name,
+          label:        deviceCRD?.metadata.name,
+          displayLabel: deviceCRD?.status?.resourceName,
+        };
+      });
+    },
 
-  computed: {
     enabledDevices() {
       return this.devices.filter((device) => {
         return device.isEnabled;
@@ -130,25 +133,6 @@ export default {
 
       return out;
     },
-
-    deviceOpts() {
-      const filteredOptions = this.enabledDevices.filter((deviceCRD) => {
-        if (this.selectedDevices.length > 0) {
-          const selectedDevice = this.enabledDevices.find(device => device.metadata.name === this.selectedDevices[0]);
-
-          return !this.devicesInUse[deviceCRD?.metadata.name] && deviceCRD.spec.nodeName === selectedDevice.spec.nodeName;
-        }
-
-        return !this.devicesInUse[deviceCRD?.metadata.name];
-      });
-
-      return filteredOptions.map((deviceCRD) => {
-        return {
-          value: deviceCRD?.metadata.name,
-          label: deviceCRD?.metadata.name,
-        };
-      });
-    },
   },
 };
 </script>
@@ -158,10 +142,10 @@ export default {
     <div class="row">
       <div class="col span-12">
         <Banner color="info">
-          <t k="harvester.vgpu.howToUseDevice" />
+          <t k="harvester.usb.howToUseDevice" />
         </Banner>
         <Banner v-if="selectedDevices.length > 0" color="info">
-          <t k="harvester.vgpu.deviceInTheSameHost" />
+          <t k="harvester.usb.deviceInTheSameHost" />
         </Banner>
       </div>
     </div>
@@ -170,7 +154,7 @@ export default {
         <div class="col span-6">
           <LabeledSelect
             v-model="selectedDevices"
-            label="Available vGPU Devices"
+            :label="t('harvester.usb.available')"
             searchable
             multiple
             taggable
@@ -178,7 +162,7 @@ export default {
             :mode="mode"
           >
             <template #option="option">
-              <span>{{ option.value }}</span>
+              <span>{{ option.value }} <span class="text-label">({{ option.displayLabel }})</span></span>
             </template>
           </LabeledSelect>
         </div>
@@ -191,12 +175,20 @@ export default {
         </div>
       </div>
       <div v-else-if="selectedDevices.length" class="text-error">
-        {{ t('harvester.vgpu.impossibleSelection') }}
+        {{ t('harvester.usb.impossibleSelection') }}
+      </div>
+      <button type="button" class="btn btn-sm role-link pl-0" @click="e=>{showMatrix = !showMatrix; e.target.blur()}">
+        {{ showMatrix ? t('harvester.usb.hideCompatibility') : t('harvester.usb.showCompatibility') }}
+      </button>
+      <div v-if="showMatrix" class="row mt-20">
+        <div class="col span-12">
+          <CompatibilityMatrix :enabled-devices="enabledDevices" :devices-by-node="devicesByNode" :devices-in-use="devicesInUse" />
+        </div>
       </div>
     </template>
     <div class="row mt-20">
       <div class="col span-12">
-        <VGpuDeviceList :schema="deviceSchema" :devices="devices" @submit.prevent />
+        <DeviceList :schema="deviceSchema" :devices="devices" @submit.prevent />
       </div>
     </div>
   </div>

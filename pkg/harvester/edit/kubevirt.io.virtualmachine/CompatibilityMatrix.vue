@@ -3,11 +3,11 @@ import { mapGetters } from 'vuex';
 export default {
   props: {
     /**
-     * deviceId/vendorId is unique per type of device - there may be multiple pciDevice CRD objects for a given device
+     * deviceId/vendorId is unique per type of device - there may be multiple CRD objects for a given device
      * {
      *  [deviceId/vendorId]: {
      *      nodes: array of devicecrd.status.nodeName's for given device,
-     *      deviceCRDs: array of all instances (pciDevice CRD) of given device
+     *      deviceCRDs: array of all instances of given device
      *      }
      * }
      */
@@ -78,9 +78,9 @@ export default {
     <div class="device-col node-names">
       <div class="blank-corner">
         <div class="text-right">
-          {{ t('harvester.pci.matrixDeviceClaimName') }}
+          {{ t('harvester.devices.matrixDeviceClaimName') }}
         </div>
-        <div>{{ t('harvester.pci.matrixHostName') }}</div>
+        <div>{{ t('harvester.devices.matrixHostName') }}</div>
       </div>
       <div v-for="nodeName in allNodeNames" :key="nodeName" class="node-label">
         <span>  {{ nodeName }}</span>

@@ -23,7 +23,8 @@ import NodeScheduling from '@shell/components/form/NodeScheduling';
 import PodAffinity from '@shell/components/form/PodAffinity';
 import AccessCredentials from './VirtualMachineAccessCredentials';
 import PciDevices from './VirtualMachinePciDevices/index';
-import VirtualMachineVGpuDevices from './VirtualMachineVGpuDevices/index';
+import VGpuDevices from './VirtualMachineVGpuDevices/index';
+import UsbDevices from './VirtualMachineUSBDevices/index';
 import RestartVMDialog from '../../dialog/RestartVMDialog';
 import KeyValue from '@shell/components/form/KeyValue';
 
@@ -65,8 +66,9 @@ export default {
     PciDevices,
     RestartVMDialog,
     UnitInput,
-    VirtualMachineVGpuDevices,
+    VGpuDevices,
     KeyValue,
+    UsbDevices,
   },
 
   mixins: [CreateEditView, VM_MIXIN],
@@ -562,10 +564,14 @@ export default {
       </Tab>
 
       <Tab v-if="enabledSriovgpu" :label="t('harvester.tab.vGpuDevices')" name="vGpuDevices" :weight="-6">
-        <VirtualMachineVGpuDevices :mode="mode" :value="spec.template.spec" :vm="value" />
+        <VGpuDevices :mode="mode" :value="spec.template.spec" :vm="value" />
       </Tab>
 
-      <Tab v-if="isEdit" :label="t('harvester.tab.accessCredentials')" name="accessCredentials" :weight="-7">
+      <Tab v-if="enabledUSB" :label="t('harvester.tab.usbDevices')" name="usbDevices" :weight="-7">
+        <UsbDevices :mode="mode" :value="spec.template.spec" :vm="value" />
+      </Tab>
+
+      <Tab v-if="isEdit" :label="t('harvester.tab.accessCredentials')" name="accessCredentials" :weight="-8">
         <AccessCredentials v-model="accessCredentials" :mode="mode" :resource="value" :is-qemu-installed="isQemuInstalled" />
       </Tab>
 

@@ -68,4 +68,5 @@ export const ADD_ONS = {
   RANCHER_LOGGING:                  'rancher-logging',
   RANCHER_MONITORING:               'rancher-monitoring',
   VM_IMPORT_CONTROLLER:             'vm-import-controller',
+  USB_DEVICE_CONTROLLER:            'usbdevices-controller',
 };
