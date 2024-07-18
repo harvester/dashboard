@@ -6,12 +6,14 @@ import { STATE, SIMPLE_NAME } from '@shell/config/table-headers';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import Banner from '@components/Banner/Banner.vue';
 import CompatibilityMatrix from '../CompatibilityMatrix';
+import DeviceList from './DeviceList';
 
 export default {
   name:       'VirtualMachineUSBDevices',
   components: {
     Banner,
     CompatibilityMatrix,
+    DeviceList,
     LabeledSelect,
   },
   props: {
@@ -186,7 +188,7 @@ export default {
     </template>
     <div class="row mt-20">
       <div class="col span-12">
-        <!-- <DeviceList :schema="pciDeviceSchema" :devices="pciDevices" @submit.prevent /> -->
+        <DeviceList :schema="deviceSchema" :devices="devices" @submit.prevent />
       </div>
     </div>
   </div>

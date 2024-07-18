@@ -5,17 +5,15 @@ import { allHash } from '@shell/utils/promise';
 import Banner from '@components/Banner/Banner.vue';
 import Loading from '@shell/components/Loading';
 import MessageLink from '@shell/components/MessageLink';
-import ResourceTable from '@shell/components/ResourceTable';
 import { ADD_ONS } from '../config/harvester-map';
 
 export default {
-  name: 'ListUSBDevices',
+  name: 'ListUsbDevicePage',
 
   components: {
     Banner,
     Loading,
     MessageLink,
-    ResourceTable
   },
 
   async fetch() {
@@ -84,14 +82,5 @@ export default {
       />
     </Banner>
   </div>
-  <ResourceTable
-    v-else-if="hasSchema"
-    :headers="headers"
-    :schema="schema"
-    :rows="rows"
-    :use-query-params-for-simple-filtering="true"
-    :sort-generation-fn="sortGenerationFn"
-    :rows-per-page="10"
-    @submit.prevent
-  />
+  <VGpuDeviceList v-else-if="hasSchema" :devices="rows" :schema="schema" />
 </template>
