@@ -246,8 +246,11 @@ harvester:
       suffix: 使它能够管理你的 PCI 设备。
     noPCIPermission: 请联系系统管理员启用 PCI 设备。
     enablePassthroughWarning: 请不要使用宿主机专用的 PCI 设备（例如，管理网络和 VLAN 网络的网卡）。错误的设备分配可能会损坏你的集群（包括节点故障）。
+
+  devices:
     matrixHostName: 主机名
     matrixDeviceClaimName: 设备声明名称
+
   generic:
     close: 关闭
     open: 打开
