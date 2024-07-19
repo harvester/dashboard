@@ -18,8 +18,7 @@ import { STORAGE_CLASS, LONGHORN } from '@shell/config/types';
 import { CSI_DRIVER } from '../../types';
 import { allHash } from '@shell/utils/promise';
 import { clone } from '@shell/utils/object';
-
-const LONGHORN_DRIVER = 'driver.longhorn.io';
+import { LONGHORN_DRIVER } from '@shell/models/persistentvolume';
 
 export default {
   name: 'HarvesterStorage',
@@ -122,7 +121,7 @@ export default {
 
     provisioners() {
       const csiDrivers = this.$store.getters[`${ this.inStore }/all`](CSI_DRIVER) || [];
-      const format = { [LONGHORN_DRIVER]: 'storageClass.longhorn.title' };
+      const format = { [LONGHORN_DRIVER]: 'harvester.storage.storageClass.longhornV1.label' };
 
       return csiDrivers.map((provisioner) => {
         return {
