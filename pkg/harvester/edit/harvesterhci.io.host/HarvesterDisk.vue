@@ -178,7 +178,6 @@ export default {
 
   methods: {
     update() {
-      console.log('change')
       this.$emit('input', this.value);
     },
   },
