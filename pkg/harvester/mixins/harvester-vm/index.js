@@ -26,6 +26,18 @@ import impl, { QGA_JSON, USB_TABLET } from './impl';
 import { uniq } from '@shell/utils/array';
 import { parseVolumeClaimTemplates } from '../../utils/vm';
 
+function asBootOrderDevice(type) {
+  return el => ({
+    ...el,
+    type
+  });
+}
+
+export const BOOT_ORDER_TYPE = {
+  DISK:      'disk',
+  INTERFACE: 'interface'
+};
+
 export const MANAGEMENT_NETWORK = 'management Network';
 
 export const OS = [{
@@ -288,6 +300,13 @@ export default {
         topologyKeyPlaceholder: this.t('harvesterManager.affinity.topologyKey.placeholder')
       };
     },
+
+    bootOrderDevices() {
+      return [
+        ...this.networkRows?.map(asBootOrderDevice(BOOT_ORDER_TYPE.INTERFACE)),
+        ...this.diskRows?.map(asBootOrderDevice(BOOT_ORDER_TYPE.DISK))
+      ];
+    }
   },
 
   async created() {
@@ -415,6 +434,7 @@ export default {
         out.push({
           id:               randomStr(5),
           source:           SOURCE_TYPE.IMAGE,
+          bootOrder:        1,
           name:             'disk-0',
           accessMode:       'ReadWriteMany',
           bus:              'virtio',
@@ -426,7 +446,7 @@ export default {
           volumeMode:       'Block',
         });
       } else {
-        out = _disks.map( (DISK, index) => {
+        out = _disks.map( (DISK) => {
           const volume = _volumes.find( V => V.name === DISK.name );
 
           let size = '';
@@ -489,8 +509,6 @@ export default {
 
           const bus = DISK?.disk?.bus || DISK?.cdrom?.bus;
 
-          const bootOrder = DISK?.bootOrder ? DISK?.bootOrder : index;
-
           const parseValue = parseSi(size);
 
           const formatSize = formatSi(parseValue, {
@@ -504,7 +522,7 @@ export default {
 
           return {
             id:         randomStr(5),
-            bootOrder,
+            bootOrder:  DISK?.bootOrder,
             source,
             name:       DISK.name,
             realName,
@@ -599,7 +617,7 @@ export default {
       const diskNameLables = [];
       const volumeClaimTemplates = [];
 
-      disk.forEach( (R, index) => {
+      disk.forEach( (R) => {
         const prefixName = this.value.metadata?.name || '';
 
         let dataVolumeName = '';
@@ -612,7 +630,7 @@ export default {
           dataVolumeName = R.realName;
         }
 
-        const _disk = this.parseDisk(R, index);
+        const _disk = this.parseDisk(R);
         const _volume = this.parseVolume(R, dataVolumeName);
         const _dataVolumeTemplate = this.parseVolumeClaimTemplate(R, dataVolumeName);
 
@@ -891,16 +909,14 @@ export default {
       this.$set(this, 'memory', memory);
     },
 
-    parseDisk(R, index) {
-      const out = { name: R.name };
+    parseDisk(R) {
+      const out = { name: R.name, bootOrder: R.bootOrder };
 
       if (R.type === HARD_DISK) {
         out.disk = { bus: R.bus };
       } else if (R.type === CD_ROM) {
         out.cdrom = { bus: R.bus };
       }
-
-      out.bootOrder = index + 1;
 
       return out;
     },
@@ -978,6 +994,8 @@ export default {
 
       _interface.model = R.model;
       _interface.name = R.name;
+
+      _interface.bootOrder = R.bootOrder;
 
       return _interface;
     },

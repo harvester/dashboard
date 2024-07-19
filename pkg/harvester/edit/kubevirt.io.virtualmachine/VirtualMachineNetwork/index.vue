@@ -1,6 +1,8 @@
 <script>
+import Vue from 'vue';
 import InfoBox from '@shell/components/InfoBox';
 import Base from './base';
+import { Banner } from '@components/Banner';
 
 import { NETWORK_ATTACHMENT } from '@shell/config/types';
 import { HCI as HCI_ANNOTATIONS } from '../../../config/labels-annotations';
@@ -11,7 +13,9 @@ import { removeObject } from '@shell/utils/array';
 import { _VIEW } from '@shell/config/query-params';
 
 export default {
-  components: { InfoBox, Base },
+  components: {
+    InfoBox, Base, Banner
+  },
 
   props: {
     mode: {
@@ -64,19 +68,30 @@ export default {
 
       return out;
     },
+
+    bootOrders() {
+      return this.rows.map(r => r.bootOrder);
+    }
   },
 
   watch: {
-    value(neu) {
-      this.rows = neu;
-    },
+    value: {
+      handler(neu) {
+        const rows = clone(neu).sort((a, b) => (a.bootOrder || 999999) - (b.bootOrder || 999999));
+
+        Vue.set(this, 'rows', rows);
+      },
+      immediate: true,
+      deep:      true,
+    }
   },
 
   methods: {
-    add(type) {
+    add() {
       const name = this.generateName();
 
       const neu = {
+        index:       this.rows.length + 1,
         name,
         networkName: '',
         model:       'virtio',
@@ -125,6 +140,7 @@ export default {
 
 <template>
   <div>
+    <Banner v-if="!isView" color="info" label-key="harvester.virtualMachine.network.bootOrderTip" />
     <InfoBox v-for="(row, i) in rows" :key="i" class="infoBox">
       <button v-if="!isView" type="button" class="role-link remove-vol" @click="remove(row)">
         <i class="icon icon-x" />
@@ -141,6 +157,10 @@ export default {
         :network-option="networkOption"
         @update="update"
       />
+
+      <div v-if="bootOrders[i]" class="text-muted mt-20">
+        bootOrder: {{ bootOrders[i] }}
+      </div>
     </InfoBox>
 
     <button v-if="!isView" type="button" class="btn btn-sm bg-primary" @click="add">
