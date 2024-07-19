@@ -1,4 +1,5 @@
 <script>
+import { allHash } from '@shell/utils/promise';
 import { CSI_DRIVER } from '@shell/config/types';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import LabelValue from '@shell/components/LabelValue';
@@ -11,6 +12,9 @@ import Tags from '../../components/DiskTags';
 import { HCI } from '../../types';
 import { LONGHORN_SYSTEM } from './index';
 import { LONGHORN_DRIVER } from '@shell/models/persistentvolume';
+import { LONGHORN } from '@shell/config/types';
+
+const LONGHORN_V2_DATA_ENGINE = 'longhorn-system/v2-data-engine';
 
 export default {
   components: {
@@ -48,7 +52,12 @@ export default {
   async fetch() {
     const inStore = this.$store.getters['currentProduct'].inStore;
 
-    await this.$store.dispatch(`${ inStore }/findAll`, { type: CSI_DRIVER });
+    const hash = {
+      csiDrivers:       this.$store.dispatch(`${ inStore }/findAll`, { type: CSI_DRIVER }),
+      longhornSettings: this.$store.dispatch(`${ inStore }/find`, { type: LONGHORN.SETTINGS, id: LONGHORN_V2_DATA_ENGINE }),
+    };
+
+    await allHash(hash);
   },
 
   data() {
@@ -68,6 +77,9 @@ export default {
     provisioners() {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const csiDrivers = this.$store.getters[`${ inStore }/all`](CSI_DRIVER) || [];
+
+      // TODO to check if longhornV2 to be added in the list
+      // const longhornV2 = this.$store.getters[`${ inStore }/byId`](LONGHORN.SETTINGS, LONGHORN_V2_DATA_ENGINE);
 
       return csiDrivers.map((provisioner) => {
         return {
