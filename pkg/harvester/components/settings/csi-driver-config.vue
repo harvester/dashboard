@@ -4,8 +4,7 @@ import LabeledSelect from '@shell/components/form/LabeledSelect';
 import InfoBox from '@shell/components/InfoBox';
 import { CSI_DRIVER, VOLUME_SNAPSHOT_CLASS } from '../../types';
 import { allHash } from '@shell/utils/promise';
-
-const LONGHORN_DRIVER = 'driver.longhorn.io';
+import { LONGHORN_DRIVER } from '@shell/models/persistentvolume';
 
 export default {
   name: 'HarvesterCsiDriver',
