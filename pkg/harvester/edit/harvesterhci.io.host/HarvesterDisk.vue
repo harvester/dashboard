@@ -1,17 +1,21 @@
 <script>
+import { CSI_DRIVER } from '@shell/config/types';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import LabelValue from '@shell/components/LabelValue';
 import { BadgeState } from '@components/BadgeState';
 import { Banner } from '@components/Banner';
+import LabeledSelect from '@shell/components/form/LabeledSelect';
 import { RadioGroup, RadioButton } from '@components/Form/Radio';
 import HarvesterDisk from '../../mixins/harvester-disk';
 import Tags from '../../components/DiskTags';
 import { HCI } from '../../types';
 import { LONGHORN_SYSTEM } from './index';
+import { LONGHORN_DRIVER } from '@shell/models/persistentvolume';
 
 export default {
   components: {
     LabeledInput,
+    LabeledSelect,
     LabelValue,
     BadgeState,
     Banner,
@@ -40,13 +44,43 @@ export default {
       default: 'edit',
     },
   },
-  data() {
-    return {};
+
+  async fetch() {
+    const inStore = this.$store.getters['currentProduct'].inStore;
+
+    await this.$store.dispatch(`${ inStore }/findAll`, { type: CSI_DRIVER });
   },
+
+  data() {
+    const provisionerFormat = { [LONGHORN_DRIVER]: 'harvester.storage.storageClass.longhornV1.label' };
+
+    return {
+      // TODO add provisioner to Disk
+      provisioner: {
+        label: provisionerFormat[LONGHORN_DRIVER],
+        value: LONGHORN_DRIVER,
+      },
+      provisionerFormat
+    };
+  },
+
   computed: {
+    provisioners() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const csiDrivers = this.$store.getters[`${ inStore }/all`](CSI_DRIVER) || [];
+
+      return csiDrivers.map((provisioner) => {
+        return {
+          label: this.provisionerFormat[provisioner.name] || provisioner.name,
+          value: provisioner.name,
+        };
+      });
+    },
+
     targetDisk() {
       return this.disks.find(disk => disk.name === this.value.name);
     },
+
     schedulableTooltipMessage() {
       const { name, path } = this.value;
 
@@ -56,6 +90,7 @@ export default {
         return this.schedulableCondition.message;
       }
     },
+
     allowSchedulingOptions() {
       return [{
         label: this.t('generic.enabled'),
@@ -154,6 +189,7 @@ export default {
       return this.blockDevice.isFormatting;
     },
   },
+
   methods: {
     update() {
       this.$emit('input', this.value);
@@ -278,6 +314,19 @@ export default {
             />
           </template>
         </RadioGroup>
+      </div>
+    </div>
+    <div class="row mt-10">
+      <div class="col span-6">
+        <LabeledSelect
+          v-model="provisioner"
+          :mode="mode"
+          label-key="harvester.host.disk.provisioner"
+          :localized-label="true"
+          :searchable="true"
+          :options="provisioners"
+          @keydown.native.enter.prevent="()=>{}"
+        />
       </div>
     </div>
   </div>

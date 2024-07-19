@@ -467,6 +467,7 @@ harvester:
         label: Storage Scheduled
       storageMaximum:
         label: Storage Maximum
+      provisioner: Provisioner
     tags:
       label: Host Tags
       addLabel: Add Host Tag
