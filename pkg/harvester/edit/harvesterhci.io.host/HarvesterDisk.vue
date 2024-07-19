@@ -1,6 +1,6 @@
 <script>
 import { allHash } from '@shell/utils/promise';
-import { CSI_DRIVER } from '@shell/config/types';
+import { CSI_DRIVER, LONGHORN } from '@shell/config/types';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import LabelValue from '@shell/components/LabelValue';
 import { BadgeState } from '@components/BadgeState';
@@ -12,7 +12,6 @@ import Tags from '../../components/DiskTags';
 import { HCI } from '../../types';
 import { LONGHORN_SYSTEM } from './index';
 import { LONGHORN_DRIVER } from '@shell/models/persistentvolume';
-import { LONGHORN } from '@shell/config/types';
 
 const LONGHORN_V2_DATA_ENGINE = 'longhorn-system/v2-data-engine';
 
@@ -296,11 +295,22 @@ export default {
       <hr class="mt-10" />
     </div>
     <div class="row mt-10">
-      <div class="col span-12">
+      <div class="col span-6">
         <LabeledInput
           v-model="value.displayName"
           :label="t('generic.name')"
           :disabled="true"
+        />
+      </div>
+      <div class="col span-6">
+        <LabeledSelect
+          v-model="provisioner"
+          :mode="mode"
+          label-key="harvester.host.disk.provisioner"
+          :localized-label="true"
+          :searchable="true"
+          :options="provisioners"
+          @keydown.native.enter.prevent="()=>{}"
         />
       </div>
     </div>
@@ -326,19 +336,6 @@ export default {
             />
           </template>
         </RadioGroup>
-      </div>
-    </div>
-    <div class="row mt-10">
-      <div class="col span-6">
-        <LabeledSelect
-          v-model="provisioner"
-          :mode="mode"
-          label-key="harvester.host.disk.provisioner"
-          :localized-label="true"
-          :searchable="true"
-          :options="provisioners"
-          @keydown.native.enter.prevent="()=>{}"
-        />
       </div>
     </div>
   </div>
