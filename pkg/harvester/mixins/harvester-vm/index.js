@@ -157,6 +157,7 @@ export default {
       deleteAgent:                   true,
       memory:                        null,
       cpu:                           '',
+      totalSnapshotSize:             '250Gi',
       reservedMemory:                null,
       accessCredentials:             [],
       efiEnabled:                    false,
@@ -325,7 +326,7 @@ export default {
         vm.metadata.labels = {};
       }
       const maintenanceStrategy = vm.metadata.labels?.[HCI_ANNOTATIONS.VM_MAINTENANCE_MODE_STRATEGY] || 'Migrate';
-
+      const totalSnapshotSize = vm.metadata.annotations?.[HCI_ANNOTATIONS.TOTAL_SNAPSHOT_SIZE] || '250Gi';
       const runStrategy = spec.runStrategy || 'RerunOnFailure';
       const machineType = value.machineType;
       const cpu = spec.template.spec.domain?.cpu?.cores;
@@ -394,6 +395,7 @@ export default {
       this.$set(this, 'tpmEnabled', tpmEnabled);
       this.$set(this, 'secureBoot', secureBoot);
 
+      this.$set(this, 'totalSnapshotSize', totalSnapshotSize);
       this.$set(this, 'hasCreateVolumes', hasCreateVolumes);
       this.$set(this, 'networkRows', networkRows);
       this.$set(this, 'imageId', imageId);
@@ -601,6 +603,12 @@ export default {
 
       // parse reserved memory
       const vm = this.resource === HCI.VM ? this.value : this.value.spec.vm;
+
+      if (this.totalSnapshotSize === null) {
+        delete vm.metadata.labels[HCI_ANNOTATIONS.TOTAL_SNAPSHOT_SIZE];
+      } else {
+        vm.metadata.labels[HCI_ANNOTATIONS.TOTAL_SNAPSHOT_SIZE] = this.totalSnapshotSize;
+      }
 
       if (!this.reservedMemory) {
         delete vm.metadata.annotations[HCI_ANNOTATIONS.VM_RESERVED_MEMORY];
@@ -911,6 +919,10 @@ export default {
     updateCpuMemory(cpu, memory) {
       this.$set(this, 'cpu', cpu);
       this.$set(this, 'memory', memory);
+    },
+
+    updateTotalSnapshotSize(size) {
+      this.$set(this, 'totalSnapshotSize', size);
     },
 
     parseDisk(R, index) {
