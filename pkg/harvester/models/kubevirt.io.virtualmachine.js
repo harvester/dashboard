@@ -647,6 +647,10 @@ export default class VirtVm extends HarvesterResource {
     return null;
   }
 
+  get isTerminating() {
+    return this?.metadata?.deletionTimestamp;
+  }
+
   get otherState() {
     const state = (this.vmi &&
       [VMIPhase.Scheduling, VMIPhase.Scheduled].includes(
@@ -700,6 +704,10 @@ export default class VirtVm extends HarvesterResource {
   }
 
   get restoreProgress() {
+    if (this.isVMError || this.isTerminating) {
+      return {};
+    }
+
     const status = this.restoreResource?.status;
 
     if (status !== undefined) {
@@ -726,7 +734,7 @@ export default class VirtVm extends HarvesterResource {
       return 'Restoring';
     }
 
-    if (this?.metadata?.deletionTimestamp) {
+    if (this.isTerminating) {
       return 'Terminating';
     }
 
