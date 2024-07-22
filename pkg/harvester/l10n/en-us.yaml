@@ -191,6 +191,7 @@ harvester:
     pciDevices: PCI Devices
     vGpuDevices: vGPU Devices
     vmScheduling: Virtual Machine Scheduling
+    snapshots: Snapshots
     instanceLabel: Instance Labels
   fields:
     version: Version
@@ -1018,6 +1019,7 @@ harvester:
         suffix: 'for configuration to take effect.'
 
   snapshot:
+    totalSnapshotSize: Total Snapshot Size
     label: Volume Snapshots
     targetVolume: Original Volume
     size: Size
