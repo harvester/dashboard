@@ -7,6 +7,7 @@ export const HCI = {
   TEMPLATE_VERSION_CUSTOM_NAME: 'template-version.harvesterhci.io/customName',
   CREATOR:                      'harvesterhci.io/creator',
   OS:                           'harvesterhci.io/os',
+  TOTAL_SNAPSHOT_SIZE:          'harvesterhci.io/totalSnapshotSize',
   NETWORK_TYPE:                 'network.harvesterhci.io/type',
   VM_NAME:                      'harvesterhci.io/vmName',
   VM_NAME_PREFIX:               'harvesterhci.io/vmNamePrefix',

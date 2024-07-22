@@ -55,6 +55,7 @@ export default {
 
   methods: {
     change() {
+      console.log('🚀 ~ change ~ this.localMemory:', typeof this.localMemory, this.localMemory);
       let memory = '';
 
       if (String(this.localMemory).includes('Gi')) {
