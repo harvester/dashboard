@@ -137,7 +137,7 @@ export default {
         cols.splice(-1, 0, nodeCol);
       }
 
-      if (this.hasRestoredVMs) {
+      if (this.hasBackUpRestoreInProgress) {
         cols.splice(-1, 0, restoreCol);
       }
 
@@ -150,8 +150,11 @@ export default {
       return [...this.allVMs, ...matchVMIs];
     },
 
-    hasRestoredVMs() {
-      return !!this.rows.find(r => !!r.restoreResource);
+    /**
+     * We want to show the progress bar only for Backup's restore; snapshot's restore is immediate.
+     */
+    hasBackUpRestoreInProgress() {
+      return !!this.rows.find(r => r.restoreResource && !r.restoreResource.fromSnapshot && !r.restoreResource.isComplete);
     }
   },
 
