@@ -648,7 +648,7 @@ export default class VirtVm extends HarvesterResource {
   }
 
   get isTerminating() {
-    return this?.metadata?.deletionTimestamp;
+    return !!this?.metadata?.deletionTimestamp;
   }
 
   get otherState() {
