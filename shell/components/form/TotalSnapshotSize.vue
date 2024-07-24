@@ -1,28 +1,33 @@
 <script>
 import UnitInput from '@shell/components/form/UnitInput';
 import InputOrDisplay from '@shell/components/InputOrDisplay';
+import { HCI } from '@shell/config/labels-annotations';
 
 export default {
-  name:       'HarvesterVMSnapshot',
+  name:       'TotalSnapshotSize',
   components: { UnitInput, InputOrDisplay },
 
   props: {
-    totalSnapshotSize: { // in GiB
-      type:    String,
-      default: null
+    value: {
+      type:     Object,
+      required: true,
     },
-    disabled: {
-      type:    Boolean,
-      default: false
-    },
+    // totalSnapshotSize: {
+    //   type:    String,
+    //   default: null,
+    // },
     mode: {
       type:    String,
       default: 'create',
     },
+
   },
 
   data() {
-    return { localTotalSnapshotSize: this.totalSnapshotSize };
+    const annotationSize = this.value?.annotations?.[HCI.TOTAL_SNAPSHOT_SIZE];
+    const localTotalSnapshotSize = annotationSize?.endsWith('Gi') ? annotationSize : null;
+
+    return { localTotalSnapshotSize };
   },
 
   computed: {
@@ -30,25 +35,11 @@ export default {
       return `${ this.localTotalSnapshotSize }`;
     }
   },
-
-  watch: {
-    totalSnapshotDisplay(neu) {
-      if (neu && !neu.includes('null')) {
-        this.localTotalSnapshotSize = neu;
-      }
-    }
-  },
-
   methods: {
-    change() {
-      let totalSnapSize = '';
+    change(newSize) {
+      const size = newSize === null ? '' : newSize;
 
-      if (this.localTotalSnapshotSize === null) {
-        totalSnapSize = null;
-      } else {
-        totalSnapSize = this.localTotalSnapshotSize;
-      }
-      this.$emit('updateTotalSnapshotSize', totalSnapSize);
+      this.$emit('updateTotalSnapshotSize', size);
     },
   }
 };
@@ -57,16 +48,15 @@ export default {
 <template>
   <div class="row">
     <InputOrDisplay
-      :name="t('harvester.snapshot.totalSnapshotSize')"
-      :value="totalSnapshotDisplay"
+      :name="t('namespace.snapshots.totalSnapshotSize')"
+      :value="localTotalSnapshotSize"
       :mode="mode"
       class="mb-10"
     >
       <UnitInput
         v-model="localTotalSnapshotSize"
         v-int-number
-        :label="t('harvester.snapshot.totalSnapshotSize')"
-        :disabled="disabled"
+        :label="t('namespace.snapshots.totalSnapshotSize')"
         :mode="mode"
         :input-exponent="3"
         :increment="1024"

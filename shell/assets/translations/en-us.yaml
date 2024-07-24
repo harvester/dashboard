@@ -3416,6 +3416,9 @@ namespace:
   selectNamespace: Select Namespace
   createNamespace: Create a New Namespace
   selectOrCreate: Select or Create a Namespace
+  snapshots:
+    label: Snapshots
+    totalSnapshotSize: Total Snapshot Size
   resourceStates:
       success: 'Active'
       info: 'Transitioning'
