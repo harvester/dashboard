@@ -153,8 +153,14 @@ export default class VirtVm extends HarvesterResource {
       {
         action:  'takeVMSnapshot',
         enabled: !!this.actions?.backup,
-        icon:    'icon icon-backup',
+        icon:    'icon icon-snapshot',
         label:   this.t('harvester.action.vmSnapshot')
+      },
+      {
+        action:  'editVMQuota',
+        enabled: !!this.actions?.updateResourceQuota && !!this.actions.deleteResourceQuota,
+        icon:    'icon icon-storage',
+        label:   this.t('harvester.action.editVMQuota')
       },
       {
         action:  'restoreVM',
@@ -329,6 +335,14 @@ export default class VirtVm extends HarvesterResource {
     this.$dispatch('promptModal', {
       resources,
       component: 'HarvesterVMSnapshotDialog'
+    });
+  }
+
+  editVMQuota(resources = this) {
+    this.$dispatch('promptModal', {
+      resources,
+      snapshotSizeQuota: this.snapshotSizeQuota,
+      component:         'HarvesterQuotaDialog'
     });
   }
 
@@ -540,6 +554,17 @@ export default class VirtVm extends HarvesterResource {
     }
 
     return null;
+  }
+
+  get nsResourceQuota() {
+    const inStore = this.productInStore;
+    const allResQuotas = this.$rootGetters[`${ inStore }/all`](HCI.RESOURCE_QUOTA);
+
+    return allResQuotas.find( RQ => RQ.namespace === this.metadata.namespace);
+  }
+
+  get snapshotSizeQuota() {
+    return this.nsResourceQuota?.spec?.snapshotLimit?.vmTotalSnapshotSizeQuota?.[this.metadata.name];
   }
 
   get vmi() {

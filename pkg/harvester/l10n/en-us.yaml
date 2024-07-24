@@ -38,6 +38,10 @@ harvester:
     backup:
       success: 'Backup { backUpName } has been initiated.'
       addBackup: Add Backup
+    quota:
+      editVMQuota: Edit VM Quota
+      editQuota: Edit Quota
+      bannerMessage: Set to empty string or 0 to remove total snapshot size quota.
     restore:
       success: 'Restore { name } created successfully.'
       title: Backup and Restore
@@ -131,6 +135,7 @@ harvester:
     shallowClone: Clone Template
     unpause: Unpause
     ejectCDROM: Eject CD-ROM
+    editVMQuota: Edit VM Quota
     launchFormTemplate: Launch instance from template
     modifyTemplate: Modify template (Create new version)
     setDefaultVersion: Set default version
@@ -181,6 +186,7 @@ harvester:
     snapshotTargetVolume: Original Volume
     volumeSnapshotCounts: Snapshot Counts
     networkState: Network State
+    totalSnapshotQuota: Total Snapshot Quota
     storageClass: Storage Class
     restore: Restore
   tab:
@@ -191,6 +197,7 @@ harvester:
     pciDevices: PCI Devices
     vGpuDevices: vGPU Devices
     vmScheduling: Virtual Machine Scheduling
+    quotas: Quotas
     snapshots: Snapshots
     instanceLabel: Instance Labels
   fields:
@@ -612,6 +619,7 @@ harvester:
           services: Services
           users: Logged in users
         name: Name
+        totalSnapshotQuota: Total Snapshot Quota
         namespace: Namespace
         created: Created
         hostname: Hostname

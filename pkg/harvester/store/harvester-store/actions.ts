@@ -81,6 +81,7 @@ export default {
 
     const hash: { [key: string]: Promise<any>} = {
       projects:          fetchProjects(),
+      resourceQuota:     dispatch('findAll', { type: HCI.RESOURCE_QUOTA }),
       virtualCount:      dispatch('findAll', { type: COUNT }),
       virtualNamespaces: dispatch('findAll', { type: NAMESPACE }),
       settings:          dispatch('findAll', { type: HCI.SETTING }),
