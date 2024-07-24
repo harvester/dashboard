@@ -1012,9 +1012,6 @@ export default class Resource {
   }
 
   async doActionGrowl(actionName, body, opt = {}) {
-    console.log('🚀 ~ Resource ~ doActionGrowl ~ opt:', opt);
-    console.log('🚀 ~ Resource ~ doActionGrowl ~ body:', body);
-    console.log('🚀 ~ Resource ~ doActionGrowl ~ actionName:', actionName);
     try {
       return await this.$dispatch('resourceAction', {
         resource: this,

@@ -99,6 +99,7 @@ export default {
       vms:               this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VM }),
       secrets:           this.$store.dispatch(`${ inStore }/findAll`, { type: SECRET }),
       addons:            this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.ADD_ONS }),
+      // resourceQuota:     this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.RESOURCE_QUOTA }),
     };
 
     if (this.$store.getters[`${ inStore }/schemaFor`](NODE)) {
@@ -157,7 +158,7 @@ export default {
       deleteAgent:                   true,
       memory:                        null,
       cpu:                           '',
-      totalSnapshotSize:             '250Gi',
+      totalSnapshotSize:             null,
       reservedMemory:                null,
       accessCredentials:             [],
       efiEnabled:                    false,
@@ -326,7 +327,7 @@ export default {
         vm.metadata.labels = {};
       }
       const maintenanceStrategy = vm.metadata.labels?.[HCI_ANNOTATIONS.VM_MAINTENANCE_MODE_STRATEGY] || 'Migrate';
-      const totalSnapshotSize = vm.metadata.annotations?.[HCI_ANNOTATIONS.TOTAL_SNAPSHOT_SIZE] || '250Gi';
+      const totalSnapshotSize = vm.metadata.annotations?.[HCI_ANNOTATIONS.TOTAL_SNAPSHOT_SIZE] || null;
       const runStrategy = spec.runStrategy || 'RerunOnFailure';
       const machineType = value.machineType;
       const cpu = spec.template.spec.domain?.cpu?.cores;

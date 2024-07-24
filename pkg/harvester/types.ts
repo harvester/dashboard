@@ -31,6 +31,7 @@ export const HCI = {
   FLOW:               'harvesterhci.io.logging.flow',
   OUTPUT:             'harvesterhci.io.logging.output',
   STORAGE:            'harvesterhci.io.storage',
+  RESOURCE_QUOTA:     'harvesterhci.io.resourcequota',
   KSTUNED:            'node.harvesterhci.io.ksmtuned',
   PCI_DEVICE:         'devices.harvesterhci.io.pcidevice',
   PCI_CLAIM:          'devices.harvesterhci.io.pcideviceclaim',

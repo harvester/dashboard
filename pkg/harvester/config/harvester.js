@@ -32,6 +32,7 @@ import {
   FINGERPRINT,
   IMAGE_PROGRESS,
   SNAPSHOT_TARGET_VOLUME,
+  NS_SNAPSHOT_QUOTA,
 } from './table-headers';
 
 import { IF_HAVE } from '@shell/store/type-map';
@@ -237,6 +238,7 @@ export function init($plugin, store) {
     exact: false
   });
 
+  // show Projects/Namespace nav when integrated in Rancher dashboard
   basicType(['projects-namespaces']);
   virtualType({
     ifHave:     IF_HAVE.MULTI_CLUSTER,
@@ -249,9 +251,9 @@ export function init($plugin, store) {
     exact:      true,
   });
 
-  // singleVirtualCluster
+  // singleVirtualCluster - standalone harvester cluster
   if (isSingleVirtualCluster) {
-    headers(NAMESPACE, [STATE, NAME_UNLINKED, AGE]);
+    headers(NAMESPACE, [STATE, NAME_UNLINKED, NS_SNAPSHOT_QUOTA, AGE]);
     basicType([NAMESPACE]);
     virtualType({
       labelKey:   'harvester.namespace.label',

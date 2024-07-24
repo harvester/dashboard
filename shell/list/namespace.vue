@@ -27,9 +27,6 @@ export default {
       default: false
     }
   },
-  data() {
-    return { asddsa: true };
-  },
 
   computed: {
     ...mapGetters(['currentProduct']),

@@ -2,6 +2,7 @@
 import { mapGetters } from 'vuex';
 import Tabbed from '@shell/components/Tabbed';
 import Tab from '@shell/components/Tabbed/Tab';
+import LabelValue from '@shell/components/LabelValue';
 import { EVENT, SERVICE, POD } from '@shell/config/types';
 import { HCI } from '../../types';
 import CreateEditView from '@shell/mixins/create-edit-view';
@@ -9,10 +10,8 @@ import VM_MIXIN from '../../mixins/harvester-vm';
 import DashboardMetrics from '@shell/components/DashboardMetrics';
 import { allHash, setPromiseResult } from '@shell/utils/promise';
 import { allDashboardsExist } from '@shell/utils/grafana';
-
 import CloudConfig from '../../edit/kubevirt.io.virtualmachine/VirtualMachineCloudConfig';
 import Volume from '../../edit/kubevirt.io.virtualmachine/VirtualMachineVolume';
-import Snapshots from '../../edit/kubevirt.io.virtualmachine/VirtualMachineSnapshots';
 import Network from '../../edit/kubevirt.io.virtualmachine/VirtualMachineNetwork';
 import NodeScheduling from '@shell/components/form/NodeScheduling';
 import PodAffinity from '@shell/components/form/PodAffinity';
@@ -23,6 +22,7 @@ import OverviewBasics from './VirtualMachineTabs/VirtualMachineBasics';
 import OverviewKeypairs from './VirtualMachineTabs/VirtualMachineKeypairs';
 import KeyValue from '@shell/components/form/KeyValue';
 import Labels from '@shell/components/form/Labels';
+import { formatSi } from '@shell/utils/units';
 
 const VM_METRICS_DETAIL_URL = '/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/d/harvester-vm-detail-1/vm-info-detail?orgId=1';
 
@@ -34,7 +34,7 @@ export default {
     Tabbed,
     Events,
     OverviewBasics,
-    Snapshots,
+    LabelValue,
     Volume,
     Network,
     OverviewKeypairs,
@@ -69,12 +69,13 @@ export default {
     const inStore = this.$store.getters['currentProduct'].inStore;
 
     const hash = {
-      pods:     this.$store.dispatch(`${ inStore }/findAll`, { type: POD }),
-      services: this.$store.dispatch(`${ inStore }/findAll`, { type: SERVICE }),
-      events:   this.$store.dispatch(`${ inStore }/findAll`, { type: EVENT }),
-      allSSHs:  this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.SSH }),
-      vmis:     this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VMI }),
-      restore:  this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.RESTORE }),
+      pods:           this.$store.dispatch(`${ inStore }/findAll`, { type: POD }),
+      services:       this.$store.dispatch(`${ inStore }/findAll`, { type: SERVICE }),
+      events:         this.$store.dispatch(`${ inStore }/findAll`, { type: EVENT }),
+      allSSHs:        this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.SSH }),
+      vmis:           this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VMI }),
+      restore:        this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.RESTORE }),
+      resourceQuotas: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.RESOURCE_QUOTA }),
     };
 
     await allHash(hash);
@@ -89,6 +90,22 @@ export default {
 
   computed: {
     ...mapGetters(['currentCluster']),
+
+    totalSnapshotLimit() {
+      if (this.value.snapshotSizeQuota === undefined || this.value.snapshotSizeQuota === null) {
+        return ' - ';
+      }
+
+      if (this.value.snapshotSizeQuota === 0) {
+        return '0';
+      }
+
+      return formatSi(this.value.snapshotSizeQuota, {
+        increment: 1024,
+        addSuffix: true,
+        suffix:    'i',
+      });
+    },
 
     vmi() {
       const inStore = this.$store.getters['currentProduct'].inStore;
@@ -181,11 +198,10 @@ export default {
         <OverviewKeypairs v-model="value" />
       </Tab>
 
-      <Tab name="Snapshots" :label="t('harvester.tab.snapshots')" :weight="3">
-        <Snapshots
-          :totalSnapshotSize="totalSnapshotSize"
-          :mode="view"
-          :disabled="true"
+      <Tab name="quotas" :label="t('harvester.tab.quotas')" :weight="3">
+        <LabelValue
+          :name="t('harvester.snapshot.totalSnapshotSize')"
+          :value="totalSnapshotLimit"
         />
       </Tab>
 

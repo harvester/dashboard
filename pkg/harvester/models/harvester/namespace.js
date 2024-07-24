@@ -5,6 +5,7 @@ import SYSTEM_NAMESPACES from '@shell/config/system-namespaces';
 import { get } from '@shell/utils/object';
 import { NAMESPACE } from '@shell/config/types';
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '@pkg/harvester/config/harvester';
+import { HCI } from '../../types';
 
 const OBSCURE_NAMESPACE_PREFIX = [
   'c-', // cluster namespace
@@ -37,13 +38,30 @@ export default class HciNamespace extends namespace {
       weight:     -10,
     };
 
+    const editQuotaAction = {
+      action:  'editNSQuota',
+      label:   this.t('harvester.modal.quota.editQuota'),
+      icon:    'icon icon-storage',
+      enabled: !!this.actions.updateResourceQuota,
+      weight:  -11,
+    };
+
     if (remove > -1) {
       out.splice(remove, 1);
     }
 
     insertAt(out, out.length - 1, promptRemove);
+    insertAt(out, out.length - 5, editQuotaAction);
 
     return out;
+  }
+
+  editNSQuota(resources = this) {
+    this.$dispatch('promptModal', {
+      resources,
+      snapshotSizeQuota: this.snapshotSizeQuota,
+      component:         'HarvesterQuotaDialog'
+    });
   }
 
   promptRemove(resources = this) {
@@ -52,6 +70,21 @@ export default class HciNamespace extends namespace {
       warningMessageKey: 'promptRemove.confirmRelatedResource',
       component:         'ConfirmRelatedToRemoveDialog'
     });
+  }
+
+  get nsResourceQuota() {
+    const inStore = this.$rootGetters['currentProduct'].inStore;
+
+    // console.log('🚀 ~ HciNamespace ~ getnsResourceQuota ~ inStore:', inStore);
+    const allResQuotas = this.$rootGetters[`${ inStore }/all`](HCI.RESOURCE_QUOTA);
+
+    // console.log('🚀 ~ HciNamespace ~ getnsResourceQuota ~ allResQuotas:', allResQuotas);
+
+    return allResQuotas.find( RQ => RQ.metadata.namespace === this.id);
+  }
+
+  get snapshotSizeQuota() {
+    return this.nsResourceQuota?.spec?.snapshotLimit?.namespaceTotalSnapshotSizeQuota;
   }
 
   get isSystem() {
