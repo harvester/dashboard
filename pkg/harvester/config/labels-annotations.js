@@ -25,6 +25,7 @@ export const HCI = {
   INIT_IP:                      'etcd.rke2.cattle.io/node-address',
   NODE_SCHEDULABLE:             'kubevirt.io/schedulable',
   NETWORK_ROUTE:                'network.harvesterhci.io/route',
+  MATCHED_NODES:                'network.harvesterhci.io/matched-nodes',
   OS_UPGRADE_IMAGE:             'harvesterhci.io/os-upgrade-image',
   LATEST_UPGRADE:               'harvesterhci.io/latestUpgrade',
   UPGRADE_STATE:                'harvesterhci.io/upgradeState',
