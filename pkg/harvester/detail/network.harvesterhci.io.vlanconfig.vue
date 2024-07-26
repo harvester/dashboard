@@ -8,6 +8,7 @@ import { STATE, NAME, AGE } from '@shell/config/table-headers';
 import { matching } from '@shell/utils/selector';
 import { NODE } from '@shell/config/types';
 import { isEmpty } from '@shell/utils/object';
+import { HCI } from '@pkg/harvester/config/labels-annotations';
 
 export default {
   components: {
@@ -55,10 +56,13 @@ export default {
       const inStore = this.$store.getters['currentProduct'].inStore;
 
       const nodes = this.$store.getters[`${ inStore }/all`](NODE);
+      const matchedNodes = this.value?.metadata?.annotations?.[HCI.MATCHED_NODES];
       const selector = this.value?.spec?.nodeSelector;
 
       if (!isEmpty(selector)) {
         return matching(nodes, selector);
+      } else if (matchedNodes && matchedNodes.length > 0) {
+        return nodes.filter(node => matchedNodes.includes(node.id));
       } else {
         return nodes;
       }
