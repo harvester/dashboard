@@ -4,13 +4,15 @@ import LabelValue from '@shell/components/LabelValue';
 import { BadgeState } from '@components/BadgeState';
 import { Banner } from '@components/Banner';
 import HarvesterDisk from '../../mixins/harvester-disk';
+import { RadioGroup } from '@components/Form/Radio';
 
 export default {
   components: {
     LabelValue,
     BadgeState,
     Banner,
-    Tag
+    Tag,
+    RadioGroup
   },
 
   mixins: [
@@ -37,6 +39,18 @@ export default {
     return {};
   },
   computed: {
+    targetDisk() {
+      return this.disks.find(disk => disk.name === this.value.name);
+    },
+    schedulableTooltipMessage() {
+      const { name, path } = this.value;
+
+      if (this.targetDisk && !this.targetDisk.allowScheduling && name && path) {
+        return this.t('harvester.host.disk.allowScheduling.tooltip', { name, path });
+      } else {
+        return this.schedulableCondition.message;
+      }
+    },
     allowSchedulingOptions() {
       return [{
         label: this.t('generic.enabled'),
@@ -117,6 +131,16 @@ export default {
       </div>
       <div class="row mt-10">
         <div class="col span-12">
+          <div class="pull-left">
+            <RadioGroup
+              v-model="value.allowScheduling"
+              name="diskScheduling"
+              :label="t('harvester.host.disk.allowScheduling.label')"
+              :mode="mode"
+              :options="allowSchedulingOptions"
+              :row="true"
+            />
+          </div>
           <div class="pull-right">
             {{ t('harvester.host.disk.conditions') }}:
             <BadgeState
@@ -127,9 +151,9 @@ export default {
               class="mr-10 ml-10 state"
             />
             <BadgeState
-              v-clean-tooltip="schedulableCondition.message"
-              :color="schedulableCondition.status === 'True' ? 'bg-success' : 'bg-error' "
-              :icon="schedulableCondition.status === 'True' ? 'icon-checkmark' : 'icon-warning' "
+              v-clean-tooltip="schedulableTooltipMessage"
+              :color="schedulableCondition.status === 'True' && targetDisk?.allowScheduling ? 'bg-success' : 'bg-error' "
+              :icon="schedulableCondition.status === 'True' && targetDisk?.allowScheduling ? 'icon-checkmark' : 'icon-warning' "
               label="Schedulable"
               class="mr-10 state"
             />
