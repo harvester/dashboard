@@ -400,6 +400,7 @@ harvester:
         label: Storage Reserved
       allowScheduling:
         label: Scheduling
+        tooltip: Disk {name} ({path}) scheduling is disabled
       evictionRequested:
         label: Eviction Requested
       forceFormatted:

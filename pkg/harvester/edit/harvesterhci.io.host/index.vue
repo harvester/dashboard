@@ -478,10 +478,11 @@ export default {
 
       const disks = this.longhornNode?.spec?.disks || {};
 
+      // update each disk tags and scheduling
       this.newDisks.map((disk) => {
         (disks[disk.name] || {}).tags = disk.tags;
+        (disks[disk.name] || {}).allowScheduling = disk.allowScheduling;
       });
-
       let count = 0;
 
       const retrySave = async() => {
