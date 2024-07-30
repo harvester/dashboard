@@ -426,6 +426,7 @@ harvester:
         label: Storage Scheduled
       storageMaximum:
         label: Storage Maximum
+      provisioner: Provisioner
     tags:
       label: Host Tags
       addLabel: Add Host Tag
@@ -1038,6 +1039,12 @@ harvester:
       label: Disk Selector
     storageClass:
       label: Storage Class
+      longhornV1:
+        label: LonghornV1 (CSI)
+      longhornV2:
+        label: LonghornV2 (CSI)
+      lvm:
+        label: LVM
     title: Storage Classes
     customize:
       volumeBindingMode:

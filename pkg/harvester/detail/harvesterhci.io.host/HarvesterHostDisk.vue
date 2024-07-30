@@ -70,6 +70,10 @@ export default {
         return '';
       }
     },
+
+    provisioner() {
+      return 'todo_provisioner';
+    }
   },
   methods: {
     update() {
@@ -176,6 +180,12 @@ export default {
         <LabelValue
           :name="t('harvester.host.disk.path.label')"
           :value="value.path"
+        />
+      </div>
+      <div class="col span-4">
+        <LabelValue
+          :name="t('harvester.host.disk.provisioner')"
+          :value="provisioner"
         />
       </div>
     </div>
