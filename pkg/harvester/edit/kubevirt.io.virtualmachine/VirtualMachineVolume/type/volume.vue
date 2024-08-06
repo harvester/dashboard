@@ -4,7 +4,7 @@ import UnitInput from '@shell/components/form/UnitInput';
 import InputOrDisplay from '@shell/components/InputOrDisplay';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
-
+import { Banner } from '@components/Banner';
 import { PVC, STORAGE_CLASS } from '@shell/config/types';
 import { formatSi, parseSi } from '@shell/utils/units';
 import { VOLUME_TYPE, InterfaceOption } from '../../../../config/harvester-map';
@@ -15,7 +15,7 @@ import { ucFirst } from '@shell/utils/string';
 export default {
   name:       'HarvesterEditVolume',
   components: {
-    InputOrDisplay, Loading, LabeledInput, LabeledSelect, UnitInput, LabelValue
+    InputOrDisplay, Loading, LabeledInput, LabeledSelect, UnitInput, LabelValue, Banner
   },
 
   props: {
@@ -218,7 +218,6 @@ export default {
         </InputOrDisplay>
       </div>
     </div>
-
     <div class="row mb-20">
       <div
         data-testid="input-hev-bus"
@@ -244,6 +243,23 @@ export default {
           :value="encryptionValue"
         />
       </div>
+      <div
+        v-if="value.volumeBackups"
+        class="col span-6"
+      >
+        <InputOrDisplay :name="t('harvester.virtualMachine.volume.readyToUse')" :value="value.volumeBackups.readyToUse" :mode="mode">
+          <LabelValue
+            :name="t('harvester.virtualMachine.volume.readyToUse')"
+            :value="value.volumeBackups.readyToUse"
+          />
+        </InputOrDisplay>
+      </div>
     </div>
+    <Banner
+      v-if="value?.volumeBackups?.error?.message"
+      color="error"
+      class="mb-20"
+      :label="value.volumeBackups.error.message"
+    />
   </div>
 </template>

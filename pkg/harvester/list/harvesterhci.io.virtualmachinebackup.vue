@@ -4,36 +4,38 @@ import Loading from '@shell/components/Loading';
 import MessageLink from '@shell/components/MessageLink';
 import Masthead from '@shell/components/ResourceList/Masthead';
 import ResourceTable from '@shell/components/ResourceTable';
-
+import FilterVMSchedule from '../components/FilterVMSchedule';
 import { HCI } from '../types';
 import { allSettled } from '../utils/promise';
 import { STATE, AGE, NAME, NAMESPACE } from '@shell/config/table-headers';
 import { BACKUP_TYPE } from '../config/types';
+import { defaultTableSortGenerationFn } from '@shell/components/ResourceTable.vue';
 
 export default {
   name:       'HarvesterListBackup',
   components: {
-    ResourceTable, Banner, Loading, Masthead, MessageLink
+    ResourceTable, Banner, Loading, Masthead, MessageLink, FilterVMSchedule
   },
 
   props: {
     schema: {
       type:     Object,
       required: true,
-    }
+    },
   },
 
   async fetch() {
     const inStore = this.$store.getters['currentProduct'].inStore;
     const hash = await allSettled({
-      vms:      this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VM }),
-      settings: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.SETTING }),
-      rows:     this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.BACKUP }),
+      vms:          this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VM }),
+      settings:     this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.SETTING }),
+      backups:      this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.BACKUP }),
+      scheduleList: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.SCHEDULE_VM_BACKUP }),
     });
 
-    this.rows = hash.rows;
+    this.backups = hash.backups;
+    this.rows = hash.backups;
     this.settings = hash.settings;
-
     if (this.$store.getters[`${ inStore }/schemaFor`](HCI.SETTING)) {
       const backupTargetResource = hash.settings.find( O => O.id === 'backup-target');
       const isEmpty = this.getBackupTargetValueIsEmpty(backupTargetResource);
@@ -50,10 +52,12 @@ export default {
     const resource = params.resource;
 
     return {
-      rows:     [],
-      settings: [],
+      rows:           [],
+      backups:        [],
+      settings:       [],
       resource,
-      to:       `${ HCI.SETTING }/backup-target?mode=edit`,
+      to:             `${ HCI.SETTING }/backup-target?mode=edit`,
+      searchSchedule: ''
     };
   },
 
@@ -85,7 +89,25 @@ export default {
       }
 
       return out;
-    }
+    },
+
+    getRow(row) {
+      return row.status && row.status.source;
+    },
+
+    changeRows(filteredRows, searchSchedule) {
+      this.$set(this, 'searchSchedule', searchSchedule);
+      this.$set(this, 'backups', filteredRows);
+    },
+
+    sortGenerationFn() {
+      let base = defaultTableSortGenerationFn(this.schema, this.$store);
+
+      base += this.searchSchedule;
+
+      return base;
+    },
+
   },
 
   computed: {
@@ -102,6 +124,12 @@ export default {
           formatter: 'AttachVMWithName'
         },
         {
+          name:      'backupCreatedFrom',
+          labelKey:  'harvester.tableHeaders.vmSchedule',
+          value:     'sourceSchedule',
+          formatter: 'BackupCreatedFrom',
+        },
+        {
           name:      'backupTarget',
           labelKey:  'tableHeaders.backupTarget',
           value:     'backupTarget',
@@ -112,7 +140,7 @@ export default {
           name:      'readyToUse',
           labelKey:  'tableHeaders.readyToUse',
           value:     'status.readyToUse',
-          align:     'left',
+          align:     'center',
           formatter: 'Checked',
         },
       ];
@@ -124,25 +152,24 @@ export default {
           value:     'backupProgress',
           align:     'left',
           formatter: 'HarvesterBackupProgressBar',
-          width:     200,
         });
       }
-
       cols.push(AGE);
 
       return cols;
     },
 
     hasBackupProgresses() {
-      return !!this.rows.find(R => R.status?.progress !== undefined);
+      return !!this.backups.find(r => r.status?.progress !== undefined);
     },
-
     filteredRows() {
-      return this.rows.filter(R => R.spec?.type !== BACKUP_TYPE.SNAPSHOT);
+      return this.backups.filter(r => r.spec?.type !== BACKUP_TYPE.SNAPSHOT);
     },
-
+    getRawRows() {
+      return this.rows.filter(r => r.spec?.type === BACKUP_TYPE.BACKUP);
+    },
     backupTargetResource() {
-      return this.settings.find( O => O.id === 'backup-target');
+      return this.settings.find(O => O.id === 'backup-target');
     },
 
     isEmptyValue() {
@@ -211,16 +238,23 @@ export default {
       :headers="headers"
       :groupable="true"
       :rows="filteredRows"
+      :sort-generation-fn="sortGenerationFn"
       :schema="schema"
       key-field="_key"
       default-sort-by="age"
       v-on="$listeners"
     >
+      <template #more-header-middle>
+        <FilterVMSchedule
+          :rows="getRawRows"
+          @change-rows="changeRows"
+        />
+      </template>
       <template #col:name="{row}">
         <td>
           <span>
             <n-link
-              v-if="row.status && row.status.source"
+              v-if="getRow(row)"
               :to="row.detailLocation"
             >
               {{ row.nameDisplay }}

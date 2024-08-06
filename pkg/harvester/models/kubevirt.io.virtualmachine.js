@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { load } from 'js-yaml';
 import { omitBy, pickBy } from 'lodash';
-
+import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../config/harvester';
 import { colorForState } from '@shell/plugins/dashboard-store/resource-class';
 import { POD, NODE, PVC } from '@shell/config/types';
 import { HCI } from '../types';
@@ -163,6 +163,12 @@ export default class VirtVm extends HarvesterResource {
         label:   this.t('harvester.action.editVMQuota')
       },
       {
+        action:  'createSchedule',
+        enabled: true,
+        icon:    'icon icon-history',
+        label:   this.t('harvester.action.createSchedule')
+      },
+      {
         action:  'restoreVM',
         enabled: !!this.actions?.restore,
         icon:    'icon icon-backup-restore',
@@ -322,6 +328,16 @@ export default class VirtVm extends HarvesterResource {
       },
       { root: true }
     );
+  }
+
+  createSchedule(resources = this) {
+    const router = this.currentRouter();
+
+    router.push({
+      name:   `${ HARVESTER_PRODUCT }-c-cluster-resource-create`,
+      params: { resource: HCI.SCHEDULE_VM_BACKUP },
+      query:  { vmNamespace: this.metadata.namespace, vmName: this.metadata.name }
+    });
   }
 
   backupVM(resources = this) {

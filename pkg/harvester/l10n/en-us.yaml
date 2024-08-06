@@ -57,6 +57,12 @@ harvester:
         tip: Please enter a template name!
         success: 'Template { templateName } created successfully.'
         failed: 'Failed generated template!'
+    schedule:
+      title: Create Schedule
+      message:
+        tip: Please enter a schedule name!
+        success: 'Schedule { name } created successfully.'
+        failed: 'Failed create schedule!'
     cloneVM:
       title: Clone Virtual Machine
       name: New Virtual Machine Name
@@ -144,8 +150,11 @@ harvester:
     setDefaultVersion: Set default version
     addTemplateVersion: Add template version
     backup: Take Backup
+    createSchedule: Create VM Schedule
     restore: Restore
     restoreNewVM: Restore New
+    resumeSchedule: Resume
+    suspendSchedule: Suspend
     restoreExistingVM: Replace Existing
     migrate: Migrate
     abortMigration: Abort Migration
@@ -182,6 +191,12 @@ harvester:
     readyToUse: Ready To Use
     backupTarget: Backup Target
     targetVm: Target Virtual Machine
+    cronExpression: Cron Expression
+    retain: Retain
+    scheduleType: Type
+    maxFailure: Max Failure
+    sourceVm: Source VM
+    vmSchedule: VM Schedule
     hostIp: Host IP
     vm:
       ipAddress: IP Address
@@ -228,6 +243,7 @@ harvester:
     promiscuous: Promiscuous
     ipv4Address: IPv4 address
     filterLabels: Filter labels
+    filterSchedule: Filter schedule
     storageClass: Storage class
     dockerImage: Docker image
   pci:
@@ -550,6 +566,7 @@ harvester:
       size: Size
       edit: Edit
       bus:  Bus
+      readyToUse: Ready To Use
       bootOrder: Boot Order
       volume: Volume
       dockerImage: Docker Image
@@ -808,6 +825,37 @@ harvester:
       doc: Read the <a href="{url}" target="_blank">documentation</a> before starting the upgrade process. Ensure that you complete procedures that are relevant to your environment and the version you are upgrading to.
       tip: Unmet system requirements and incorrectly performed procedures may cause complete upgrade failure and other issues that require manual workarounds.
       moreNotes: For more details about the release notes, please visit -
+     
+  schedule:
+    label: VM Schedules
+    createTitle: Create VM Schedule
+    createButtonText: Create VM Schedule
+    scheduleType: VM Schedule Type
+    cron: Cron Schedule
+    detail: 
+      namespace: Namespace
+      sourceVM: Source Virtual Machine
+    tabs:
+      basic: Basic
+      backups: Backups
+      snapshots: Snapshots
+    message:
+      noSetting:
+        suffix: before creating a backup schedule
+    retain: 
+      label: Retain
+      count: Count
+      tooltip: Number of up-to-date VM backups to retain. Maximum to 250, minimum to 2. 
+    maxFailure:
+      label: Max Failure 
+      count: Count
+      tooltip: Max number of consecutive failed backups that could be tolerated. If reach this threshold, Harvester controller will suspend the schedule job. This value should less than retain count
+    virtualMachine:
+      title: Virtual Machine Name
+      placeholder: Select a virtual machine
+    type:
+      snapshot: Snapshot
+      backup: Backup
 
   backup:
     label: Virtual Machine Backups
@@ -846,7 +894,6 @@ harvester:
         starting: Backup initiating
         progress: Backup in progress
         complete: Backup completed
-
   restore:
     progress:
       details: Volume details
@@ -1491,6 +1538,11 @@ typeLabel:
     {count, plural,
       one { Template }
       other { Templates }
+    }
+  harvesterhci.io.schedulevmbackup: |-
+    {count, plural,
+      one { VM Schedule }
+      other { VM Schedules }
     }
   harvesterhci.io.virtualmachinebackup: |-
     {count, plural,

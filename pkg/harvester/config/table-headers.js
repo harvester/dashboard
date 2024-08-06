@@ -40,3 +40,39 @@ export const SNAPSHOT_TARGET_VOLUME = {
   sort:      'spec.source.persistentVolumeClaimName',
   formatter: 'SnapshotTargetVolume',
 };
+
+// The column of cron expression volume on VM schedules list page
+export const VM_SCHEDULE_CRON = {
+  name:     'CronExpression',
+  labelKey: 'harvester.tableHeaders.cronExpression',
+  value:    'spec.cron',
+  align:    'center',
+  sort:     'spec.cron',
+};
+
+// The column of retain on VM schedules list page
+export const VM_SCHEDULE_RETAIN = {
+  name:     'Retain',
+  labelKey: 'harvester.tableHeaders.retain',
+  value:    'spec.retain',
+  sort:     'spec.retain',
+  align:    'center',
+};
+
+// The column of maxFailure on VM schedules list page
+export const VM_SCHEDULE_MAX_FAILURE = {
+  name:     'MaxFailure',
+  labelKey: 'harvester.tableHeaders.maxFailure',
+  value:    'spec.maxFailure',
+  sort:     'spec.maxFailure',
+  align:    'center',
+};
+
+// The column of type on VM schedules list page
+export const VM_SCHEDULE_TYPE = {
+  name:     'Type',
+  labelKey: 'harvester.tableHeaders.scheduleType',
+  value:    'spec.vmbackup.type',
+  sort:     'spec.vmbackup.type',
+  align:    'center',
+};

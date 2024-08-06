@@ -2,21 +2,23 @@
 import { findBy } from '@shell/utils/array';
 import UnitInput from '@shell/components/form/UnitInput';
 import { LabeledInput } from '@components/Form/LabeledInput';
+import LabelValue from '@shell/components/LabelValue';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import InputOrDisplay from '@shell/components/InputOrDisplay';
+import { Banner } from '@components/Banner';
 import { PVC } from '@shell/config/types';
 import { HCI } from '../../../../types';
 import { formatSi, parseSi } from '@shell/utils/units';
 import { VOLUME_TYPE, InterfaceOption } from '../../../../config/harvester-map';
 import { _VIEW } from '@shell/config/query-params';
-import LabelValue from '@shell/components/LabelValue';
+
 import { ucFirst } from '@shell/utils/string';
 
 export default {
   name: 'HarvesterEditVMImage',
 
   components: {
-    UnitInput, LabeledInput, LabeledSelect, InputOrDisplay, LabelValue
+    UnitInput, LabeledInput, LabeledSelect, InputOrDisplay, LabelValue, Banner
   },
 
   props: {
@@ -299,13 +301,30 @@ export default {
       </div>
       <div
         v-if="isView"
-        class="col span-6"
+        class="col span-3"
       >
         <LabelValue
           :name="t('harvester.virtualMachine.volume.encryption')"
           :value="encryptionValue"
         />
       </div>
+      <div
+        v-if="value.volumeBackups"
+        class="col span-3"
+      >
+        <InputOrDisplay :name="t('harvester.virtualMachine.volume.readyToUse')" :value="value.volumeBackups.readyToUse" :mode="mode">
+          <LabelValue
+            :name="t('harvester.virtualMachine.volume.readyToUse')"
+            :value="value.volumeBackups.readyToUse"
+          />
+        </InputOrDisplay>
+      </div>
     </div>
+    <Banner
+      v-if="value?.volumeBackups?.error?.message"
+      color="error"
+      class="mb-20"
+      :label="value.volumeBackups.error.message"
+    />
   </div>
 </template>

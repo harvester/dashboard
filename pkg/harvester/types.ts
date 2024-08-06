@@ -11,6 +11,7 @@ export const HCI = {
   SETTING:            'harvesterhci.io.setting',
   UPGRADE:            'harvesterhci.io.upgrade',
   UPGRADE_LOG:        'harvesterhci.io.upgradelog',
+  SCHEDULE_VM_BACKUP: 'harvesterhci.io.schedulevmbackup',
   BACKUP:             'harvesterhci.io.virtualmachinebackup',
   RESTORE:            'harvesterhci.io.virtualmachinerestore',
   NODE_NETWORK:       'network.harvesterhci.io.nodenetwork',
