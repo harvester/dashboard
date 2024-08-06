@@ -25,6 +25,7 @@ import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations
 import impl, { QGA_JSON, USB_TABLET } from './impl';
 import { uniq } from '@shell/utils/array';
 import { parseVolumeClaimTemplates } from '../../utils/vm';
+import aardvark_blue from '../../../../../iTerm2-Color-Schemes/screenshots/aardvark_blue.png';
 
 export const MANAGEMENT_NETWORK = 'management Network';
 
@@ -303,7 +304,7 @@ export default {
       } = config;
 
       const vm = this.resource === HCI.VM ? value : this.resource === HCI.BACKUP ? this.value.status?.source : value.spec.vm;
-
+      const volumeBackups = this.resource === HCI.BACKUP ? this.value.status?.volumeBackups : null;
       const spec = vm?.spec;
 
       if (!spec) {
@@ -337,7 +338,8 @@ export default {
       const sshKey = this.getSSHFromAnnotation(spec) || [];
 
       const imageId = this.getRootImageId(vm) || '';
-      const diskRows = this.getDiskRows(vm);
+      const diskRows = this.getDiskRows(vm, volumeBackups);
+
       const networkRows = this.getNetworkRows(vm, { fromTemplate, init });
       const hasCreateVolumes = this.getHasCreatedVolumes(spec) || [];
 
@@ -406,7 +408,7 @@ export default {
       this.refreshYamlEditor();
     },
 
-    getDiskRows(vm) {
+    getDiskRows(vm, volBackups) {
       const namespace = vm.metadata.namespace;
       const _volumes = vm.spec.template.spec.volumes || [];
       const _disks = vm.spec.template.spec.domain.devices.disks || [];
@@ -424,6 +426,7 @@ export default {
         const isIsoImage = /iso$/i.test(imageResource?.imageSuffix);
         const imageSize = Math.max(imageResource?.status?.size, imageResource?.status?.virtualSize);
         const isEncrypted = imageResource?.isEncrypted || false;
+        const volumeBackups = volBackups?.find(vBackup => vBackup.volumeName === 'disk-0') || null ;
 
         if (isIsoImage) {
           bus = 'sata';
@@ -451,7 +454,8 @@ export default {
           storageClassName: '',
           image:            this.imageId,
           volumeMode:       'Block',
-          isEncrypted
+          isEncrypted,
+          volumeBackups,
         });
       } else {
         out = _disks.map( (DISK, index) => {
@@ -533,6 +537,7 @@ export default {
           const volumeStatus = pvc?.relatedPV?.metadata?.annotations?.[HCI_ANNOTATIONS.VOLUME_ERROR];
 
           const isEncrypted = pvc?.isEncrypted || false;
+          const volumeBackups = volBackups?.find(vBackup => vBackup.volumeName === DISK.name) || null;
 
           return {
             id:         randomStr(5),
@@ -553,7 +558,8 @@ export default {
             volumeStatus,
             dataSource,
             namespace,
-            isEncrypted
+            isEncrypted,
+            volumeBackups,
           };
         });
       }

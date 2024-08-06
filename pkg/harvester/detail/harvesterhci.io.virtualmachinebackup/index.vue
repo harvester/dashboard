@@ -127,29 +127,29 @@ export default {
     <Tabbed v-if="spec" :side-tabs="true" @changed="onTabChanged">
       <Tab name="Basics" :label="t('harvester.virtualMachine.detail.tabs.basics')">
         <div class="row">
-          <div class="col span-6">
+          <div class="col span-6 mb-20">
             <LabelValue :name="t('harvester.virtualMachine.detail.details.name')" :value="name" />
           </div>
 
-          <div class="col span-6">
+          <div class="col span-6 mb-20">
             <LabelValue :name="t('harvester.fields.image')" :value="imageName" />
           </div>
         </div>
 
         <div class="row">
-          <div class="col span-6">
+          <div class="col span-6 mb-20">
             <LabelValue :name="t('harvester.virtualMachine.detail.details.hostname')" :value="hostname" />
           </div>
 
-          <div class="col span-6">
+          <div class="col span-6 mb-20">
             <LabelValue :name="t('harvester.virtualMachine.input.MachineType')" :value="machineType" />
           </div>
         </div>
-
-        <CpuMemory :cpu="cpu" :mode="mode" :memory="memory" />
-
+        <div class="mb-20">
+          <CpuMemory :cpu="cpu" :mode="mode" :memory="memory" />
+        </div>
         <div class="row">
-          <div class="col span-6">
+          <div class="col span-6 mb-20">
             <LabelValue :name="t('harvester.virtualMachine.detail.details.bootOrder')">
               <template #value>
                 <div>
@@ -162,7 +162,7 @@ export default {
               </template>
             </LabelValue>
           </div>
-          <div class="col span-6">
+          <div class="col span-6 mb-20">
             <LabelValue :name="t('harvester.virtualMachine.detail.details.CDROMs')">
               <template #value>
                 <div>
@@ -180,7 +180,6 @@ export default {
           </div>
         </div>
       </Tab>
-
       <Tab
         name="volume"
         :label="t('harvester.tab.volume')"

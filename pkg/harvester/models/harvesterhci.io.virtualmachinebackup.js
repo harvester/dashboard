@@ -18,9 +18,8 @@ export default class HciVmBackup extends HarvesterResource {
 
   get detailLocation() {
     const detailLocation = clone(this._detailLocation);
-    const route = this.currentRoute();
 
-    detailLocation.params.resource = route.params.resource;
+    detailLocation.params.resource = HCI.BACKUP;
 
     return detailLocation;
   }
@@ -81,23 +80,22 @@ export default class HciVmBackup extends HarvesterResource {
   }
 
   restoreExistingVM(resource = this) {
-    const route = this.currentRoute();
     const router = this.currentRouter();
 
     router.push({
       name:   `${ HARVESTER_PRODUCT }-c-cluster-resource-create`,
-      params: { resource: route.params.resource },
+      params: { resource: HCI.BACKUP },
       query:  { restoreMode: 'existing', resourceName: resource.name }
     });
   }
 
   restoreNewVM(resource = this) {
-    const route = this.currentRoute();
+    // const route = this.currentRoute();
     const router = this.currentRouter();
 
     router.push({
       name:   `${ HARVESTER_PRODUCT }-c-cluster-resource-create`,
-      params: { resource: route.params.resource },
+      params: { resource: HCI.BACKUP },
       query:  { restoreMode: 'new', resourceName: resource.name }
     });
   }
@@ -123,6 +121,10 @@ export default class HciVmBackup extends HarvesterResource {
     const state = this.state;
 
     return colorForState(state);
+  }
+
+  get sourceSchedule() {
+    return this.metadata?.annotations['harvesterhci.io/svmbackupId'];
   }
 
   get attachVM() {

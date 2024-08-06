@@ -144,11 +144,16 @@ export default (
       if (this.type !== 'cron' || !this.value) {
         return;
       }
-      if (!isValidCron(this.value)) {
+      // refer https://github.com/GuillaumeRochat/cron-validator#readme
+      if (!isValidCron(this.value, {
+        alias:              true,
+        allowBlankDay:      true,
+        allowSevenAsSunday: true,
+      })) {
         return this.t('generic.invalidCron');
       }
       try {
-        const hint = cronstrue.toString(this.value);
+        const hint = cronstrue.toString(this.value, { verbose: true });
 
         return hint;
       } catch (e) {

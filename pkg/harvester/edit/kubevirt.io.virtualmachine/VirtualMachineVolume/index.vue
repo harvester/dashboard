@@ -222,13 +222,15 @@ export default {
       }
     },
 
-    headerFor(type) {
-      return {
+    headerFor(type, hasVolBackups = false) {
+      const mainHeader = {
         [SOURCE_TYPE.NEW]:           this.$store.getters['i18n/t']('harvester.virtualMachine.volume.title.volume'),
         [SOURCE_TYPE.IMAGE]:         this.$store.getters['i18n/t']('harvester.virtualMachine.volume.title.vmImage'),
         [SOURCE_TYPE.ATTACH_VOLUME]: this.$store.getters['i18n/t']('harvester.virtualMachine.volume.title.existingVolume'),
         [SOURCE_TYPE.CONTAINER]:     this.$store.getters['i18n/t']('harvester.virtualMachine.volume.title.container'),
       }[type];
+
+      return hasVolBackups ? `${ mainHeader } and Backups` : mainHeader;
     },
 
     update() {
@@ -291,7 +293,7 @@ export default {
               </span>
 
               <span v-else>
-                {{ headerFor(volume.source) }}
+                {{ headerFor(volume.source, !!volume?.volumeBackups) }}
               </span>
             </h3>
             <div>
