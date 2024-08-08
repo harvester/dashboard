@@ -412,15 +412,37 @@ export default {
       let out = [];
 
       if (_disks.length === 0) {
+        let bus = 'virtio';
+        let type = HARD_DISK;
+        let size = '10Gi';
+
+        const imageResource = this.images.find( I => this.imageId === I.id);
+        const isIsoImage = /iso$/i.test(imageResource?.imageSuffix);
+        const imageSize = Math.max(imageResource?.status?.size, imageResource?.status?.virtualSize);
+
+        if (isIsoImage) {
+          bus = 'sata';
+          type = CD_ROM;
+        }
+
+        if (imageSize) {
+          let imageSizeGiB = Math.ceil(imageSize / 1024 / 1024 / 1024);
+
+          if (!isIsoImage) {
+            imageSizeGiB = Math.max(imageSizeGiB, 10);
+          }
+          size = `${ imageSizeGiB }Gi`;
+        }
+
         out.push({
           id:               randomStr(5),
           source:           SOURCE_TYPE.IMAGE,
           name:             'disk-0',
           accessMode:       'ReadWriteMany',
-          bus:              'virtio',
+          bus,
           volumeName:       '',
-          size:             '10Gi',
-          type:             HARD_DISK,
+          size,
+          type,
           storageClassName: '',
           image:            this.imageId,
           volumeMode:       'Block',

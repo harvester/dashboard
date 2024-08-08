@@ -35,6 +35,10 @@ export default {
       return this.value?.downSize;
     },
 
+    virtualSize() {
+      return this.value?.virtualSize;
+    },
+
     url() {
       return this.value?.spec?.url || '-';
     },
@@ -97,6 +101,12 @@ export default {
       <div class="row">
         <div class="col span-12">
           <LabelValue :name="t('harvester.image.size')" :value="formattedValue" class="mb-20" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-12">
+          <LabelValue :name="t('harvester.image.virtualSize')" :value="virtualSize" class="mb-20" />
         </div>
       </div>
 
