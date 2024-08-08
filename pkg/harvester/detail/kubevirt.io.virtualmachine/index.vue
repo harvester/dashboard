@@ -12,6 +12,7 @@ import { allDashboardsExist } from '@shell/utils/grafana';
 
 import CloudConfig from '../../edit/kubevirt.io.virtualmachine/VirtualMachineCloudConfig';
 import Volume from '../../edit/kubevirt.io.virtualmachine/VirtualMachineVolume';
+import Snapshots from '../../edit/kubevirt.io.virtualmachine/VirtualMachineSnapshots';
 import Network from '../../edit/kubevirt.io.virtualmachine/VirtualMachineNetwork';
 import NodeScheduling from '@shell/components/form/NodeScheduling';
 import PodAffinity from '@shell/components/form/PodAffinity';
@@ -33,6 +34,7 @@ export default {
     Tabbed,
     Events,
     OverviewBasics,
+    Snapshots,
     Volume,
     Network,
     OverviewKeypairs,
@@ -175,8 +177,16 @@ export default {
         <Network v-model="networkRows" mode="view" />
       </Tab>
 
-      <Tab name="keypairs" :label="t('harvester.virtualMachine.detail.tabs.keypairs')" class="bordered-table" :weight="3">
+      <Tab name="keypairs" :label="t('harvester.virtualMachine.detail.tabs.keypairs')" class="bordered-table" :weight="4">
         <OverviewKeypairs v-model="value" />
+      </Tab>
+
+      <Tab name="Snapshots" :label="t('harvester.tab.snapshots')" :weight="3">
+        <Snapshots
+          :totalSnapshotSize="totalSnapshotSize"
+          :mode="view"
+          :disabled="true"
+        />
       </Tab>
 
       <Tab
