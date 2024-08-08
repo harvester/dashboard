@@ -144,6 +144,8 @@ harvester:
     createTemplate: Generate Template
     enableMaintenance: Enable Maintenance Mode
     disableMaintenance: Disable Maintenance Mode
+    enableCPUManager: Enable CPU Manager
+    disableCPUManager: Disable CPU Manager
     cordon: Cordon
     uncordon: Uncordon
     addHotplug: Add Volume
@@ -349,6 +351,7 @@ harvester:
       serialNumber: Serial Number
       model: Model
       etcd: Witness Node
+      cpuManager: CPU Manager
     enableMaintenance:
       title: Enable Maintenance Mode
       protip: The operation will migrate all virtual machines on this node to other nodes.
@@ -494,6 +497,9 @@ harvester:
         ShutdownAndRestartAfterEnable: Shutdown and Restart After Enable
         ShutdownAndRestartAfterDisable: Shutdown and Restart After Disable
         Shutdown: Shutdown
+    cpuPinning:
+      label: CPU Pinning
+      tooltip: Changing the CPU pinning setting requires a manual reboot of the virtual machine for the changes to take effect
     restartNow: |-
       {restart, select,
         true {Restart}

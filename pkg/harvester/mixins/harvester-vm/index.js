@@ -169,6 +169,7 @@ export default {
       enabledSriovgpu:               false,
       immutableMode:                 this.realMode === _CREATE ? _CREATE : _VIEW,
       terminationGracePeriodSeconds: '',
+      cpuPinning:                    false,
     };
   },
 
@@ -362,6 +363,7 @@ export default {
       const efiEnabled = this.isEfiEnabled(spec);
       const tpmEnabled = this.isTpmEnabled(spec);
       const secureBoot = this.isSecureBoot(spec);
+      const cpuPinning = this.isCpuPinning(spec);
 
       const secretRef = this.getSecret(spec);
       const accessCredentials = this.getAccessCredentials(spec);
@@ -393,6 +395,7 @@ export default {
       this.$set(this, 'efiEnabled', efiEnabled);
       this.$set(this, 'tpmEnabled', tpmEnabled);
       this.$set(this, 'secureBoot', secureBoot);
+      this.$set(this, 'cpuPinning', cpuPinning);
 
       this.$set(this, 'hasCreateVolumes', hasCreateVolumes);
       this.$set(this, 'networkRows', networkRows);
@@ -1360,6 +1363,14 @@ export default {
       }
     },
 
+    setCpuPinning(value) {
+      if (value) {
+        set(this.spec.template.spec.domain.cpu, 'dedicatedCpuPlacement', true);
+      } else {
+        this.$delete(this.spec.template.spec.domain.cpu, 'dedicatedCpuPlacement');
+      }
+    },
+
     setTPM(tpmEnabled) {
       if (tpmEnabled) {
         set(this.spec.template.spec.domain.devices, 'tpm', {});
@@ -1481,6 +1492,10 @@ export default {
 
     secureBoot(val) {
       this.setBootMethod({ efi: this.efiEnabled, secureBoot: val });
+    },
+
+    cpuPinning(value) {
+      this.setCpuPinning(value);
     },
 
     tpmEnabled(val) {

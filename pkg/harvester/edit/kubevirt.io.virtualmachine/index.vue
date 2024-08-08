@@ -695,6 +695,15 @@ export default {
         />
 
         <Checkbox
+          v-model="cpuPinning"
+          class="check"
+          type="checkbox"
+          tooltip-key="harvester.virtualMachine.cpuPinning.tooltip"
+          label-key="harvester.virtualMachine.cpuPinning.label"
+          :mode="mode"
+        />
+
+        <Checkbox
           v-model="installUSBTablet"
           class="check mt-20"
           type="checkbox"
