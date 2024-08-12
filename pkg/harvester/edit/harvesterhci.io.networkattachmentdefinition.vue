@@ -143,12 +143,19 @@ export default {
     },
 
     input(neu) {
-      if (!isNaN(neu)) {
-        if (neu > 0 && neu < 4095) {
-          this.config.vlan = neu;
-        } else {
-          this.config.vlan = neu > 4094 ? 4094 : 1;
-        }
+      if (neu === '') {
+        this.config.vlan = '';
+
+        return;
+      }
+      const newValue = Number(neu);
+
+      if (newValue > 4094) {
+        this.config.vlan = 4094;
+      } else if (newValue < 1) {
+        this.config.vlan = 1;
+      } else {
+        this.config.vlan = newValue;
       }
     },
 
