@@ -310,7 +310,7 @@ export default {
       </div>
     </div>
     <Banner
-      v-if="value?.volumeBackups?.error?.message"
+      v-if="value.volumeBackups && value.volumeBackups.error && value.volumeBackups.error.message"
       color="error"
       class="mb-20"
       :label="value.volumeBackups.error.message"

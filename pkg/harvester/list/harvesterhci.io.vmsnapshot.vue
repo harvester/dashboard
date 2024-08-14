@@ -67,12 +67,14 @@ export default {
           labelKey:  'tableHeaders.targetVm',
           value:     'attachVM',
           align:     'left',
+          sort:      'attachVM',
           formatter: 'AttachVMWithName'
         },
         {
           name:      'backupCreatedFrom',
           labelKey:  'harvester.tableHeaders.vmSchedule',
           value:     'sourceSchedule',
+          sort:      'sourceSchedule',
           formatter: 'BackupCreatedFrom',
         },
         {
@@ -80,6 +82,7 @@ export default {
           labelKey:  'tableHeaders.readyToUse',
           value:     'status.readyToUse',
           align:     'center',
+          sort:      'status.readyToUse',
           formatter: 'Checked',
         },
         AGE

@@ -6,7 +6,6 @@ import CruResource from '@shell/components/CruResource';
 import Tabbed from '@shell/components/Tabbed';
 import Tab from '@shell/components/Tabbed/Tab';
 import MessageLink from '@shell/components/MessageLink';
-import Checkbox from '@components/Form/Checkbox/Checkbox';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import CreateEditView from '@shell/mixins/create-edit-view';
 import { isCronValid } from '@shell/utils/validators/cron-schedule';
@@ -20,7 +19,6 @@ import { _EDIT, _CREATE } from '@shell/config/query-params';
 export default {
   name:       'CreateVMSchedule',
   components: {
-    Checkbox,
     CruResource,
     Tabbed,
     Tab,
