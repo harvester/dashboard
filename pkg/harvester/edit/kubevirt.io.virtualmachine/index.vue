@@ -17,6 +17,7 @@ import Reserved from './VirtualMachineReserved';
 import SSHKey from './VirtualMachineSSHKey';
 import Volume from './VirtualMachineVolume';
 import Network from './VirtualMachineNetwork';
+import BootOrder from './VirtualMachineBootOrder';
 import CpuMemory from './VirtualMachineCpuMemory';
 import CloudConfig from './VirtualMachineCloudConfig';
 import NodeScheduling from '@shell/components/form/NodeScheduling';
@@ -44,6 +45,7 @@ export default {
   name: 'HarvesterEditVM',
 
   components: {
+    BootOrder,
     Tab,
     Tabbed,
     Checkbox,
@@ -424,6 +426,11 @@ export default {
 
       return out;
     },
+
+    onBootOrderChange({ diskRows, networkRows }) {
+      this.diskRows = diskRows;
+      this.networkRows = networkRows;
+    }
   },
 };
 </script>
@@ -537,13 +544,21 @@ export default {
         <Network v-model="networkRows" :mode="mode" :is-single="isSingle" />
       </Tab>
 
-      <Tab name="nodeScheduling" :label="t('workload.container.titles.nodeScheduling')" :weight="-3">
+      <Tab name="BootOrder" :label="t('harvester.tab.boot-order')" :weight="-3">
+        <BootOrder
+          :value="bootOrderDevices"
+          :mode="mode"
+          @input="onBootOrderChange"
+        />
+      </Tab>
+
+      <Tab name="nodeScheduling" :label="t('workload.container.titles.nodeScheduling')" :weight="-4">
         <template #default="{active}">
           <NodeScheduling :key="active" :mode="mode" :value="spec.template.spec" :nodes="nodesIdOptions" />
         </template>
       </Tab>
 
-      <Tab :label="t('harvester.tab.vmScheduling')" name="vmScheduling" :weight="-4">
+      <Tab :label="t('harvester.tab.vmScheduling')" name="vmScheduling" :weight="-5">
         <template #default="{active}">
           <PodAffinity
             :key="active"
@@ -557,15 +572,15 @@ export default {
         </template>
       </Tab>
 
-      <Tab v-if="enabledPCI" :label="t('harvester.tab.pciDevices')" name="pciDevices" :weight="-5">
+      <Tab v-if="enabledPCI" :label="t('harvester.tab.pciDevices')" name="pciDevices" :weight="-6">
         <PciDevices :mode="mode" :value="spec.template.spec" :vm="value" />
       </Tab>
 
-      <Tab v-if="enabledSriovgpu" :label="t('harvester.tab.vGpuDevices')" name="vGpuDevices" :weight="-6">
+      <Tab v-if="enabledSriovgpu" :label="t('harvester.tab.vGpuDevices')" name="vGpuDevices" :weight="-7">
         <VirtualMachineVGpuDevices :mode="mode" :value="spec.template.spec" :vm="value" />
       </Tab>
 
-      <Tab v-if="isEdit" :label="t('harvester.tab.accessCredentials')" name="accessCredentials" :weight="-7">
+      <Tab v-if="isEdit" :label="t('harvester.tab.accessCredentials')" name="accessCredentials" :weight="-8">
         <AccessCredentials v-model="accessCredentials" :mode="mode" :resource="value" :is-qemu-installed="isQemuInstalled" />
       </Tab>
 

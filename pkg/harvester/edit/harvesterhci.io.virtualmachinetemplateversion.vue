@@ -15,6 +15,7 @@ import UnitInput from '@shell/components/form/UnitInput';
 import Reserved from './kubevirt.io.virtualmachine/VirtualMachineReserved';
 import Volume from './kubevirt.io.virtualmachine/VirtualMachineVolume';
 import Network from './kubevirt.io.virtualmachine/VirtualMachineNetwork';
+import BootOrder from './kubevirt.io.virtualmachine/VirtualMachineBootOrder';
 import CpuMemory from './kubevirt.io.virtualmachine/VirtualMachineCpuMemory';
 import CloudConfig from './kubevirt.io.virtualmachine/VirtualMachineCloudConfig';
 import SSHKey from './kubevirt.io.virtualmachine/VirtualMachineSSHKey';
@@ -32,6 +33,7 @@ export default {
   name: 'HarvesterEditVMTemplate',
 
   components: {
+    BootOrder,
     Tab,
     SSHKey,
     Volume,
@@ -257,6 +259,13 @@ export default {
 
       <Tab name="Network" :label="t('harvester.tab.network')" :weight="-2">
         <Network v-model="networkRows" :mode="mode" />
+      </Tab>
+
+      <Tab name="BootOrder" :label="t('harvester.tab.boot-order')" :weight="-3">
+        <BootOrder
+          :value="bootOrderDevices"
+          :mode="mode"
+        />
       </Tab>
 
       <Tab

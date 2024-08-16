@@ -125,12 +125,16 @@ export default {
     pvcs() {
       return this.$store.getters['harvester/all'](PVC) || [];
     },
+
+    bootOrders() {
+      return this.rows.map(r => r.bootOrder);
+    }
   },
 
   watch: {
     value: {
       handler(neu) {
-        const rows = neu.map((V) => {
+        const rows = clone(neu).map((V) => {
           if (!this.isCreate && V.source !== SOURCE_TYPE.CONTAINER && !V.newCreateId) {
             V.to = {
               name:   `${ HARVESTER_PRODUCT }-c-cluster-resource-namespace-id`,
@@ -146,7 +150,7 @@ export default {
           }
 
           return V;
-        });
+        }).sort((a, b) => (a.bootOrder || 999999) - (b.bootOrder || 999999));
 
         this.$set(this, 'rows', rows);
       },
@@ -245,12 +249,6 @@ export default {
       this.$refs.deleteTip.hide();
     },
 
-    changeSort(idx, type) {
-      // true: down, false: up
-      this.rows.splice(type ? idx : idx - 1, 1, ...this.rows.splice(type ? idx + 1 : idx, 1, this.rows[type ? idx : idx - 1]));
-      this.update();
-    },
-
     getImageDisplayName(id) {
       return this.$store.getters['harvester/all'](HCI.IMAGE).find(image => image.id === id)?.spec?.displayName;
     }
@@ -260,7 +258,7 @@ export default {
 
 <template>
   <div>
-    <Banner v-if="!isView" color="info" label-key="harvester.virtualMachine.volume.dragTip" />
+    <Banner v-if="!isView" color="info" label-key="harvester.virtualMachine.volume.bootOrderTip" />
     <draggable v-model="rows" :disabled="isView" @end="update">
       <transition-group>
         <div v-for="(volume, i) in rows" :key="volume.id">
@@ -311,20 +309,8 @@ export default {
               />
             </div>
 
-            <div class="bootOrder">
-              <div v-if="!isView" class="mr-15">
-                <button :disabled="i === 0" class="btn btn-sm role-primary" @click.prevent="changeSort(i, false)">
-                  <i class="icon icon-lg icon-chevron-up"></i>
-                </button>
-
-                <button :disabled="i === rows.length -1" class="btn btn-sm role-primary" @click.prevent="changeSort(i, true)">
-                  <i class="icon icon-lg icon-chevron-down"></i>
-                </button>
-              </div>
-
-              <div class="text-muted">
-                bootOrder: {{ i + 1 }}
-              </div>
+            <div v-if="bootOrders[i]" class="text-muted">
+              bootOrder: {{ bootOrders[i] }}
             </div>
 
             <Banner v-if="volume.volumeStatus && !isCreate" class="mt-15 volume-status" color="warning" :label="volume.volumeStatus" />
@@ -403,11 +389,6 @@ export default {
     top: 10px;
     right: 10px;
     padding: 0px;
-  }
-
-  .bootOrder {
-    display: flex;
-    align-items: center;
   }
 
   .buttons {

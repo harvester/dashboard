@@ -186,6 +186,7 @@ harvester:
   tab:
     volume: Volumes
     network: Networks
+    boot-order: Boot Order
     advanced: Advanced Options
     accessCredentials: Access Credentials
     pciDevices: PCI Devices
@@ -510,8 +511,10 @@ harvester:
     imageTip: An external URL to the .iso, .img, .qcow2 or .raw that the virtual machine should be created from.
     efiEnabled: Booting in EFI mode
     secureBoot: Secure Boot
+    bootOrder:
+      dragTip: Drag and drop devices, or use the device's arrows, to change the boot order.
     volume:
-      dragTip: Drag and drop volumes, or use the volume's arrows, to change the boot order.
+      bootOrderTip: To change the boot order go to Boot Order tab.
       volumeTip: The VM only contains a cd-rom volume. You may want to add additional disk volumes.
       macTip: "MAC address as seen inside the guest system."
       volumeUpdate: 'Set volume { name } successfully'
@@ -537,6 +540,7 @@ harvester:
         title: Are you sure?
         message: Are you sure you want to unmount this volume?
     network:
+      bootOrderTip: To change the boot order go to Boot Order tab.
       title: Network
       addNetwork: Add Network
       addPort:  Add Port
