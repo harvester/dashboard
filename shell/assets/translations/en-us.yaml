@@ -1964,6 +1964,7 @@ clusterIndexPage:
     ram: Memory
     used: Used
     reserved: Reserved
+    allocated: Allocated
     units:
       cores: |-
         {count, plural,
