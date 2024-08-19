@@ -134,15 +134,16 @@ export default {
     const inStore = this.$store.getters['currentProduct'].inStore;
 
     const hash = {
-      vms:          this.fetchClusterResources(HCI.VM),
-      nodes:        this.fetchClusterResources(NODE),
-      events:       this.fetchClusterResources(EVENT),
-      metricNodes:  this.fetchClusterResources(METRIC.NODE),
-      settings:     this.fetchClusterResources(HCI.SETTING),
-      services:     this.fetchClusterResources(SERVICE),
-      metric:       this.fetchClusterResources(METRIC.NODE),
-      longhornNode: this.fetchClusterResources(LONGHORN.NODES) || [],
-      _pods:        this.$store.dispatch('harvester/findAll', { type: POD }),
+      vms:              this.fetchClusterResources(HCI.VM),
+      nodes:            this.fetchClusterResources(NODE),
+      events:           this.fetchClusterResources(EVENT),
+      metricNodes:      this.fetchClusterResources(METRIC.NODE),
+      settings:         this.fetchClusterResources(HCI.SETTING),
+      services:         this.fetchClusterResources(SERVICE),
+      metric:           this.fetchClusterResources(METRIC.NODE),
+      longhornNodes:    this.fetchClusterResources(LONGHORN.NODES),
+      longhornSettings: this.fetchClusterResources(LONGHORN.SETTINGS),
+      _pods:            this.$store.dispatch('harvester/findAll', { type: POD }),
     };
 
     (this.accessibleResources || []).map((a) => {
@@ -153,6 +154,10 @@ export default {
 
     if (this.$store.getters[`${ inStore }/schemaFor`](HCI.ADD_ONS)) {
       hash.addons = this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.ADD_ONS });
+    }
+
+    if (this.$store.getters[`${ inStore }/schemaFor`](LONGHORN.NODES)) {
+      this.hasLonghornSchema = true;
     }
 
     const res = await allHash(hash);
@@ -226,6 +231,7 @@ export default {
       showClusterMetrics:     false,
       showVmMetrics:          false,
       enabledMonitoringAddon: false,
+      hasLonghornSchema:      false,
     };
   },
 
@@ -305,8 +311,7 @@ export default {
 
     currentVersion() {
       const inStore = this.$store.getters['currentProduct'].inStore;
-      const settings = this.$store.getters[`${ inStore }/all`](HCI.SETTING);
-      const setting = settings.find( S => S.id === 'server-version');
+      const setting = this.$store.getters[`${ inStore }/byId`](HCI.SETTING, 'server-version');
 
       return setting?.value || setting?.default;
     },
@@ -364,53 +369,46 @@ export default {
       return out;
     },
 
-    storageUsage() {
-      const inStore = this.$store.getters['currentProduct'].inStore;
-      const longhornNodes = this.$store.getters[`${ inStore }/all`](LONGHORN.NODES) || [];
-
-      return longhornNodes.filter(node => node.spec?.allowScheduling).reduce((total, node) => {
-        return total + node.used;
-      }, 0);
-    },
-
-    storageReservedTotal() {
-      let out = 0;
-
-      (this.longhornNode || []).filter(node => node.spec?.allowScheduling).forEach((node) => {
+    storageStats() {
+      const storageOverProvisioningPercentageSetting = this.longhornSettings.find(s => s.id === 'longhorn-system/storage-over-provisioning-percentage');
+      const stats = this.longhornNodes.reduce((total, node) => {
         const disks = node?.spec?.disks || {};
-
-        Object.values(disks).map((disk) => {
-          if (disk.allowScheduling) {
-            out += disk.storageReserved;
-          }
-        });
-      });
-
-      return out;
-    },
-
-    storageTotal() {
-      let out = 0;
-
-      (this.longhornNode || []).forEach((node) => {
         const diskStatus = node?.status?.diskStatus || {};
 
-        Object.values(diskStatus).map((disk) => {
-          if (disk?.storageMaximum) {
-            out += disk.storageMaximum;
-          }
+        total.used += node?.spec?.allowScheduling ? node.used : 0;
+
+        Object.keys(disks).map((key) => {
+          total.scheduled += node?.spec?.allowScheduling ? (diskStatus[key]?.storageScheduled || 0) : 0;
+          total.reserved += disks[key]?.storageReserved || 0;
         });
+        Object.values(diskStatus).map((diskStat) => {
+          total.maximum += diskStat?.storageMaximum || 0;
+        });
+
+        return total;
+      }, {
+        used:      0,
+        scheduled: 0,
+        maximum:   0,
+        reserved:  0,
+        total:     0
       });
 
-      return out;
+      stats.total = ((stats.maximum - stats.reserved) * Number(storageOverProvisioningPercentageSetting?.value ?? 0)) / 100;
+
+      return stats;
     },
 
     storageUsed() {
-      return this.createMemoryValues(this.storageTotal, this.storageUsage);
+      const stats = this.storageStats;
+
+      return this.createMemoryValues(stats.maximum, stats.used);
     },
 
-    storageReserved() {
-      return this.createMemoryValues(this.storageTotal, this.storageReservedTotal);
+    storageAllocated() {
+      const stats = this.storageStats;
+
+      return this.createMemoryValues(stats.total, stats.scheduled);
     },
 
     vmEvents() {
@@ -646,7 +644,7 @@ export default {
       <div
         class="hardware-resource-gauges"
         :class="{
-          live: !storageTotal,
+          live: !hasLonghornSchema,
         }"
       >
         <HardwareResourceGauge
@@ -660,10 +658,11 @@ export default {
           :used="ramUsed"
         />
         <HardwareResourceGauge
-          v-if="storageTotal"
+          v-if="hasLonghornSchema"
           :name="t('harvester.dashboard.hardwareResourceGauge.storage')"
           :used="storageUsed"
-          :reserved="storageReserved"
+          :reserved="storageAllocated"
+          :reserved-title="t('clusterIndexPage.hardwareResourceGauge.allocated')"
         />
       </div>
     </template>

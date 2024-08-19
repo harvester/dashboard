@@ -268,7 +268,7 @@ export default {
           <HarvesterStorageUsed
             :row="value"
             :resource-name="t('harvester.host.detail.storage')"
-            :show-reserved="true"
+            :show-allocated="true"
           />
         </div>
       </div>
