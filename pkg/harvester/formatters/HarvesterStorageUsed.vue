@@ -23,77 +23,76 @@ export default {
       default: ''
     },
 
-    showReserved: {
+    showAllocated: {
       type:    Boolean,
       default: false,
     },
   },
 
+  async fetch() {
+    const inStore = this.$store.getters['currentProduct'].inStore;
+
+    this.longhornSettings = await this.$store.dispatch(`${ inStore }/findAll`, { type: LONGHORN.SETTINGS });
+  },
+
   data() {
-    return {};
+    const inStore = this.$store.getters['currentProduct'].inStore;
+    const longhornSettings = this.$store.getters[`${ inStore }/all`](LONGHORN.SETTINGS) || [];
+
+    return { longhornSettings };
   },
 
   computed: {
-    usage() {
+    storageStats() {
+      const stats = {
+        used:      0,
+        scheduled: 0,
+        maximum:   0,
+        reserved:  0,
+        total:     0
+      };
       const inStore = this.$store.getters['currentProduct'].inStore;
-      const longhornNode = this.$store.getters[`${ inStore }/byId`](LONGHORN.NODES, `longhorn-system/${ this.row.id }`) || {};
+      const node = this.$store.getters[`${ inStore }/byId`](LONGHORN.NODES, `longhorn-system/${ this.row.id }`) || {};
+      const storageOverProvisioningPercentageSetting = this.longhornSettings.find(s => s.id === 'longhorn-system/storage-over-provisioning-percentage');
+      const disks = node?.spec?.disks || {};
+      const diskStatus = node?.status?.diskStatus || {};
 
-      return longhornNode?.used || 0;
-    },
+      stats.used += node?.spec?.allowScheduling ? node.used : 0;
 
-    reserved() {
-      const inStore = this.$store.getters['currentProduct'].inStore;
-      const longhornNode = this.$store.getters[`${ inStore }/byId`](LONGHORN.NODES, `longhorn-system/${ this.row.id }`);
-      let reserved = 0;
-
-      const disks = longhornNode?.spec?.disks || {};
-
-      Object.values(disks).map((disk) => {
-        if (disk.allowScheduling) {
-          reserved += disk.storageReserved;
-        }
+      Object.keys(disks).map((key) => {
+        stats.scheduled += node?.spec?.allowScheduling ? (diskStatus[key]?.storageScheduled || 0) : 0;
+        stats.reserved += disks[key]?.storageReserved || 0;
+      });
+      Object.values(diskStatus).map((diskStat) => {
+        stats.maximum += diskStat?.storageMaximum || 0;
       });
 
-      return reserved;
-    },
+      stats.total = ((stats.maximum - stats.reserved) * Number(storageOverProvisioningPercentageSetting?.value ?? 0)) / 100;
 
-    total() {
-      const inStore = this.$store.getters['currentProduct'].inStore;
-      const longhornNode = this.$store.getters[`${ inStore }/byId`](LONGHORN.NODES, `longhorn-system/${ this.row.id }`);
-      let out = 0;
-
-      const diskStatus = longhornNode?.status?.diskStatus || {};
-
-      Object.values(diskStatus).map((disk) => {
-        if (disk?.storageMaximum) {
-          out += disk.storageMaximum;
-        }
-      });
-
-      return out;
+      return stats;
     },
 
     units() {
-      const exponent = exponentNeeded(this.total, 1024);
+      const exponent = exponentNeeded(this.storageStats.maximum, 1024);
 
       return `${ UNITS[exponent] }iB`;
     },
 
     used() {
-      let out = this.formatter(this.usage || 0);
+      let out = this.formatter(this.storageStats.used);
 
       if (!Number.parseFloat(out) > 0) {
-        out = this.formatter(this.usage || 0, { canRoundToZero: false });
+        out = this.formatter(this.storageStats.used, { canRoundToZero: false });
       }
 
       return out;
     },
 
-    formatReserved() {
-      let out = this.formatter(this.reserved || 0);
+    formatAllocated() {
+      let out = this.formatter(this.storageStats.scheduled);
 
       if (!Number.parseFloat(out) > 0) {
-        out = this.formatter(this.reserved || 0, { canRoundToZero: false });
+        out = this.formatter(this.storageStats.scheduled, { canRoundToZero: false });
       }
 
       return out;
@@ -102,15 +101,15 @@ export default {
     usedAmountTemplateValues() {
       return {
         used:  this.used,
-        total: this.formatter(this.total || 0),
+        total: this.formatter(this.storageStats.maximum),
         unit:  this.units,
       };
     },
 
-    reservedAmountTemplateValues() {
+    allocatedAmountTemplateValues() {
       return {
-        used:  this.formatReserved,
-        total: this.formatter(this.total || 0),
+        used:  this.formatAllocated,
+        total: this.formatter(this.storageStats.total),
         unit:  this.units,
       };
     },
@@ -118,7 +117,7 @@ export default {
 
   methods: {
     formatter(value, format) {
-      const minExponent = exponentNeeded(this.total, 1024);
+      const minExponent = exponentNeeded(this.storageStats.maximum, 1024);
       const formatOptions = {
         addSuffix: false,
         increment: 1024,
@@ -137,21 +136,21 @@ export default {
 <template>
   <div>
     <div
-      v-if="showReserved"
+      v-if="showAllocated"
     >
       <ConsumptionGauge
-        :capacity="total"
-        :used="reserved"
+        :capacity="storageStats.total"
+        :used="storageStats.scheduled"
         :units="units"
         :number-formatter="formatter"
         :resource-name="resourceName"
       >
         <template #title="{formattedPercentage}">
           <span>
-            {{ t('clusterIndexPage.hardwareResourceGauge.reserved') }}
+            {{ t('clusterIndexPage.hardwareResourceGauge.allocated') }}
           </span>
           <span class="precent-data">
-            {{ t('node.detail.glance.consumptionGauge.amount', reservedAmountTemplateValues) }}
+            {{ t('node.detail.glance.consumptionGauge.amount', allocatedAmountTemplateValues) }}
             <span class="ml-10 percentage">
               /&nbsp;{{ formattedPercentage }}
             </span>
@@ -160,13 +159,13 @@ export default {
       </ConsumptionGauge>
     </div>
     <ConsumptionGauge
-      :capacity="total"
-      :used="usage"
+      :capacity="storageStats.maximum"
+      :used="storageStats.used"
       :units="units"
       :number-formatter="formatter"
-      :resource-name="showReserved ? '' : resourceName"
+      :resource-name="showAllocated ? '' : resourceName"
       :class="{
-        'mt-10': showReserved,
+        'mt-10': showAllocated,
       }"
     >
       <template #title="{formattedPercentage}">
