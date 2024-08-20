@@ -355,7 +355,7 @@ harvester:
       run: 运行策略
       configure: 配置
       mode: 模式
-      modeLink: 模式 <a href="https://docs.harvesterhci.io/v1.1/host/#ksmtuned-mode" target="_blank"><i class="icon icon-info" /></a>
+      modeLink: 模式 <a href="https://docs.harvesterhci.io/v1.3/host/#ksmtuned-mode" target="_blank"><i class="icon icon-info" /></a>
       thresCoef: 阈值系数
       enableMergeNodes: 启用跨节点合并
       enable: 启用
@@ -746,7 +746,7 @@ harvester:
     dismissMessage: 忽略
     upgradeInfo:
       warning: 警告
-      doc: 在升级到新 Harvester 版本之前，你必须为集群执行所需的<a href="https://docs.harvesterhci.io/v1.0/upgrade/automatic/" target="_blank">升级前检查</a>。仅完成适用于环境的任务即可。
+      doc: 在升级到较新的 Harvester 版本之前，您必须仔细阅读<a href=“https://docs.harvesterhci.io/v1.3/upgrade/index” target=“_blank”>升级过程文档</a>。仅完成适用于环境的任务即可。
       tip: 如果没有执行这些检查，升级可能会失败，而且你可能会遇到需要手动修复的已知问题。
       moreNotes: 有关发行说明的详情，请访问 -
 
@@ -848,7 +848,7 @@ harvester:
         invalid: '"排除列表"无效。'
         addIp: 添加排除 IP
       warning: '警告：<br/>如果要更改存储网络，你需要在应用此设置之前关闭所有虚拟机。<br/>用户必须确保配置了集群网络，VLAN 配置能覆盖所有节点，而且所有节点的网络正常。'
-      tip: IP 范围应为 IPV4 格式。<code>所需 IP 数量 = 节点数量 * 4 + 磁盘数量 * 2 + 要下载/上传的镜像数量</code>。详见<a href="https://docs.harvesterhci.io/v1.2/advanced/storagenetwork#configuration-example" target="_blank">此文档</a>。
+      tip: IP 范围应为 IPV4 格式。<code>所需 IP 数量 = 节点数量 * 4 + 磁盘数量 * 2 + 要下载/上传的镜像数量</code>。详见<a href="https://docs.harvesterhci.io/v1.3/advanced/storagenetwork#configuration-example" target="_blank">此文档</a>。
     vmForceDeletionPolicy:
       period: 周期
     httpProxy:
@@ -917,7 +917,7 @@ harvester:
     internal:
       rancher:
         title: 访问内嵌的 Rancher UI
-        titleDescription: 仅支持使用内嵌的 Rancher 仪表板来进行调试和验证。有关 Rancher 的多集群和多租户集成，请参阅<a target="_blank" href="https://docs.harvesterhci.io/v1.2/rancher/index" rel="noopener noreferrer nofollow">此文档</a>。
+        titleDescription: 仅支持使用内嵌的 Rancher 仪表板来进行调试和验证。有关 Rancher 的多集群和多租户集成，请参阅<a target="_blank" href="https://docs.harvesterhci.io/v1.3/rancher/rancher-integration" rel="noopener noreferrer nofollow">此文档</a>。
       longhorn:
         title: 访问内嵌的 Longhorn UI
         titleDescription: 仅支持使用内嵌的 Longhorn UI 来进行调试和验证。
