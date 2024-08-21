@@ -139,7 +139,6 @@ export const HCI = {
   NETWORK_ROUTE:            'network.harvesterhci.io/route',
   IMAGE_NAME:               'harvesterhci.io/image-name',
   NETWORK_TYPE:             'network.harvesterhci.io/type',
-  TOTAL_SNAPSHOT_SIZE:      'harvesterhci.io/totalSnapshotSize',
   CLOUD_PROVIDER_NAMESPACE: 'cloudprovider.harvesterhci.io/namespace',
   CLOUD_PROVIDER_NETWORK:   'cloudprovider.harvesterhci.io/network',
   CLOUD_PROVIDER_PROJECT:   'cloudprovider.harvesterhci.io/project',

@@ -52,6 +52,7 @@ export default {
 
     async save(buttonDone) {
       try {
+        // call delete action if user input 0Gi or empty string
         if (this.totalSnapshotSize === null || this.totalSnapshotSize === '0Gi' ) {
           await this.actionResource.doAction('deleteResourceQuota');
         } else {
