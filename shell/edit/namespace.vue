@@ -4,7 +4,7 @@ import NameNsDescription from '@shell/components/form/NameNsDescription';
 import CreateEditView from '@shell/mixins/create-edit-view';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import { MANAGEMENT } from '@shell/config/types';
-import { CONTAINER_DEFAULT_RESOURCE_LIMIT, PROJECT, HCI } from '@shell/config/labels-annotations';
+import { CONTAINER_DEFAULT_RESOURCE_LIMIT, PROJECT } from '@shell/config/labels-annotations';
 import ContainerResourceLimit from '@shell/components/ContainerResourceLimit';
 import PodSecurityAdmission from '@shell/components/PodSecurityAdmission';
 import Tabbed from '@shell/components/Tabbed';
@@ -16,12 +16,10 @@ import ResourceQuota from '@shell/components/form/ResourceQuota/Namespace';
 import Loading from '@shell/components/Loading';
 import { HARVESTER_TYPES, RANCHER_TYPES } from '@shell/components/form/ResourceQuota/shared';
 import Labels from '@shell/components/form/Labels';
-import Snapshots from '@shell/components/form/TotalSnapshotSize';
 import { HARVESTER_NAME as HARVESTER } from '@shell/config/features';
 
 export default {
   components: {
-    Snapshots,
     ContainerResourceLimit,
     CruResource,
     LabeledSelect,
@@ -134,10 +132,8 @@ export default {
   created() {
     this.registerBeforeHook(this.willSave, 'willSave');
   },
+
   methods: {
-    updateTotalSnapshotSize(newSize) {
-      this.value.setAnnotation(HCI.TOTAL_SNAPSHOT_SIZE, newSize);
-    },
     willSave() {
       const cluster = this.$store.getters['currentCluster'];
       const projectId = this.project?.id.split('/')[1];
@@ -246,23 +242,10 @@ export default {
         :weight="-1"
       >
         <Labels
-          :key="value.annotations"
-          v-model="value"
           default-container-class="labels-and-annotations-container"
-          :mode="mode"
-          :display-side-by-side="false"
-        />
-      </Tab>
-      <Tab
-        name="Snapshots"
-        :label="t('namespace.snapshots.label')"
-        :weight="-2"
-      >
-        <Snapshots
-          :key="value.annotations"
           :value="value"
           :mode="mode"
-          @updateTotalSnapshotSize="updateTotalSnapshotSize"
+          :display-side-by-side="false"
         />
       </Tab>
       <Tab

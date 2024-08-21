@@ -7,7 +7,6 @@ export const HCI = {
   TEMPLATE_VERSION_CUSTOM_NAME: 'template-version.harvesterhci.io/customName',
   CREATOR:                      'harvesterhci.io/creator',
   OS:                           'harvesterhci.io/os',
-  TOTAL_SNAPSHOT_SIZE:          'harvesterhci.io/totalSnapshotSize',
   NETWORK_TYPE:                 'network.harvesterhci.io/type',
   VM_NAME:                      'harvesterhci.io/vmName',
   VM_NAME_PREFIX:               'harvesterhci.io/vmNamePrefix',
@@ -50,6 +49,5 @@ export const HCI = {
   NODE_NTP_SYNC_STATUS:         'node.harvesterhci.io/ntp-service',
   PARENT_SRIOV:                 'harvesterhci.io/parent-sriov-network-device',
   PARENT_SRIOV_GPU:             'harvesterhci.io/parentSRIOVGPUDevice',
-  VM_MAINTENANCE_MODE_STRATEGY: 'harvesterhci.io/maintain-mode-strategy',
-  // RESOURCE_QUOTA:              'harvesterhci.io.resourcequotas'
+  VM_MAINTENANCE_MODE_STRATEGY: 'harvesterhci.io/maintain-mode-strategy'
 };

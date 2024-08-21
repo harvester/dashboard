@@ -251,7 +251,7 @@ export function init($plugin, store) {
     exact:      true,
   });
 
-  // singleVirtualCluster - standalone harvester cluster
+  // singleVirtualCluster
   if (isSingleVirtualCluster) {
     headers(NAMESPACE, [STATE, NAME_UNLINKED, NS_SNAPSHOT_QUOTA, AGE]);
     basicType([NAMESPACE]);

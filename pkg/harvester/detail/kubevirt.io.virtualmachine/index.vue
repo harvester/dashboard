@@ -91,7 +91,7 @@ export default {
   computed: {
     ...mapGetters(['currentCluster']),
 
-    totalSnapshotLimit() {
+    totalSnapshotSize() {
       if (this.value.snapshotSizeQuota === undefined || this.value.snapshotSizeQuota === null) {
         return ' - ';
       }
@@ -201,7 +201,7 @@ export default {
       <Tab name="quotas" :label="t('harvester.tab.quotas')" :weight="3">
         <LabelValue
           :name="t('harvester.snapshot.totalSnapshotSize')"
-          :value="totalSnapshotLimit"
+          :value="totalSnapshotSize"
         />
       </Tab>
 
