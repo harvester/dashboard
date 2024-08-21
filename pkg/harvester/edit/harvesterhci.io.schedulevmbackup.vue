@@ -180,18 +180,8 @@ export default {
     },
 
     validateFailure(count) {
-      if (count > this.value.spec.retain) {
-        this.$set(this, 'maxFailure', this.value.spec.retain);
-      } else if (count < 2) {
-        this.$set(this, 'maxFailure', 2);
-      }
-    },
-
-    validateRetain(count) {
-      if (count > 250) {
-        this.$set(this, 'retain', 250);
-      } else if (count < 2) {
-        this.$set(this, 'retain', 2);
+      if (this.value.spec.retain && count > this.value.spec.retain) {
+        this.$set(this.value.spec, 'maxFailure', this.value.spec.retain);
       }
     },
   },
@@ -290,7 +280,6 @@ export default {
           required
           :tooltip="t('harvester.schedule.retain.tooltip')"
           :disabled="isBackupTargetUnAvailable || isView"
-          @input="validateRetain"
         />
         <LabeledInput
           v-model.number="value.spec.maxFailure"

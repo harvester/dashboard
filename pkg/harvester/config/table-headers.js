@@ -43,11 +43,12 @@ export const SNAPSHOT_TARGET_VOLUME = {
 
 // The column of cron expression volume on VM schedules list page
 export const VM_SCHEDULE_CRON = {
-  name:     'CronExpression',
-  labelKey: 'harvester.tableHeaders.cronExpression',
-  value:    'spec.cron',
-  align:    'center',
-  sort:     'spec.cron',
+  name:      'CronExpression',
+  labelKey:  'harvester.tableHeaders.cronExpression',
+  value:     'spec.cron',
+  align:     'center',
+  sort:      'spec.cron',
+  formatter: 'HarvesterCronExpression',
 };
 
 // The column of retain on VM schedules list page
