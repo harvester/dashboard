@@ -5473,6 +5473,7 @@ tableHeaders:
   targetKind: Target Type
   targetPort: Target
   template: Template
+  totalSnapshotQuota: Total Snapshot Quota
   type: Type
   updated: Updated
   up-to-date: Up To Date
@@ -6882,6 +6883,7 @@ action:
   viewYaml: View YAML
   activate: Activate
   deactivate: Deactivate
+  editQuota: Edit Quota
   show: Show
   hide: Hide
   copy: Copy

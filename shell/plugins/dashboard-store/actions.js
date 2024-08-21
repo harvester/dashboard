@@ -182,6 +182,7 @@ export default {
 
     const typeOptions = rootGetters['type-map/optionsFor'](type);
 
+    console.log(`Find All: [${ ctx.state.config.namespace }] ${ type }`); // eslint-disable-line no-console
     opt = opt || {};
     opt.url = getters.urlFor(type, null, opt);
     opt.stream = opt.stream !== false && load !== _NONE;

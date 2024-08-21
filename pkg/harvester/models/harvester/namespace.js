@@ -42,7 +42,7 @@ export default class HciNamespace extends namespace {
       action:  'editNSQuota',
       label:   this.t('harvester.modal.quota.editQuota'),
       icon:    'icon icon-storage',
-      enabled: !!this.actions.updateResourceQuota,
+      enabled: !!this?.actions?.updateResourceQuota && !!this?.actions?.deleteResourceQuota,
       weight:  -11,
     };
 
@@ -74,11 +74,7 @@ export default class HciNamespace extends namespace {
 
   get nsResourceQuota() {
     const inStore = this.$rootGetters['currentProduct'].inStore;
-
-    // console.log('🚀 ~ HciNamespace ~ getnsResourceQuota ~ inStore:', inStore);
     const allResQuotas = this.$rootGetters[`${ inStore }/all`](HCI.RESOURCE_QUOTA);
-
-    // console.log('🚀 ~ HciNamespace ~ getnsResourceQuota ~ allResQuotas:', allResQuotas);
 
     return allResQuotas.find( RQ => RQ.metadata.namespace === this.id);
   }
