@@ -1339,6 +1339,7 @@ harvester:
       placeholder: 'topology.kubernetes.io/zone'
 
 advancedSettings:
+  technicalPreview: 'Technical Previews allow users to test and evaluate early-access functionality prior to official supported releases'
   descriptions:
     'harv-vlan': Default Network Interface name of the VLAN network.
     'harv-backup-target': Custom backup target to store VM backups.
@@ -1370,7 +1371,7 @@ advancedSettings:
     'harv-ntp-servers': Configure NTP server. You can configure multiple IPv4 addresses or host addresses.
     'harv-auto-rotate-rke2-certs': The certificate rotation mechanism relies on Rancher. Harvester will automatically update certificates generation to trigger rotation.
     'harv-kubeconfig-default-token-ttl-minutes': 'TTL (in minutes) applied on Harvester admin kubeconfig files. Default is 0, which means to never expire.'
-    'harv-longhorn-v2-data-engine-enabled': 'Enable the Longhorn V2 data engine. Default is false. <ul><li>Changing this setting will restart RKE2 on all nodes. This will not affect running VM workloads.</li><li>If you see "not enough hugepages-2Mi capacity" errors when enabling this setting, wait a minute for the error to clear. If the error remains, reboot the affected node.</li><li>WARNING: THIS IS A PREVIEW FEATURE</li></ul>'
+    'harv-longhorn-v2-data-engine-enabled': 'Enable the Longhorn V2 data engine. Default is false. <ul><li>Changing this setting will restart RKE2 on all nodes. This will not affect running VM workloads.</li><li>If you see "not enough hugepages-2Mi capacity" errors when enabling this setting, wait a minute for the error to clear. If the error remains, reboot the affected node.</li></ul>'
 
 typeLabel:
   kubevirt.io.virtualmachine: |-

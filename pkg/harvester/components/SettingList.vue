@@ -112,6 +112,9 @@ export default {
             <span v-if="setting.customized" class="modified">
               Modified
             </span>
+            <span v-if="setting.technicalPreview" v-clean-tooltip="t('advancedSettings.technicalPreview')" class="technical-preview">
+              Technical Preview
+            </span>
           </h1>
           <h2 v-clean-html="t(setting.description, {}, true)">
           </h2>
@@ -196,6 +199,14 @@ export default {
 .modified {
   margin-left: 10px;
   border: 1px solid var(--primary);
+  border-radius: 5px;
+  padding: 2px 10px;
+  font-size: 12px;
+}
+
+.technical-preview {
+  margin-left: 10px;
+  border: 1px solid var(--warning);
   border-radius: 5px;
   padding: 2px 10px;
   font-size: 12px;
