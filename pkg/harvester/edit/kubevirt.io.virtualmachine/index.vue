@@ -180,7 +180,7 @@ export default {
       return this.value.hasAction('start');
     },
 
-    enableCpuPinning() {
+    enableCpuPinningCheckbox() {
       if (this.mode === 'create') {
         return this.nodes.some(node => node.isCPUManagerEnabled); // any one of nodes has label cpuManager=true
       }
@@ -190,15 +190,11 @@ export default {
 
     showCpuPinningBanner() {
       if (this.mode === 'edit') {
-        console.log('old dedicatedCpuPlacement = ', !!this.cloneVM.spec.template.spec.domain.cpu.dedicatedCpuPlacement);
-
         return this.cpuPinning !== !!this.cloneVM.spec.template.spec.domain.cpu.dedicatedCpuPlacement;
       }
 
       if (this.mode === 'create') {
-        const hasOneNodeCPUManagerEnabled = this.nodes.some(node => node.isCPUManagerEnabled);
-
-        return !hasOneNodeCPUManagerEnabled;
+        return this.nodes.every(node => !node.isCPUManagerEnabled); // no node enabled CPU manager
       }
 
       return false;
@@ -391,11 +387,9 @@ export default {
     },
 
     restartVM() {
-      console.log('restartVM this.mode=', this.mode);
       if (this.mode !== 'edit') {
         return;
       }
-      console.log('this.value.isRunning=', this.value.isRunning);
       if (!this.value.isRunning) {
         return;
       }
@@ -408,11 +402,9 @@ export default {
       const oldVM = JSON.parse(JSON.stringify(this.cloneVM));
       const newVM = JSON.parse(JSON.stringify(cloneDeepNewVM));
 
-      console.log('isEqual(oldVM, newVM)=', isEqual(oldVM, newVM));
       if (isEqual(oldVM, newVM)) {
         return;
       }
-      console.log('new Promise show restartDialog');
 
       return new Promise((resolve) => {
         this.$modal.show('restartDialog');
@@ -744,7 +736,7 @@ export default {
 
         <Checkbox
           v-model="cpuPinning"
-          :disabled="!enableCpuPinning"
+          :disabled="!enableCpuPinningCheckbox"
           class="check"
           type="checkbox"
           tooltip-key="harvester.virtualMachine.cpuPinning.tooltip"

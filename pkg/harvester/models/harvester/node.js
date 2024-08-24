@@ -371,7 +371,7 @@ export default class HciNode extends HarvesterResource {
   }
 
   get isCPUManagerEnabled() {
-    return this.metadata?.labels?.[HCI_ANNOTATIONS.NODE_CPU_MANAGER_ENABLED] === 'true';
+    return this.metadata?.labels?.[HCI_ANNOTATIONS.CPU_MANAGER] === 'true';
   }
 
   get isCPUManagerEnableInProgress() {
@@ -390,10 +390,6 @@ export default class HciNode extends HarvesterResource {
     } catch {
       return '';
     }
-  }
-
-  get cpuManagerInProgressStatus() {
-    return this.value.isCPUManagerEnabled ? this.t('generic.disabling') : this.t('generic.enabling');
   }
 
   get longhornDisks() {
