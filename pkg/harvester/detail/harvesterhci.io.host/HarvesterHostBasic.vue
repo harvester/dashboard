@@ -48,10 +48,9 @@ export default {
     customName() {
       return this.value.metadata?.annotations?.[HCI_ANNOTATIONS.HOST_CUSTOM_NAME];
     },
-
     cpuManagerStatus() {
       if (this.value.isCPUManagerEnableInProgress) {
-        return this.value.isCPUManagerEnabled ? this.t('generic.disabling') : this.t('generic.enabling');
+        return this.t('generic.loading');
       }
 
       return this.t(`generic.${ this.value.isCPUManagerEnabled ? 'enabled' : 'disabled' }`);
@@ -233,17 +232,7 @@ export default {
 
     <div class="row mb-20">
       <div v-if="!value.isEtcd" class="col span-6">
-        <LabelValue :name="t('harvester.host.detail.cpuManager')">
-          <template #value>
-            <div class="status">
-              <span>{{ cpuManagerStatus }}</span>
-              <i
-                class="icon"
-                :class="{'icon-spinner icon-spin': value.isCPUManagerEnableInProgress, 'icon-checkmark': !value.isCPUManagerEnableInProgress && value.isCPUManagerEnabled, 'icon-close': !value.isCPUManagerEnableInProgress && !value.isCPUManagerEnabled}"
-              />
-            </div>
-          </template>
-        </LabelValue>
+        <LabelValue :name="t('harvester.host.detail.cpuManager')" :value="cpuManagerStatus" />
       </div>
       <div class="col span-6">
         <LabelValue :name="t('harvester.host.detail.consoleUrl')" :value="consoleUrl.value">
@@ -348,16 +337,5 @@ export default {
 <style lang="scss" scoped>
 .role {
   display: flex;
-}
-.icon-spinner{
-  vertical-align: text-bottom;
-}
-.icon-checkmark{
-  vertical-align: text-bottom;
-  color: var(--success);
-}
-.icon-close{
-  vertical-align: text-bottom;
-  color: var(--error);
 }
 </style>

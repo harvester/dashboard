@@ -532,12 +532,6 @@ export default class VirtVm extends HarvesterResource {
     });
   }
 
-  // get isStopped() {
-  //   console.log('this = ', this);
-
-  //   return this?.status?.printableStatus === STOPPED;
-  // }
-
   get isPaused() {
     const conditions = this.vmi?.status?.conditions || [];
     const isPause = conditions.filter(cond => cond.type === PAUSED).length > 0;
