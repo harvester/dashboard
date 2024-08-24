@@ -7,6 +7,7 @@ import HarvesterVmState from '../formatters/HarvesterVmState';
 import { STATE, AGE, NAME, NAMESPACE } from '@shell/config/table-headers';
 import { NODE, POD } from '@shell/config/types';
 import { HCI } from '../types';
+
 import { allHash } from '@shell/utils/promise';
 import Loading from '@shell/components/Loading';
 import { clone } from '@shell/utils/object';
@@ -61,7 +62,7 @@ export default {
     HarvesterVmState,
     LinkDetail,
     ConsoleBar,
-    ResourceTable,
+    ResourceTable
   },
 
   props: {

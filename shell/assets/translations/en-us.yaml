@@ -35,8 +35,6 @@ generic:
   labelsAndAnnotations: Labels & Annotations
   podSecurityAdmission: Pod Security Admission
   links: Links
-  enabling: Enabling
-  disabling: Disabling
   loading: Loading&hellip;
   members: Members
   na: n/a

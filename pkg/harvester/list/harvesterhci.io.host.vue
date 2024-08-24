@@ -64,7 +64,6 @@ export default {
     const hash = await allHash(_hash);
 
     this.rows = hash.nodes;
-    console.log('🚀 ~ fetch ~ this.row:', this.rows);
   },
 
   data() {
@@ -131,12 +130,13 @@ export default {
       }
 
       out.push({
-        name:      'cpuManager',
-        labelKey:  'harvester.tableHeaders.cpuManager',
-        value:     'isCPUManagerEnabled',
-        formatter: 'HarvesterCPUPinning',
-        width:     150,
-        align:     'center',
+        name:          'cpuManager',
+        labelKey:      'harvester.tableHeaders.cpuManager',
+        value:         'id',
+        formatter:     'HarvesterCPUPinning',
+        formatterOpts: { rows: this.rows },
+        width:         150,
+        align:         'center',
 
       });
 
