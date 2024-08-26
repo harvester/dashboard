@@ -227,6 +227,5 @@ export default {
 <style lang="scss" scoped>
   .console-button {
     display: flex;
-    align-items: center;
   }
 </style>
