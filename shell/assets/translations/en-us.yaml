@@ -101,7 +101,7 @@ generic:
 
   deprecated: Deprecated
   placeholder: "e.g. {text}"
-  moreInfo: More Info
+  moreInfo: More Information
   selectors:
     label: Selector
     matchingResources:
@@ -195,7 +195,7 @@ nav:
     restoreCards: Restore hidden cards
   userMenu:
     preferences: Preferences
-    accountAndKeys: Account & API Keys
+    accountAndKeys: Account and API Keys
     logOut: Log Out
   failWhale:
     reload: Reload
@@ -203,7 +203,7 @@ nav:
 
 product:
   apps: Apps
-  auth: Users & Authentication
+  auth: Users and Authentication
   backup: Rancher Backups
   cis: CIS Benchmark
   ecm: Cluster Manager
@@ -337,17 +337,17 @@ accountAndKeys:
       accessKey: Access Key
       secretKey: Secret Key
       bearerToken: Bearer Token
-      saveWarning: Save the info above! This is the only time you'll be able to see it. If you lose it, you'll need to create a new API key.
-      keyCreated: A new API Key has been created
-      bearerTokenTip: "Access Key and Secret Key can be sent as the username and password for HTTP Basic auth to authorize requests. You can also combine them to use as a Bearer token:"
-      ttlLimitedWarning: The Expiry time for this API Key was reduced due to system configuration
+      saveWarning: Save the above information! This is the only time you will be able to see it. If you lose it, you will need to create a new API key.
+      keyCreated: A new API key has been created
+      bearerTokenTip: "Access Key and Secret Key can be sent as the username and password for HTTP basic authentication to authorize requests. You can also combine them to use as a Bearer token:"
+      ttlLimitedWarning: The Expiry time for this API key was reduced due to system configuration
 
 addClusterMemberDialog:
   title: Add Cluster Member
 
 addonConfigConfirmation:
   title: Add-On Config Reset
-  body: Changing the Kubernetes Version can reset the Add-On Config values. You should check that the values are as expected before continuing.
+  body: Changing the Kubernetes Version can reset the add-on configuration values. Confirm that the values are as expected before continuing.
 
 addProjectMemberDialog:
   title: Add Project Member
@@ -355,11 +355,11 @@ addProjectMemberDialog:
 authConfig:
   accessMode:
     label: 'Configure who should be able to login and use {vendor}'
-    required: Restrict access to only the authorized users & groups
-    restricted: 'Allow members of clusters and projects, plus authorized users & groups'
+    required: Restrict access to only the authorized users and groups
+    restricted: 'Allow members of clusters and projects, plus authorized users and groups'
     unrestricted: Allow any valid user
   allowedPrincipalIds:
-    title: Authorized Users & Groups
+    title: Authorized Users and Groups
   associatedWarning: 'Note: The {provider} user you authenticate as will be associated as an alternate way to login to the {vendor} user you are currently logged in as <code>{username}</code>; all the global permissions, project, and cluster role bindings of this {vendor} user will also apply to the {provider} user.'
   github:
     clientId:
@@ -384,7 +384,7 @@ authConfig:
         3: <li>Click the "New OAuth App" button.</li>
       suffix:
         1: <li>Click "Register application"</li>
-        2: <li>Copy and paste the Client ID and Client Secret of your newly created OAuth app into the fields below</li>
+        2: <li>Copy and paste the client ID and client secret of your newly created OAuth app into the fields below</li>
     host:
       label: GitHub Enterprise Host
       placeholder: e.g. github.mycompany.example
@@ -408,7 +408,7 @@ authConfig:
       1:
         title: 'Click <a href="https://console.developers.google.com/apis/credentials" target="_blank" rel="noopener noreferrer nofollow">here</a> to open applications settings in a new window'
         body:
-         1: Login to your account. Navigate to "APIs & Services" and then select "OAuth consent screen".
+         1: Login to your account. Navigate to "APIs and Services" and then select "OAuth consent screen".
          2: 'Authorized domains:'
          3: 'Application homepage link: '
          4: 'Under Scopes for Google APIs, enable "email", "profile", and "openid".'
@@ -417,7 +417,7 @@ authConfig:
       2:
         title: 'Navigate to the "Credentials" tab to create your OAuth client ID'
         body:
-          1: 'Select the "Create Credentials" dropdown, and select "OAuth clientID", then select "Web application".'
+          1: 'Select the "Create Credentials" drop-down, and select "OAuth clientID", then select "Web application".'
           2: 'Authorized Javascript origins:'
           3: 'Authorized redirect URIs:'
           4: 'Click "Create", and then click on the "Download JSON" button.'
@@ -428,14 +428,14 @@ authConfig:
         body:
           1: Create a service account.
           2: Generate a key for the service account.
-          3: Add the service account as an OAuth client in your google domain.
+          3: Add the service account as an OAuth client in your Google domain.
   ldap:
     freeipa: Configure a FreeIPA server
     activedirectory: Configure an Active Directory account
     openldap: Configure an OpenLDAP server
     defaultLoginDomain:
       label: Default Login Domain
-      placeholder: eg mycompany
+      placeholder: eg, mycompany
       hint: This domain will be used if a user logs in without specifying one.
     cert: Certificate
     disabledStatusBitmask: Disabled Status Bitmask
@@ -728,7 +728,7 @@ backupRestoreOperator:
   backupFilename: Backup Filename
   deleteTimeout:
     label: Delete Timeout
-    tip: Seconds to wait for a resource delete to succeed before removing finalizers to force deletion.
+    tip: Seconds to wait for a resource deletion to succeed before removing finalizers to force deletion.
   deployment:
     rancherNamespace: Rancher ResourceSet Namespace
     size: Size
@@ -745,14 +745,14 @@ backupRestoreOperator:
       storageClass:
         label: Storage Class
       tip: 'Configure a storage location where all backups are saved by default. You will have the option to override this with each backup, but will be limited to using an S3-compatible object store.'
-      warning: 'This {type} does not have its reclaim policy set to "Retain".  Your backups may be lost if the volume is changed or becomes unbound.'
+      warning: 'This {type} does not have its reclaim policy set to "Retain". Your backups may be lost if the volume is changed or becomes unbound.'
   encryption: Encryption
   encryptionConfigName:
     backuptip: 'Any secret in the <code>cattle-resource-system</code> namespace that has an <code>encryption-provider-config.yaml</code> key. <br/>The contents of this file are necessary to perform a restore from this backup, and are not stored by Rancher Backup.'
     label: Encryption Config Secret
     options:
       none: Store the contents of the backup unencrypted
-      secret: 'Encrypt backups using an <a target="_blank" rel="noopener noreferrer nofollow" href="https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/#understanding-the-encryption-at-rest-configuration">Encryption Config Secret</a> (Recommended)'
+      secret: 'Encrypt backups using an <a target="_blank" rel="noopener noreferrer nofollow" href="https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/#understanding-the-encryption-at-rest-configuration">Encryption Configuration Secret</a> (Recommended)'
     restoretip: 'If the backup was performed with encryption enabled, a secret containing the same encryption-provider-config should be used during restore.'
     warning: 'The contents of this file are necessary to perform a restore from this backup, and are not stored by Rancher Backup.'
   lastBackup: Last Backup
@@ -852,9 +852,9 @@ catalog:
     versionWindowsIncompatible: Linux only version
     header: Charts
     featuredCharts: Featured Charts
-    noCharts: 'There are no charts available, have you added any repos?'
-    noWindows: Your repos do not contain any charts capable of being deployed on a cluster with Windows nodes.
-    noWindowsAndLinux: Your repos do not contain any charts capable of being deployed on a cluster with both Windows and Linux worker nodes.
+    noCharts: 'There are no charts available, have you added any repositories?'
+    noWindows: Your repositories do not contain any charts capable of being deployed on a cluster with Windows nodes.
+    noWindowsAndLinux: Your repositories do not contain any charts capable of being deployed on a cluster with both Windows and Linux worker nodes.
     operatingSystems:
       all: All Operating Systems
       linux: Linux
@@ -863,7 +863,7 @@ catalog:
   install:
     action:
       goToUpgrade: Edit/Upgrade
-    appReadmeMissing: This chart doesn't have any additional chart information.
+    appReadmeMissing: This chart does not have any additional chart information.
     appReadmeTitle: Chart Information (Helm README)
     chart: Chart
     error:
@@ -872,12 +872,12 @@ catalog:
       insufficientCpu: 'This chart requires {need, number} CPU cores, but the cluster only has {have, number} available.'
       insufficientMemory: 'This chart requires {need} of memory, but the cluster only has {have} available.'
       legacy:
-        label: This is a {legacyType} App and it cannot be modified here
+        label: This is a {legacyType} application and it cannot be modified here
         enableLegacy:
-          prompt: You will need to enable Legacy Features to edit this App
+          prompt: You will need to enable Legacy Features to edit this application
           goto: Go to Feature Flag settings
-        navigate: Navigate to Legacy Apps
-        mcmNotSupported: Legacy Multi-cluster Apps can not be managed through this UI
+        navigate: Navigate to Legacy Applications
+        mcmNotSupported: Legacy Multi-cluster Applications can not be managed through this UI
         category:
           legacy: Legacy
           mcm: Multi-cluster
@@ -889,8 +889,8 @@ catalog:
       atomic: Atomic
       description:
         label: Description
-        placeholder: e.g. Purpose of helm command
-      cleanupOnFail: Cleanup on Failure
+        placeholder: e.g. Purpose of Helm command
+      cleanupOnFail: Clean up on Failure
       crds: Apply custom resource definitions
       dryRun: Dry Run
       force: Force
@@ -913,7 +913,7 @@ catalog:
           }
       wait: Wait
     namespaceIsInProject: "This chart's target namespace, <code>{namespace}</code>, already exists and cannot be added to a different project."
-    project: Install into Project
+    project: Install Into Project
     section:
       chartOptions: Edit Options
       valuesYaml: Edit YAML
@@ -931,8 +931,8 @@ catalog:
           } the {existing, select,
             true { app}
             false { chart}
-          }. Start by setting some basic information used by {vendor} to manage the App.
-        nsCreationDescription: "To install the app into a new namespace enter it's name in the Namespace field and select it."
+          }. Start by setting some basic information used by {vendor} to manage the application.
+        nsCreationDescription: "To install the application into a new namespace, enter the name in the Namespace field and select it."
         createNamespace: "Namespace <code>{namespace}</code> will be created."
       clusterTplVersion:
         label: Version
@@ -940,19 +940,19 @@ catalog:
         description: Select a version of the Cluster Template
       clusterTplValues:
         label: Values
-        subtext: Change how the Cluster is defined
-        description: Configure Values used by Helm that help define the Cluster.
+        subtext: Change how the cluster is defined
+        description: Configure Values used by Helm that help define the cluster.
       helmValues:
         label: Values
-        subtext: Change how the App works
-        description: Configure Values used by Helm that help define the App.
+        subtext: Change how the application works
+        description: Configure values used by Helm that help define the application.
         chartInfo:
-          button: View Chart Info
-          label: Chart Info
+          button: View Chart Information
+          label: Chart Information
       helmCli:
-        checkbox: Customize Helm options before install
+        checkbox: Customize Helm options before installation
         label: Helm Options
-        subtext: Change how the app is deployed
+        subtext: Change how the application is deployed
         description: Supply additional deployment options
     version: Version
     versions:
@@ -971,7 +971,7 @@ catalog:
     gitBranch:
       label: Git Branch
       placeholder: e.g. master
-      defaultMessage: 'Will default to "master" if left blank'
+      defaultMessage: 'The branch will default to "master" if left blank'
     gitRepo:
       label: Git Repo URL
       placeholder: 'e.g. https://github.com/your-company/charts.git'
@@ -1103,7 +1103,7 @@ cluster:
     rke2-multus: Multus Configuration
   agentEnvVars:
     label: Agent Environment
-    detail: Add additional environment variables to the agent container.  This is most commonly useful for configuring a HTTP proxy.
+    detail: Add additional environment variables to the agent container. This is most commonly useful for configuring a HTTP proxy.
     keyLabel: Variable Name
   cloudProvider:
     aws:
@@ -1116,7 +1116,7 @@ cluster:
       label: Google
     rancher-vsphere:
       label: vSphere
-      note: '<b>Important:</b> Configure the vSphere Cloud Provider and Storage Provider options in the Add-On Config tab.'
+      note: '<b>Important:</b> Configure the vSphere Cloud Provider and Storage Provider options in the Add-On Configuration tab.'
     harvester:
       label: Harvester
   copyConfig: Copy KubeConfig to Clipboard
@@ -1124,10 +1124,10 @@ cluster:
   custom:
     nodeRole:
       label: Node Role
-      detail: Choose what roles the node will have in the cluster.  The cluster needs to have at least one node with each role.
+      detail: Choose what roles the node will have in the cluster. The cluster needs to have at least one node with each role.
     advanced:
       label: Advanced
-      detail: Additional control over how the node will be registered.  These values will often need to be different for each node registered.
+      detail: Additional control over how the node will be registered. These values will often need to be different for each node registered.
       nodeName: Node Name
       publicIp: Node Public IP
       privateIp: Node Private IP
@@ -1140,14 +1140,14 @@ cluster:
       windowsDetail: Run this command in PowerShell on each of the existing Windows machines you want to register. Windows nodes can only be workers.
       windowsNotReady: The cluster must be up and running with Linux etcd, control plane, and worker nodes before the registration command for adding Windows workers will display.
       windowsWarning: Workload pods, including some deployed by Rancher charts, will be scheduled on both Linux and Windows nodes by default. Edit NodeSelector in the chart to direct them to be placed onto a compatible node.
-      windowsDeprecatedForRKE1: Windows support is being deprecated for RKE1. We suggest migrating to RKE2.
+      windowsDeprecatedForRKE1: Windows support is being deprecated for RKE1 and RKE1 is soon to be deprecrated. Please migrate to RKE2.
       insecure: "Insecure: Select this to skip TLS verification if your server has a self-signed certificate."
   credential:
     banner:
       createCredential: |-
         {length, plural,
-          =0 {First you'll need to create a credential to talk to the cloud provider}
-          other {Ok, Let's create a new credential}
+          =0 {First, you will need to create a credential to talk to the cloud provider}
+          other {Ok, start to create a new credential}
         }
     selectExisting:
       label: Select Existing
@@ -1160,7 +1160,7 @@ cluster:
         label: Access Key
         placeholder: Your AWS Access Key
       defaultRegion:
-        help: The default region to use when creating clusters.  Also contacted to verify that this credential works.
+        help: The default region to use when creating clusters. Also contacted to verify that this credential works.
         label: Default Region
       secretKey:
         label: Secret Key
@@ -1265,7 +1265,7 @@ cluster:
         volume: Volume
         imageVolume: Image Volume
         addVolume: Add Volume
-        addVMImage: Add VM Image
+        addVMImage: Add Virtual Machine Image
         storageClass: Storage Class
       sshUser: SSH User
       userData:
@@ -1281,9 +1281,9 @@ cluster:
       installGuestAgent: Install guest agent
   description:
     label: Cluster Description
-    placeholder: Any text you want that better describes this cluster
+    placeholder: Any text to describe this cluster
   harvester:
-    importNotice: Import Harvester Clusters via
+    importNotice: Import Harvester Clusters Via
     warning:
       label: This is a Harvester Cluster - enable the Harvester feature flag to manage it
       state: Warning
@@ -1316,11 +1316,11 @@ cluster:
       sshUser:
         placeholder: e.g. ubuntu
         toolTip: SSH user to login with the selected OS image.
-  haveOneOwner: There must be at least one member with the Owner role.
+  haveOneOwner: There must be at least one member with the owner role.
   import:
     warningBanner: 'You should not import a cluster which has already been connected to another instance of Rancher as it will lead to data corruption.'
     commandInstructions: 'Run the <code>kubectl</code> command below on an existing Kubernetes cluster running a supported Kubernetes version to import it into {vendor}:'
-    commandInstructionsInsecure: 'If you get a &quot;certificate signed by unknown authority&quot; error, your {vendor} installation has a self-signed or untrusted SSL certificate.  Run the command below instead to bypass the certificate verification:'
+    commandInstructionsInsecure: 'If you get a &quot;certificate signed by unknown authority&quot; error, your {vendor} installation has a self-signed or untrusted SSL certificate. Run the command below instead to bypass the certificate verification:'
     clusterRoleBindingInstructions: 'If you get permission errors creating some of the resources, your user may not have the <code>cluster-admin</code> role.  Use this command to apply it:'
     clusterRoleBindingCommand: 'kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user <your username from your kubeconfig>'
   explore: Explore
@@ -1333,7 +1333,7 @@ cluster:
     deprecated: (deprecated)
     deprecatedPatches: Show deprecated Kubernetes patch versions
     deprecatedPatchWarning: We recommend using the latest patch version for each minor Kubernetes version. Deprecated patch versions can be useful for migration purposes.
-  toolsTip: Use the new Cluster Tools to manage and install Monitoring, Logging and other tools
+  toolsTip: Use the new cluster tools to manage and install monitoring, logging and other tools
   legacyWarning: The legacy feature flag is enabled and not all legacy features are supported in Kubernetes 1.21+.
   log:
     connecting: Connecting…
@@ -1411,14 +1411,14 @@ cluster:
         network: Network
         disks: Disks
       size:
-        label: VM Size
+        label: Virtual Machine Size
         tooltip: When accelerated networking is enabled, not all sizes are available.
-        supportsAcceleratedNetworking: Sizes that Support Accelerated Networking
+        supportsAcceleratedNetworking: Sizes That Support Accelerated Networking
         doesNotSupportAcceleratedNetworking: Sizes Without Accelerated Networking
-        availabilityWarning: The selected VM size is not available in the selected region.
+        availabilityWarning: The selected virtual machine size is not available in the selected region.
         regionDoesNotSupportAzs: Availability zones are not supported in the selected region. Please select a different region or use an availability set instead.
-        regionSupportsAzsButNotThisSize: The selected region does not support availability zones for the selected VM size. Please select a different region or VM size.
-        selectedSizeAcceleratedNetworkingWarning: The selected VM size does not support accelerated networking. Please select another VM size or disable accelerated networking.
+        regionSupportsAzsButNotThisSize: The selected region does not support availability zones for the selected virtual machine size. Please select a different region or virtual machine size.
+        selectedSizeAcceleratedNetworkingWarning: The selected virtual machine size does not support accelerated networking. Please select another virtual machine size or disable accelerated networking.
       sshUser:
         label: SSH Username
       storageType:
@@ -1511,7 +1511,7 @@ cluster:
         folder: Folder
         host:
           label: Host
-          note: Specific host to create VM on (leave blank for standalone ESXi or for cluster with DRS)
+          note: Specific host to create virtual machine on (leave blank for standalone ESXi or for cluster with DRS)
       instanceOptions:
         label: Instance Options
         description: Choose the size and OS of the virtual machine
@@ -1608,7 +1608,7 @@ cluster:
       serverOs:
         label: OS
   addOns:
-    dependencyBanner: Add-On Configurations can vary between Kubernetes versions. Changing the Kubernetes version may reset the values below.
+    dependencyBanner: Add-on configurations can vary between Kubernetes versions. Changing the Kubernetes version may reset the values below.
     additionalManifest:
       title: Additional Manifest
       tooltip: 'Additional Kubernetes Manifest YAML to be applied to the cluster on startup.'
@@ -1627,8 +1627,8 @@ cluster:
       nodeAffinity: Node Affinity
     banners:
       advanced: These are advanced configuration options. Generally, they should be left as-is.
-      tolerations: Additional Pod Tolerations will be added to the default Tolerations applied by Rancher.
-      limits: Pod Requests and Limits do not have a default configuration.
+      tolerations: Additional pod tolerations will be added to the default tolerations applied by Rancher.
+      limits: Pod requests and limits do not have a default configuration.
       windowsCompatibility: "We do not recommended removing the Node Affinity rule that prevents the <b>agent</b> from running on Windows nodes as this is not a supported configuration."
     affinity:
       default: Use default affinity rules defined by Rancher
@@ -1638,8 +1638,8 @@ cluster:
       title: Additional Kubelet Args
       machineSelector:
         label: Add Machine Selector
-        listLabel: Add Argument
-        bannerLabel: 'Note: The last selector that matches wins and only args from it will be used.  Args from other matches above will not combined together or merged.'
+        listLabel: Add Args
+        bannerLabel: 'Note: The last selector that matches wins and only args from it will be used. Args from other matches above will not combined together or merged.'
         title: 'For machines with labels matching:'
         subTitle: 'Use the Kubelet args:'
         titleAlt:  |-
@@ -1654,11 +1654,11 @@ cluster:
       label: Raise error if kernel parameters are different than the expected kubelet defaults
   banner:
     warning: 'This cluster contains a machineSelectorConfig which this form does not fully support; use the YAML editor to manage the full configuration.'
-    os: 'You are attemping to add a {newOS} worker node to a cluster with one or more {existingOS} worker nodes: some installed apps may need to be upgraded or removed.'
+    os: 'You are attemping to add a {newOS} worker node to a cluster with one or more {existingOS} worker nodes: some installed applications may need to be upgraded or removed.'
     rke2-k3-reprovisioning: 'Making changes to cluster configuration may result in nodes reprovisioning. For more information see the <a target="blank" href="{docsBase}/cluster-provisioning/rke-clusters/behavior-differences-between-rke1-and-rke2/" target="_blank" rel="noopener nofollow">documentation</a>.'
     desiredNodeGroupWarning: There are 0 nodes available to run the cluster agent. The cluster will not become active until at least one node is available.
     invalidPsps: You have one or more PodSecurityPolicy resource(s) in this cluster. Pod Security Policies are not available in Kubernetes v1.25 and will be automatically removed.
-    haveArgInfo: Configuration information is not available for the selected Kubernetes version.  The options available in this screen will be limited, you may want to use the YAML editor.
+    haveArgInfo: Configuration information is not available for the selected Kubernetes version. The options available in this screen will be limited, you may want to use the YAML editor.
     deprecatedPsp: Pod Security Policies are deprecated as of Kubernetes v1.21, and have been removed in Kubernetes v1.25.
     removedPsp: Pod Security Policies have been removed in Kubernetes v1.25, use Pod Security Admission instead.
   rkeTemplateUpgrade: Template revision {name} available for upgrade
@@ -1678,7 +1678,7 @@ cluster:
   machinePool:
     name:
       label: Pool Name
-      placeholder: A random one will be generated by default
+      placeholder: A random name is generated by default
     nodeTotals:
       label:
         controlPlane: '{count} Control Plane'
@@ -1695,7 +1695,7 @@ cluster:
           {count, plural,
             =0 { A cluster needs at least one etcd node to be usable. }
             =1 { A cluster with only one etcd node is not fault-tolerant. }
-            =2 { Clusters should have an odd number of nodes.  A cluster with 2 etcd nodes is not fault-tolerant. }
+            =2 { Clusters should have an odd number of nodes. A cluster with 2 etcd nodes is not fault-tolerant. }
             =3 {}
             =4 { Clusters should have an odd number of nodes. }
             =5 {}
@@ -1731,7 +1731,7 @@ cluster:
       label: Auto Replace
       toolTip: If greater than 0, nodes that are unreachable for this duration will be automatically deleted and replaced.
       unit: "Seconds"
-  managementTimeout: The cluster to become available. It's possible the cluster was created. We suggest checking the clusters page before trying to create another.
+  managementTimeout: The cluster to become available. It is possible the cluster was created. We suggest checking the clusters page before trying to create another.
   memberRoles:
     removeMessage: 'Note: Removing a user will not remove their project permissions'
     addClusterMember:
@@ -1807,11 +1807,11 @@ cluster:
       harvester: '{tag}'
   providerGroup:
     create-custom1: Use existing nodes and create a cluster using RKE
-    create-custom2: Use existing nodes and create a cluster using RKE2/K3s
+    create-custom2: Use existing nodes and create a cluster using RKE2 or K3s
     create-kontainer: Create a cluster in a hosted Kubernetes provider
     register-kontainer: Register an existing cluster in a hosted Kubernetes provider
     create-rke1: Provision new nodes and create a cluster using RKE
-    create-rke2: Provision new nodes and create a cluster using RKE2/K3s
+    create-rke2: Provision new nodes and create a cluster using RKE2 or K3s
     create-template: Use a Catalog Template to create a cluster
     register-custom: Import any Kubernetes cluster
   rke2:
@@ -1835,7 +1835,7 @@ cluster:
       label: Container Network
     cloudProvider:
       label: Cloud Provider
-      header: Cloud Provider Config
+      header: Cloud Provider Configuration
       defaultValue:
         label: Default - RKE2 Embedded
     security:
@@ -1867,8 +1867,8 @@ cluster:
       toolTip: "This can be either a fixed number of nodes (e.g. 1) at a time or a percentage (e.g. 10%)"
     drain:
       label: Drain Nodes
-      toolTip: Draining preemptively removes the pods on each node so there are no running workloads on the nodes being upgraded.  Upgrading without draining is faster and causes less shuffling around, but pods may still be restarted depending on the upgrade being performed.
-    deleteEmptyDir: "By default, pods using emptyDir volumes will be deleted on upgrade. Operations reliant on emptyDir volumes persisting through the pod's lifecycle may be impacted."
+      toolTip: Draining preemptively removes the pods on each node so there are no running workloads on the nodes being upgraded. Upgrading without draining is faster and causes less shuffling around, but pods may still be restarted depending on the upgrade being performed.
+    deleteEmptyDir: "By default, pods using emptyDir volumes will be deleted on upgrade. Operations reliant on emptyDir volumes persisting through the pods lifecycle may be impacted."
     truncateHostnames: Truncate hostnames to 15 characters for NetBIOS compatibility.
     address:
       tooltip: Cluster networking values cannot be changed after the cluster is created.
@@ -1912,7 +1912,7 @@ cluster:
       servicelb: 'Klipper Service LB'
       traefik: 'Traefik Ingress'
   selectCredential:
-    genericDescription: "{vendor} has no built-in support for this driver.  We've taken a guess, but consult the driver's documentation for the fields required for authentication."
+    genericDescription: "{vendor} has no built-in support for this driver. We've taken a guess, but consult the driver's documentation for the fields required for authentication."
   snapshot:
     successTitle: Snapshot Started
     errorTitle: "Error Snapshotting {name}"
@@ -1930,7 +1930,7 @@ cluster:
       s3: s3
   tabs:
     ace: Authorized Endpoint
-    addons: Add-On Config
+    addons: Add-on Configuration
     advanced: Advanced
     agentEnv: Agent Environment Vars
     basic: Basics
@@ -1954,7 +1954,7 @@ cluster:
     v1: RKE1
     v2: RKE2/K3s
   validation:
-    iamInstanceProfileName: If the Amazon cloud provider is selected the "IAM Instance Profile Name" must be defined for each Machine Pool
+    iamInstanceProfileName: If the Amazon cloud provider is selected the "IAM Instance Profile Name" must be defined for each machine pool
 
 clusterIndexPage:
   hardwareResourceGauge:
@@ -2006,7 +2006,7 @@ configmap:
   tabs:
     data:
       label: Data
-      protip: Use this area for anything that's UTF-8 text data
+      protip: Use this area for anything that contains UTF-8 text data
     binaryData:
       label: Binary Data
 
@@ -2126,7 +2126,7 @@ fleet:
       notReady: Not Ready
       waitApplied: Wait Applied
   gitRepo:
-    createLocalBanner: When deploying a Git Repo to the Local workspace you are unable to target any specific Cluster or Cluster Groups
+    createLocalBanner: When deploying a Git Repo to the local workspace you are unable to target any specific cluster or cluster groups
     tabs:
       resources: Resources
       unready: Non-Ready
@@ -2141,7 +2141,7 @@ fleet:
       label: Paths
       placeholder: e.g. /directory/in/your/repo
       addLabel: Add Path
-      empty: The root of the repo is used by default.  To use one or more different directories, add them here.
+      empty: The root of the repo is used by default. To use one or more different directories, add it here.
     repo:
       label: Repository URL
       placeholder: e.g. https://github.com/rancher/fleet-examples.git or git@github.com:rancher/fleet-examples.git
@@ -2227,7 +2227,7 @@ fleet:
   workspaces:
     tabs:
       restrictions: Allowed Target Namespaces
-    timeout: Workspace creation timeout. It's possible the workspace was created. We suggest checking the workspace page before trying to create another.
+    timeout: Workspace creation timeout. It is possible the workspace was created. We suggest checking the workspace page before trying to create another.
   restrictions:
     addTitle: 'allowedTargetNamespaces'
     addLabel: Add
@@ -2400,10 +2400,10 @@ hpa:
     cpu: CPU
     memory: Memory
   warnings:
-    custom: In order to use custom metrics with HPA, you need to deploy the custom metrics server such as prometheus adapter.
-    external: In order to use external metrics with HPA, you need to deploy the external metrics server such as prometheus adapter.
+    custom: In order to use custom metrics with HPA, you need to deploy the custom metrics server such as Prometheus adapter.
+    external: In order to use external metrics with HPA, you need to deploy the external metrics server such as Prometheus adapter.
     noMetric: In order to use resource metrics with HPA, you need to deploy the metrics server.
-    resource: The selected target reference does not have the correct resource requests on the spec. Without this the HPA metric will have no effect.
+    resource: The selected target reference does not have the correct resource requests on the spec. Without this, the HPA metric will have no effect.
   workloadTab:
     current: Current Replicas
     last: Last Scale Time
@@ -2422,7 +2422,7 @@ import:
     }
 
 ingress:
-  description: Ingresses route incoming traffic from the internet to Services within the cluster based on the hostname and path specified in the request. You can expose multiple Services on the same external IP address and port.
+  description: Ingresses route incoming traffic from the internet to services within the cluster based on the hostname and path specified in the request. You can expose multiple services on the same external IP address and port.
   certificates:
     addCertificate: Add Certificate
     addHost: Add Host
@@ -2449,7 +2449,7 @@ ingress:
     targetService:
       label: Target Service
       doesntExist: The selected service does not exist
-      required: Target Service is required
+      required: Target service is required
     warning: "Warning: Default backend is used globally for the entire cluster."
   ingressClass:
     label: Ingress Class
@@ -2475,7 +2475,7 @@ ingress:
       placeholder: e.g. example.com
     target:
       label: Target Service
-      tooltip: If none of the Services in this dropdown select the Pods that you need to expose, you will need to create a Service that selects those Pods first.
+      tooltip: If none of the services in this drop-down select the pods that you need to expose, you will need to create a service that selects those pods first.
       doesntExist: The selected service does not exist
     title: Rules
   rulesAndCertificates:
@@ -2483,7 +2483,7 @@ ingress:
     defaultCertificate: default
   target:
     default: Default
-  rulesOrBackendSpecified: Either Default Backend or Rules must be specified
+  rulesOrBackendSpecified: Either the default backend or rules must be specified
 
 internalExternalIP:
   none: None
@@ -2495,7 +2495,7 @@ istio:
       description: 'Visualization of services within a service mesh and how they are connected. For Kiali to display data, you need Prometheus installed. If you need a monitoring solution, install <a tabindex="0" href="{link}">{vendor} monitoring</a>.'
     jaeger:
       label: Jaeger
-      description: Monitor and Troubleshoot microservices-based distributed systems.
+      description: Monitor and troubleshoot microservices-based distributed systems.
     disabled: '{app} is not installed'
   cni: Enable CNI
   customOverlayFile:
@@ -2587,7 +2587,7 @@ istio:
         help: Maximum number of HTTP1 /TCP connections to a destination host.
     outlierDetection:
       label: Outlier Detection
-      detail: Configure eviction of unhealthy hosts from the load balancing pool
+      detail: Configure eviction of unhealthy hosts from the load balancing pool.
       baseEjectionTime:
         label: Base Ejection Time
         placeholder: e.g. 30s
@@ -2612,7 +2612,7 @@ istio:
       name:
         label: Name
         placeholder: e.g. v1
-        error: Subset Name is required.
+        error: Subset name is required.
       labels:
         error: Please input at least one label for subset.
     tls:
@@ -2633,11 +2633,11 @@ istio:
       clientCertificate:
         label: Client Certificate
         placeholder: e.g. /etc/certs/myclientcert.pem
-        error: Client Certificate is required.
+        error: Client certificate is required.
       privateKey:
         label: Private Key
         placeholder: e.g. /etc/certs/client_private_key.pem
-        error: Private Key is required.
+        error: Private key is required.
       caCertificates:
         label: CA Certificates
         placeholder: e.g. /etc/certs/rootcacerts.pem
@@ -2667,14 +2667,14 @@ istio:
 
 labels:
   addLabel: Add Label
-  addSetLabel: Add/Set Label
+  addSetLabel: Add or Set Label
   addTag: Add Tag
   addTaint: Add Taint
   addAnnotation: Add Annotation
   labels:
     title: Labels
     description: Key/value pairs that are attached to objects which specify identifying attributes.
-    fleetClusterTooltip: Label changes are made to the Management Cluster and synchronized to the Fleet Cluster
+    fleetClusterTooltip: Label changes are made to the management cluster and synchronized to the Fleet cluster.
     show: Show System Label
     hide: Hide System Label
   annotations:
@@ -2725,7 +2725,7 @@ logging:
     noOutputsBanner: There are no cluster outputs in the selected namespace.
   flow:
     clusterOutputs:
-      doesntExistTooltip: This cluster output doesn't exist
+      doesntExistTooltip: This cluster output does not exist
       label: Cluster Outputs
     matches:
       banner: Configure which container logs will be pulled from
@@ -2759,7 +2759,7 @@ logging:
     filters:
       label: Filters
     outputs:
-      doesntExistTooltip: This output doesn't exist
+      doesntExistTooltip: This output does not exist
       sameNamespaceError: Output must reside in same namespace as the flow.
       label: Outputs
   install:
@@ -2873,7 +2873,7 @@ logging:
     overwriteExistingPath: Overwrite Existing Path
   kinesisStream:
     streamName: Stream Name
-    keyId: Key Id from Secret
+    keyId: Key ID from Secret
     secretKey: Secret Key from Secret
   logdna:
     apiKey: API Key
@@ -2882,7 +2882,7 @@ logging:
   logz:
     url: URL
     port: Port
-    token: Api Token from Secret
+    token: API Token from Secret
     enableCompression: Enable Compression
   newrelic:
     apiKey: API Key from Secret
@@ -2913,7 +2913,7 @@ logging:
       timekeyWait: Timekey Wait
       timekeyUseUTC: Timekey Use UTC
   s3:
-    keyId: Key Id from Secret
+    keyId: Key ID from Secret
     secretKey: Secret Key from Secret
     endpoint: Endpoint
     bucket: Bucket
@@ -2932,7 +2932,7 @@ logging:
       configuration: Configuration
     tips:
       singleProvider: This output is configured with multiple providers. We currently only support a single provider per output. You can view or edit the YAML.
-      multipleProviders: This output is configured with providers we don't support yet. You can view or edit the YAML.
+      multipleProviders: This output is configured with providers we do not support yet. You can view or edit the YAML.
   outputProviders:
     elasticsearch: Elasticsearch
     opensearch: OpenSearch
@@ -3041,7 +3041,7 @@ members:
   clusterPermissions:
     noDescription: User created - no description
     label: Cluster Permissions
-    description: Controls what access users have to the Cluster
+    description: Controls what access users have to the cluster
     createProjects: Create Projects
     manageClusterBackups: Manage Cluster Backups
     manageClusterCatalogs: Manage Cluster Catalogs
@@ -3055,10 +3055,10 @@ members:
     viewNodes: View Nodes
     owner:
       label: Owner
-      description: Owners have full control over the Cluster and all resources inside it.
+      description: Owners have full control over the cluster and all the resources inside it.
     member:
       label: Member
-      description: Members can manage the resources inside the Cluster but not change the Cluster itself.
+      description: Members can manage the resources inside the cluster but not change the cluster itself.
     custom:
       label: Custom
       description: Choose individual roles for this user.
@@ -3078,25 +3078,25 @@ monitoring:
     readOnlyMany: ReadOnlyMany
   aggregateDefaultRoles:
     label: Aggregate to Default Kubernetes Roles
-    tip: 'Adds labels to the ClusterRoles deployed by the Monitoring chart to <a target="_blank" rel="noopener nofollow noreferrer" href="https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles"> aggregate to the corresponding default k8s admin, edit, and view ClusterRoles.</a>'
+    tip: 'Adds labels to the ClusterRoles deployed by the monitoring chart to <a target="_blank" rel="noopener nofollow noreferrer" href="https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles"> aggregate to the corresponding default Kubernetes administrator, edit, and view ClusterRoles.</a>'
   alerting:
     config:
-      label: Alert Manager Config
+      label: Alert Manager Configuration
     enable:
       label: Deploy Alertmanager
     secrets:
       additional:
         info: Secrets should be mounted at <pre class='inline-block m-0'>/etc/alertmanager/secrets/</pre>
         label: Additional Secrets
-      existing: Choose an existing config secret
+      existing: Choose an existing configuration secret
       info: |
-        <span class="text-bold">Create default config</span>: A Secret containing your Alertmanager Config will be created in the <pre class='inline-block m-0'>cattle-monitoring-system</pre> namespace on deploying this chart under the name <pre class='inline-block m-0'>alertmanager-rancher-monitoring-alertmanager</pre>. By default, this Secret will never be modified on an uninstall or upgrade of this chart. <br />
-        Once you have deployed this chart, you should edit the Secret via the UI in order to add your custom notification configurations that will be used by Alertmanager to send alerts. <br /> <br />
-        <span class="text-bold">Choose an existing config secret</span>: You must specify a Secret that exists in the <pre class='inline-block m-0'>cattle-monitoring-system</pre> namespace. If the namespace does not exist, you will not be able to select an existing secret.
+        <span class="text-bold">Create default configuration</span>: A Secret containing your Alertmanager configuration will be created in the <pre class='inline-block m-0'>cattle-monitoring-system</pre> namespace on deploying this chart under the name <pre class='inline-block m-0'>alertmanager-rancher-monitoring-alertmanager</pre>. By default, this secret will never be modified on an uninstall or upgrade of this chart. <br />
+        Once you have deployed this chart, edit the secret via the UI in order to add your custom notification configurations that will be used by Alertmanager to send alerts. <br /> <br />
+        <span class="text-bold">Choose an existing configuration secret</span>: You must specify a secret that exists in the <pre class='inline-block m-0'>cattle-monitoring-system</pre> namespace. If the namespace does not exist, you will not be able to select an existing secret.
       label: Alertmanager Secret
-      new: Create default config
+      new: Create default configuration
       radio:
-        label: Config Secret
+        label: Configuration Secret
     validation:
       duplicatedReceiverName: A receiver with the name {name} already exists.
     templates:
@@ -3169,7 +3169,7 @@ monitoring:
       adminApi: Admin API
       evaluation: Evaluation Interval
       ignoreNamespaceSelectors:
-        help: 'Ignoring Namespace Selectors allows Cluster Admins to limit teams from monitoring resources outside of namespaces they have permissions to but can break the functionality of Apps that rely on setting up Monitors that scrape targets across multiple namespaces, such as Istio.'
+        help: 'Ignoring Namespace Selectors allows cluster admins to limit teams from monitoring resources outside of namespaces they have permissions to but can break the functionality of applications that rely on setting up monitors that scrape targets across multiple namespaces, such as Istio.'
         label: Namespace Selectors
         radio:
           enforced: 'Use: Monitors can access resources based on namespaces that match the namespace selector field'
@@ -3189,13 +3189,13 @@ monitoring:
       label: Persistent Storage for Prometheus
       mode: Access Mode
       selector: Selector
-      selectorWarning: 'If you are using a dynamic provisioner (e.g. Longhorn), no Selectors should be specified since a PVC with a non-empty selector can''t have a PV dynamically provisioned for it.'
+      selectorWarning: 'If you are using a dynamic provisioner (e.g. Longhorn), no selectors should be specified since a PVC with a non-empty selector cannot have a PV dynamically provisioned for it.'
       size: Size
       volumeName: Volume Name
     title: Configure Prometheus
     warningInstalled: |
       Warning: Prometheus Operators are currently deployed. Deploying multiple Prometheus Operators onto one cluster is not currently supported. Please remove all other Prometheus Operator deployments from this cluster before trying to install this chart.
-      If you are migrating from an older version of {vendor} with Monitoring enabled, please disable Monitoring on this cluster completely before attempting to install this chart.
+      If you are migrating from an older version of {vendor} with monitoring enabled, please disable monitoring on this cluster completely before attempting to install this chart.
   receiver:
     addReceiver: Add Receiver
     fields:
@@ -3211,16 +3211,16 @@ monitoring:
       keyFilePath:
         label: Key File Path
         placeholder: e.g. ./key-file.pfx
-      secretsBanner: The file paths below must be referenced in <pre class="inline-block m-0 p-0 vertical-middle">alertmanager.alertmanagerSpec.secrets</pre> when deploying the Monitoring chart. For more information see our <a href="{docsBase}/monitoring-alerting/" target="_blank" rel="noopener noreferrer nofollow">documentation</a>.
+      secretsBanner: The file paths below must be referenced in <pre class="inline-block m-0 p-0 vertical-middle">alertmanager.alertmanagerSpec.secrets</pre> when deploying the monitoring chart. For more information see our <a href="{docsBase}/monitoring-alerting/" target="_blank" rel="noopener noreferrer nofollow">documentation</a>.
   projectMonitoring:
     detail:
-      error: "Unable to fetch Dashboard values with status: "
+      error: "Unable to fetch dashboard values with status: "
     list:
-      banner: Project Monitoring Configuration is stored in ProjectHelmChart resources
+      banner: Project monitoring configuration is stored in ProjectHelmChart resources
       empty:
-        message: Project Monitoring has not been configured for any projects
-        canCreate: Get started by clicking Create to add monitoring to a project
-        cannotCreate: Contact the admin to add project monitoring
+        message: Project monitoring has not been configured for any projects
+        canCreate: Get started by clicking create to add monitoring to a project
+        cannotCreate: Contact the administrator to add project monitoring
   route:
     label: Route
     fields:
@@ -3235,9 +3235,9 @@ monitoring:
   alertmanagerConfig:
     description: Routes and receivers for project alerting and cluster alerting are configured within AlertmanagerConfig resources.
     empty: Alerts have not been configured for any accessible namespaces.
-    getStarted: Get started by clicking Create to configure an alert.
+    getStarted: Get started by clicking create to configure an alert.
     receiverTooltip: This route will direct alerts to the selected receiver, which must be defined in the same AlertmanagerConfig.
-    deprecationWarning: The Route and Receiver resources are deprecated. Going forward, routes and receivers should not be managed as separate Kubernetes resources on this page. They should be configured as YAML fields in an AlertmanagerConfig resource.
+    deprecationWarning: The route and receiver resources are deprecated. Going forward, routes and receivers should not be managed as separate Kubernetes resources on this page. They should be configured as YAML fields in an AlertmanagerConfig resource.
     routeInfo: This form supports configuring one route that directs traffic to a receiver. Alerts can be directed to more receiver(s) by configuring child routes in YAML.
     receiverFormNames:
       create: Create Receiver in AlertmanagerConfig
@@ -3272,41 +3272,41 @@ monitoring:
       warning2: <a target="blank" href="{docsBase}/monitoring-alerting/guides/migrating/" target='_blank' rel='noopener nofollow'>Learn more</a> about the migration steps to V2 Monitoring.
       promptDescription: <div class="mt-20 mb-20">You are attempting to uninstall V1 Monitoring. Please ensure you have read the migration steps.</div>
       success1: V1 monitoring successfully uninstalled.
-      success2: Press Next to continue
+      success2: Press next to continue
   tabs:
     alerting: Alerting
     general: General
     grafana: Grafana
     prometheus: Prometheus
     projectMetrics: Project Metrics
-  v1Warning: 'Monitoring is currently deployed from Cluster Manager. If you are migrating from an older version of {vendor} with monitoring enabled, please disable monitoring in Cluster Manager before attempting to install the new {vendor} Monitoring chart in Cluster Explorer.'
+  v1Warning: 'Monitoring is currently deployed from cluster manager. If you are migrating from an older version of {vendor} with monitoring enabled, please disable monitoring in cluster manager before attempting to install the new {vendor} monitoring chart in cluster explorer.'
 
 monitoringReceiver:
   addButton: Add {type}
   custom:
     label: Custom
-    title: Custom Config
-    info: The YAML provided here will be directly appended to your receiver within the Alertmanager Config Secret.
+    title: Custom Configuration
+    info: The YAML provided here will be directly appended to your receiver within the Alertmanager configuration secret.
   email:
     label: Email
-    title: Email Config
+    title: Email Configuration
   opsgenie:
     label: Opsgenie
-    title: Opsgenie Config
+    title: Opsgenie Configuration
   pagerduty:
     label: PagerDuty
-    title: PagerDuty Config
+    title: PagerDuty Configuration
     info: "You can find additional info on creating an Integration Key for PagerDuty <a href='https://www.pagerduty.com/docs/guides/prometheus-integration-guide/' target='_blank' rel='noopener nofollow' class='flex-right'>here</a>."
   slack:
     label: Slack
-    title: Slack Config
+    title: Slack Configuration
     info: "You can find additional info on creating Incoming Webhooks for Slack <a href='https://rancher.slack.com/apps/A0F7XDUAZ-incoming-webhooks' target='_blank' rel='noopener noreferrer nofollow'>here</a> ."
   webhook:
     label: Webhook
-    title: Webhook Config
-    urlTooltip: For some webhooks this a url that points to the service DNS
-    modifyNamespace: If <pre class="inline-block m-0 p-0 vertical-middle">rancher-alerting-drivers</pre> default values were changed, please update the url below in the format http://&lt;new_service_name&gt;.&lt;new_namespace&gt.svc.&lt;port&gt/&lt;path&gt
-    banner: To use MS Teams or SMS you will need to have at least one instance of <pre class="inline-block m-0 p-0 vertical-middle">rancher-alerting-drivers</pre> installed first.
+    title: Webhook Configuration
+    urlTooltip: For some webhooks this a URL that point to the service DNS
+    modifyNamespace: If <pre class="inline-block m-0 p-0 vertical-middle">rancher-alerting-drivers</pre> default values were changed, please update the URL below in the format http://&lt;new_service_name&gt;.&lt;new_namespace&gt.svc.&lt;port&gt/&lt;path&gt
+    banner: To use MS Teams or SMS, you will need to have at least one instance of <pre class="inline-block m-0 p-0 vertical-middle">rancher-alerting-drivers</pre> installed first.
     add:
       selectWebhookType: Select Webhook Type
       generic: Generic
@@ -3341,7 +3341,7 @@ monitoringReceiver:
       label: Enable send resolved alerts
 
 alertmanagerConfigReceiver:
-  secretKeyId: Key Id from Secret
+  secretKeyId: Key ID from Secret
   name: Receiver Name
   addButton: Add Receiver
   receivers: Receivers
@@ -3355,7 +3355,7 @@ monitoringRoute:
     label: Group By
     addGroupByLabel: Labels to Group Alerts By
     groupByTooltip: Add each label as a string in the format key:value. The special label ... will aggregate by all possible labels. If provided, the ... must be the only element in the list.
-  info: This is the top-level Route used by Alertmanager as the default destination for any Alerts that do not match any other Routes. This Route must exist and cannot be deleted.
+  info: This is the top-level route used by Alertmanager as the default destination for any alerts that do not match any other routes. This route must exist and cannot be deleted.
   interval:
     label: Group Interval
   matching:
@@ -3504,7 +3504,7 @@ networkpolicy:
     ruleHint: Incoming traffic is only allowed from the configured sources
     portHint: Incoming traffic is only allowed to connect to the configured ports
   labelsAnnotations:
-    label: Labels & Annotations
+    label: Labels and Annotations
   rules:
     pod: Pod
     namespace: Namespace
@@ -3535,12 +3535,12 @@ networkpolicy:
     namespaceSelector:
       label: Namespace Selector
     namespaceAndPodSelector:
-      label: Namespace/Pod Selector
+      label: Namespace and Pod Selector
   config:
     label: Configuration
   selectors:
     label: Selectors
-    hint: The NetworkPolicy is applied to the selected Pods
+    hint: The NetworkPolicy is applied to the selected pods
     matchingPods:
       matchesSome: |-
         {matched, plural,
@@ -4050,14 +4050,14 @@ plugins:
     subtitle: Catalogs
     imageLoad:
       load: Import Extension Catalog
-      prompt: An Extension Catalog contains extension assets bundled into an image, importing will take the image and host a Helm repository to act as a catalog for custom built Extensions. 
+      prompt: An Extension Catalog contains extension assets bundled into an image, importing will take the image and host a Helm repository to act as a catalog for custom built Extensions.
       fields:
         image:
           label: Catalog Image Reference
           placeholder: "e.g. hub.docker.io/example-org/my-image:latest"
         secrets:
           banner: "If the registry that hosts the Catalog Image requires Pull Secrets, they must be created in the following namespace:<pre>cattle-ui-plugin-system</pre>"
-      banner: This will create an Deployment, Service, and Helm repository to serve the extension charts. 
+      banner: This will create an Deployment, Service, and Helm repository to serve the extension charts.
       imageVersion:
         title: Image Version Not Found
         message: Unable to determine image version from {image}, defaulting to latest
