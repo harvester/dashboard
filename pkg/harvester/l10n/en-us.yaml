@@ -134,7 +134,7 @@ harvester:
     launchFormTemplate: Launch instance from template
     modifyTemplate: Modify template (Create new version)
     setDefaultVersion: Set default version
-    addTemplateVersion: Add templateVersion
+    addTemplateVersion: Add template version
     backup: Take Backup
     restore: Restore
     restoreNewVM: Restore New
@@ -201,7 +201,7 @@ harvester:
     volume: Volume
     network: Network
     model: Model
-    macAddress: Mac address
+    macAddress: MAC address
     port: Port
     protocol: Protocol
     remove: Remove
@@ -370,7 +370,7 @@ harvester:
       ksmStatus: KSM Status
       modeOption:
         standard: Standard
-        high: High-Perfomanace
+        high: High-performance
         customized: Customized
       parameters:
         title: Ksmtuned Parameters
@@ -407,7 +407,7 @@ harvester:
         label: Eviction Requested
       forceFormatted:
         label: Force Formatted
-        toolTip: Force formatted will cleanup disk data, make sure you backup all available data to prevent data loss.
+        toolTip: Force formatted will clean up disk data, make sure you backup all available data to prevent data loss.
         yes: Yes (Ext4 File System)
       description:
         label: Description
@@ -440,8 +440,8 @@ harvester:
       tips: You can configure multiple IPv4 addresses or host addresses.
       placeholder: e.g. IPv4
       ntpSyncStatus:
-        isDisabled: 'The NTP is disabled. Please check the NTP service is active.'
-        isUnsynced: 'The time is not synchronized with the NTP server {current}.'
+        isDisabled: 'NTP is disabled. Please check the NTP service is active.'
+        isUnsynced: 'NTP is not synchronized with the NTP server {current}.'
 
   virtualMachine:
     label: Virtual Machines
@@ -471,7 +471,7 @@ harvester:
       version:
         label: Version
     console:
-      novnc: Open in Web VNC
+      novnc: Open in WebVNC
       serial: Open in Serial Console
     promptRemove:
       title: 'Select the volume you want to delete:'
@@ -554,7 +554,7 @@ harvester:
       network:
         label: Network Data Template
         title: "Network Data:"
-        tip: "The network-data configuration allows you to customize the instance’s networking interfaces by assigning subnet configuration, virtual device creation (bonds, bridges, vlans) routes and DNS configuration. <a href='https://cloudinit.readthedocs.io/en/latest/reference/network-config-format-v1.html' target='_blank'>Learn more</a>"
+        tip: "The network-data configuration allows you to customize the instance’s networking interfaces by assigning subnet configuration, virtual device creation (bonds, bridges, VLANs) routes and DNS configuration. <a href='https://cloudinit.readthedocs.io/en/latest/reference/network-config-format-v1.html' target='_blank'>Learn more</a>"
     scheduling:
       affinity:
         anyNode: 'Run virtual machine on any available node'
@@ -916,7 +916,7 @@ harvester:
 
     upgrade:
       selectExitImage: Please select the OS image to upgrade.
-      imageUrl: Please input a valid image url.
+      imageUrl: Please input a valid image URL.
       chooseFile: Please select to upload an image.
       checksum: Checksum
     harvesterMonitoring:
@@ -970,7 +970,7 @@ harvester:
     cidr:
       label: CIDR/IP Range
       invalid: '"CIDR/IP Range" is invalid.'
-      toolTip: "We can apply multiple pools or ranges by seperating them with commas. For example: 192.168.0.200/30,192.168.0.200/29 or 192.168.0.10-192.168.0.11"
+      toolTip: "We can apply multiple pools or ranges by separating them with commas. For example: 192.168.0.200/30,192.168.0.200/29 or 192.168.0.10-192.168.0.11"
     add:
       label: Add IP Pools
 
@@ -1349,7 +1349,7 @@ advancedSettings:
     'harv-server-version': Harvester server version.
     'harv-upgrade-checker-enabled': Specifies whether to enable Harvester upgrade check or not. Default is True.
     'harv-upgrade-checker-url': Default Harvester upgrade check url. Only used when the <code>upgrade-checker-enabled</code> is equal to True.
-    'harv-ui-source': Configuration for how to load the UI source.
+    'harv-ui-source': Configure how to load the UI source.
     'harv-ui-index': 'HTML index location for the UI.'
     'harv-ui-plugin-index': 'JS index location for the Harvester plugin UI.'
     'harv-cluster-registration-url': Registration URL for multi-cluster management.
