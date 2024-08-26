@@ -773,7 +773,7 @@ harvester:
     backupTargetTip: The endpoint used to access the backupstore. NFS and S3 are supported.
     message:
       noSetting:
-        prefix: You must configure the backup target in
+        prefix: You must configure the backup target
         middle: 'setting'
         suffix: before creating a new backup.
       errorTip:
@@ -1270,7 +1270,7 @@ harvester:
     vGpuDevices: vGPU Devices
     showMore: Show More
     parentSriov: Filter By Parent SR-IOV GPU
-    noPermission: Please contac your system admiistrator to add Harvester add-ons first.
+    noPermission: Please contact your system admiistrator to add Harvester add-ons first.
     goSetting:
       prefix: The nvidia-driver-toolkit add-on is not enabled, click
       middle: here

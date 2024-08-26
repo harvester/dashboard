@@ -37,8 +37,8 @@ import {
 import { IF_HAVE } from '@shell/store/type-map';
 
 const TEMPLATE = HCI.VM_VERSION;
-const MONITORING_GROUP = 'Monitoring & Logging::Monitoring';
-const LOGGING_GROUP = 'Monitoring & Logging::Logging';
+const MONITORING_GROUP = 'Monitoring and Logging::Monitoring';
+const LOGGING_GROUP = 'Monitoring and Logging::Logging';
 
 export const PRODUCT_NAME = 'harvester';
 
