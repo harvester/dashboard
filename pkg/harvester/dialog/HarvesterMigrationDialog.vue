@@ -72,8 +72,8 @@ export default {
       const nodes = this.$store.getters['harvester/all'](NODE);
 
       return nodes.filter((n) => {
-        // do not allow to migrate to self node
-        return !!this.availableNodes.includes(n.id);
+        // do not allow to migrate to self node and witness node
+        return n.isEtcd !== 'true' && !!this.availableNodes.includes(n.id);
       }).map((n) => {
         let label = n?.metadata?.name;
         const value = n?.metadata?.name;
