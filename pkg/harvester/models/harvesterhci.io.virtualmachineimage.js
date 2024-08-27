@@ -102,6 +102,10 @@ export default class HciVmImage extends HarvesterResource {
     const imported = this.getStatusConditionOfType('Imported');
 
     if (imported?.status === 'Unknown') {
+      if (this.spec.sourceType === 'restore') {
+        return 'Restoring';
+      }
+
       if (this.spec.sourceType === 'download') {
         return 'Downloading';
       }
