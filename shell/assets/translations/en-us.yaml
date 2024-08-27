@@ -1635,21 +1635,21 @@ cluster:
       custom: Use custom affinity rules
   advanced:
     argInfo:
-      title: Additional Kubelet Args
+      title: Additional Kubelet Arguments
       machineSelector:
         label: Add Machine Selector
-        listLabel: Add Args
-        bannerLabel: 'Note: The last selector that matches wins and only args from it will be used. Args from other matches above will not combined together or merged.'
+        listLabel: Add Arguments
+        bannerLabel: 'Note: The last selector that matches wins and only arguments from it will be used. Arguments from other matches above will not combined together or merged.'
         title: 'For machines with labels matching:'
-        subTitle: 'Use the Kubelet args:'
+        subTitle: 'Use the Kubelet arguments:'
         titleAlt:  |-
           {count, plural,
-            =1 { For all machines, use the Kubelet args: }
-            other { For any machines, use the Kubelet args: }
+            =1 { For all machines, use the Kubelet arguments: }
+            other { For any machines, use the Kubelet arguments: }
           }
-        kubeControllerManagerTitle: Additional Controller Manager Args
-        kubeApiServerTitle: Additional API Server Args
-        kubeSchedulerTitle: Additional Scheduler Args
+        kubeControllerManagerTitle: Additional Controller Manager Arguments
+        kubeApiServerTitle: Additional API Server Arguments
+        kubeSchedulerTitle: Additional Scheduler Arguments
     agentArgs:
       label: Raise error if kernel parameters are different than the expected kubelet defaults
   banner:
