@@ -746,7 +746,7 @@ harvester:
     dismissMessage: 忽略
     upgradeInfo:
       warning: 警告
-      doc: 在升级到较新的 Harvester 版本之前，您必须仔细阅读<a href=“https://docs.harvesterhci.io/v1.3/upgrade/index” target=“_blank”>升级过程文档</a>。仅完成适用于环境的任务即可。
+      doc: 在升级到较新的 Harvester 版本之前，您必须仔细阅读<a href="https://docs.harvesterhci.io/v1.3/upgrade/index" target="_blank">升级过程文档</a>。仅完成适用于环境的任务即可。
       tip: 如果没有执行这些检查，升级可能会失败，而且你可能会遇到需要手动修复的已知问题。
       moreNotes: 有关发行说明的详情，请访问 -
 
