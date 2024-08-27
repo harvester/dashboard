@@ -56,6 +56,7 @@ export default {
     const hash = await allHash(_hash);
 
     this.snapshots = hash.snapshots;
+    this.images = hash.images;
 
     const defaultStorage = this.$store.getters[`harvester/all`](STORAGE_CLASS).find( O => O.isDefault);
 
@@ -77,6 +78,7 @@ export default {
       storage,
       imageId,
       snapshots: [],
+      images:    [],
     };
   },
 
@@ -108,10 +110,8 @@ export default {
     },
 
     imageOption() {
-      const choices = this.$store.getters['harvester/all'](HCI.IMAGE);
-
       return sortBy(
-        choices
+        this.images
           .filter(obj => obj.isReady)
           .map((obj) => {
             return {
@@ -249,7 +249,17 @@ export default {
 
       this.$set(this.value, 'spec', spec);
     },
+    updateImage() {
+      if (this.isVMImage && this.imageId) {
+        const imageResource = this.images?.find(image => this.imageId === image.id);
+        const imageSize = Math.max(imageResource?.status?.size, imageResource?.status?.virtualSize);
 
+        if (imageSize) {
+          this.storage = `${ Math.ceil(imageSize / 1024 / 1024 / 1024) }Gi`;
+        }
+      }
+      this.update();
+    },
     generateYaml() {
       const out = saferDump(this.value);
 
@@ -300,7 +310,7 @@ export default {
           required
           :mode="mode"
           class="mb-20"
-          @input="update"
+          @input="updateImage"
         />
 
         <LabeledSelect
