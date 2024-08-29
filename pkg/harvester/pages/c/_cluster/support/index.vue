@@ -9,7 +9,7 @@ import { SCHEMA } from '@shell/config/types';
 import { HCI } from '../../../../types';
 
 export default {
-  layout: 'home',
+  layout: 'default',
 
   components: {
     BannerGraphic,
