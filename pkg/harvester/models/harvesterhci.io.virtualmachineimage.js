@@ -102,6 +102,10 @@ export default class HciVmImage extends HarvesterResource {
     const imported = this.getStatusConditionOfType('Imported');
 
     if (imported?.status === 'Unknown') {
+      if (this.spec.sourceType === 'restore') {
+        return 'Restoring';
+      }
+
       if (this.spec.sourceType === 'download') {
         return 'Downloading';
       }
@@ -132,7 +136,8 @@ export default class HciVmImage extends HarvesterResource {
     const conditions = this?.status?.conditions || [];
     const initialized = conditions.find( cond => cond.type === 'Initialized');
     const imported = conditions.find( cond => cond.type === 'Imported');
-    const message = initialized?.message || imported?.message;
+    const retryLimitExceeded = conditions.find( cond => cond.type === 'RetryLimitExceeded');
+    const message = initialized?.message || imported?.message || retryLimitExceeded?.message;
 
     return ucFirst(message);
   }

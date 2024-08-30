@@ -362,7 +362,7 @@ harvester:
       run: Run Strategy
       configure: Configure
       mode: Mode
-      modeLink: Mode <a href="https://docs.harvesterhci.io/v1.1/host/#ksmtuned-mode" target="_blank"><i class="icon icon-info" /></a>
+      modeLink: Mode <a href="https://docs.harvesterhci.io/v1.4/host/#ksmtuned-mode" target="_blank"><i class="icon icon-info" /></a>
       thresCoef: Threshold Coefficient
       enableMergeNodes: Enable merging across nodes
       enable: Enable
@@ -1339,6 +1339,7 @@ harvester:
       placeholder: 'topology.kubernetes.io/zone'
 
 advancedSettings:
+  technicalPreview: 'Technical Previews allow users to test and evaluate early-access functionality prior to official supported releases'
   descriptions:
     'harv-vlan': Default Network Interface name of the VLAN network.
     'harv-backup-target': Custom backup target to store virtual machine backups.

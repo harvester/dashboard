@@ -633,6 +633,13 @@ export default {
               :mode="mode"
             />
           </div>
+          <div class="col span-6">
+            <Reserved
+              :reserved-memory="reservedMemory"
+              :mode="mode"
+              @updateReserved="updateReserved"
+            />
+          </div>
         </div>
 
         <div class="row mb-20">
@@ -662,13 +669,6 @@ export default {
           </div>
 
           <div class="row mb-20">
-            <div class="col span-6">
-              <Reserved
-                :reserved-memory="reservedMemory"
-                :mode="mode"
-                @updateReserved="updateReserved"
-              />
-            </div>
             <div class="col span-6">
               <UnitInput
                 v-model="terminationGracePeriodSeconds"
