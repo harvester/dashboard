@@ -1,0 +1,32 @@
+pull_request_rules:
+- name: Automatically open backport PR to release-harvester-v1.3
+  conditions:
+    - base=master
+    - label="Require backport v1.3"
+  actions:
+    backport:
+      branches:
+        - "release-harvester-v1.3"
+      assignees:
+        - "{{ author }}"
+      labels:
+        - "Backport to v1.3"
+
+- name: Automatically open backport PR to release-harvester-v1.4
+  conditions:
+    - base=master
+  actions:
+    backport:
+      branches:
+        - "release-harvester-v1.4"
+      assignees:
+        - "{{ author }}"
+      labels:
+        - "Backport to v1.4"
+
+- name: Ask to resolve conflict
+  conditions:
+    - conflict
+  actions:
+    comment:
+      message: This pull request is now in conflict. Could you fix it @{{author}}? 🙏
