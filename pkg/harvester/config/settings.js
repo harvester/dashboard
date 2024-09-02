@@ -33,6 +33,7 @@ export const HCI_SETTING = {
   AUTO_ROTATE_RKE2_CERTS:                 'auto-rotate-rke2-certs',
   KUBECONFIG_DEFAULT_TOKEN_TTL_MINUTES:   'kubeconfig-default-token-ttl-minutes',
   LONGHORN_V2_DATA_ENGINE_ENABLED:        'longhorn-v2-data-engine-enabled',
+  ADDITIONAL_GUEST_MEMORY_OVERHEAD_RATIO: 'additional-guest-memory-overhead-ratio'
 };
 
 export const HCI_ALLOWED_SETTINGS = {
@@ -83,8 +84,9 @@ export const HCI_ALLOWED_SETTINGS = {
   [HCI_SETTING.NTP_SERVERS]:           {
     kind: 'json', from: 'import', canReset: true
   },
-  [HCI_SETTING.KUBECONFIG_DEFAULT_TOKEN_TTL_MINUTES]: {},
-  [HCI_SETTING.LONGHORN_V2_DATA_ENGINE_ENABLED]:      { kind: 'boolean', technicalPreview: true },
+  [HCI_SETTING.KUBECONFIG_DEFAULT_TOKEN_TTL_MINUTES]:   {},
+  [HCI_SETTING.LONGHORN_V2_DATA_ENGINE_ENABLED]:        { kind: 'boolean', technicalPreview: true },
+  [HCI_SETTING.ADDITIONAL_GUEST_MEMORY_OVERHEAD_RATIO]: { kind: 'string', from: 'import' },
 };
 
 export const HCI_SINGLE_CLUSTER_ALLOWED_SETTING = {
