@@ -363,7 +363,7 @@ harvester:
       run: Run Strategy
       configure: Configure
       mode: Mode
-      modeLink: Mode <a href="https://docs.harvesterhci.io/v1.4/host/#ksmtuned-mode" target="_blank"><i class="icon icon-info" /></a>
+      modeLink: Mode <a href="{url}" target="_blank"><i class="icon icon-info" /></a>
       thresCoef: Threshold Coefficient
       enableMergeNodes: Enable Merge Across Nodes
       enable: Enable
@@ -763,7 +763,7 @@ harvester:
     dismissMessage: Dismiss it
     upgradeInfo:
       warning: WARNING
-      doc: Read the <a href="https://docs.harvesterhci.io/v1.4/upgrade/index" target="_blank">documentation</a> before starting the upgrade process. Ensure that you complete procedures that are relevant to your environment and the version you are upgrading to.
+      doc: Read the <a href="{url}" target="_blank">documentation</a> before starting the upgrade process. Ensure that you complete procedures that are relevant to your environment and the version you are upgrading to.
       tip: Unmet system requirements and incorrectly performed procedures may cause complete upgrade failure and other issues that require manual workarounds.
       moreNotes: For more details about the release notes, please visit - 
 
@@ -880,7 +880,7 @@ harvester:
         invalid: '"Exclude list" is invalid.'
         addIp: Add Exclude IP
       warning: 'WARNING: <br/> Any change to storage-network requires shutting down all VMs before applying this setting. <br/> Users have to ensure the Cluster Network is configured and VLAN Config will cover all nodes and ensure the network connectivity is working and expected in all nodes.'
-      tip: 'Specify an IP range in the IPv4 CIDR format. <code>Number of IPs Required = Number of Nodes * 4 + Number of Disks * 2 + Number of Images to Download/Upload </code>. For more information about storage network settings, see the <a href="https://docs.harvesterhci.io/v1.4/advanced/storagenetwork#configuration-example" target="_blank">documentation</a>.'
+      tip: 'Specify an IP range in the IPv4 CIDR format. <code>Number of IPs Required = Number of Nodes * 4 + Number of Disks * 2 + Number of Images to Download/Upload </code>. For more information about storage network settings, see the <a href="{url}" target="_blank">documentation</a>.'
     vmForceDeletionPolicy:
       period: Period
     autoRotateRKE2Certs:
@@ -951,7 +951,7 @@ harvester:
     internal:
       rancher:
         title: Access Embedded Rancher UI
-        titleDescription: You can only use the embedded Rancher UI for debugging and validation purposes. For more information about how Harvester integrates with Rancher, see the <a target="_blank" href="https://docs.harvesterhci.io/v1.4/rancher/rancher-integration" rel="noopener noreferrer nofollow">documentation</a>.
+        titleDescription: You can only use the embedded Rancher UI for debugging and validation purposes. For more information about how Harvester integrates with Rancher, see the <a target="_blank" href="{url}" rel="noopener noreferrer nofollow">documentation</a>.
       longhorn:
         title: Access Embedded Longhorn UI
         titleDescription: We only support to use the embedded Longhorn UI for debugging and validation purpose.

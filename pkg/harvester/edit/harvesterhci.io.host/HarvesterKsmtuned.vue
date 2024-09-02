@@ -5,6 +5,7 @@ import UnitInput from '@shell/components/form/UnitInput';
 import { RadioGroup } from '@components/Form/Radio';
 import { Checkbox } from '@components/Form/Checkbox';
 import { HCI } from '../../types';
+import { DOC_LINKS } from '../../config/doc-links';
 
 export const ksmtunedMode = [{
   value: 'standard',
@@ -86,6 +87,10 @@ export default {
 
     showKsmt() {
       return this.spec.run === 'run';
+    },
+
+    ksmtunedLink() {
+      return DOC_LINKS.KSMTUNED_MODE;
     }
   },
 
@@ -135,7 +140,7 @@ export default {
       <Checkbox v-model="enableMergeAcrossNodes" :mode="mode" class="check mb-20" type="checkbox" :label="t('harvester.host.ksmtuned.enableMergeNodes')" />
 
       <h3>
-        <t k="harvester.host.ksmtuned.modeLink" :raw="true" />
+        <t k="harvester.host.ksmtuned.modeLink" :raw="true" :url="ksmtunedLink" />
       </h3>
       <RadioGroup
         v-model="spec.mode"
