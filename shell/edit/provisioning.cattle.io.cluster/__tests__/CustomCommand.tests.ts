@@ -1,6 +1,10 @@
 import { mount } from '@vue/test-utils';
 import CustomCommand from '@shell/edit/provisioning.cattle.io.cluster/CustomCommand.vue';
 
+jest.mock('@shell/utils/clipboard', () => {
+  return { copyTextToClipboard: jest.fn(() => Promise.resolve({})) };
+});
+
 describe('component: CustomCommand', () => {
   it('should return linux commands with the right flags based on cluster information', () => {
     const token = 'MY_TOKEN';
