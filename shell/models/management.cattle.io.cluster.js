@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import { CATALOG, CLUSTER_BADGE } from '@shell/config/labels-annotations';
 import { NODE, FLEET, MANAGEMENT, CAPI } from '@shell/config/types';
 import { insertAt } from '@shell/utils/array';
@@ -14,6 +13,7 @@ import { isHarvesterCluster } from '@shell/utils/cluster';
 import HybridModel from '@shell/plugins/steve/hybrid-class';
 import { LINUX, WINDOWS } from '@shell/store/catalog';
 import { KONTAINER_TO_DRIVER } from './management.cattle.io.kontainerdriver';
+import { copyTextToClipboard } from '@shell/utils/clipboard';
 
 // See translation file cluster.providers for list of providers
 // If the logo is not named with the provider name, add an override here
@@ -396,9 +396,13 @@ export default class MgmtCluster extends HybridModel {
   }
 
   async copyKubeConfig() {
-    const config = await this.generateKubeConfig();
+    try {
+      const config = await this.generateKubeConfig();
 
-    Vue.prototype.$copyText(config);
+      if (config) {
+        await copyTextToClipboard(config);
+      }
+    } catch {}
   }
 
   async fetchNodeMetrics() {
