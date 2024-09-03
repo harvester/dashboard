@@ -71,9 +71,9 @@ export default class Namespace extends SteveModel {
       });
     }
 
-    insertAt(out, 4, {
+    insertAt(out, 5, {
       action:  'editNSQuota',
-      label:   this.t('action.editQuota'),
+      label:   this.t('harvester.modal.quota.editQuota'),
       icon:    'icon icon-storage',
       enabled: !!this?.actions?.updateResourceQuota && !!this?.actions?.deleteResourceQuota,
       weight:  4,

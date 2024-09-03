@@ -258,7 +258,7 @@ export const DESCRIPTION = {
 
 export const NS_SNAPSHOT_QUOTA = {
   name:          'NamespaceSnapshotQuota',
-  labelKey:      'tableHeaders.totalSnapshotQuota',
+  labelKey:      'harvester.tableHeaders.totalSnapshotQuota',
   value:         'snapshotSizeQuota',
   sort:          'snapshotSizeQuota',
   align:         'center',
