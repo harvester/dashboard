@@ -34,15 +34,7 @@ export default {
   },
 
   data() {
-    const categorySettings = this.settings.filter((s) => {
-      if (this.category !== 'advanced') {
-        return (CATEGORY[this.category] || []).find(item => item === s.id);
-      } else if (this.category === 'advanced') {
-        const allCategory = Object.keys(CATEGORY);
-
-        return !allCategory.some(category => (CATEGORY[category] || []).find(item => item === s.id));
-      }
-    }) || [];
+    const categorySettings = this.filterCategorySettings();
 
     return {
       HCI_SETTING,
@@ -52,7 +44,27 @@ export default {
 
   computed: { ...mapGetters({ t: 'i18n/t' }) },
 
+  watch: {
+    settings: {
+      deep: true,
+      handler() {
+        this.$set(this, 'categorySettings', this.filterCategorySettings());
+      }
+    }
+  },
+
   methods: {
+    filterCategorySettings() {
+      return this.settings.filter((s) => {
+        if (this.category !== 'advanced') {
+          return (CATEGORY[this.category] || []).find(item => item === s.id);
+        } else if (this.category === 'advanced') {
+          const allCategory = Object.keys(CATEGORY);
+
+          return !allCategory.some(category => (CATEGORY[category] || []).find(item => item === s.id));
+        }
+      }) || [];
+    },
     showActionMenu(e, setting) {
       const actionElement = e.srcElement;
 
