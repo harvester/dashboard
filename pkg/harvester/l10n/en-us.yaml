@@ -307,7 +307,7 @@ harvester:
     console: Console
     label: Hosts
     inconsistentIP: "Host IP is inconsistent, current IP: { currentIP }, initial IP: { initIP }"
-    noConsoleUrl: 'Console URL is empty'
+    noConsoleUrl: 'Console URL not specified'
     promote:
       none: ' '
       running: promoting
