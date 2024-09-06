@@ -12,6 +12,7 @@ import { defaultTableSortGenerationFn } from '@shell/components/ResourceTable.vu
 import { NAMESPACE_FILTER_ALL_ORPHANS } from '@shell/utils/namespace-filter';
 import ResourceFetch from '@shell/mixins/resource-fetch';
 import DOMPurify from 'dompurify';
+import { HARVESTER_NAME as HARVESTER } from '@shell/config/features';
 
 export default {
   name:       'ListProjectNamespace',
@@ -84,21 +85,33 @@ export default {
     isNamespaceCreatable() {
       return (this.schema?.collectionMethods || []).includes('POST');
     },
+    isHarvester() {
+      return this.$store.getters['currentProduct'].inStore === HARVESTER;
+    },
     headers() {
-      const project = {
-        name:  'project',
-        label: this.t('tableHeaders.project'),
-        value: 'project.nameDisplay',
-        sort:  ['projectNameSort', 'nameSort'],
-      };
-
-      return [
+      const headers = [
         STATE,
         NAME,
-        this.groupPreference === 'none' ? project : null,
-        NS_SNAPSHOT_QUOTA,
-        AGE
-      ].filter(h => h);
+      ];
+
+      if (this.groupPreference === 'none') {
+        const projectHeader = {
+          name:  'project',
+          label: this.t('tableHeaders.project'),
+          value: 'project.nameDisplay',
+          sort:  ['projectNameSort', 'nameSort'],
+        };
+
+        headers.push(projectHeader);
+      }
+
+      if (this.isHarvester) {
+        headers.push(NS_SNAPSHOT_QUOTA);
+      }
+
+      headers.push(AGE);
+
+      return headers;
     },
     projectIdsWithNamespaces() {
       const ids = this.rows
