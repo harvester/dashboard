@@ -10,6 +10,7 @@ import Tip from '@shell/components/Tip';
 import { HCI } from '../../types';
 import { allHash } from '@shell/utils/promise';
 import { NODE } from '@shell/config/types';
+import { DOC_LINKS } from '../../config/doc-links';
 
 export default {
   name: 'HarvesterEditStorageNetwork',
@@ -85,6 +86,9 @@ export default {
   },
 
   computed: {
+    storageNetworkExampleLink() {
+      return DOC_LINKS.STORAGE_NETWORK_EXAMPLE;
+    },
     clusterNetworkOptions() {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const clusterNetworks = this.$store.getters[`${ inStore }/all`](HCI.CLUSTER_NETWORK) || [];
@@ -206,8 +210,8 @@ export default {
         :placeholder="t('harvester.setting.storageNetwork.range.placeholder')"
         label-key="harvester.setting.storageNetwork.range.label"
       />
-      <Tip class="mb-20" icon="icon icon-info" :text="t('harvester.setting.storageNetwork.tip')">
-        <t k="harvester.setting.storageNetwork.tip" :raw="true" />
+      <Tip class="mb-20" icon="icon icon-info">
+        <t k="harvester.setting.storageNetwork.tip" :raw="true" :url="storageNetworkExampleLink" />
       </Tip>
 
       <ArrayList

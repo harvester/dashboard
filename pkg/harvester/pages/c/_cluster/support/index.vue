@@ -7,9 +7,10 @@ import HarvesterSupportBundle from '../../../../dialog/HarvesterSupportBundle';
 import CommunityLinks from '@shell/components/CommunityLinks';
 import { SCHEMA } from '@shell/config/types';
 import { HCI } from '../../../../types';
+import { DOC_LINKS } from '../../../../config/doc-links';
 
 export default {
-  layout: 'home',
+  layout: 'default',
 
   components: {
     BannerGraphic,
@@ -73,13 +74,18 @@ export default {
       const { host, params } = this.internalPrefix;
 
       return `https://${ host }/k8s/clusters/${ params.cluster }/api/v1/namespaces/longhorn-system/services/http:longhorn-frontend:80/proxy/#/dashboard`;
-    }
+    },
+
+    rancherIntegrationLink() {
+      return DOC_LINKS.RANCHER_INTEGRATION_URL;
+    },
   },
 
   methods: {
     open() {
       this.$store.commit('harvester-common/toggleBundleModal', true);
-    }
+    },
+
   }
 };
 </script>
@@ -132,7 +138,7 @@ export default {
               </h2>
               <div>
                 <p class="warning">
-                  <t k="harvester.support.internal.rancher.titleDescription" :raw="true" />
+                  <t k="harvester.support.internal.rancher.titleDescription" :raw="true" :url="rancherIntegrationLink" />
                 </p>
               </div>
             </div>
