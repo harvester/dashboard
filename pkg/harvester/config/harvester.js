@@ -24,6 +24,7 @@ import {
   CONFIGURED_PROVIDERS,
   SUB_TYPE,
   ADDRESS,
+  NS_SNAPSHOT_QUOTA
 } from '@shell/config/table-headers';
 
 import {
@@ -32,7 +33,6 @@ import {
   FINGERPRINT,
   IMAGE_PROGRESS,
   SNAPSHOT_TARGET_VOLUME,
-  NS_SNAPSHOT_QUOTA,
 } from './table-headers';
 
 import { IF_HAVE } from '@shell/store/type-map';
