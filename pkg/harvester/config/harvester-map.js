@@ -23,7 +23,7 @@ export const InterfaceOption = [{
 
 export const SOURCE_TYPE = {
   NEW:           'New',
-  IMAGE:         'VM Image',
+  IMAGE:         'Virtual Machine Image',
   ATTACH_VOLUME: 'Existing Volume',
   CONTAINER:     'Container'
 };
