@@ -1345,9 +1345,11 @@ harvester:
     label: USB Devices
     noPermission: Please contact system admin to add Harvester addons first
     goSetting:
-      prefix: The usb addon is not enabled, click
+      prefix: The pcidevices-controller addon is not enabled, click
       middle: here
       suffix: to enable it to manage your USB devices.
+    enableGroup: Enable Group
+    disableGroup: Disable Group
     available: Available USB Devices
     compatibleNodes: Compatible Nodes
     impossibleSelection: 'There are no hosts with all of the selected devices.'

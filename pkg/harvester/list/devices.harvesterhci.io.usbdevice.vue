@@ -6,12 +6,14 @@ import Banner from '@components/Banner/Banner.vue';
 import Loading from '@shell/components/Loading';
 import MessageLink from '@shell/components/MessageLink';
 import { ADD_ONS } from '../config/harvester-map';
+import DeviceList from '../edit/kubevirt.io.virtualmachine/VirtualMachineUSBDevices/DeviceList';
 
 export default {
   name: 'ListUsbDevicePage',
 
   components: {
     Banner,
+    DeviceList,
     Loading,
     MessageLink,
   },
@@ -29,7 +31,7 @@ export default {
           addons:     this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.ADD_ONS }),
         });
 
-        this.hasUSBAddon = hash.addons.find(addon => addon.name === ADD_ONS.USB_DEVICE_CONTROLLER)?.spec?.enabled === true;
+        this.hasPCIAddon = hash.addons.find(addon => addon.name === ADD_ONS.PCI_DEVICE_CONTROLLER)?.spec?.enabled === true;
       } catch (e) {}
     }
   },
@@ -37,7 +39,7 @@ export default {
   data() {
     return {
       hasAddonSchema: false,
-      hasUSBAddon:    false,
+      hasPCIAddon:    false,
       schema:         null,
       toUSBAddon:     `${ HCI.ADD_ONS }/harvester-system/${ ADD_ONS.USB_DEVICE_CONTROLLER }?mode=edit`,
       headers: [
@@ -52,7 +54,7 @@ export default {
       return !!this.schema;
     },
 
-    rows() {
+    devices() {
       const inStore = this.$store.getters['currentProduct'].inStore;
 
       return this.$store.getters[`${ inStore }/all`](HCI.USB_DEVICE) || [];
@@ -72,7 +74,7 @@ export default {
       {{ t('harvester.usb.noPermission') }}
     </Banner>
   </div>
-  <div v-else-if="!hasUSBAddon">
+  <div v-else-if="!hasPCIAddon">
     <Banner color="warning">
       <MessageLink
         :to="toUSBAddon"
@@ -82,5 +84,5 @@ export default {
       />
     </Banner>
   </div>
-  <VGpuDeviceList v-else-if="hasSchema" :devices="rows" :schema="schema" />
+  <DeviceList v-else-if="hasSchema" :devices="devices" :schema="schema" />
 </template>

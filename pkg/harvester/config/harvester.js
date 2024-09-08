@@ -794,6 +794,14 @@ export function init($plugin, store) {
     hiddenNamespaceGroupButton: true,
     listGroups:                 [
       {
+        icon:       'icon-list-grouped',
+        value:      'description',
+        field:      'groupByDevice',
+        hideColumn: 'description',
+        tooltipKey: 'resourceTable.groupBy.device'
+      },
+      {
+        icon:       'icon-cluster',
         value:      'node',
         field:      'groupByNode',
         hideColumn: 'node',

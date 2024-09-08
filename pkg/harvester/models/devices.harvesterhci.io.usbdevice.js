@@ -32,7 +32,7 @@ export default class USBDevice extends SteveModel {
     out.push(
       {
         action:     'enablePassthroughBulk',
-        enabled:    !this.isEnabling,
+        enabled:    !this.passthroughClaim && !this.status.enabled,
         icon:       'icon icon-fw icon-dot',
         label:      'Enable Passthrough',
         bulkable:   true,
@@ -40,7 +40,7 @@ export default class USBDevice extends SteveModel {
       },
       {
         action:   'disablePassthrough',
-        enabled:  this.isEnabling && this.claimedByMe,
+        enabled:  this.status.enabled,
         icon:     'icon icon-fw icon-dot-open',
         label:    'Disable Passthrough',
         bulkable: true
@@ -69,7 +69,7 @@ export default class USBDevice extends SteveModel {
   get passthroughClaim() {
     const passthroughClaims = this.$getters['all'](HCI.USB_CLAIM) || [];
 
-    return !!this.status && passthroughClaims.find(req => req?.spec?.nodeName === this.status?.nodeName && req?.spec?.address === this.status?.address);
+    return !!this.status && passthroughClaims.find(req => req?.status?.nodeName === this.status?.nodeName && req?.status?.pciAddress === this.status?.pciAddress);
   }
 
   // this is an id for each 'type' of device - there may be multiple instances of device CRs
@@ -98,23 +98,12 @@ export default class USBDevice extends SteveModel {
     return this.claimedBy === userName;
   }
 
-  // isEnabled controls visibility in vm create page & ability to delete claim
-  // isEnabling controls ability to add claim
-  // there will be a brief period where isEnabling === true && isEnabled === false
-  get isEnabled() {
-    return !!this.passthroughClaim?.status?.passthroughEnabled;
-  }
-
-  get isEnabling() {
-    return !!this.passthroughClaim;
-  }
-
   // map status.passthroughEnabled to disabled/enabled & overwrite default dash colors
   get claimStatusDisplay() {
     if (!this.passthroughClaim) {
       return STATUS_DISPLAY.disabled;
     }
-    if (this.isEnabled) {
+    if (this.status.enabled) {
       return STATUS_DISPLAY.enabled;
     }
 
@@ -154,5 +143,17 @@ export default class USBDevice extends SteveModel {
         err,
       }, { root: true });
     }
+  }
+
+  // group device list by node
+  get groupByNode() {
+    const name = this.status?.nodeName || this.$rootGetters['i18n/t']('generic.none');
+
+    return this.$rootGetters['i18n/t']('resourceTable.groupLabel.node', { name: escapeHtml(name) });
+  }
+
+  // group device list by unique device (same vendorid and deviceid)
+  get groupByDevice() {
+    return this.status?.description;
   }
 }

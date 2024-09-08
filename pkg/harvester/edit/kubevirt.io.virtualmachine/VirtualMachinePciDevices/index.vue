@@ -53,10 +53,13 @@ export default {
     const selectedDevices = [];
     const oldFormatDevices = [];
 
-    (this.value?.domain?.devices?.hostDevices || []).forEach(({ name, deviceName }) => {
+    const vmDevices = this.value?.domain?.devices?.hostDevices || [];
+    const otherDevices = this.otherDevices(vmDevices).map(({name}) => name);
+
+    vmDevices.forEach(({ name, deviceName }) => {
       const checkName = (deviceName || '').split('/')?.[1];
 
-      if (checkName && name.includes(checkName)) {
+      if (checkName && name.includes(checkName) && !otherDevices.includes(name)) {
         oldFormatDevices.push(name);
       } else if (this.enabledDevices.find(device => device?.metadata?.name === name)) {
         selectedDevices.push(name);
@@ -94,7 +97,12 @@ export default {
         };
       });
 
-      set(this.value.domain.devices, 'hostDevices', formatted);
+      const devices = [
+        ...this.otherDevices(this.value.domain.devices.hostDevices),
+        ...formatted,
+      ];
+
+      set(this.value.domain.devices, 'hostDevices', devices);
     }
   },
 
@@ -185,6 +193,10 @@ export default {
   },
 
   methods: {
+    otherDevices(vmDevices) {
+      return vmDevices.filter((device) => !this.pciDevices.find((pci) => device.name === pci.name));
+    },
+
     nodeNameFromUid(uid) {
       for (const deviceUid in this.uniqueDevices) {
         const nodes = this.uniqueDevices[deviceUid].nodes;

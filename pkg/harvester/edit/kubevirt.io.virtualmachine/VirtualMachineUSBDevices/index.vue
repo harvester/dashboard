@@ -8,6 +8,9 @@ import Banner from '@components/Banner/Banner.vue';
 import CompatibilityMatrix from '../CompatibilityMatrix';
 import DeviceList from './DeviceList';
 
+import remove from 'lodash/remove';
+import { get, set } from '@shell/utils/object';
+
 export default {
   name:       'VirtualMachineUSBDevices',
   components: {
@@ -44,6 +47,10 @@ export default {
     for (const key in res) {
       this[key] = res[key];
     }
+
+    this.selectedDevices = (this.value?.domain?.devices?.hostDevices || [])
+      .map(({ name }) => name)
+      .filter((name) => this.enabledDevices.find(device => device?.metadata?.name === name));
   },
 
   data() {
@@ -60,13 +67,34 @@ export default {
     };
   },
 
+  watch: {
+    selectedDevices(neu) {
+      const formatted = neu.map((selectedDevice) => {
+        const deviceCRD = this.enabledDevices.find(device => device.metadata.name === selectedDevice);
+        const deviceName = deviceCRD?.status?.resourceName;
+
+        return {
+          deviceName,
+          name: deviceCRD?.metadata.name,
+        };
+      });
+
+      const devices = [
+        ...this.otherDevices(this.value.domain.devices.hostDevices),
+        ...formatted,
+      ];
+
+      set(this.value.domain.devices, 'hostDevices', devices);
+    }
+  },
+
   computed: {
     deviceOpts() {
       const filteredOptions = this.enabledDevices.filter((deviceCRD) => {
         if (this.selectedDevices.length > 0) {
           const selectedDevice = this.enabledDevices.find(device => device.metadata.name === this.selectedDevices[0]);
 
-          return !this.devicesInUse[deviceCRD?.metadata.name] && deviceCRD.status.nodeName === selectedDevice.status.nodeName;
+          return !this.devicesInUse[deviceCRD?.metadata.name] && deviceCRD.status.nodeName === selectedDevice?.status.nodeName;
         }
 
         return !this.devicesInUse[deviceCRD?.metadata.name];
@@ -76,14 +104,14 @@ export default {
         return {
           value:        deviceCRD?.metadata.name,
           label:        deviceCRD?.metadata.name,
-          displayLabel: deviceCRD?.status?.resourceName,
+          displayLabel: deviceCRD?.status?.description,
         };
       });
     },
 
     enabledDevices() {
       return this.devices.filter((device) => {
-        return device.isEnabled;
+        return device.status.enabled;
       }) || [];
     },
 
@@ -108,7 +136,7 @@ export default {
       const out = {};
 
       this.enabledDevices.forEach((deviceCRD) => {
-        const nodeName = deviceCRD.spec?.nodeName;
+        const nodeName = deviceCRD.status?.nodeName;
 
         if (!out[nodeName]) {
           out[nodeName] = [deviceCRD];
@@ -127,13 +155,19 @@ export default {
         remove(out, (nodeName) => {
           const device = this.enabledDevices.find(deviceCRD => deviceCRD.metadata.name === deviceUid);
 
-          return device.spec.nodeName !== nodeName;
+          return device?.status.nodeName !== nodeName;
         });
       });
 
       return out;
     },
   },
+
+  methods: {
+    otherDevices(vmDevices) {
+      return vmDevices.filter((device) => !this.devices.find((usb) => device.name === usb.name));
+    }
+  }
 };
 </script>
 
