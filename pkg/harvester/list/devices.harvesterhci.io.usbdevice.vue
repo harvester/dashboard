@@ -42,7 +42,7 @@ export default {
       hasPCIAddon:    false,
       schema:         null,
       toUSBAddon:     `${ HCI.ADD_ONS }/harvester-system/${ ADD_ONS.USB_DEVICE_CONTROLLER }?mode=edit`,
-      headers: [
+      headers:        [
         { ...STATE },
         SIMPLE_NAME,
       ],

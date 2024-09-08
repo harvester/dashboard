@@ -58,8 +58,8 @@ export default {
             }]
           },
           spec: {
-            pciAddress:  actionResource.status.pciAddress,
-            nodeName:    actionResource.status.nodeName,
+            pciAddress: actionResource.status.pciAddress,
+            nodeName:   actionResource.status.nodeName,
             userName
           }
         } );

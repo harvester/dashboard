@@ -50,12 +50,12 @@ export default {
 
     this.selectedDevices = (this.value?.domain?.devices?.hostDevices || [])
       .map(({ name }) => name)
-      .filter((name) => this.enabledDevices.find(device => device?.metadata?.name === name));
+      .filter(name => this.enabledDevices.find(device => device?.metadata?.name === name));
   },
 
   data() {
     return {
-      deviceSchema:    this.$store.getters['harvester/schemaFor'](HCI.USB_DEVICE),
+      deviceSchema:  this.$store.getters['harvester/schemaFor'](HCI.USB_DEVICE),
       deviceHeaders: [
         { ...STATE },
         SIMPLE_NAME,
@@ -165,7 +165,7 @@ export default {
 
   methods: {
     otherDevices(vmDevices) {
-      return vmDevices.filter((device) => !this.devices.find((usb) => device.name === usb.name));
+      return vmDevices.filter(device => !this.devices.find(usb => device.name === usb.name));
     }
   }
 };

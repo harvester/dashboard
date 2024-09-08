@@ -54,7 +54,7 @@ export default {
     const oldFormatDevices = [];
 
     const vmDevices = this.value?.domain?.devices?.hostDevices || [];
-    const otherDevices = this.otherDevices(vmDevices).map(({name}) => name);
+    const otherDevices = this.otherDevices(vmDevices).map(({ name }) => name);
 
     vmDevices.forEach(({ name, deviceName }) => {
       const checkName = (deviceName || '').split('/')?.[1];
@@ -194,7 +194,7 @@ export default {
 
   methods: {
     otherDevices(vmDevices) {
-      return vmDevices.filter((device) => !this.pciDevices.find((pci) => device.name === pci.name));
+      return vmDevices.filter(device => !this.pciDevices.find(pci => device.name === pci.name));
     },
 
     nodeNameFromUid(uid) {

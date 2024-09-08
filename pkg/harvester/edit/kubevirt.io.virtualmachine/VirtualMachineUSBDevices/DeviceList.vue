@@ -78,8 +78,8 @@ export default {
 
     return {
       headers,
-      rows:        [],
-      filterRows:  []
+      rows:       [],
+      filterRows: []
     };
   },
 
@@ -88,8 +88,6 @@ export default {
       handler(v) {
         this.rows = v;
         this.filterRows = this.rows;
-
-        console.log(this.filterRows)
       },
       immediate: true,
     },
