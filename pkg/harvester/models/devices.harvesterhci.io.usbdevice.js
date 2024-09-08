@@ -135,7 +135,7 @@ export default class USBDevice extends SteveModel {
   enablePassthroughBulk(resources = this) {
     this.$dispatch('promptModal', {
       resources,
-      component: 'EnablePassthrough'
+      component: 'EnableUSBPassthrough'
     });
   }
 
