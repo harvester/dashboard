@@ -59,24 +59,30 @@ export default {
 
   data() {
     return {
-      switchToCloud: false,
+      hasResourceQuotaSchema: false,
+      switchToCloud:          false,
       VM_METRICS_DETAIL_URL,
-      showVmMetrics: false,
+      showVmMetrics:          false,
     };
   },
 
   async created() {
     const inStore = this.$store.getters['currentProduct'].inStore;
 
+    this.hasResourceQuotaSchema = !!this.$store.getters[`${ inStore }/schemaFor`](HCI.RESOURCE_QUOTA);
+
     const hash = {
-      pods:           this.$store.dispatch(`${ inStore }/findAll`, { type: POD }),
-      services:       this.$store.dispatch(`${ inStore }/findAll`, { type: SERVICE }),
-      events:         this.$store.dispatch(`${ inStore }/findAll`, { type: EVENT }),
-      allSSHs:        this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.SSH }),
-      vmis:           this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VMI }),
-      restore:        this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.RESTORE }),
-      resourceQuotas: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.RESOURCE_QUOTA }),
+      pods:     this.$store.dispatch(`${ inStore }/findAll`, { type: POD }),
+      services: this.$store.dispatch(`${ inStore }/findAll`, { type: SERVICE }),
+      events:   this.$store.dispatch(`${ inStore }/findAll`, { type: EVENT }),
+      allSSHs:  this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.SSH }),
+      vmis:     this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VMI }),
+      restore:  this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.RESTORE }),
     };
+
+    if (this.hasResourceQuotaSchema) {
+      hash.resourceQuotas = this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.RESOURCE_QUOTA });
+    }
 
     await allHash(hash);
 
@@ -198,7 +204,7 @@ export default {
         <OverviewKeypairs v-model="value" />
       </Tab>
 
-      <Tab name="quotas" :label="t('harvester.tab.quotas')" :weight="3">
+      <Tab v-if="hasResourceQuotaSchema" name="quotas" :label="t('harvester.tab.quotas')" :weight="3">
         <LabelValue
           :name="t('harvester.snapshot.totalSnapshotSize')"
           :value="totalSnapshotSize"

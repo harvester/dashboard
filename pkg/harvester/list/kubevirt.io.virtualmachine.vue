@@ -75,12 +75,15 @@ export default {
   async fetch() {
     const inStore = this.$store.getters['currentProduct'].inStore;
     const _hash = {
-      vms:            this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VM }),
-      pod:            this.$store.dispatch(`${ inStore }/findAll`, { type: POD }),
-      restore:        this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.RESTORE }),
-      backups:        this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.BACKUP }),
-      resourceQuotas: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.RESOURCE_QUOTA }),
+      vms:     this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VM }),
+      pod:     this.$store.dispatch(`${ inStore }/findAll`, { type: POD }),
+      restore: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.RESTORE }),
+      backups: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.BACKUP }),
     };
+
+    if (this.$store.getters[`${ inStore }/schemaFor`](HCI.RESOURCE_QUOTA)) {
+      _hash.resourceQuotas = this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.RESOURCE_QUOTA });
+    }
 
     if (this.$store.getters[`${ inStore }/schemaFor`](NODE)) {
       _hash.nodes = this.$store.dispatch(`${ inStore }/findAll`, { type: NODE });
