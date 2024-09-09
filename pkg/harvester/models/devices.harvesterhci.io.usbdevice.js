@@ -69,7 +69,7 @@ export default class USBDevice extends SteveModel {
   get passthroughClaim() {
     const passthroughClaims = this.$getters['all'](HCI.USB_CLAIM) || [];
 
-    return !!this.status && passthroughClaims.find(req => req?.status?.nodeName === this.status?.nodeName && req?.status?.pciAddress === this.status?.pciAddress);
+    return !!this.status && passthroughClaims.find(req => req?.status?.nodeName === this.status?.nodeName && req?.metadata?.name === this.metadata?.name);
   }
 
   // this is an id for each 'type' of device - there may be multiple instances of device CRs
