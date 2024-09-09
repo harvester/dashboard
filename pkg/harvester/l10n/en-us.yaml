@@ -10,10 +10,10 @@ generic:
 nav:
   group:
     networks: Networks
-    backupAndSnapshot: Backup & Snapshot
+    backupAndSnapshot: Backup and Snapshots
     Monitoring: Monitoring
     Logging: Logging
-    'Monitoring & Logging': Monitoring & Logging
+    'Monitoring and Logging': Monitoring and Logging
 
 resourceTable:
   groupBy:
@@ -28,7 +28,7 @@ members:
 
 asyncButton:
   restart:
-    action: Save & Restart
+    action: Save and Restart
     success: Restarted
     waiting: Restarting&hellip;
 
@@ -40,7 +40,7 @@ harvester:
       addBackup: Add Backup
     restore:
       success: 'Restore { name } created successfully.'
-      title: Backup and restore
+      title: Backup and Restore
       selectBackup: Select Backup
       message:
         backup: Please select the backup that needs to be restored.
@@ -53,16 +53,16 @@ harvester:
         success: 'Template { templateName } created successfully.'
         failed: 'Failed generated template!'
     cloneVM:
-      title: Clone VM
-      name: New VM Name
+      title: Clone Virtual Machine
+      name: New Virtual Machine Name
       type: Clone volume data
       action:
         create: Create
         clone: Clone
       message:
-        tip: Please enter a VM name!
-        success: 'VM { name } cloned successfully.'
-        failed: 'Failed clone VM!'
+        tip: Please enter a virtual machine name!
+        success: 'Virtual machine { name } cloned successfully.'
+        failed: 'Failed clone virtual machine!'
     exportImage:
       title: Export to Image
       name: Name
@@ -77,21 +77,21 @@ harvester:
           label: Target Node
           placeholder: Choose Target Node
     ejectCDROM:
-      title: Eject CDROM
+      title: Eject CD-ROM
       warnTip: Eject volume will restart the virtual machine.
       operationTip: 'Select the volume you want to delete:'
       delete: Delete
     bundle:
-      title: Generate Support Bundle
+      title: Generate a Support Bundle
       url: Issue URL
       description: Description
       requiredDesc: Description is required!
-      titleDescription: Collect system-related log in Harvester, to help with troubleshooting and support.
+      titleDescription: Collect system-related logs in Harvester to help with troubleshooting and support.
     hotplug:
-      success: 'Volume { diskName } is mounted to the VM { vm }.'
+      success: 'Volume { diskName } is mounted to the virtual machine { vm }.'
       title: Add Volume
     hotunplug:
-      success: 'Volume { name } is detach successfully.'
+      success: 'Volume { name } is detached successfully.'
     snapshot:
       title: Take Snapshot
       name: Name
@@ -109,10 +109,10 @@ harvester:
     vmSnapshot:
       title: Take VM Snapshot
       name: Name
-      success: 'Take VM Snapshot { name } successfully.'
+      success: 'Take virtual machine Snapshot { name } successfully.'
     restart:
-      title: Restart VM
-      tip: Restart the Virtual Machine now for configuration changes to take effect.
+      title: Restart Virtual Machine
+      tip: Restart the virtual machine for configuration changes to take effect.
       cancel: Save
   notification:
     title:
@@ -130,11 +130,11 @@ harvester:
     deepClone: Clone
     shallowClone: Clone Template
     unpause: Unpause
-    ejectCDROM: Eject CDROM
+    ejectCDROM: Eject CD-ROM
     launchFormTemplate: Launch instance from template
     modifyTemplate: Modify template (Create new version)
     setDefaultVersion: Set default version
-    addTemplateVersion: Add templateVersion
+    addTemplateVersion: Add template version
     backup: Take Backup
     restore: Restore
     restoreNewVM: Restore New
@@ -152,7 +152,7 @@ harvester:
     cancelExpand: Cancel Expand
     snapshot: Take Snapshot
     pvcClone: Clone Volume
-    vmSnapshot: Take VM Snapshot
+    vmSnapshot: Take Virtual Machine Snapshot
     shutdown: Shut Down
     powerOn: Power On
     reboot: Reboot
@@ -163,13 +163,13 @@ harvester:
     progress: Progress
     message: Message
     phase: Phase
-    attachedVM: Attached VM
+    attachedVM: Attached Virtual Machine
     fingerprint: Fingerprint
     value: Value
     actions: Actions
     readyToUse: Ready To Use
     backupTarget: Backup Target
-    targetVm: Target VM
+    targetVm: Target Virtual Machine
     hostIp: Host IP
     vm:
       ipAddress: IP Address
@@ -177,7 +177,7 @@ harvester:
       defaultVersion: Default Version
     network:
       type: Type
-      vlan: Vlan ID
+      vlan: VLAN ID
     snapshotTargetVolume: Original Volume
     volumeSnapshotCounts: Snapshot Counts
     networkState: Network State
@@ -189,8 +189,8 @@ harvester:
     advanced: Advanced Options
     accessCredentials: Access Credentials
     pciDevices: PCI Devices
-    vGpuDevices: VGPU Devices
-    vmScheduling: VM Scheduling
+    vGpuDevices: vGPU Devices
+    vmScheduling: Virtual Machine Scheduling
     instanceLabel: Instance Labels
   fields:
     version: Version
@@ -201,24 +201,24 @@ harvester:
     volume: Volume
     network: Network
     model: Model
-    macAddress: Mac Address
+    macAddress: MAC address
     port: Port
     protocol: Protocol
-    remove: REMOVE
+    remove: Remove
     PhysicalNic: Physical NIC
-    cpu: Cpu
+    cpu: CPU
     memory: Memory
     virtualName: Virtual machine name
     promiscuous: Promiscuous
-    ipv4Address: IPv4 Address
-    filterLabels: Filter Labels
-    storageClass: Storage Class
-    dockerImage: Docker Image 
+    ipv4Address: IPv4 address
+    filterLabels: Filter labels
+    storageClass: Storage class
+    dockerImage: Docker image
   pci:
     available: Available Devices
     compatibleNodes: Compatible Nodes
     impossibleSelection: 'There are no hosts with all of the selected devices.'
-    howToUseDevice: 'Use the table below to enable PCI passthrough on each device you want to use in this VM.'
+    howToUseDevice: 'Use the table below to enable PCI passthrough on each device you want to use in this virtual machine.'
     deviceInTheSameHost: 'You can only select devices on the same host.'
     oldFormatDevices:
       help: |-
@@ -229,11 +229,11 @@ harvester:
           {oldFormatDevicesHTML}
         </ul>
         <p>
-          Please use the following instructions to update the VM:
+          Please use the following instructions to update the virtual machine:
         </p>
         <ol>
-          <li>Stop the VM, edit the VM YAML, and remove the <Code>hostDevices</Code> section, and save VM the changes to the YAML file.</li>
-          <li>Edit the VM, and add the already enabled PCIDevice from the list of available PCIDevices, and save and start VM.</li>
+          <li>Stop the virtual machine, edit the virtual machine YAML, and remove the <Code>hostDevices</Code> section, and save virtual machine the changes to the YAML file.</li>
+          <li>Edit the virtual machine, and add the already enabled PCI Device from the list of available PCIDevices, and save and start VM.</li>
         </ol>
     showCompatibility: Show device compatibility matrix
     hideCompatibility: Hide device compatibility matrix
@@ -242,12 +242,12 @@ harvester:
     cantUnclaim: You cannot disable passthrough on a device claimed by another user.
     enableGroup: Enable Group
     disableGroup: Disable Group
-    labelRequired: "This rule should not be manually altered: it ensures that the PCI devices selected for this virtual machine are available on the VM's host."
+    labelRequired: "This rule should not be manually altered: it ensures that the PCI devices selected for this virtual machine are available on the virtual machine's host."
     goSetting:
-      prefix: The pcidevices-controller addon is not enabled, click
+      prefix: The pcidevices-controller add-on is not enabled, click
       middle: here
       suffix: to enable it to manage your PCI devices.
-    noPCIPermission: Please contact system admin to enable the PCI devices first.
+    noPCIPermission: Please contact your system administrator to enable the PCI devices first.
     enablePassthroughWarning: Please be careful not to use host-owned PCI devices (e.g., management and VLAN NICs). Incorrect device allocation may cause damage to your cluster, including node failure.
     matrixHostName: Host Name
     matrixDeviceClaimName: Device Claim Name
@@ -300,7 +300,7 @@ harvester:
       events:
         label: Events
       vmMetrics:
-        label: VM Metrics
+        label: Virtual Machine Metrics
 
     version: Version
   host:
@@ -310,11 +310,11 @@ harvester:
     noConsoleUrl: 'Console URL not specified'
     promote:
       none: ' '
-      running: promoting
-      failed: promote failed
-      unknown: promote halted
-      promoteRestart: restarting
-      promoteSucceed: promote completed
+      running: Promoting
+      failed: Promote failed
+      unknown: Promote halted
+      promoteRestart: Restarting
+      promoteSucceed: Promote completed
     tabs:
       network: Network
       overview: Overview
@@ -324,10 +324,10 @@ harvester:
       storage: Storage
       labels: Labels
       ksmtuned: Ksmtuned
-      seeder: Out-of-Band Access
+      seeder: Out-of-band Access
     detail:
       kvm:
-        disableMessage: Hardware-based virtualization is disabled or not supported. Hardware-based virtualization must be enabled before creating any Virtual Machines.
+        disableMessage: Hardware-based virtualization is disabled or not supported. Hardware-based virtualization must be enabled before creating any virtual machines.
       title:
         network: Network Configuration
       hostIP: Host IP
@@ -354,7 +354,7 @@ harvester:
     enableMaintenance:
       title: Enable Maintenance Mode
       protip: The operation will migrate all virtual machines on this node to other nodes.
-      shutDownVMs: Check <b>Force</b> option to shutdown VMs which cannot be migrated in live mode.
+      shutDownVMs: Check <b>Force</b> option to shutdown virtual machines which cannot be migrated in live mode.
       force: Force
     cordon:
       title: Cordon
@@ -365,15 +365,15 @@ harvester:
       mode: Mode
       modeLink: Mode <a href="{url}" target="_blank"><i class="icon icon-info" /></a>
       thresCoef: Threshold Coefficient
-      enableMergeNodes: Enable Merge Across Nodes
+      enableMergeNodes: Enable merging across nodes
       enable: Enable
       disable: Disable
       ksmStatus: KSM Status
       modeOption:
         standard: Standard
-        high: High-Perfomanace
+        high: High-performance
         customized: Customized
-      parameters: 
+      parameters:
         title: Ksmtuned Parameters
         boost: Boost
         decay: Decay
@@ -408,7 +408,7 @@ harvester:
         label: Eviction Requested
       forceFormatted:
         label: Force Formatted
-        toolTip: Force formatted will cleanup disk data, make sure you backup all available data to prevent data loss.
+        toolTip: Force formatted will clean up disk data, make sure you backup all available data to prevent data loss.
         yes: Yes (Ext4 File System)
       description:
         label: Description
@@ -425,7 +425,7 @@ harvester:
         addLabel: Add Disk Tag
       conditions: Conditions
       storageAvailable:
-        label: Storage Available 
+        label: Storage Available
       storageScheduled:
         label: Storage Scheduled
       storageMaximum:
@@ -441,8 +441,8 @@ harvester:
       tips: You can configure multiple IPv4 addresses or host addresses.
       placeholder: e.g. IPv4
       ntpSyncStatus:
-        isDisabled: 'The NTP is disabled. Please check the NTP service is active.'
-        isUnsynced: 'The time is not synchronized with the NTP server {current}'
+        isDisabled: 'NTP is disabled. Please check the NTP service is active.'
+        isUnsynced: 'NTP is not synchronized with the NTP server {current}.'
 
   virtualMachine:
     label: Virtual Machines
@@ -455,7 +455,7 @@ harvester:
         nameLabel: Name
         host:
           label: Hostname
-          placeholder: default to the virtual machine name.
+          placeholder: Default to the virtual machine name.
       multiple:
         label: Multiple Instance
         nameNsDescription: Name prefix for each instance
@@ -464,20 +464,20 @@ harvester:
         nameLabel: Name Prefix
         host:
           label: Host Prefix Name
-          placeholder: default to the virtual machine name.
+          placeholder: Default to the virtual machine name.
     useTemplate:
-      label: "Use VM Template:"
+      label: "Use the virtual machine template:"
       template:
         label: Template
       version:
         label: Version
     console:
-      novnc: Open in Web VNC
+      novnc: Open in WebVNC
       serial: Open in Serial Console
     promptRemove:
       title: 'Select the volume you want to delete:'
       deleteAll: Delete All
-      tips: "Warn: The snapshots of vm will be deleted with VM and the snapshots of volume will be deleted with volume."
+      tips: "Warn: The snapshots of the virtual machine will be deleted with virtual machine and the snapshots of volume will be deleted with volume."
     unplug:
       title: 'Are you sure that you want to detach volume {name} ?'
       actionLabel: Detach
@@ -513,7 +513,7 @@ harvester:
     secureBoot: Secure Boot
     volume:
       dragTip: Drag and drop volumes, or use the volume's arrows, to change the boot order.
-      volumeTip: The VM only contains a cd-rom volume. You may want to add additional disk volumes.
+      volumeTip: The virtual machine only contains a CD-ROM volume. You may want to add additional disk volumes.
       macTip: "MAC address as seen inside the guest system."
       volumeUpdate: 'Set volume { name } successfully'
       type: Type
@@ -525,7 +525,7 @@ harvester:
       dockerImage: Docker Image
       addVolume: Add Volume
       addExistingVolume: Add Existing Volume
-      addVmImage: Add VM Image
+      addVmImage: Add a Virtual Machine Image
       addContainer: Add Container
       setFirst: Set as root volume
       saveVolume: Update Volume
@@ -555,23 +555,23 @@ harvester:
       network:
         label: Network Data Template
         title: "Network Data:"
-        tip: "The network-data configuration allows you to customize the instance’s networking interfaces by assigning subnet configuration, virtual device creation (bonds, bridges, vlans) routes and DNS configuration. <a href='https://cloudinit.readthedocs.io/en/latest/reference/network-config-format-v1.html' target='_blank'>Learn more</a>"
+        tip: "The network-data configuration allows you to customize the instance’s networking interfaces by assigning subnet configuration, virtual device creation (bonds, bridges, VLANs) routes and DNS configuration. <a href='https://cloudinit.readthedocs.io/en/latest/reference/network-config-format-v1.html' target='_blank'>Learn more</a>"
     scheduling:
       affinity:
-        anyNode: 'Run VM on any available node'
-        schedulingRules: 'Run VM on node(s) matching scheduling rules'
-        specificNode: Run VM on specific node - (Live migration is not supported)
+        anyNode: 'Run virtual machine on any available node'
+        schedulingRules: 'Run virtual machine on node(s) matching scheduling rules'
+        specificNode: Run virtual machine on specific node - (Live migration is not supported)
       networkNotSupport: Network not support schedule
     accessCredentials:
       resetPwd:
         label: Add Basic Auth
       injectSSH:
-        label: Add SSHKey
+        label: Add SSH Key
         users: Select Users
         addUser: Add User
-      tips: qemu-guest-agent must be installed to enable Access Credentials, the VM should be restarted after credentials added. Need to enter the VM to edit password or remove SSH-Key after deleting the credentials.
+      tips: qemu-guest-agent must be installed to enable the accessing of credentials. The virtual machine needs to be restarted after credentials added. You need to be in the virtual machine to edit your password or remove an SSH-Key after deleting the credentials.
       userTips: The user to be added must already exist; otherwise, the credentials will not take effect.
-      duplicatedUser: User already exist.
+      duplicatedUser: User already exists.
       invalidUser: Invalid Username.
     input:
       name: Name
@@ -603,7 +603,7 @@ harvester:
         monitor: Monitor Data
         keypairs: SSH Keys
         cloudConfig: Cloud Config
-        metrics: VM Metrics
+        metrics: Virtual Machine Metrics
       details:
         title:
           vmDetails: Virtual Machine Details
@@ -632,7 +632,7 @@ harvester:
         flavor: Flavor
         tolerations: Tolerations
         dedicatedResources: Dedicated Resources
-        down: VM not running
+        down: Virtual machine not running
         affinityRules: Affinity Rules
         sourceNode: Source Node
         targetNode: Target Node
@@ -645,7 +645,7 @@ harvester:
         from: Generated from
         down: No events in the past hour
       console:
-        down: This Virtual Machine is down. Please start it to access its console.
+        down: This virtual machine is down. Please start it to access its console.
         shortcutKeys: Shortcut Keys
         customShortcutKeys: Custom Shortcut Keys
         management: Management Shortcut Keys
@@ -653,13 +653,13 @@ harvester:
           start: Record
           recording: Recording
           stop: Stop Recording
-          tips: Pressing the record button will capture your keyboard inputs.
+          tips: Press the record button to capture your keyboard inputs.
           send: Send
           preferredKeys: Preferred Custom Shortcut Keys
     terminationGracePeriodSeconds:
       label: Termination Grace Period
     affinity:
-      thisPodNamespace: This VM's namespace
+      thisPodNamespace: This virtual machine's namespace
       matchExpressions:
         inNamespaces: "Workloads in these namespaces"
       namespaces:
@@ -677,7 +677,7 @@ harvester:
     kind: Kind
     sourceOptions:
       new: New
-      vmImage: VM Image
+      vmImage: Virtual Machine Image
     image: Image
     frontend: Frontend
     blockdev: Block Device
@@ -689,7 +689,7 @@ harvester:
     lastBackupAt: Last Backup At
     replicasNumber: Replicas Number
     promptRemove:
-      tips: "Warn: The snapshots of volume will be deleted with volume."
+      tips: "Warn: The volume's snapshots will be deleted with this volume."
     externalLink:
       tips: Check volume details
     rebuildingMessage: 'Rebuilding: {percentage}%'
@@ -701,7 +701,7 @@ harvester:
     url: URL
     size: Size
     virtualSize: Virtual Size
-    urlTip: 'supports the <code>raw</code> and <code>qcow2</code> image formats which are supported by <a href="https://www.qemu.org/docs/master/system/images.html#disk-image-file-formats" target="_blank">qemu</a>. Bootable ISO images can also be used and are treated like <code>raw</code> images.'
+    urlTip: 'Supports the <code>raw</code> and <code>qcow2</code> image formats which are supported by <a href="https://www.qemu.org/docs/master/system/images.html#disk-image-file-formats" target="_blank">qemu</a>. Bootable ISO images can also be used and are treated like <code>raw</code> images.'
     fileName: File Name
     uploadFile: Upload File
     source: Source
@@ -726,10 +726,10 @@ harvester:
     tips:
       notExistImage:
         title: Image {name} does not exist!
-        message: Please select a new Image.
+        message: Please select a new image.
       notExistNode:
         title: Node {name} does not exist!
-        message: Please select a new Node.
+        message: Please select a new node.
 
   upgradePage:
     upgradeApp: Upgrade Software
@@ -746,8 +746,8 @@ harvester:
     selectExisting: Select Existing Image
     createRepository: Creating Upgrade Repository
     succeeded: Succeeded
-    releaseTip: Please read the upgrade documentation carefully. You can view details on the <a href="{url}" target="_blank">Harvester Release Note</a>.
-    checkReady: I have read and understood the upgrade content related to this Harvester version.
+    releaseTip: Please read the upgrade documentation carefully. You can view details on the <a href="{url}" target="_blank">Harvester Release Notes</a>.
+    checkReady: I have read and understood the upgrade instructions related to this Harvester version.
     pending: Pending
     repoInfo:
       upgradeStatus: Upgrade Status
@@ -757,7 +757,7 @@ harvester:
       harvesterChart: Harvester Chart
       success: Success
       fail:  Fail
-      ongoing: on-going
+      ongoing: On-going
       downloadLog: Download Log
       logStatus: Log Download Status
     dismissMessage: Dismiss it
@@ -765,21 +765,21 @@ harvester:
       warning: WARNING
       doc: Read the <a href="{url}" target="_blank">documentation</a> before starting the upgrade process. Ensure that you complete procedures that are relevant to your environment and the version you are upgrading to.
       tip: Unmet system requirements and incorrectly performed procedures may cause complete upgrade failure and other issues that require manual workarounds.
-      moreNotes: For more details about the release notes, please visit - 
+      moreNotes: For more details about the release notes, please visit -
 
   backup:
-    label: VM Backups
+    label: Virtual Machine Backups
     createText: Restore Backup
     title: Restore Virtual Machine
     backupTargetTip: The endpoint used to access the backupstore. NFS and S3 are supported.
     message:
       noSetting:
-        prefix: You must configure the backup target in
+        prefix: You must configure the backup target
         middle: 'setting'
         suffix: before creating a new backup.
       errorTip:
-        prefix: Backup Target value in
-        middle: Setting
+        prefix: Backup target value in
+        middle: setting
         suffix: "is invalid, error: "
       viewSetting:
         prefix: Click
@@ -798,7 +798,7 @@ harvester:
       virtualMachineName: Virtual Machine Name
       keepMacAddress: Keep MAC Address
     matchTarget: The current backup target does not match the existing one.
-    progress: 
+    progress:
       details: Volume details
       tooltip:
         starting: Backup initiating
@@ -814,21 +814,21 @@ harvester:
         complete: Restore completed
 
   network:
-    label: VM Networks
+    label: Virtual Machine Networks
     tabs:
       basics: Basics
       layer3Network: Route
     clusterNetwork:
       label: Cluster Network
-      create: Create a New Cluster Network
+      create: Create a new cluster network
       toolTip: Define your custom cluster scope network name
-      createPlaceholder: Input a new Cluster Network name
-      selectOrCreatePlaceholder: Select or Create a new Cluster Network
-      selectPlaceholder: Select a Cluster Network
+      createPlaceholder: Input a new cluster network name
+      selectOrCreatePlaceholder: Select or create a new cluster network
+      selectPlaceholder: Select a cluster network
     layer3Network:
       mode:
         label: Mode
-        auto: Auto(DHCP)
+        auto: Auto (DHCP)
         manual: Manual
       serverIPAddr:
         label: DHCP Server IP
@@ -852,9 +852,9 @@ harvester:
     validation:
       physicalNIC: DefaultPhysicalNIC
     placeholder:
-      accessKeyId: specify your access key id
-      secretAccessKey: specify your secret access key
-      cert: upload a self-signed SSL certificate
+      accessKeyId: Specify your access key ID
+      secretAccessKey: Specify your secret access key
+      cert: Upload a self-signed SSL certificate
     vlanChangeTip: The newly modified default network interface only applies to newly added nodes, not existing ones.
     defaultPhysicalNIC: Default Network Interface
     percentTip: The value in parentheses represents the distribution percentage of the network interface on all hosts. If an interface less than 100% is selected, the user needs to manually specify the network interface on the host where the vlan network configuration fails.
@@ -879,7 +879,7 @@ harvester:
         placeholder: e.g. 172.16.0.1/32
         invalid: '"Exclude list" is invalid.'
         addIp: Add Exclude IP
-      warning: 'WARNING: <br/> Any change to storage-network requires shutting down all VMs before applying this setting. <br/> Users have to ensure the Cluster Network is configured and VLAN Config will cover all nodes and ensure the network connectivity is working and expected in all nodes.'
+      warning: 'WARNING: <br/> Any change to storage-network requires shutting down all virtual machines before applying this setting. <br/> Users have to ensure the cluster network is configured and VLAN Configuration will cover all nodes and ensure the network connectivity is working and expected in all nodes.'
       tip: 'Specify an IP range in the IPv4 CIDR format. <code>Number of IPs Required = Number of Nodes * 4 + Number of Disks * 2 + Number of Images to Download/Upload </code>. For more information about storage network settings, see the <a href="{url}" target="_blank">documentation</a>.'
     vmForceDeletionPolicy:
       period: Period
@@ -917,7 +917,7 @@ harvester:
 
     upgrade:
       selectExitImage: Please select the OS image to upgrade.
-      imageUrl: Please input a valid image url.
+      imageUrl: Please input a valid image URL.
       chooseFile: Please select to upload an image.
       checksum: Checksum
     harvesterMonitoring:
@@ -933,16 +933,16 @@ harvester:
         retention: How long to retain metrics
         retentionSize: Maximum size of metrics
     clusterRegistrationUrl:
-      message: To completely unset the imported Harvester cluster, please also remove it on the Rancher dashboard UI via the <code> Virtualization Management </code> page.
+      message: To completely unset the imported Harvester cluster, please also remove it on the Rancher Dashboard UI via the <code> Virtualization Management </code> page.
     ntpServers:
       isNotIPV4: The address you entered is not IPv4 or host. Please enter a valid IPv4 address or a host address.
       isDuplicate: There are duplicate NTP server configurations.
   cloudTemplate:
-    label: Cloud Config Templates
+    label: Cloud Configuration Templates
     templateType: Template Type
     userData: User Data
     networkData: Network Data
- 
+
   support:
     title: Harvester Support
     kubeconfig:
@@ -971,7 +971,7 @@ harvester:
     cidr:
       label: CIDR/IP Range
       invalid: '"CIDR/IP Range" is invalid.'
-      toolTip: "We can apply multiple pools or ranges by seperating them with commas. i.e. 192.168.0.200/30,192.168.0.200/29 or 192.168.0.10-192.168.0.11"
+      toolTip: "We can apply multiple pools or ranges by separating them with commas. For example: 192.168.0.200/30,192.168.0.200/29 or 192.168.0.10-192.168.0.11"
     add:
       label: Add IP Pools
 
@@ -980,22 +980,22 @@ harvester:
       label: Protocols
     ciphers:
       label: Ciphers
-  
+
   monitoring:
     configuration:
       label: Configuration
     alertmanagerConfig:
       label: Alertmanager Configs
       diabledMonitoringTips:
-        prefix: 'You must enable'
-        middle: 'Monitoring'
-        suffix: 'addon at first.'
+        prefix: 'Enable the'
+        middle: 'monitoring'
+        suffix: 'add-on first.'
       diabledAlertingTips:
-        prefix: 'You must enable'
+        prefix: 'Enable'
         middle: 'Alertmanager'
-        suffix: 'for configs to take effect.'
+        suffix: 'for configuration to take effect.'
       disabledAddon:
-        prefix: 'Monitoring Addon is disabled now, click'
+        prefix: 'The monitoring add-on is disabled, click'
         middle: 'here'
         suffix: 'to enable it.'
 
@@ -1013,9 +1013,9 @@ harvester:
     output:
       label: Output
     diabledTips:
-        prefix: 'You must enable'
-        middle: 'Logging'
-        suffix: 'for configs to take effect.'
+        prefix: 'Enable'
+        middle: 'logging'
+        suffix: 'for configuration to take effect.'
 
   snapshot:
     label: Volume Snapshots
@@ -1024,7 +1024,7 @@ harvester:
     image: Image
 
   vmSnapshot:
-    label: VM Snapshots
+    label: Virtual Machine Snapshots
     createText: Restore Snapshot
     snapshot: Snapshot
 
@@ -1046,7 +1046,7 @@ harvester:
     title: Storage Classes
     customize:
       volumeBindingMode:
-        later: Bind and provision a persistent volume once a VM using the PersistentVolumeClaim is created
+        later: Bind and provision a persistent volume once a virtual machine using the PersistentVolumeClaim is created
     parameters:
       numberOfReplicas:
         label: Number Of Replicas
@@ -1062,11 +1062,11 @@ harvester:
         label: Migratable
     allowedTopologies:
       title: Allowed Topologies
-      tooltip: Allowed Topologies helps scheduling VMs on hosts which match all of below expressions.
+      tooltip: Allowed Topologies helps scheduling virtual machines on hosts which match all of below expressions.
 
   vlanConfig:
-    title: Network Configs
-    createNetworkConfig: Create Network Config
+    title: Network Configuration
+    createNetworkConfig: Create Network Configuration
     action:
       migrate: Migrate
     titles:
@@ -1088,7 +1088,7 @@ harvester:
         validate:
           available: NIC "{nic}" is not available on the selected nodes
       linkAttributes:
-        mtu: 
+        mtu:
           label: MTU
       bondOptions:
         mode:
@@ -1107,39 +1107,39 @@ harvester:
 
   vlanStatus:
     vlanConfig:
-      label: Network Config
-  
+      label: Network Configuration
+
   clusterNetwork:
-    title: Cluster Networks/Configs
+    title: Cluster Network Configuration
     create:
       button:
-        label: Create Cluster Network
-    clusterNetwork: There are no network configs defined.
+        label: Create a Cluster Network
+    clusterNetwork: There are no network configurations defined.
     mgmt: mgmt is a built-in cluster management network and does not support any additional network configurations.
     notExist: 'Cluster Network "{ clusterNetwork }" does not exist'
     notReady: 'Cluster Network "{ clusterNetwork }" is not ready'
-  
+
   addons:
     descriptions:
-      'harvester-system/vm-import-controller': vm-import-controller is an addon to help migrate VM workloads from other source clusters to an existing Harvester cluster.
-      'harvester-system/pcidevices-controller': pcidevices-controller is an addon to help discover PCI devices for nodes in your cluster and allow users to prepare devices for PCI Passthrough, for use with Harvester VM and guest Clusters.
-      'cattle-logging-system/rancher-logging': rancher-logging is an addon to collect versatile logs, events and audits from the Harvester cluster and route them to many kinds of servers based on flows.
-      'harvester-system/rancher-vcluster': rancher-vcluster deploys a vcluster with rancher installed.
-      'cattle-monitoring-system/rancher-monitoring': rancher-monitoring is an addon to collect Harvester cluster and VM metrics, view them on the embedded dashboard, and send alert(s) to remote servers.
-      'vm-import-controller': vm-import-controller is an addon to help migrate VM workloads from other source clusters to an existing Harvester cluster.
-      'pcidevices-controller': pcidevices-controller is an addon to help discover PCI devices for nodes in your cluster and allow users to prepare devices for PCI Passthrough, for use with Harvester VM and guest Clusters.
-      'nvidia-driver-toolkit': 'nvidia-driver-toolkit is an addon to enable vGPU devices and assign them to Harvester VMs.'
-      'rancher-logging': rancher-logging is an addon to collect versatile logs, events and audits from the Harvester cluster and route them to many kinds of servers based on flows.
-      'rancher-monitoring': rancher-monitoring is an addon to collect Harvester cluster and VM metrics, view them on the embedded dashboard, and send alert(s) to remote servers.
-      'rancher-vcluster': rancher-vcluster deploys a vcluster with rancher installed.
-      'harvester-seeder': harvester-seeder is an addon that uses ipmi and redfish to discover hardware information and perform out-of-band operations.
-      'harvester-system/harvester-seeder': harvester-seeder is an addon that uses ipmi and redfish to discover hardware information and perform out-of-band operations.
+      'harvester-system/vm-import-controller': vm-import-controller is an add-on to help migrate virtual machine workloads from other source clusters to an existing Harvester cluster.
+      'harvester-system/pcidevices-controller': pcidevices-controller is an add-on to help discover PCI devices for nodes in your cluster and allow users to prepare devices for PCI Passthrough, for use with Harvester virtual machine and guest clusters.
+      'cattle-logging-system/rancher-logging': rancher-logging is an add-on to collect versatile logs, events, and audits from the Harvester cluster and route them to many kinds of servers based on flows.
+      'harvester-system/rancher-vcluster': rancher-vcluster deploys a virtual cluster (vcluster) with Rancher installed.
+      'cattle-monitoring-system/rancher-monitoring': rancher-monitoring is an add-on that collects Harvester cluster and virtual machine metrics and allows you to view the metrics on an embedded dashboard and send alert(s) to remote servers.
+      'vm-import-controller': vm-import-controller is an add-on to help migrate virtual machine workloads from other source clusters to an existing Harvester cluster.
+      'pcidevices-controller': pcidevices-controller is an add-on to help discover PCI devices for nodes in your cluster and allow users to prepare devices for PCI Passthrough, for use with Harvester virtual machines and guest clusters.
+      'nvidia-driver-toolkit': 'nvidia-driver-toolkit is an add-on to enable vGPU devices and assign them to Harvester virtual machines.'
+      'rancher-logging': rancher-logging is an add-on to collect versatile logs, events, and audits from the Harvester cluster and route them to many kinds of servers based on flows.
+      'rancher-monitoring': rancher-monitoring is an add-on to collect Harvester cluster and virtual machine metrics, view them on the embedded dashboard, and send alert(s) to remote servers.
+      'rancher-vcluster': rancher-vcluster deploys a virtual cluster (vcluster) with Rancher installed.
+      'harvester-seeder': harvester-seeder is an add-on that uses IPMI and Redfish to discover hardware information and perform out-of-band operations.
+      'harvester-system/harvester-seeder': harvester-seeder is an add-on that uses IPMI and Redfish to discover hardware information and perform out-of-band operations.
     vmImport:
       titles:
         basic: Basic
         pvc: Volume
     rancherVcluster:
-      accessRancher: Access Rancher Dashboard
+      accessRancher: Access the Rancher Dashboard
       hostname: Hostname
       rancherVersion: Rancher Version
       password: Bootstrap Password
@@ -1200,12 +1200,12 @@ harvester:
       label: Backend Servers
     healthCheck:
       warning:
-        portInUse: Warning, Backend Port {port} is in use in Health Check settings; in case of updating the port, update the Health Check settings accordingly.
+        portInUse: Warning, the Backend Port {port} is in use in Health Check settings. If you need to update the port, update the Health Check settings accordingly.
 
   ipPool:
     label: IP Pools
     network:
-      label: VM Network
+      label: Virtual Machine Network
     tabs:
       range: Range
       scope: Scope
@@ -1235,13 +1235,13 @@ harvester:
       addLabel: Add CIDR
     range:
       addLabel: Add Range
-      
+
   service:
     healthCheckPort:
       label: Health Check Port
     healthCheckSuccessThreshold:
       label: Health Check Success Threshold
-      description: If the number of times the prober continuously detects an address successfully reaches the success threshold, then the backend server can start to forward traffic.
+      description: If the number of times the probe continuously detects an address successfully reaches the success threshold, then the backend server can start to forward traffic.
     healthCheckFailureThreshold:
       label: Health Check Failure Threshold
       description: The backend server will stop forwarding traffic if the number of health check failures reaches the failure threshold.
@@ -1266,22 +1266,22 @@ harvester:
   sriovgpu:
     label: SR-IOV GPU Devices
     nodeName: Node
-    numVFs: Number Of Virtual Functions
+    numVFs: Number of Virtual Functions
     vfAddresses: Virtual Functions Addresses
     vGpuDevices: vGPU Devices
     showMore: Show More
     parentSriov: Filter By Parent SR-IOV GPU
-    noPermission: Please contact system admin to add Harvester addons first
+    noPermission: Please contact your system admiistrator to add Harvester add-ons first.
     goSetting:
-      prefix: The nvidia-driver-toolkit addon is not enabled, click
+      prefix: The nvidia-driver-toolkit add-on is not enabled, click
       middle: here
       suffix: to enable it to manage your SR-IOV GPU devices.
 
   vgpu:
     label: vGPU Devices
-    noPermission: Please contact system admin to add Harvester addons first
+    noPermission: Please contact system administrator to add Harvester add-ons first.
     goSetting:
-      prefix: The nvidia-driver-toolkit addon is not enabled, click
+      prefix: The nvidia-driver-toolkit add-on is not enabled, click
       middle: here
       suffix: to enable it to manage your vGPU devices.
     enableGroup: Enable Group
@@ -1292,22 +1292,22 @@ harvester:
     available: Available Devices
     compatibleNodes: Compatible Nodes
     impossibleSelection: 'There are no hosts with all of the selected devices.'
-    howToUseDevice: 'Use the table below to enable vGPU devices you want to use in this VM.'
+    howToUseDevice: 'Use the table below to enable vGPU devices you want to use in this virtual machine.'
     deviceInTheSameHost: 'You can only select devices on the same host.'
 
   harvesterVlanConfigMigrateDialog:
-    targetClusterNetwork: 
+    targetClusterNetwork:
       label: Target Cluster Network
       placeholder: Choose Target Cluster Network
 
   seeder:
     banner:
       enable:
-        prefix: Addon "harvester-seeder" is disabled now, 
-        middle: click here 
+        prefix: The "harvester-seeder" add-on is disabled.
+        middle: Click here
         suffix: to enable it.
-      noAccess: Please contact system admin to enable the Out-of-Band Access first.
-      noAddon: Addon "harvester-seeder" is not exist, please check if it is installed.
+      noAccess: Please contact your system administrator to enable the Out-of-Band Access first.
+      noAddon: The "harvester-seeder" add-on does not exist, please check if it is installed.
       noInventory: Waiting for "inventories.metal.harvesterhci.io" to be ready.
     inventory:
       host:
@@ -1328,10 +1328,10 @@ harvester:
         label: Polling Interval
 
   affinity:
-    thisPodNamespace: This VM's namespace
+    thisPodNamespace: This virtual machine's namespace
     matchExpressions:
       inNamespaces: "Workloads in these namespaces"
-    vmAffinityTitle: VM Scheduling
+    vmAffinityTitle: Virtual Machine Scheduling
     namespaces:
       placeholder: e.g. default,system,base
       label: Namespaces
@@ -1343,35 +1343,35 @@ advancedSettings:
   technicalPreview: 'Technical Previews allow users to test and evaluate early-access functionality prior to official supported releases'
   descriptions:
     'harv-vlan': Default Network Interface name of the VLAN network.
-    'harv-backup-target': Custom backup target to store VM backups.
-    'branding': Branding allows administrators to globally re-brand the UI by customizing the Harvester product name, logos and color scheme.
-    'harv-csi-driver-config': Configure additional information for csi drivers.
+    'harv-backup-target': Custom backup target to store virtual machine backups.
+    'branding': Branding allows administrators to globally re-brand the UI by customizing the Harvester product name, logos, and color scheme.
+    'harv-csi-driver-config': Configure additional information for CSI drivers.
     'harv-containerd-registry': Containerd Registry Configuration to connect private registries.
-    'harv-log-level': Configure Harvester server log level. Default to info.
+    'harv-log-level': Configure Harvester server log level. Defaults to Info.
     'harv-server-version': Harvester server version.
-    'harv-upgrade-checker-enabled': Specify whether to enable Harvester upgrade check or not. Default is true.
-    'harv-upgrade-checker-url': Default Harvester upgrade check url. Only used when the <code>upgrade-checker-enabled</code>  is equal to true.
-    'harv-ui-source': Config how to load the UI source.
+    'harv-upgrade-checker-enabled': Specifies whether to enable Harvester upgrade check or not. Default is True.
+    'harv-upgrade-checker-url': Default Harvester upgrade check url. Only used when the <code>upgrade-checker-enabled</code> is equal to True.
+    'harv-ui-source': Configure how to load the UI source.
     'harv-ui-index': 'HTML index location for the UI.'
-    'harv-ui-plugin-index': 'JS index location for the harvester plugin UI.'
-    'harv-cluster-registration-url': Registration URL for mutil-cluster management.
+    'harv-ui-plugin-index': 'JS index location for the Harvester plugin UI.'
+    'harv-cluster-registration-url': Registration URL for multi-cluster management.
     'harv-http-proxy': 'HTTP proxy for Harvester to access external services.'
     'harv-additional-ca': 'Custom CA root certificates for TLS validation.'
     'harv-overcommit-config': 'Resource overcommit configuration.'
-    'harv-support-bundle-timeout': 'Support Bundle timeout config in minutes, use 0 to disable the timeout.'
-    'harv-support-bundle-expiration': 'Support Bundle expiration config in minutes.'
-    'harv-support-bundle-node-collection-timeout': 'Support Bundle node collection timeout config in minutes.'
-    'harv-vm-force-reset-policy': Config the force-reset action when a VM is stuck on a node that is down.
+    'harv-support-bundle-timeout': 'Support bundle timeout configuration in minutes, use 0 to disable the timeout.'
+    'harv-support-bundle-expiration': 'Support bundle expiration configuration in minutes.'
+    'harv-support-bundle-node-collection-timeout': 'Support bundle node collection timeout configuration in minutes.'
+    'harv-vm-force-reset-policy': Configuration for the force-reset action when a virtual machine is stuck on a node that is down.
     'harv-ssl-parameters': Custom SSL Parameters for TLS validation.
     'harv-storage-network': 'Longhorn storage-network setting.'
     'harv-support-bundle-namespaces': Specify resources in other namespaces to be collected by the support package.
-    'harv-auto-disk-provision-paths': Specify the disks(using glob pattern) that Harvester will automatically add as VM storage.
+    'harv-auto-disk-provision-paths': Specify the disks(using glob pattern) that Harvester will automatically add as virtual machine storage.
     'harv-support-bundle-image': Support bundle image configuration. Find different versions in <a href="https://hub.docker.com/r/rancher/support-bundle-kit/tags" target="_blank">rancher/support-bundle-kit</a>.
     'harv-release-download-url': This setting allows you to configure the <code>upgrade release download</code> URL address. Harvester will get the ISO URL and checksum value from the (<code>$URL</code>/<code>$VERSION</code>/version.yaml) file hosted by the configured URL.
-    'harv-default-vm-termination-grace-period-seconds': Config the VM termination grace period for VM stop.
+    'harv-default-vm-termination-grace-period-seconds': Configure the virtual machine termination grace period for virtual machine stop.
     'harv-ntp-servers': Configure NTP server. You can configure multiple IPv4 addresses or host addresses.
     'harv-auto-rotate-rke2-certs': The certificate rotation mechanism relies on Rancher. Harvester will automatically update certificates generation to trigger rotation.
-    'harv-kubeconfig-default-token-ttl-minutes': 'TTL (in minutes) applied on Harvester admin kubeconfig files. Default is 0, which means to never expire.'
+    'harv-kubeconfig-default-token-ttl-minutes': 'TTL (in minutes) applied on Harvester administration kubeconfig files. Default is 0, which means to never expire.'
     'harv-longhorn-v2-data-engine-enabled': 'Enable the Longhorn V2 data engine. Default is false. <ul><li>Changing this setting will restart RKE2 on all nodes. This will not affect running VM workloads.</li><li>If you see "not enough hugepages-2Mi capacity" errors when enabling this setting, wait a minute for the error to clear. If the error remains, reboot the affected node.</li></ul>'
 
 typeLabel:
@@ -1397,8 +1397,8 @@ typeLabel:
     }
   harvesterhci.io.networkattachmentdefinition: |-
     {count, plural,
-      one { VM Network }
-      other { VM Networks }
+      one { Virtual Machines Network }
+      other { Virtual Machines Networks }
     }
   harvesterhci.io.volume: |-
     {count, plural,
@@ -1422,13 +1422,13 @@ typeLabel:
     }
   harvesterhci.io.virtualmachinebackup: |-
     {count, plural,
-      one { VM Backup }
-      other { VM Backups }
+      one { Virtual Machines Backup }
+      other { Virtual Machines Backups }
     }
   harvesterhci.io.cloudtemplate: |-
     {count, plural,
-      one { Cloud Config Template }
-      other { Cloud Config Templates }
+      one { Cloud Configuration Template }
+      other { Cloud Configuration Templates }
     }
   harvesterhci.io.volumesnapshot: |-
     {count, plural,
@@ -1437,18 +1437,18 @@ typeLabel:
     }
   harvesterhci.io.vmsnapshot: |-
     {count, plural,
-      one { VM Snapshot }
-      other { VM Snapshots }
+      one { Virtual Machines Snapshot }
+      other { Virtual Machines Snapshots }
     }
   network.harvesterhci.io.vlanconfig: |-
     {count, plural,
-      one { Network Config }
-      other { Network Configs }
+      one { Network Configuration }
+      other { Network Configurations }
     }
   harvesterhci.io.monitoring.alertmanagerconfig: |-
     {count, plural,
-      one { Alertmanager Config }
-      other { Alertmanager Configs }
+      one { Alertmanager Configuration }
+      other { Alertmanager Configurations }
     }
   harvesterhci.io.logging.clusterflow: |-
     {count, plural,
