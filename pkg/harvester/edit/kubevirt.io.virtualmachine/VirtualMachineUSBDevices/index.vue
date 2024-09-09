@@ -80,7 +80,7 @@ export default {
       });
 
       const devices = [
-        ...this.otherDevices(this.value.domain.devices.hostDevices),
+        ...this.otherDevices(this.value.domain.devices.hostDevices || []),
         ...formatted,
       ];
 
