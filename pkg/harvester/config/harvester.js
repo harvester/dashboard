@@ -786,7 +786,8 @@ export function init($plugin, store) {
       name:   `${ PRODUCT_NAME }-c-cluster-resource`,
       params: { resource: HCI.USB_DEVICE }
     },
-    exact: false,
+    exact:      false,
+    ifHaveType: HCI.USB_DEVICE,
   });
 
   configureType(HCI.USB_DEVICE, {
