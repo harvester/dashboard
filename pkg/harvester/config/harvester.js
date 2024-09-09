@@ -24,7 +24,6 @@ import {
   CONFIGURED_PROVIDERS,
   SUB_TYPE,
   ADDRESS,
-  NS_SNAPSHOT_QUOTA
 } from '@shell/config/table-headers';
 
 import {
@@ -253,7 +252,7 @@ export function init($plugin, store) {
 
   // singleVirtualCluster
   if (isSingleVirtualCluster) {
-    headers(NAMESPACE, [STATE, NAME_UNLINKED, NS_SNAPSHOT_QUOTA, AGE]);
+    headers(NAMESPACE, [STATE, NAME_UNLINKED, AGE]);
     basicType([NAMESPACE]);
     virtualType({
       labelKey:   'harvester.namespace.label',
