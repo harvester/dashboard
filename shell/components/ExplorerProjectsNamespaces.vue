@@ -3,7 +3,7 @@ import { mapGetters } from 'vuex';
 import ResourceTable from '@shell/components/ResourceTable';
 import { STATE, AGE, NAME, NS_SNAPSHOT_QUOTA } from '@shell/config/table-headers';
 import { uniq } from '@shell/utils/array';
-import { MANAGEMENT, NAMESPACE, VIRTUAL_TYPES } from '@shell/config/types';
+import { MANAGEMENT, NAMESPACE, VIRTUAL_TYPES, HCI } from '@shell/config/types';
 import { PROJECT_ID, FLAT_VIEW } from '@shell/config/query-params';
 import Masthead from '@shell/components/ResourceList/Masthead';
 import { mapPref, GROUP_RESOURCES, ALL_NAMESPACES, DEV } from '@shell/store/prefs';
@@ -36,6 +36,7 @@ export default {
   async fetch() {
     const inStore = this.$store.getters['currentStore'](NAMESPACE);
 
+    this.harvesterResourceQuotaSchema = this.$store.getters[`${ inStore }/schemaFor`](HCI.RESOURCE_QUOTA);
     this.schema = this.$store.getters[`${ inStore }/schemaFor`](NAMESPACE);
     this.projectSchema = this.$store.getters[`management/schemaFor`](MANAGEMENT.PROJECT);
 
@@ -54,6 +55,7 @@ export default {
     return {
       loadResources:                [NAMESPACE],
       loadIndeterminate:            true,
+      harvesterResourceQuotaSchema: null,
       schema:                       null,
       projects:                     [],
       projectSchema:                null,
@@ -105,7 +107,7 @@ export default {
         headers.push(projectHeader);
       }
 
-      if (this.isHarvester) {
+      if (this.isHarvester && this.harvesterResourceQuotaSchema) {
         headers.push(NS_SNAPSHOT_QUOTA);
       }
 

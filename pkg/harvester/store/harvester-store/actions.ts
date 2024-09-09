@@ -81,7 +81,6 @@ export default {
 
     const hash: { [key: string]: Promise<any>} = {
       projects:          fetchProjects(),
-      resourceQuota:     dispatch('findAll', { type: HCI.RESOURCE_QUOTA }),
       virtualCount:      dispatch('findAll', { type: COUNT }),
       virtualNamespaces: dispatch('findAll', { type: NAMESPACE }),
       settings:          dispatch('findAll', { type: HCI.SETTING }),
@@ -90,6 +89,10 @@ export default {
         opt:  { force: true }
       }, { root: true }),
     };
+
+    if (getters['schemaFor'](HCI.RESOURCE_QUOTA)) {
+      hash.resourceQuota = dispatch('findAll', { type: HCI.RESOURCE_QUOTA });
+    }
 
     if (getters['schemaFor'](HCI.UPGRADE)) {
       hash.upgrades = dispatch('findAll', { type: HCI.UPGRADE });
