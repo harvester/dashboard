@@ -12,6 +12,7 @@ import Tags from '../../components/DiskTags';
 import { HCI } from '../../types';
 import { LONGHORN_SYSTEM } from './index';
 import { LONGHORN_DRIVER } from '@shell/models/persistentvolume';
+import { LVM_DRIVER } from '@shell/models/storage.k8s.io.storageclass';
 
 const LONGHORN_V2_DATA_ENGINE = 'longhorn-system/v2-data-engine';
 
@@ -51,24 +52,21 @@ export default {
   async fetch() {
     const inStore = this.$store.getters['currentProduct'].inStore;
 
-    const hash = {
-      csiDrivers:       this.$store.dispatch(`${ inStore }/findAll`, { type: CSI_DRIVER }),
-      longhornSettings: this.$store.dispatch(`${ inStore }/find`, { type: LONGHORN.SETTINGS, id: LONGHORN_V2_DATA_ENGINE }),
-    };
+    const hash = await allHash({
+      csiDrivers:           this.$store.dispatch(`${ inStore }/findAll`, { type: CSI_DRIVER }),
+      longhornV2DataEngine: this.$store.dispatch(`${ inStore }/find`, { type: LONGHORN.SETTINGS, id: LONGHORN_V2_DATA_ENGINE }),
+    });
 
-    await allHash(hash);
+    this.longhornVersion = hash.longhornV2DataEngine.value === 'true' ? 'v2' : 'v1';
   },
 
   data() {
-    const provisionerFormat = { [LONGHORN_DRIVER]: 'harvester.storage.storageClass.longhornV1.label' };
-
     return {
-      // TODO add provisioner to Disk
+      longhornVersion: 'v1',
       provisioner: {
-        label: provisionerFormat[LONGHORN_DRIVER],
+        label: this.t(`harvester.storage.storageClass.${ LONGHORN_DRIVER }.label`, { version: 1 }),
         value: LONGHORN_DRIVER,
-      },
-      provisionerFormat
+      }
     };
   },
 
@@ -77,12 +75,9 @@ export default {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const csiDrivers = this.$store.getters[`${ inStore }/all`](CSI_DRIVER) || [];
 
-      // TODO to check if longhornV2 to be added in the list
-      // const longhornV2 = this.$store.getters[`${ inStore }/byId`](LONGHORN.SETTINGS, LONGHORN_V2_DATA_ENGINE);
-
       return csiDrivers.map((provisioner) => {
         return {
-          label: this.provisionerFormat[provisioner.name] || provisioner.name,
+          label: this.provisionersLabelKeys[provisioner.name],
           value: provisioner.name,
         };
       });
@@ -198,6 +193,13 @@ export default {
 
     isFormatting() {
       return this.blockDevice.isFormatting;
+    },
+
+    provisionersLabelKeys() {
+      return {
+        [LONGHORN_DRIVER]: `harvester.storage.storageClass.longhorn.${ this.longhornVersion }.label`,
+        [LVM_DRIVER]: 'harvester.storage.storageClass.lvm.label'
+      };
     },
   },
 

@@ -81,6 +81,8 @@ export const PROVISIONER_OPTIONS = [
   }
 ];
 
+export const LVM_DRIVER = 'lvm.driver.harvesterhci.io';
+
 export default class extends SteveModel {
   get provisionerDisplay() {
     const option = PROVISIONER_OPTIONS.find(o => o.value === this.provisioner);
