@@ -1138,10 +1138,11 @@ harvester:
       label: Disk Selector
     storageClass:
       label: Storage Class
-      longhornV1:
-        label: LonghornV1 (CSI)
-      longhornV2:
-        label: LonghornV2 (CSI)
+      longhorn:
+        v1:
+          label: Longhorn v1 (CSI)
+        v2:
+          label: Longhorn v2 (CSI)
       lvm:
         label: LVM
     title: Storage Classes

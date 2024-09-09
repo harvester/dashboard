@@ -19,6 +19,9 @@ import { CSI_DRIVER } from '../../types';
 import { allHash } from '@shell/utils/promise';
 import { clone } from '@shell/utils/object';
 import { LONGHORN_DRIVER } from '@shell/models/persistentvolume';
+import { LVM_DRIVER } from '@shell/models/storage.k8s.io.storageclass';
+
+const LONGHORN_V2_DATA_ENGINE = 'longhorn-system/v2-data-engine';
 
 export default {
   name: 'HarvesterStorage',
@@ -88,20 +91,22 @@ export default {
       defaultAddValue: {
         key:    '',
         values: [],
-      }
+      },
+      longhornVersion: 'v1'
     };
   },
 
   async fetch() {
     const inStore = this.$store.getters['currentProduct'].inStore;
 
-    const hash = {
-      storages:      this.$store.dispatch(`${ inStore }/findAll`, { type: STORAGE_CLASS }),
-      longhornNodes: this.$store.dispatch(`${ inStore }/findAll`, { type: LONGHORN.NODES }),
-      csiDrivers:    this.$store.dispatch(`${ inStore }/findAll`, { type: CSI_DRIVER }),
-    };
+    const hash = await allHash({
+      storages:             this.$store.dispatch(`${ inStore }/findAll`, { type: STORAGE_CLASS }),
+      longhornNodes:        this.$store.dispatch(`${ inStore }/findAll`, { type: LONGHORN.NODES }),
+      csiDrivers:           this.$store.dispatch(`${ inStore }/findAll`, { type: CSI_DRIVER }),
+      longhornV2DataEngine: this.$store.dispatch(`${ inStore }/find`, { type: LONGHORN.SETTINGS, id: LONGHORN_V2_DATA_ENGINE }),
+    });
 
-    await allHash(hash);
+    this.longhornVersion = hash.longhornV2DataEngine.value === 'true' ? 'v2' : 'v1';
   },
 
   computed: {
@@ -121,11 +126,10 @@ export default {
 
     provisioners() {
       const csiDrivers = this.$store.getters[`${ this.inStore }/all`](CSI_DRIVER) || [];
-      const format = { [LONGHORN_DRIVER]: 'harvester.storage.storageClass.longhornV1.label' };
 
       return csiDrivers.map((provisioner) => {
         return {
-          label: format[provisioner.name] || provisioner.name,
+          label: this.provisionersLabelKeys[provisioner.name],
           value: provisioner.name,
         };
       });
@@ -135,6 +139,13 @@ export default {
       const inStore = this.$store.getters['currentProduct'].inStore;
 
       return this.$store.getters[`${ inStore }/schemaFor`](STORAGE_CLASS);
+    },
+
+    provisionersLabelKeys() {
+      return {
+        [LONGHORN_DRIVER]: `harvester.storage.storageClass.longhorn.${ this.longhornVersion }.label`,
+        [LVM_DRIVER]: 'harvester.storage.storageClass.lvm.label'
+      };
     },
   },
 
