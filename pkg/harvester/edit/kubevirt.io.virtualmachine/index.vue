@@ -272,6 +272,15 @@ export default {
   },
 
   methods: {
+    cancelAction() {
+      const { fromPage = HCI.VM } = this.$route?.query; // default back to VM list page
+      const cancelOverride = {
+        name:   this.doneRoute,
+        params: { resource: fromPage }
+      };
+
+      this.$router.replace(cancelOverride);
+    },
     saveVM(buttonCb) {
       clear(this.errors);
 
@@ -436,12 +445,14 @@ export default {
     id="vm"
     :done-route="doneRoute"
     :resource="value"
+    :cancelEvent="true"
     :mode="mode"
     :can-yaml="isSingle ? true : false"
     :errors="errors"
     :generate-yaml="generateYaml"
     :apply-hooks="applyHooks"
     @finish="saveVM"
+    @cancel="cancelAction"
   >
     <RadioGroup
       v-if="isCreate"

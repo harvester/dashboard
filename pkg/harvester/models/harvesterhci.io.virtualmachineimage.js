@@ -48,7 +48,7 @@ export default class HciVmImage extends HarvesterResource {
       {
         action:   'createFromImage',
         enabled:  canCreateVM,
-        icon:     'icon icon-fw icon-spinner',
+        icon:     'icon icon-circle-plus',
         label:    this.t('harvester.action.createVM'),
         disabled: !this.isReady,
       },
@@ -75,7 +75,7 @@ export default class HciVmImage extends HarvesterResource {
     router.push({
       name:   `${ HARVESTER_PRODUCT }-c-cluster-resource-create`,
       params: { resource: HCI.VM },
-      query:  { image: this.id }
+      query:  { image: this.id, fromPage: HCI.IMAGE }
     });
   }
 
