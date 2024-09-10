@@ -181,7 +181,17 @@ export default class HciPv extends HarvesterResource {
   get attachVM() {
     const allVMs = this.$rootGetters['harvester/all'](HCI.VM) || [];
 
-    return allVMs.find(vm => (vm.spec.template?.spec?.volumes || []).find(vol => vol.persistentVolumeClaim?.claimName === this.name));
+    const findAttachVM = (vm) => {
+      const attachVolumes = vm.spec.template?.spec?.volumes || [];
+
+      if (vm.namespace === this.namespace && attachVolumes.length > 0) {
+        return attachVolumes.find(vol => vol.persistentVolumeClaim?.claimName === this.name);
+      }
+
+      return null;
+    };
+
+    return allVMs.find(findAttachVM);
   }
 
   get isAvailable() {
