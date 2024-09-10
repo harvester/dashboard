@@ -70,9 +70,8 @@ export default {
       headers.push( {
         name:  'claimed',
         label: 'Claimed By',
-        value: 'passthroughClaim.userName',
-        sort:  ['passthroughClaim.userName'],
-
+        value: 'claimedBy',
+        sort:  ['claimedBy'],
       });
     }
 
@@ -154,7 +153,7 @@ export default {
       </div>
     </template>
     <template #cell:claimed="{row}">
-      <span v-if="row.isEnabled">{{ row.claimedBy }}</span>
+      <span v-if="row.status.enabled">{{ row.claimedBy }}</span>
       <span v-else class="text-muted">&mdash;</span>
     </template>
   </ResourceTable>
