@@ -468,6 +468,7 @@ harvester:
       storageMaximum:
         label: Storage Maximum
       provisioner: Provisioner
+      lvmVolumeGroup: Volume Group
     tags:
       label: Host Tags
       addLabel: Add Host Tag

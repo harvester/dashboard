@@ -568,6 +568,7 @@ export default {
                 class="mb-20"
                 :mode="mode"
                 :disks="disks"
+                :node="value"
               />
             </template>
             <template #add>

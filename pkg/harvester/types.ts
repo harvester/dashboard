@@ -50,6 +50,7 @@ export const HCI = {
   LB:                 'loadbalancer.harvesterhci.io.loadbalancer',
   IP_POOL:            'loadbalancer.harvesterhci.io.ippool',
   HARVESTER_CONFIG:   'rke-machine-config.cattle.io.harvesterconfig',
+  LVM_VOLUME_GROUP:   'harvesterhci.io.lvmvolumegroup'
 };
 
 export const VOLUME_SNAPSHOT = 'snapshot.storage.k8s.io.volumesnapshot';
