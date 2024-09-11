@@ -64,6 +64,11 @@ export default {
     this.secrets = allSecrets.filter(secret => secret.isSystem === false);
   },
   data() {
+    const inStore = this.$store.getters['currentProduct'].inStore;
+    const v2DataEngine = this.$store.getters[`${ inStore }/byId`](LONGHORN.SETTINGS, LONGHORN_V2_DATA_ENGINE) || {};
+
+    const longhornVersion = v2DataEngine.value === 'true' ? 'v2' : 'v1';
+
     if (this.realMode === _CREATE) {
       this.$set(this.value, 'parameters', {
         numberOfReplicas:    '3',

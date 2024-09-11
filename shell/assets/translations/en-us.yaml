@@ -3719,6 +3719,7 @@ persistentVolume:
       file-csi-azure-com: Azure File (CSI)
       driver-longhorn-io: Longhorn (CSI)
       driver-harvesterhci-io: Harvester (CSI)
+      lvm-driver-harvesterhci-io: LVM
       nfs-csi-k8s-io: NFS (CSI)
       ebs-csi-aws-com: AWS Elastic Block Store (CSI)
       rbd-csi-ceph-com: Ceph RBD (CSI)

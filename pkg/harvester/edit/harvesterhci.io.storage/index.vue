@@ -92,21 +92,18 @@ export default {
         key:    '',
         values: [],
       },
-      longhornVersion: 'v1'
     };
   },
 
   async fetch() {
     const inStore = this.$store.getters['currentProduct'].inStore;
 
-    const hash = await allHash({
+    await allHash({
       storages:             this.$store.dispatch(`${ inStore }/findAll`, { type: STORAGE_CLASS }),
       longhornNodes:        this.$store.dispatch(`${ inStore }/findAll`, { type: LONGHORN.NODES }),
       csiDrivers:           this.$store.dispatch(`${ inStore }/findAll`, { type: CSI_DRIVER }),
       longhornV2DataEngine: this.$store.dispatch(`${ inStore }/find`, { type: LONGHORN.SETTINGS, id: LONGHORN_V2_DATA_ENGINE }),
     });
-
-    this.longhornVersion = hash.longhornV2DataEngine.value === 'true' ? 'v2' : 'v1';
   },
 
   computed: {
@@ -144,14 +141,27 @@ export default {
     provisionersLabelKeys() {
       return {
         [LONGHORN_DRIVER]: `harvester.storage.storageClass.longhorn.${ this.longhornVersion }.label`,
-        [LVM_DRIVER]: 'harvester.storage.storageClass.lvm.label'
+        [LVM_DRIVER]:      'harvester.storage.storageClass.lvm.label'
       };
+    },
+
+    longhornVersion() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const v2DataEngine = this.$store.getters[`${ inStore }/byId`](LONGHORN.SETTINGS, LONGHORN_V2_DATA_ENGINE) || {};
+
+      return v2DataEngine.value === 'true' ? 'v2' : 'v1';
     },
   },
 
   watch: {
     provisionerWatch() {
-      this.$set(this.value, 'parameters', {});
+      const parameters = {};
+
+      if (this.isLonghornV2) {
+        parameters.migratable = false;
+      }
+
+      this.$set(this.value, 'parameters', parameters);
     }
   },
 
