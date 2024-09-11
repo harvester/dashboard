@@ -18,7 +18,7 @@ import { STORAGE_CLASS, LONGHORN } from '@shell/config/types';
 import { CSI_DRIVER } from '../../types';
 import { allHash } from '@shell/utils/promise';
 import { clone } from '@shell/utils/object';
-import { LONGHORN_DRIVER } from '@shell/models/persistentvolume';
+import { LONGHORN_DRIVER, LONGHORN_VERSION_V1, LONGHORN_VERSION_V2 } from '@shell/models/persistentvolume';
 import { LVM_DRIVER } from '@shell/models/storage.k8s.io.storageclass';
 
 const LONGHORN_V2_DATA_ENGINE = 'longhorn-system/v2-data-engine';
@@ -149,7 +149,11 @@ export default {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const v2DataEngine = this.$store.getters[`${ inStore }/byId`](LONGHORN.SETTINGS, LONGHORN_V2_DATA_ENGINE) || {};
 
-      return v2DataEngine.value === 'true' ? 'v2' : 'v1';
+      return v2DataEngine.value === 'true' ? LONGHORN_VERSION_V2 : LONGHORN_VERSION_V1;
+    },
+
+    isLonghornV2() {
+      return this.value.provisioner === LONGHORN_DRIVER && this.longhornVersion === LONGHORN_VERSION_V2;
     },
   },
 
