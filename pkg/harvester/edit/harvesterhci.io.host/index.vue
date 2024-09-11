@@ -29,6 +29,9 @@ import HarvesterDisk from './HarvesterDisk';
 import HarvesterKsmtuned from './HarvesterKsmtuned';
 import HarvesterSeeder from './HarvesterSeeder';
 import Tags from '../../components/DiskTags';
+import { LONGHORN_DRIVER, LONGHORN_VERSION_V1 } from '@shell/models/persistentvolume';
+import { LVM_DRIVER } from '@shell/models/storage.k8s.io.storageclass';
+import isEqual from 'lodash/isEqual';
 
 export const LONGHORN_SYSTEM = 'longhorn-system';
 
@@ -86,13 +89,16 @@ export default {
         const corrupted = d?.status?.deviceStatus?.fileSystem?.corrupted;
 
         return {
-          isNew:          true,
-          name:           d?.metadata?.name,
-          originPath:     d?.spec?.fileSystem?.mountPoint,
-          path:           d?.spec?.fileSystem?.mountPoint,
-          blockDevice:    d,
-          displayName:    d?.displayName,
-          forceFormatted: corrupted ? true : d?.spec?.fileSystem?.forceFormatted || false,
+          isNew:              true,
+          name:               d?.metadata?.name,
+          originPath:         d?.spec?.fileSystem?.mountPoint,
+          path:               d?.spec?.fileSystem?.mountPoint,
+          blockDevice:        d,
+          displayName:        d?.displayName,
+          forceFormatted:     corrupted ? true : d?.spec?.fileSystem?.forceFormatted || false,
+          provisioner:        d?.spec?.provisioner?.lvm ? LVM_DRIVER : LONGHORN_DRIVER,
+          provisionerVersion: d?.spec?.provisioner?.longhorn?.engineVersion || LONGHORN_VERSION_V1, // todo get default from system version
+          lvmVolumeGroup:     d?.spec?.provisioner?.lvm?.vgName,
         };
       });
 
@@ -176,16 +182,19 @@ export default {
         return {
           ...diskStatus[key],
           ...diskSpec?.[key],
-          name:             key,
-          isNew:            false,
-          storageReserved:  formatSi(diskSpec[key]?.storageReserved, formatOptions),
-          storageAvailable: formatSi(diskStatus[key]?.storageAvailable, formatOptions),
-          storageMaximum:   formatSi(diskStatus[key]?.storageMaximum, formatOptions),
-          storageScheduled: formatSi(diskStatus[key]?.storageScheduled, formatOptions),
+          name:               key,
+          isNew:              false,
+          storageReserved:    formatSi(diskSpec[key]?.storageReserved, formatOptions),
+          storageAvailable:   formatSi(diskStatus[key]?.storageAvailable, formatOptions),
+          storageMaximum:     formatSi(diskStatus[key]?.storageMaximum, formatOptions),
+          storageScheduled:   formatSi(diskStatus[key]?.storageScheduled, formatOptions),
           blockDevice,
-          displayName:      blockDevice?.displayName || key,
-          forceFormatted:   blockDevice?.spec?.fileSystem?.forceFormatted || false,
-          tags:             diskSpec?.[key]?.tags || [],
+          displayName:        blockDevice?.displayName || key,
+          forceFormatted:     blockDevice?.spec?.fileSystem?.forceFormatted || false,
+          tags:               diskSpec?.[key]?.tags || [],
+          provisioner:        blockDevice?.spec?.provisioner?.lvm ? LVM_DRIVER : LONGHORN_DRIVER,
+          provisionerVersion: blockDevice?.spec?.provisioner?.longhorn?.engineVersion || LONGHORN_VERSION_V1, // todo get default from system version
+          lvmVolumeGroup:     blockDevice?.spec?.provisioner?.lvm?.vgName,
         };
       });
 
@@ -312,15 +321,18 @@ export default {
 
       this.newDisks.push({
         name,
-        path:              mountPoint,
-        allowScheduling:   false,
-        evictionRequested: false,
-        storageReserved:   0,
-        isNew:             true,
-        originPath:        disk?.spec?.fileSystem?.mountPoint,
-        blockDevice:       disk,
-        displayName:       disk?.displayName,
+        path:               mountPoint,
+        allowScheduling:    false,
+        evictionRequested:  false,
+        storageReserved:    0,
+        isNew:              true,
+        originPath:         disk?.spec?.fileSystem?.mountPoint,
+        blockDevice:        disk,
+        displayName:        disk?.displayName,
         forceFormatted,
+        provisioner:        LONGHORN_DRIVER,
+        provisionerVersion: LONGHORN_VERSION_V1, // todo get default from system version
+        lvmVolumeGroup:     null,
       });
     },
 
@@ -335,12 +347,9 @@ export default {
         const updatedDisks = addDisks.filter((d) => {
           const blockDevice = this.$store.getters[`${ inStore }/byId`](HCI.BLOCK_DEVICE, `${ LONGHORN_SYSTEM }/${ d.name }`);
           const { provisioned, forceFormatted } = blockDevice.spec.fileSystem;
+          const { provisioner } = blockDevice.spec;
 
-          if (provisioned && forceFormatted === d.forceFormatted) {
-            return false;
-          } else {
-            return true;
-          }
+          return !(provisioned && forceFormatted === d.forceFormatted && isEqual(provisioner, d.provisioner));
         });
 
         if (updatedDisks.length === 0) {
@@ -354,6 +363,15 @@ export default {
 
           blockDevice.spec.fileSystem.provisioned = true;
           blockDevice.spec.fileSystem.forceFormatted = d.forceFormatted;
+
+          switch (d.provisioner) {
+          case LONGHORN_DRIVER:
+            blockDevice.spec.provisioner = { longhorn: { engineVersion: d.provisionerVersion } };
+            break;
+          case LVM_DRIVER:
+            blockDevice.spec.provisioner = { lvm: { vgName: d.lvmVolumeGroup } };
+            break;
+          }
 
           return blockDevice.save();
         }));

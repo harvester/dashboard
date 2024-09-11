@@ -1140,10 +1140,10 @@ harvester:
     storageClass:
       label: Storage Class
       longhorn:
-        v1:
-          label: Longhorn v1 (CSI)
-        v2:
-          label: Longhorn v2 (CSI)
+        LonghornV1:
+          label: LonghornV1 (CSI)
+        LonghornV2:
+          label: LonghornV2 (CSI)
       lvm:
         label: LVM
     title: Storage Classes

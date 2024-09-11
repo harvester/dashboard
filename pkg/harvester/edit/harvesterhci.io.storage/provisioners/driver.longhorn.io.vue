@@ -8,6 +8,7 @@ import { _CREATE, _VIEW } from '@shell/config/query-params';
 import { CSI_SECRETS } from '@pkg/harvester/config/harvester-map';
 import { clone } from '@shell/utils/object';
 import { uniq } from '@shell/utils/array';
+import { LONGHORN_VERSION_V1, LONGHORN_VERSION_V2 } from '@shell/models/persistentvolume';
 
 // UI components for Longhorn storage class parameters
 const DEFAULT_PARAMETERS = [
@@ -67,7 +68,7 @@ export default {
     const inStore = this.$store.getters['currentProduct'].inStore;
     const v2DataEngine = this.$store.getters[`${ inStore }/byId`](LONGHORN.SETTINGS, LONGHORN_V2_DATA_ENGINE) || {};
 
-    const longhornVersion = v2DataEngine.value === 'true' ? 'v2' : 'v1';
+    const longhornVersion = v2DataEngine.value === 'true' ? LONGHORN_VERSION_V2 : LONGHORN_VERSION_V1;
 
     if (this.realMode === _CREATE) {
       this.$set(this.value, 'parameters', {

@@ -11,7 +11,7 @@ import HarvesterDisk from '../../mixins/harvester-disk';
 import Tags from '../../components/DiskTags';
 import { HCI } from '../../types';
 import { LONGHORN_SYSTEM } from './index';
-import { LONGHORN_DRIVER } from '@shell/models/persistentvolume';
+import { LONGHORN_DRIVER, LONGHORN_VERSION_V1, LONGHORN_VERSION_V2 } from '@shell/models/persistentvolume';
 import { LVM_DRIVER } from '@shell/models/storage.k8s.io.storageclass';
 
 const LONGHORN_V2_DATA_ENGINE = 'longhorn-system/v2-data-engine';
@@ -43,6 +43,12 @@ export default {
       type:    Array,
       default: () => [],
     },
+    node: {
+      type:    Object,
+      default: () => {
+        return {};
+      },
+    },
     mode: {
       type:    String,
       default: 'edit',
@@ -52,22 +58,11 @@ export default {
   async fetch() {
     const inStore = this.$store.getters['currentProduct'].inStore;
 
-    const hash = await allHash({
+    await allHash({
       csiDrivers:           this.$store.dispatch(`${ inStore }/findAll`, { type: CSI_DRIVER }),
       longhornV2DataEngine: this.$store.dispatch(`${ inStore }/find`, { type: LONGHORN.SETTINGS, id: LONGHORN_V2_DATA_ENGINE }),
+      lvmVolumeGroups:      this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.LVM_VOLUME_GROUP }),
     });
-
-    this.longhornVersion = hash.longhornV2DataEngine.value === 'true' ? 'v2' : 'v1';
-  },
-
-  data() {
-    return {
-      longhornVersion: 'v1',
-      provisioner: {
-        label: this.t(`harvester.storage.storageClass.${ LONGHORN_DRIVER }.label`, { version: 1 }),
-        value: LONGHORN_DRIVER,
-      }
-    };
   },
 
   computed: {
@@ -81,6 +76,13 @@ export default {
           value: provisioner.name,
         };
       });
+    },
+
+    lvmVolumeGroups() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const lvmVolumeGroups = this.$store.getters[`${ inStore }/all`](HCI.LVM_VOLUME_GROUP) || [];
+
+      return lvmVolumeGroups.filter(group => group.spec.nodeName === this.node.name).map(g => g.spec.vgName);
     },
 
     targetDisk() {
@@ -195,10 +197,25 @@ export default {
       return this.blockDevice.isFormatting;
     },
 
+    longhornVersion() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const v2DataEngine = this.$store.getters[`${ inStore }/byId`](LONGHORN.SETTINGS, LONGHORN_V2_DATA_ENGINE) || {};
+
+      return v2DataEngine.value === 'true' ? LONGHORN_VERSION_V2 : LONGHORN_VERSION_V1;
+    },
+
+    isLvm() {
+      return this.value.provisioner === LVM_DRIVER;
+    },
+
+    isLonghornV1() {
+      return this.value.provisioner === LONGHORN_DRIVER && this.longhornVersion === LONGHORN_VERSION_V1;
+    },
+
     provisionersLabelKeys() {
       return {
         [LONGHORN_DRIVER]: `harvester.storage.storageClass.longhorn.${ this.longhornVersion }.label`,
-        [LVM_DRIVER]: 'harvester.storage.storageClass.lvm.label'
+        [LVM_DRIVER]:      'harvester.storage.storageClass.lvm.label'
       };
     },
   },
@@ -297,16 +314,20 @@ export default {
       <hr class="mt-10" />
     </div>
     <div class="row mt-10">
-      <div class="col span-6">
+      <div class="col span-12">
         <LabeledInput
           v-model="value.displayName"
           :label="t('generic.name')"
           :disabled="true"
         />
       </div>
+    </div>
+
+    <div class="row mt-10">
       <div class="col span-6">
         <LabeledSelect
-          v-model="provisioner"
+          v-if="value.isNew"
+          v-model="value.provisioner"
           :mode="mode"
           label-key="harvester.host.disk.provisioner"
           :localized-label="true"
@@ -315,9 +336,7 @@ export default {
           @keydown.native.enter.prevent="()=>{}"
         />
       </div>
-    </div>
-    <div v-if="(value.isNew && !isFormatted) || isCorrupted" class="row mt-10">
-      <div class="col span-6">
+      <div v-if="(value.isNew && isLonghornV1 && !isFormatted) || isCorrupted" class="col span-6">
         <RadioGroup
           v-model="value.forceFormatted"
           :mode="mode"
@@ -338,6 +357,18 @@ export default {
             />
           </template>
         </RadioGroup>
+      </div>
+      <div v-if="value.isNew && isLvm" class="col span-6">
+        <LabeledSelect
+          v-model="value.lvmVolumeGroup"
+          :mode="mode"
+          label-key="harvester.host.disk.lvmVolumeGroup"
+          :localized-label="true"
+          :searchable="true"
+          :options="lvmVolumeGroups"
+          :required="true"
+          @keydown.native.enter.prevent="()=>{}"
+        />
       </div>
     </div>
   </div>
