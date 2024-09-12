@@ -43,6 +43,12 @@ export default {
   methods: {
     ucFirst,
 
+    onInputForce(v) {
+      if (v) {
+        this.unhealthyVMs = [];
+      }
+    },
+
     close() {
       this.$emit('close');
     },
@@ -98,6 +104,7 @@ export default {
         <Checkbox
           v-model="force"
           label-key="harvester.host.enableMaintenance.force"
+          @input="onInputForce"
         />
       </div>
 
