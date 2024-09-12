@@ -6,6 +6,8 @@ import { Banner } from '@components/Banner';
 import HarvesterDisk from '../../mixins/harvester-disk';
 import { RadioGroup } from '@components/Form/Radio';
 
+import { LONGHORN_VERSION_V1 } from '@shell/models/persistentvolume';
+
 export default {
   components: {
     LabelValue,
@@ -85,8 +87,18 @@ export default {
       }
     },
 
-    provisioner() {
-      return 'todo_provisioner';
+    provisioner() {      
+      let labelKey = `harvester.storage.storageClass.longhorn.${ LONGHORN_VERSION_V1 }.label`;
+
+      if (this.value?.blockDevice?.spec?.provisioner.longhorn) {
+        labelKey = `harvester.storage.storageClass.longhorn.${ this.value.blockDevice.spec.provisioner.engineVersion }.label`;
+      }
+
+      if (this.value?.blockDevice?.spec?.provisioner.lvm) {
+        labelKey = 'harvester.storage.storageClass.lvm.label';
+      }
+
+      return this.t(labelKey);
     }
   },
   methods: {
