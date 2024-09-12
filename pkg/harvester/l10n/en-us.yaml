@@ -1163,6 +1163,10 @@ harvester:
         no-options: No available tags, please add in the `Host > Storage` page
       migratable:
         label: Migratable
+      lvmVolumeGroupType:
+        label: Volume Group Type
+      lvmVolumeGroup:
+        label: Volume Group Name
     allowedTopologies:
       title: Allowed Topologies
       tooltip: Allowed Topologies helps scheduling virtual machines on hosts which match all of below expressions.
