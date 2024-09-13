@@ -9,6 +9,7 @@ import { CSI_SECRETS } from '@pkg/harvester/config/harvester-map';
 import { clone } from '@shell/utils/object';
 import { uniq } from '@shell/utils/array';
 
+// UI components for Longhorn storage class parameters
 const DEFAULT_PARAMETERS = [
   'numberOfReplicas',
   'staleReplicaTimeout',
@@ -28,6 +29,8 @@ const {
 } = CSI_SECRETS;
 
 export default {
+  name: 'DriverLonghornIO',
+
   components: {
     KeyValue,
     LabeledSelect,
@@ -57,7 +60,6 @@ export default {
     this.secrets = await this.$store.dispatch(`${ inStore }/findAll`, { type: SECRET });
     this.namespaces = allNamespaces.filter(ns => ns.isSystem === false).map(ns => ns.id); // only show non-system namespaces to user to select
   },
-
   data() {
     if (this.realMode === _CREATE) {
       this.$set(this.value, 'parameters', {
@@ -75,7 +77,16 @@ export default {
       namespaces: [],
     };
   },
-
+  watch: {
+    secretNamespace() {
+      this.$set(this.value, 'parameters', {
+        ...this.value.parameters,
+        [CSI_PROVISIONER_SECRET_NAME]:  '',
+        [CSI_NODE_PUBLISH_SECRET_NAME]: '',
+        [CSI_NODE_STAGE_SECRET_NAME]:   ''
+      });
+    }
+  },
   computed: {
     longhornNodes() {
       const inStore = this.$store.getters['currentProduct'].inStore;
@@ -143,7 +154,11 @@ export default {
       get() {
         const parameters = clone(this.value?.parameters) || {};
 
-        DEFAULT_PARAMETERS.map((key) => {
+        DEFAULT_PARAMETERS.forEach((key) => {
+          delete parameters[key];
+        });
+
+        Object.values(CSI_SECRETS).forEach((key) => {
           delete parameters[key];
         });
 
