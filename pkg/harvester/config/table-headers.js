@@ -8,7 +8,6 @@ export const IMAGE_DOWNLOAD_SIZE = {
   labelKey: 'tableHeaders.size',
   value:    'downSize',
   sort:     'status.size',
-  width:    120
 };
 
 export const IMAGE_VIRTUAL_SIZE = {
@@ -16,7 +15,6 @@ export const IMAGE_VIRTUAL_SIZE = {
   labelKey: 'harvester.tableHeaders.virtualSize',
   value:    'virtualSize',
   sort:     'status.virtualSize',
-  width:    120
 };
 
 export const IMAGE_PROGRESS = {

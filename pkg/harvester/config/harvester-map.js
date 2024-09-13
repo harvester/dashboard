@@ -69,3 +69,12 @@ export const ADD_ONS = {
   RANCHER_MONITORING:               'rancher-monitoring',
   VM_IMPORT_CONTROLLER:             'vm-import-controller',
 };
+
+export const CSI_SECRETS = {
+  CSI_PROVISIONER_SECRET_NAME:       'csi.storage.k8s.io/provisioner-secret-name',
+  CSI_PROVISIONER_SECRET_NAMESPACE:  'csi.storage.k8s.io/provisioner-secret-namespace',
+  CSI_NODE_PUBLISH_SECRET_NAME:      'csi.storage.k8s.io/node-publish-secret-name',
+  CSI_NODE_PUBLISH_SECRET_NAMESPACE: 'csi.storage.k8s.io/node-publish-secret-namespace',
+  CSI_NODE_STAGE_SECRET_NAME:        'csi.storage.k8s.io/node-stage-secret-name',
+  CSI_NODE_STAGE_SECRET_NAMESPACE:   'csi.storage.k8s.io/node-stage-secret-namespace',
+};

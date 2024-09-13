@@ -12,6 +12,12 @@ import { stateDisplay, colorForState } from '@shell/plugins/dashboard-store/reso
 import { _CLONE } from '@shell/config/query-params';
 import HarvesterResource from './harvester';
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../config/harvester';
+import { CSI_SECRETS } from '@pkg/harvester/config/harvester-map';
+
+const {
+  CSI_PROVISIONER_SECRET_NAME,
+  CSI_PROVISIONER_SECRET_NAMESPACE,
+} = CSI_SECRETS;
 
 function isReady() {
   function getStatusConditionOfType(type, defaultValue = []) {
@@ -126,6 +132,24 @@ export default class HciVmImage extends HarvesterResource {
     }
 
     return stateDisplay(this.metadata.state.name);
+  }
+
+  get encryptionSecret() {
+    const secretNS = this.spec.storageClassParameters[CSI_PROVISIONER_SECRET_NAMESPACE];
+    const secretName = this.spec.storageClassParameters[CSI_PROVISIONER_SECRET_NAME];
+
+    if (secretNS && secretName) {
+      return `${ secretNS }/${ secretName }`;
+    }
+
+    return '';
+  }
+
+  get isEncrypted() {
+    return this.spec.sourceType === 'clone' &&
+    this.spec.securityParameters?.cryptoOperation === 'encrypt' &&
+    !!this.spec.securityParameters?.sourceImageName &&
+    !!this.spec.securityParameters?.sourceImageNamespace;
   }
 
   get imageMessage() {

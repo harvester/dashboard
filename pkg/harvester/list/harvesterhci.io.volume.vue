@@ -158,6 +158,22 @@ export default {
         </n-link>
       </div>
     </template>
+    <template #col:name="{row}">
+      <td>
+        <span>
+          <n-link
+            v-if="row?.detailLocation"
+            :to="row.detailLocation"
+          >
+            {{ row.nameDisplay }}
+            <i v-if="row.isEncrypted" class="icon icon-lock" />
+          </n-link>
+          <span v-else>
+            {{ row.nameDisplay }}
+          </span>
+        </span>
+      </td>
+    </template>
   </ResourceTable>
 </template>
 
