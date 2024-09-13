@@ -7,8 +7,9 @@ import Tabbed from '@shell/components/Tabbed';
 import Tab from '@shell/components/Tabbed/Tab';
 import { findBy } from '@shell/utils/array';
 import { get } from '@shell/utils/object';
-
+import { ucFirst } from '@shell/utils/string';
 import Storage from './Storage';
+import { SECRET } from '@shell/config/types';
 
 export default {
   components: {
@@ -26,8 +27,14 @@ export default {
     },
   },
 
+  async fetch() {
+    const inStore = this.$store.getters['currentProduct'].inStore;
+
+    this.secrets = await this.$store.dispatch(`${ inStore }/findAll`, { type: SECRET });
+  },
+
   data() {
-    return {};
+    return { secrets: [] };
   },
 
   computed: {
@@ -55,6 +62,21 @@ export default {
 
     isUpload() {
       return this.value?.spec?.sourceType === 'upload';
+    },
+
+    encryptionSecret() {
+      if (!this.value.isEncrypted) {
+        return '-';
+      }
+
+      return this.value.encryptionSecret;
+    },
+    secretLink() {
+      return this.secrets.find(sc => sc.id === this.value.encryptionSecret)?.detailLocation;
+    },
+
+    isEncryptedString() {
+      return ucFirst(String(this.value.isEncrypted));
     },
 
     imageName() {
@@ -113,6 +135,23 @@ export default {
       <div class="row">
         <div class="col span-12">
           <LabelValue :name="t('nameNsDescription.description.label')" :value="description" class="mb-20" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-12">
+          <LabelValue :name="t('harvester.image.isEncryption')" :value="isEncryptedString" class="mb-20" />
+        </div>
+      </div>
+
+      <div v-if="value.isEncrypted" class="row">
+        <div class="col span-12">
+          <div class="text-label">
+            {{ t('harvester.image.encryptionSecret') }}
+          </div>
+          <n-link v-if="secretLink" :to="secretLink">
+            {{ encryptionSecret }}
+          </n-link>
         </div>
       </div>
 

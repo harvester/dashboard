@@ -40,7 +40,7 @@ export default class HciPv extends HarvesterResource {
     return [
       {
         action:  'exportImage',
-        enabled: this.hasAction('export'),
+        enabled: this.hasAction('export') && !this.isEncrypted,
         icon:    'icon icon-copy',
         label:   this.t('harvester.action.exportImage')
       },
@@ -214,6 +214,14 @@ export default class HciPv extends HarvesterResource {
     }
 
     return false;
+  }
+
+  get isEncrypted() {
+    const inStore = this.$rootGetters['currentProduct'].inStore;
+
+    const longhornVolume = this.$rootGetters[`${ inStore }/all`](LONGHORN.VOLUMES).find(v => v.metadata?.name === this.spec?.volumeName);
+
+    return longhornVolume?.spec.encrypted || false;
   }
 
   get longhornVolume() {
