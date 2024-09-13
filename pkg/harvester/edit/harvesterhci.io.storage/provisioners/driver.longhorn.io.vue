@@ -3,9 +3,9 @@ import KeyValue from '@shell/components/form/KeyValue';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import RadioGroup from '@components/Form/Radio/RadioGroup';
-
+import { SECRET, NAMESPACE, LONGHORN } from '@shell/config/types';
 import { _CREATE, _VIEW } from '@shell/config/query-params';
-import { LONGHORN } from '@shell/config/types';
+import { CSI_SECRETS } from '@pkg/harvester/config/harvester-map';
 import { clone } from '@shell/utils/object';
 import { uniq } from '@shell/utils/array';
 
@@ -15,7 +15,17 @@ const DEFAULT_PARAMETERS = [
   'diskSelector',
   'nodeSelector',
   'migratable',
+  'encrypted',
 ];
+
+const {
+  CSI_PROVISIONER_SECRET_NAME,
+  CSI_PROVISIONER_SECRET_NAMESPACE,
+  CSI_NODE_PUBLISH_SECRET_NAME,
+  CSI_NODE_PUBLISH_SECRET_NAMESPACE,
+  CSI_NODE_STAGE_SECRET_NAME,
+  CSI_NODE_STAGE_SECRET_NAMESPACE
+} = CSI_SECRETS;
 
 export default {
   components: {
@@ -40,6 +50,14 @@ export default {
     },
   },
 
+  async fetch() {
+    const inStore = this.$store.getters['currentProduct'].inStore;
+    const allNamespaces = await this.$store.dispatch(`${ inStore }/findAll`, { type: NAMESPACE });
+
+    this.secrets = await this.$store.dispatch(`${ inStore }/findAll`, { type: SECRET });
+    this.namespaces = allNamespaces.filter(ns => ns.isSystem === false).map(ns => ns.id); // only show non-system namespaces to user to select
+  },
+
   data() {
     if (this.realMode === _CREATE) {
       this.$set(this.value, 'parameters', {
@@ -47,11 +65,15 @@ export default {
         staleReplicaTimeout: '30',
         diskSelector:        null,
         nodeSelector:        null,
+        encrypted:           'false',
         migratable:          'true',
       });
     }
 
-    return {};
+    return {
+      secrets:    [],
+      namespaces: [],
+    };
   },
 
   computed: {
@@ -97,6 +119,26 @@ export default {
       }];
     },
 
+    secretOptions() {
+      const selectedNS = this.secretNamespace;
+
+      return this.secrets.filter(secret => secret.namespace === selectedNS).map(secret => secret.name);
+    },
+
+    secretNameOptions() {
+      return this.namespaces;
+    },
+
+    volumeEncryptionOptions() {
+      return [{
+        label: this.t('generic.yes'),
+        value: 'true'
+      }, {
+        label: this.t('generic.no'),
+        value: 'false'
+      }];
+    },
+
     parameters: {
       get() {
         const parameters = clone(this.value?.parameters) || {};
@@ -110,6 +152,49 @@ export default {
 
       set(value) {
         Object.assign(this.value.parameters, value);
+      }
+    },
+
+    volumeEncryption: {
+      set(neu) {
+        this.$set(this.value, 'parameters', {
+          ...this.value.parameters,
+          encrypted: neu
+        });
+      },
+
+      get() {
+        return this.value?.parameters?.encrypted || 'false';
+      }
+    },
+
+    secretName: {
+      get() {
+        return this.value.parameters[CSI_PROVISIONER_SECRET_NAME];
+      },
+
+      set(neu) {
+        this.$set(this.value, 'parameters', {
+          ...this.value.parameters,
+          [CSI_PROVISIONER_SECRET_NAME]:  neu,
+          [CSI_NODE_PUBLISH_SECRET_NAME]: neu,
+          [CSI_NODE_STAGE_SECRET_NAME]:   neu
+        });
+      }
+    },
+
+    secretNamespace: {
+      get() {
+        return this.value.parameters[CSI_PROVISIONER_SECRET_NAMESPACE];
+      },
+
+      set(neu) {
+        this.$set(this.value, 'parameters', {
+          ...this.value.parameters,
+          [CSI_PROVISIONER_SECRET_NAMESPACE]:  neu,
+          [CSI_NODE_PUBLISH_SECRET_NAMESPACE]: neu,
+          [CSI_NODE_STAGE_SECRET_NAMESPACE]:   neu
+        });
       }
     },
 
@@ -221,14 +306,39 @@ export default {
         </LabeledSelect>
       </div>
     </div>
-    <div class="row mt-10">
+    <div class="row mt-20">
+      <RadioGroup
+        v-model="value.parameters.migratable"
+        name="layer3NetworkMode"
+        :label="t('harvester.storage.parameters.migratable.label')"
+        :mode="mode"
+        :options="migratableOptions"
+      />
+    </div>
+    <div class="row mt-20">
+      <RadioGroup
+        v-model="volumeEncryption"
+        name="volumeEncryption"
+        :label="t('harvester.storage.volumeEncryption')"
+        :mode="mode"
+        :options="volumeEncryptionOptions"
+      />
+    </div>
+    <div v-if="value.parameters.encrypted === 'true'" class="row mt-20">
       <div class="col span-6">
-        <RadioGroup
-          v-model="value.parameters.migratable"
-          name="layer3NetworkMode"
-          :label="t('harvester.storage.parameters.migratable.label')"
+        <LabeledSelect
+          v-model="secretNamespace"
+          :label="t('harvester.storage.secretNamespace')"
+          :options="secretNameOptions"
           :mode="mode"
-          :options="migratableOptions"
+        />
+      </div>
+      <div class="col span-6">
+        <LabeledSelect
+          v-model="secretName"
+          :label="t('harvester.storage.secretName')"
+          :options="secretOptions"
+          :mode="mode"
         />
       </div>
     </div>
