@@ -217,11 +217,7 @@ export default class HciPv extends HarvesterResource {
   }
 
   get isEncrypted() {
-    const inStore = this.$rootGetters['currentProduct'].inStore;
-
-    const longhornVolume = this.$rootGetters[`${ inStore }/all`](LONGHORN.VOLUMES).find(v => v.metadata?.name === this.spec?.volumeName);
-
-    return longhornVolume?.spec.encrypted || false;
+    return this.relatedPV?.spec.csi.volumeAttributes.encrypted || false;
   }
 
   get longhornVolume() {
