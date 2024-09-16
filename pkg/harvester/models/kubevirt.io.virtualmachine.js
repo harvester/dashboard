@@ -575,6 +575,29 @@ export default class VirtVm extends HarvesterResource {
     return vmis.find(VMI => VMI.id === this.id);
   }
 
+  get isVMImageEncrypted() {
+    const inStore = this.productInStore;
+    const imageList = this.$rootGetters[`${ inStore }/all`](HCI.IMAGE);
+    const rootImage = imageList.find(image => this.rootImageId === image.id);
+
+    return rootImage?.isEncrypted || false;
+  }
+
+  get isVolumeEncrypted() {
+    const inStore = this.productInStore;
+    const pvcs = this.$rootGetters[`${ inStore }/all`](PVC);
+
+    // filter out the root image PVC
+    const nonRootImagePVCs = pvcs.filter(pvc => !pvc.metadata.annotations[HCI_ANNOTATIONS.IMAGE_ID]);
+
+    const volumeClaimNames = this.spec.template.spec.volumes?.map(v => v.persistentVolumeClaim?.claimName).map(v => v) || [];
+
+    const pvcVolumes = nonRootImagePVCs.filter(pvc => volumeClaimNames.includes(pvc.metadata.name));
+
+    // if any non-rootImage PCV volume is encrypted, return true, otherwise return false
+    return pvcVolumes.some(pvcVol => pvcVol.isEncrypted) ;
+  }
+
   get isError() {
     const conditions = get(this.vmi, 'status.conditions');
     const vmiFailureCond = findBy(conditions, 'type', 'Failure');
