@@ -597,9 +597,9 @@ harvester:
       duplicatedUser: User already exists.
       invalidUser: Invalid Username.
     lockIconTooltip:
-      image: Image encrypted
-      volume: Volume encrypted
-      both: Image encrypted and volume encrypted
+      image: Encrypted Image
+      volume: Encrypted Volume
+      both: Encrypted Image and Encrypted Volume
     input:
       name: Name
       memory: Memory
