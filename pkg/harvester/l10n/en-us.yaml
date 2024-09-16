@@ -596,6 +596,10 @@ harvester:
       userTips: The user to be added must already exist; otherwise, the credentials will not take effect.
       duplicatedUser: User already exists.
       invalidUser: Invalid Username.
+    lockIconTooltip:
+      image: Image encrypted
+      volume: Volume encrypted
+      both: Image encrypted and volume encrypted
     input:
       name: Name
       memory: Memory

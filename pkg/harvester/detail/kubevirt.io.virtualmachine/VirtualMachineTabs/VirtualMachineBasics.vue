@@ -63,10 +63,7 @@ export default {
 
     imageName() {
       const imageList = this.$store.getters['harvester/all'](HCI.IMAGE) || [];
-
-      const image = imageList.find( (I) => {
-        return this.value.rootImageId === I.id;
-      });
+      const image = imageList.find( I => this.value.rootImageId === I.id);
 
       return image?.spec?.displayName || 'N/A';
     },
