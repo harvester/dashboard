@@ -87,7 +87,7 @@ export default {
       }
     },
 
-    provisioner() {      
+    provisioner() {
       let labelKey = `harvester.storage.storageClass.longhorn.${ LONGHORN_VERSION_V1 }.label`;
 
       if (this.value?.blockDevice?.spec?.provisioner.longhorn) {

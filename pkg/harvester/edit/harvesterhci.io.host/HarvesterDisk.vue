@@ -242,7 +242,7 @@ export default {
       :label="t('harvester.host.disk.fileSystem.formatting')"
     />
     <Banner
-      v-else-if="isFormatted && !isCorrupted"
+      v-else-if="isFormatted && isLonghornV1 && !isCorrupted"
       color="info"
       :label="formattedBannerLabel"
     />
@@ -333,6 +333,7 @@ export default {
           :localized-label="true"
           :searchable="true"
           :options="provisioners"
+          :disabled="isProvisioned"
           @keydown.native.enter.prevent="()=>{}"
         />
       </div>
@@ -367,6 +368,7 @@ export default {
           :searchable="true"
           :options="lvmVolumeGroups"
           :required="true"
+          :disabled="isProvisioned"
           @keydown.native.enter.prevent="()=>{}"
         />
       </div>

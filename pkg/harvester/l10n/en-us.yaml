@@ -1167,6 +1167,8 @@ harvester:
         label: Volume Group Type
       lvmVolumeGroup:
         label: Volume Group Name
+      node:
+        label: Node
     allowedTopologies:
       title: Allowed Topologies
       tooltip: Allowed Topologies helps scheduling virtual machines on hosts which match all of below expressions.
