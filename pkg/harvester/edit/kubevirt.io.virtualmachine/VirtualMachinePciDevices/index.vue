@@ -8,7 +8,7 @@ import CompatibilityMatrix from '../CompatibilityMatrix';
 import DeviceList from './DeviceList';
 
 import remove from 'lodash/remove';
-import { get, set } from '@shell/utils/object';
+import { set } from '@shell/utils/object';
 
 export default {
   name:       'VirtualMachinePCIDevices',
@@ -121,9 +121,8 @@ export default {
         if (vm.metadata.name === this.vm?.metadata?.name) {
           return inUse;
         }
-        const devices = get(vm, 'spec.template.spec.domain.devices.hostDevices') || [];
 
-        devices.forEach((device) => {
+        vm.hostDevices.forEach((device) => {
           inUse[device.name] = { usedBy: [vm.metadata.name] };
         });
 
@@ -134,19 +133,14 @@ export default {
     },
 
     devicesByNode() {
-      const out = {};
+      return this.enabledDevices?.reduce((acc, device) => {
+        const name = device.status?.nodeName;
 
-      this.enabledDevices.forEach((deviceCRD) => {
-        const nodeName = deviceCRD.status?.nodeName;
-
-        if (!out[nodeName]) {
-          out[nodeName] = [deviceCRD];
-        } else {
-          out[nodeName].push(deviceCRD);
-        }
-      });
-
-      return out;
+        return name ? {
+          ...acc,
+          [name]: [...(acc[name] || []), device],
+        } : acc;
+      }, {});
     },
 
     // determine which nodes contain all devices selected

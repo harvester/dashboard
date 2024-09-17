@@ -1095,6 +1095,10 @@ export default class VirtVm extends HarvesterResource {
     });
   }
 
+  get hostDevices() {
+    return this.spec?.template?.spec?.domain?.devices?.hostDevices || [];
+  }
+
   setInstanceLabels(val) {
     if ( !this.spec?.template?.metadata?.labels ) {
       set(this, 'spec.template.metadata.labels', {});
