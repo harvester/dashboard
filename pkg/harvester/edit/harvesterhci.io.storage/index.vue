@@ -23,6 +23,8 @@ import { LVM_DRIVER } from '@shell/models/storage.k8s.io.storageclass';
 
 const LONGHORN_V2_DATA_ENGINE = 'longhorn-system/v2-data-engine';
 
+export const LVM_TOPOLOGY_LABEL = 'topology.lvm.csi/node';
+
 export default {
   name: 'HarvesterStorage',
 
@@ -72,7 +74,7 @@ export default {
       }
     ];
 
-    const allowedTopologies = clone(this.value.allowedTopologies?.[0]?.matchLabelExpressions || []);
+    const allowedTopologies = clone(this.value.allowedTopologies?.[0]?.matchLabelExpressions || []).filter(t => t.key !== LVM_TOPOLOGY_LABEL);
 
     this.$set(this.value, 'parameters', this.value.parameters || {});
     this.$set(this.value, 'provisioner', this.value.provisioner || LONGHORN_DRIVER);
@@ -155,6 +157,10 @@ export default {
     isLonghornV2() {
       return this.value.provisioner === LONGHORN_DRIVER && this.longhornVersion === LONGHORN_VERSION_V2;
     },
+
+    isLvm() {
+      return this.value.provisioner === LVM_DRIVER;
+    },
   },
 
   watch: {
@@ -163,6 +169,16 @@ export default {
 
       if (this.isLonghornV2) {
         parameters.migratable = false;
+      }
+
+      if (!this.isLvm) {
+        const matchLabelExpressions = (this.value.allowedTopologies?.[0]?.matchLabelExpressions || []).filter(t => t.key !== LVM_TOPOLOGY_LABEL);
+
+        if (matchLabelExpressions.length > 0) {
+          this.$set(this.value, 'allowedTopologies', [{ matchLabelExpressions }]);
+        } else {
+          delete this.value.allowedTopologies;
+        }
       }
 
       this.$set(this.value, 'parameters', parameters);
@@ -198,10 +214,15 @@ export default {
     },
 
     formatAllowedTopoloties() {
-      const neu = this.allowedTopologies;
+      const neu = this.allowedTopologies.filter(t => t.key !== LVM_TOPOLOGY_LABEL);
+      const lvmMatchExpression = (this.value.allowedTopologies?.[0]?.matchLabelExpressions || []).filter(t => t.key === LVM_TOPOLOGY_LABEL);
 
       if (!neu || neu.length === 0) {
-        delete this.value.allowedTopologies;
+        if (lvmMatchExpression.length > 0) {
+          this.value.allowedTopologies = [{ matchLabelExpressions: lvmMatchExpression }];
+        } else {
+          delete this.value.allowedTopologies;
+        }
 
         return;
       }
@@ -209,7 +230,7 @@ export default {
       const matchLabelExpressions = neu.filter(R => !!R.key.trim() && (R.values.length > 0 && !R.values.find(V => !V.trim())));
 
       if (matchLabelExpressions.length > 0) {
-        this.value.allowedTopologies = [{ matchLabelExpressions }];
+        this.value.allowedTopologies = [{ matchLabelExpressions: [...matchLabelExpressions, ...lvmMatchExpression] }];
       }
     }
   }

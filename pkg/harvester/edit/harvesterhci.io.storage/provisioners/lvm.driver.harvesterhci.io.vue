@@ -2,28 +2,29 @@
 
 import KeyValue from '@shell/components/form/KeyValue';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
-import { LabeledInput } from '@components/Form/LabeledInput';
-import RadioGroup from '@components/Form/Radio/RadioGroup';
 
 import { allHash } from '@shell/utils/promise';
-import { _CREATE, _VIEW } from '@shell/config/query-params';
-import { LONGHORN } from '@shell/config/types';
 import { clone } from '@shell/utils/object';
-import { uniq } from '@shell/utils/array';
-import { LONGHORN_VERSION_V1, LONGHORN_VERSION_V2 } from '@shell/models/persistentvolume';
 import { HCI } from '../../../types';
+import { NODE } from '@shell/config/types';
+import { LVM_TOPOLOGY_LABEL } from '../index.vue';
 
 const DEFAULT_PARAMETERS = [
   'type',
   'vgName'
 ];
 
+const DEFAUL_TOPOLOGIES = [{
+  matchLabelExpressions: [{
+    key:    LVM_TOPOLOGY_LABEL,
+    values: []
+  }]
+}];
+
 export default {
   components: {
     KeyValue,
     LabeledSelect,
-    LabeledInput,
-    RadioGroup,
   },
 
   props: {
@@ -45,28 +46,49 @@ export default {
     const inStore = this.$store.getters['currentProduct'].inStore;
 
     await allHash({
+      nodes:           this.$store.dispatch(`${ inStore }/findAll`, { type: NODE }),
       lvmVolumeGroups: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.LVM_VOLUME_GROUP }),
     });
   },
 
   data() {
+    const node = (this.value.allowedTopologies?.[0]?.matchLabelExpressions || []).find(t => t.key === LVM_TOPOLOGY_LABEL)?.values[0];
+
     return {
       volumeGroupTypes: ['striped', 'dm-thin'],
-      volumeGroupType: null,
-      volumeGroup: null,
-      nodeName: 'harvester-node-0'
+      node,
     };
   },
 
+  watch: {
+    node(value) {
+      delete (this.value.parameters.vgName);
+
+      const allowedTopologies = [...DEFAUL_TOPOLOGIES];
+
+      allowedTopologies[0].matchLabelExpressions[0].values = [value];
+
+      this.value.allowedTopologies = allowedTopologies;
+    }
+  },
+
   computed: {
+    nodes() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const nodes = this.$store.getters[`${ inStore }/all`](NODE) || [];
+
+      return nodes.map(n => n.name);
+    },
+
     volumeGroups() {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const lvmVolumeGroups = this.$store.getters[`${ inStore }/all`](HCI.LVM_VOLUME_GROUP) || [];
 
       return lvmVolumeGroups
-        .filter(group => group.spec.nodeName === this.nodeName)
+        .filter(group => group.spec.nodeName === this.node)
         .map(g => g.spec.vgName);
     },
+
     parameters: {
       get() {
         const parameters = clone(this.value?.parameters) || {};
@@ -90,7 +112,24 @@ export default {
     <div class="row mt-10">
       <div class="col span-6">
         <LabeledSelect
-          v-model="volumeGroup"
+          v-model="node"
+          :label="t('harvester.storage.parameters.node.label')"
+          :options="nodes"
+          :mode="mode"
+          :required="true"
+        >
+          <template #no-options="{ searching }">
+            <span v-if="!searching" class="text-muted">
+              {{ t('harvester.storage.parameters.diskSelector.no-options', null, true) }}
+            </span>
+          </template>
+        </LabeledSelect>
+      </div>
+    </div>
+    <div class="row mt-10">
+      <div class="col span-6">
+        <LabeledSelect
+          v-model="value.parameters.vgName"
           :label="t('harvester.storage.parameters.lvmVolumeGroup.label')"
           :options="volumeGroups"
           :mode="mode"
@@ -105,7 +144,7 @@ export default {
       </div>
       <div class="col span-6">
         <LabeledSelect
-          v-model="volumeGroupType"
+          v-model="value.parameters.type"
           :label="t('harvester.storage.parameters.lvmVolumeGroupType.label')"
           :options="volumeGroupTypes"
           :mode="mode"
@@ -134,4 +173,3 @@ export default {
   padding: 7px 10px;
 }
 </style>
-
