@@ -112,7 +112,7 @@ export default {
     enabledDevices() {
       return this.devices.filter((device) => {
         return device.status.enabled;
-      }) || [];
+      });
     },
 
     devicesInUse() {
