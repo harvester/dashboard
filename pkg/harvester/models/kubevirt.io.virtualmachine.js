@@ -1119,6 +1119,16 @@ export default class VirtVm extends HarvesterResource {
     return this.spec?.template?.spec?.domain?.devices?.hostDevices || [];
   }
 
+  get provisionedVGpus() {
+    try {
+      const deviceAllocationDetails = JSON.parse(this.metadata?.annotations[HCI_ANNOTATIONS.VM_DEVICE_ALLOCATION_DETAILS] || '{}');
+
+      return deviceAllocationDetails?.gpus || {};
+    } catch (error) {
+      return {};
+    }
+  }
+
   setInstanceLabels(val) {
     if ( !this.spec?.template?.metadata?.labels ) {
       set(this, 'spec.template.metadata.labels', {});
