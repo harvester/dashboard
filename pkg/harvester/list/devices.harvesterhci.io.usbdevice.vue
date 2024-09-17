@@ -41,7 +41,7 @@ export default {
       hasAddonSchema: false,
       hasPCIAddon:    false,
       schema:         null,
-      toUSBAddon:     `${ HCI.ADD_ONS }/harvester-system/${ ADD_ONS.USB_DEVICE_CONTROLLER }?mode=edit`,
+      toPciAddon:     `${ HCI.ADD_ONS }/harvester-system/${ ADD_ONS.PCI_DEVICE_CONTROLLER }?mode=edit`,
       headers:        [
         { ...STATE },
         SIMPLE_NAME,
@@ -77,7 +77,7 @@ export default {
   <div v-else-if="!hasPCIAddon">
     <Banner color="warning">
       <MessageLink
-        :to="toUSBAddon"
+        :to="toPciAddon"
         prefix-label="harvester.usb.goSetting.prefix"
         middle-label="harvester.usb.goSetting.middle"
         suffix-label="harvester.usb.goSetting.suffix"
