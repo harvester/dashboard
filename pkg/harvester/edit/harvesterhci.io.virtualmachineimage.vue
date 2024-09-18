@@ -16,6 +16,7 @@ import { exceptionToErrorsArray } from '@shell/utils/error';
 import { allHash } from '@shell/utils/promise';
 import { STORAGE_CLASS } from '@shell/config/types';
 import { HCI } from '../types';
+import { LVM_DRIVER } from '@shell/models/storage.k8s.io.storageclass';
 
 const ENCRYPT = 'encrypt';
 const DECRYPT = 'decrypt';
@@ -132,16 +133,16 @@ export default {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const storages = this.$store.getters[`${ inStore }/all`](STORAGE_CLASS);
 
-      const out = storages.filter(s => !s.parameters?.backingImage).map((s) => {
-        const label = s.isDefault ? `${ s.name } (${ this.t('generic.default') })` : s.name;
+      return storages
+        .filter(s => !s.parameters?.backingImage && s.provisioner !== LVM_DRIVER) // Lvm storage is not supported.
+        .map((s) => {
+          const label = s.isDefault ? `${ s.name } (${ this.t('generic.default') })` : s.name;
 
-        return {
-          label,
-          value: s.name,
-        };
-      }) || [];
-
-      return out;
+          return {
+            label,
+            value: s.name,
+          };
+        }) || [];
     },
 
     storageClassName: {
