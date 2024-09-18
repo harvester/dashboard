@@ -2,6 +2,7 @@ import { clone } from '@shell/utils/object';
 import { HCI } from '../../types';
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../../config/harvester';
 import Secret from '@shell/models/secret';
+import { NAMESPACE } from '@shell/config/types';
 
 export default class HciSecret extends Secret {
   get _detailLocation() {
@@ -50,6 +51,14 @@ export default class HciSecret extends Secret {
 
   get parentLocationOverride() {
     return this.doneOverride;
+  }
+
+  get isSystem() {
+    const inStore = this.$rootGetters['currentProduct'].inStore;
+
+    const systemNs = this.$rootGetters[`${ inStore }/all`](NAMESPACE).filter(ns => ns.isSystem === true).map(ns => ns.metadata.name);
+
+    return systemNs.includes(this.metadata.namespace);
   }
 
   get details() {

@@ -55,10 +55,13 @@ export default {
 
   async fetch() {
     const inStore = this.$store.getters['currentProduct'].inStore;
-    const allNamespaces = await this.$store.dispatch(`${ inStore }/findAll`, { type: NAMESPACE });
 
-    this.secrets = await this.$store.dispatch(`${ inStore }/findAll`, { type: SECRET });
-    this.namespaces = allNamespaces.filter(ns => ns.isSystem === false).map(ns => ns.id); // only show non-system namespaces to user to select
+    await this.$store.dispatch(`${ inStore }/findAll`, { type: NAMESPACE });
+
+    const allSecrets = await this.$store.dispatch(`${ inStore }/findAll`, { type: SECRET });
+
+    // only show non-system secret to user to select
+    this.secrets = allSecrets.filter(secret => secret.isSystem === false);
   },
   data() {
     if (this.realMode === _CREATE) {
@@ -72,20 +75,7 @@ export default {
       });
     }
 
-    return {
-      secrets:    [],
-      namespaces: [],
-    };
-  },
-  watch: {
-    secretNamespace() {
-      this.$set(this.value, 'parameters', {
-        ...this.value.parameters,
-        [CSI_PROVISIONER_SECRET_NAME]:  '',
-        [CSI_NODE_PUBLISH_SECRET_NAME]: '',
-        [CSI_NODE_STAGE_SECRET_NAME]:   ''
-      });
-    }
+    return { secrets: [] };
   },
   computed: {
     longhornNodes() {
@@ -131,13 +121,7 @@ export default {
     },
 
     secretOptions() {
-      const selectedNS = this.secretNamespace;
-
-      return this.secrets.filter(secret => secret.namespace === selectedNS).map(secret => secret.name);
-    },
-
-    secretNameOptions() {
-      return this.namespaces;
+      return this.secrets.map(secret => secret.id);
     },
 
     volumeEncryptionOptions() {
@@ -183,32 +167,29 @@ export default {
       }
     },
 
-    secretName: {
+    secret: {
       get() {
-        return this.value.parameters[CSI_PROVISIONER_SECRET_NAME];
+        const selectedNs = this.value.parameters[CSI_PROVISIONER_SECRET_NAMESPACE];
+        const selectedName = this.value.parameters[CSI_PROVISIONER_SECRET_NAME];
+
+        if (selectedNs && selectedName) {
+          return `${ selectedNs }/${ selectedName }`;
+        }
+
+        return '';
       },
 
-      set(neu) {
+      set(selectedSecret) {
+        const [namespace, name] = selectedSecret.split('/');
+
         this.$set(this.value, 'parameters', {
           ...this.value.parameters,
-          [CSI_PROVISIONER_SECRET_NAME]:  neu,
-          [CSI_NODE_PUBLISH_SECRET_NAME]: neu,
-          [CSI_NODE_STAGE_SECRET_NAME]:   neu
-        });
-      }
-    },
-
-    secretNamespace: {
-      get() {
-        return this.value.parameters[CSI_PROVISIONER_SECRET_NAMESPACE];
-      },
-
-      set(neu) {
-        this.$set(this.value, 'parameters', {
-          ...this.value.parameters,
-          [CSI_PROVISIONER_SECRET_NAMESPACE]:  neu,
-          [CSI_NODE_PUBLISH_SECRET_NAMESPACE]: neu,
-          [CSI_NODE_STAGE_SECRET_NAMESPACE]:   neu
+          [CSI_PROVISIONER_SECRET_NAME]:       name,
+          [CSI_NODE_PUBLISH_SECRET_NAME]:      name,
+          [CSI_NODE_STAGE_SECRET_NAME]:        name,
+          [CSI_PROVISIONER_SECRET_NAMESPACE]:  namespace,
+          [CSI_NODE_PUBLISH_SECRET_NAMESPACE]: namespace,
+          [CSI_NODE_STAGE_SECRET_NAMESPACE]:   namespace
         });
       }
     },
@@ -342,16 +323,8 @@ export default {
     <div v-if="value.parameters.encrypted === 'true'" class="row mt-20">
       <div class="col span-6">
         <LabeledSelect
-          v-model="secretNamespace"
-          :label="t('harvester.storage.secretNamespace')"
-          :options="secretNameOptions"
-          :mode="mode"
-        />
-      </div>
-      <div class="col span-6">
-        <LabeledSelect
-          v-model="secretName"
-          :label="t('harvester.storage.secretName')"
+          v-model="secret"
+          :label="t('harvester.storage.secret')"
           :options="secretOptions"
           :mode="mode"
         />
