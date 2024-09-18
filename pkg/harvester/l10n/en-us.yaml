@@ -1069,8 +1069,7 @@ harvester:
     label: Storage
     useDefault: Use the default storage
     volumeEncryption: Volume Encryption
-    secretName: Secret Name
-    secretNamespace: Secret Namespace
+    secret: Secret
     migratable:
       label: Migratable
     numberOfReplicas:
