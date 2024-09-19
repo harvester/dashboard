@@ -91,7 +91,7 @@ export default {
       :schema="schema"
       :resource="resource"
       :type-display="typeDisplay"
-      :parentNameOverride="'VM schedule'"
+      :parentNameOverride="'Virtual Machine schedule'"
       :create-button-label="t('harvester.schedule.createButtonText')"
     />
     <ResourceTable
