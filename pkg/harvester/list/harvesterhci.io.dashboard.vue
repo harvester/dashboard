@@ -662,7 +662,7 @@ export default {
           :name="t('harvester.dashboard.hardwareResourceGauge.storage')"
           :used="storageUsed"
           :reserved="storageAllocated"
-          :reserved-title="t('clusterIndexPage.hardwareResourceGauge.allocated')"
+          :reserved-title="t('harvester.dashboard.hardwareResourceGauge.allocated')"
         />
       </div>
     </template>
