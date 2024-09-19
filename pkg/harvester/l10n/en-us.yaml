@@ -295,6 +295,7 @@ harvester:
       cpu: CPU
       memory: Memory
       storage: Storage
+      allocated: Allocated
     sections:
       events:
         label: Events
