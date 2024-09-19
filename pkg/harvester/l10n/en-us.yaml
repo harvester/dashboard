@@ -150,7 +150,7 @@ harvester:
     setDefaultVersion: Set default version
     addTemplateVersion: Add template version
     backup: Take Backup
-    createSchedule: Create VM Schedule
+    createSchedule: Create Schedule
     restore: Restore
     restoreNewVM: Restore New
     resumeSchedule: Resume
@@ -196,7 +196,7 @@ harvester:
     scheduleType: Type
     maxFailure: Max Failure
     sourceVm: Source VM
-    vmSchedule: VM Schedule
+    vmSchedule: Virtual Machine Schedule
     hostIp: Host IP
     vm:
       ipAddress: IP Address
@@ -827,10 +827,10 @@ harvester:
       moreNotes: For more details about the release notes, please visit -
      
   schedule:
-    label: VM Schedules
-    createTitle: Create VM Schedule
-    createButtonText: Create VM Schedule
-    scheduleType: VM Schedule Type
+    label: Virtual Machine Schedules
+    createTitle: Create Schedule
+    createButtonText: Create Schedule
+    scheduleType: Virtual Machine Schedule Type
     cron: Cron Schedule
     detail: 
       namespace: Namespace
@@ -1541,8 +1541,8 @@ typeLabel:
     }
   harvesterhci.io.schedulevmbackup: |-
     {count, plural,
-      one { VM Schedule }
-      other { VM Schedules }
+      one { Virtual Machine Schedule }
+      other { Virtual Machine Schedules }
     }
   harvesterhci.io.virtualmachinebackup: |-
     {count, plural,

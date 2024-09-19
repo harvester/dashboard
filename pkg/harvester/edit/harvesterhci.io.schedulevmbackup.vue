@@ -8,7 +8,7 @@ import Tab from '@shell/components/Tabbed/Tab';
 import MessageLink from '@shell/components/MessageLink';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import CreateEditView from '@shell/mixins/create-edit-view';
-import { isCronValid } from '@shell/utils/validators/cron-schedule';
+import { isCronValid } from '@pkg/harvester/utils/cron';
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '@pkg/harvester/config/harvester';
 import { allHash } from '@shell/utils/promise';
 import { HCI } from '../types';
