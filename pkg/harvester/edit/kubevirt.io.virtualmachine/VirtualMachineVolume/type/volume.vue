@@ -8,11 +8,14 @@ import LabeledSelect from '@shell/components/form/LabeledSelect';
 import { PVC, STORAGE_CLASS } from '@shell/config/types';
 import { formatSi, parseSi } from '@shell/utils/units';
 import { VOLUME_TYPE, InterfaceOption } from '../../../../config/harvester-map';
+import { _VIEW } from '@shell/config/query-params';
+import LabelValue from '@shell/components/LabelValue';
+import { ucFirst } from '@shell/utils/string';
 
 export default {
   name:       'HarvesterEditVolume',
   components: {
-    InputOrDisplay, Loading, LabeledInput, LabeledSelect, UnitInput,
+    InputOrDisplay, Loading, LabeledInput, LabeledSelect, UnitInput, LabelValue
   },
 
   props: {
@@ -58,6 +61,13 @@ export default {
   },
 
   computed: {
+    encryptionValue() {
+      return ucFirst(String(this.value.isEncrypted));
+    },
+
+    isView() {
+      return this.mode === _VIEW;
+    },
     pvcsResource() {
       const allPVCs = this.$store.getters['harvester/all'](PVC) || [];
 
@@ -212,7 +222,7 @@ export default {
     <div class="row mb-20">
       <div
         data-testid="input-hev-bus"
-        class="col span-3"
+        class="col span-6"
       >
         <InputOrDisplay :name="t('harvester.virtualMachine.volume.bus')" :value="value.bus" :mode="mode">
           <LabeledSelect
@@ -224,6 +234,15 @@ export default {
             @input="update"
           />
         </InputOrDisplay>
+      </div>
+      <div
+        v-if="isView"
+        class="col span-6"
+      >
+        <LabelValue
+          :name="t('harvester.virtualMachine.volume.encryption')"
+          :value="encryptionValue"
+        />
       </div>
     </div>
   </div>
