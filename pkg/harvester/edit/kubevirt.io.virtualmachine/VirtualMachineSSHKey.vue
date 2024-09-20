@@ -68,7 +68,8 @@ export default {
       randomStr:  randomStr(5).toLowerCase(),
       errors:     [],
       isAll:      false,
-      checkAll:   false
+      checkAll:   false,
+      showModal:  false
     };
   },
 
@@ -134,11 +135,11 @@ export default {
 
   methods: {
     show() {
-      this.$modal.show(this.randomStr);
+      this.showModal = true;
     },
 
     hide() {
-      this.$modal.hide(this.randomStr);
+      this.showModal = false;
     },
 
     async createNamespaceIfNeeded() {
@@ -250,6 +251,7 @@ export default {
     />
 
     <ModalWithCard
+      v-if="showModal"
       :ref="randomStr"
       :name="randomStr"
       width="40%"

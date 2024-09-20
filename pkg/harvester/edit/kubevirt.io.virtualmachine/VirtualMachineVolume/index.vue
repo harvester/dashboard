@@ -83,7 +83,8 @@ export default {
       SOURCE_TYPE,
       rows:    clone(this.value),
       nameIdx: 1,
-      vol:     null
+      vol:     null,
+      isOpen:  false
     };
   },
 
@@ -195,7 +196,7 @@ export default {
     removeVolume(vol) {
       this.vol = vol;
       if (!vol.newCreateId && this.isEdit && this.isVirtualType) {
-        this.$refs.deleteTip.open();
+        this.isOpen = true;
       } else {
         removeObject(this.rows, vol);
         this.update();
@@ -241,7 +242,7 @@ export default {
     },
 
     cancel() {
-      this.$refs.deleteTip.hide();
+      this.isOpen = false;
     },
 
     changeSort(idx, type) {
@@ -360,7 +361,11 @@ export default {
       </button>
     </div>
 
-    <ModalWithCard ref="deleteTip" name="deleteTip" :width="400">
+    <ModalWithCard
+      v-if="isOpen"
+      name="deleteTip"
+      :width="400"
+    >
       <template #title>
         {{ t('harvester.virtualMachine.volume.unmount.title') }}
       </template>

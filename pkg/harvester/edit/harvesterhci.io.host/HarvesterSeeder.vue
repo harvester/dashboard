@@ -57,6 +57,7 @@ export default {
       secret:            {},
       errors:            [],
       newSecretSelected: false,
+      showModal:         false,
     };
   },
 
@@ -185,11 +186,11 @@ export default {
     },
 
     show() {
-      this.$modal.show('secretModal');
+      this.showModal = true;
     },
 
     hide() {
-      this.$modal.hide('secretModal');
+      this.showModal = false;
       this.newSecretSelected = false;
     },
 
@@ -330,6 +331,7 @@ export default {
       </div>
 
       <ModalWithCard
+        v-if="showModal"
         ref="secretModal"
         width="80%"
         :errors="errors"
