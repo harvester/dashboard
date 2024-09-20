@@ -104,6 +104,7 @@ const F_KEYS = {
 };
 
 export default {
+  name:       'NovncConsoleWrapper',
   components: {
     NovncConsole, NovncConsoleItem, NovncConsoleCustomKeys
   },
@@ -261,9 +262,6 @@ export default {
 
     showKeysModal() {
       this.renderKeysModal = true;
-      this.$nextTick(() => {
-        this.$refs.keysModal.show();
-      });
     },
 
     hideKeysModal() {
@@ -325,7 +323,11 @@ export default {
           </template>
         </v-popover>
 
-        <NovncConsoleCustomKeys v-if="renderKeysModal" ref="keysModal" :current-user="currentUser" @close="hideKeysModal" />
+        <NovncConsoleCustomKeys
+          v-if="renderKeysModal"
+          :current-user="currentUser"
+          @close="hideKeysModal"
+        />
       </div>
       <NovncConsole v-if="url && !isDown" ref="novncConsole" :url="url" />
       <p v-if="isDown">

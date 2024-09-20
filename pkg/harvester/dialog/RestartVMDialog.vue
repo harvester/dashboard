@@ -1,14 +1,17 @@
 <script>
 import { mapGetters } from 'vuex';
 import AsyncButton from '@shell/components/AsyncButton';
+import AppModal from '@shell/components/AppModal';
 import { Card } from '@components/Card';
 import { Banner } from '@components/Banner';
 import { exceptionToErrorsArray } from '@shell/utils/error';
+
 export default {
   components: {
     Card,
     AsyncButton,
     Banner,
+    AppModal
   },
   props: {
     vm: {
@@ -17,11 +20,19 @@ export default {
     },
   },
   data() {
-    return { errors: [], resolve: null };
+    return {
+      errors:  [],
+      resolve: null,
+      isOpen:  false
+    };
   },
   computed: { ...mapGetters({ t: 'i18n/t' }) },
   methods:  {
+    open() {
+      this.isOpen = true;
+    },
     close() {
+      this.isOpen = false;
       this.resolve();
       this.$emit('close');
     },
@@ -42,13 +53,14 @@ export default {
 </script>
 
 <template>
-  <modal
+  <app-modal
+    v-if="isOpen"
     class="restart-modal"
     name="restartDialog"
     :width="600"
     height="auto"
     :click-to-close="false"
-    @closed="close"
+    @close="close"
   >
     <Card class="prompt-restart" :show-highlight-border="false">
       <h4 slot="title" v-clean-html="t('harvester.modal.restart.title')" class="text-default-text" />
@@ -74,7 +86,7 @@ export default {
         </div>
       </div>
     </Card>
-  </modal>
+  </app-modal>
 </template>
 <style lang='scss' scoped>
   .restart-modal {
