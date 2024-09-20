@@ -64,6 +64,7 @@ export default {
       addRepo:                true,
       buttonState:            ASYNC_BUTTON_STATES.ACTION,
       defaultRegistrySetting: null,
+      showDialog:             false,
     };
   },
 
@@ -127,12 +128,12 @@ export default {
       // Reset checkbox bsed on if the repo is already installed
       this.addRepo = !this.hasRancherUIPluginsRepo;
 
-      this.$modal.show('confirm-uiplugins-setup');
+      this.showDialog = true;
     },
 
     async dialogClosed(ok) {
       this.errors = [];
-
+      this.showDialog = false;
       // User wants to proceed
       if (ok) {
         this.buttonState = ASYNC_BUTTON_STATES.WAITING;
@@ -229,6 +230,7 @@ export default {
       </template>
     </IconMessage>
     <Dialog
+      v-if="showDialog"
       name="confirm-uiplugins-setup"
       :title="t('plugins.setup.install.title')"
       @closed="dialogClosed"

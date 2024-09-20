@@ -34,7 +34,8 @@ export default {
       selectMode:       true,
       version:          '',
       enableLogging:    true,
-      readyReleaseNote: false
+      readyReleaseNote: false,
+      showModal:        false,
     };
   },
 
@@ -121,12 +122,12 @@ export default {
     },
 
     cancel() {
-      this.$refs.deleteTip.hide();
+      this.showModal = false;
       this.errors = '';
     },
 
     open() {
-      this.$refs.deleteTip.open();
+      this.showModal = true;
     },
   }
 };
@@ -151,7 +152,11 @@ export default {
       </button>
     </header>
 
-    <ModalWithCard ref="deleteTip" name="deleteTip" :width="850">
+    <ModalWithCard
+      v-if="showModal"
+      name="deleteTip"
+      :width="850"
+    >
       <template #title>
         <t k="harvester.upgradePage.upgradeApp" />
       </template>
