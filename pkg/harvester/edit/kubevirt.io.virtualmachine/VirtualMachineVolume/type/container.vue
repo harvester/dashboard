@@ -111,7 +111,7 @@ export default {
 
       <div
         data-testid="input-hec-bus"
-        class="col span-3"
+        class="col span-6"
       >
         <InputOrDisplay
           :name="t('harvester.virtualMachine.volume.bus')"

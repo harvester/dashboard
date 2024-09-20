@@ -420,8 +420,10 @@ export default {
         let size = '10Gi';
 
         const imageResource = this.images.find( I => this.imageId === I.id);
+
         const isIsoImage = /iso$/i.test(imageResource?.imageSuffix);
         const imageSize = Math.max(imageResource?.status?.size, imageResource?.status?.virtualSize);
+        const isEncrypted = imageResource?.isEncrypted || false;
 
         if (isIsoImage) {
           bus = 'sata';
@@ -449,6 +451,7 @@ export default {
           storageClassName: '',
           image:            this.imageId,
           volumeMode:       'Block',
+          isEncrypted
         });
       } else {
         out = _disks.map( (DISK, index) => {
@@ -525,7 +528,11 @@ export default {
             minExponent: 3,
           });
 
-          const volumeStatus = this.pvcs.find(P => P.id === `${ this.value.metadata.namespace }/${ volumeName }`)?.relatedPV?.metadata?.annotations?.[HCI_ANNOTATIONS.VOLUME_ERROR];
+          const pvc = this.pvcs.find(P => P.id === `${ this.value.metadata.namespace }/${ volumeName }`);
+
+          const volumeStatus = pvc?.relatedPV?.metadata?.annotations?.[HCI_ANNOTATIONS.VOLUME_ERROR];
+
+          const isEncrypted = pvc?.isEncrypted || false;
 
           return {
             id:         randomStr(5),
@@ -545,7 +552,8 @@ export default {
             hotpluggable,
             volumeStatus,
             dataSource,
-            namespace
+            namespace,
+            isEncrypted
           };
         });
       }
