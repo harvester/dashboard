@@ -25,8 +25,7 @@ if [ $SKIP_SETUP == "false" ]; then
 
   if [ $RET -ne 0 ]; then
     echo "Verdaccio not installed"
-
-    npm install -g verdaccio
+    npm install -g verdaccio@5.32.2
   fi
 
   set +e
