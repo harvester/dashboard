@@ -102,12 +102,17 @@ export default {
 
     devicesByNode() {
       return this.enabledDevices?.reduce((acc, device) => {
-        const name = device.spec?.nodeName;
+        const nodeName = device.spec?.nodeName;
 
-        return name ? {
-          ...acc,
-          [name]: [...(acc[name] || []), device],
-        } : acc;
+        if (nodeName) {
+          if (!acc[nodeName]) {
+            acc[nodeName] = [];
+          } else {
+            acc[nodeName].push(device);
+          }
+        }
+
+        return acc;
       }, {});
     },
 
