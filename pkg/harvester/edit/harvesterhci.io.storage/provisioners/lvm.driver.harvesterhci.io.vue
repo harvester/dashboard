@@ -77,7 +77,7 @@ export default {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const nodes = this.$store.getters[`${ inStore }/all`](NODE) || [];
 
-      return nodes.map(n => n.name);
+      return nodes.filter(n => n.labels[LVM_TOPOLOGY_LABEL] === n.name).map(n => n.name);
     },
 
     volumeGroups() {
@@ -137,7 +137,7 @@ export default {
         >
           <template #no-options="{ searching }">
             <span v-if="!searching" class="text-muted">
-              {{ t('harvester.storage.parameters.diskSelector.no-options', null, true) }}
+              {{ t('harvester.storage.parameters.lvmVolumeGroup.no-options', null, true) }}
             </span>
           </template>
         </LabeledSelect>
@@ -149,13 +149,7 @@ export default {
           :options="volumeGroupTypes"
           :mode="mode"
           :required="true"
-        >
-          <template #no-options="{ searching }">
-            <span v-if="!searching" class="text-muted">
-              {{ t('harvester.storage.parameters.nodeSelector.no-options', null, true) }}
-            </span>
-          </template>
-        </LabeledSelect>
+        />
       </div>
     </div>
     <KeyValue
