@@ -3,35 +3,23 @@ import KeyValue from '@shell/components/form/KeyValue';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import RadioGroup from '@components/Form/Radio/RadioGroup';
-import { SECRET, NAMESPACE, LONGHORN } from '@shell/config/types';
+
 import { _CREATE, _VIEW } from '@shell/config/query-params';
-import { CSI_SECRETS } from '@pkg/harvester/config/harvester-map';
+import { LONGHORN } from '@shell/config/types';
 import { clone } from '@shell/utils/object';
 import { uniq } from '@shell/utils/array';
-import { LONGHORN_VERSION_V1, LONGHORN_VERSION_V2 } from '@shell/models/persistentvolume';
+import { ENGINE_VERSION_V2 } from '../index.vue';
 
-// UI components for Longhorn storage class parameters
 const DEFAULT_PARAMETERS = [
   'numberOfReplicas',
   'staleReplicaTimeout',
   'diskSelector',
   'nodeSelector',
   'migratable',
-  'encrypted',
+  'engineVersion',
 ];
 
-const {
-  CSI_PROVISIONER_SECRET_NAME,
-  CSI_PROVISIONER_SECRET_NAMESPACE,
-  CSI_NODE_PUBLISH_SECRET_NAME,
-  CSI_NODE_PUBLISH_SECRET_NAMESPACE,
-  CSI_NODE_STAGE_SECRET_NAME,
-  CSI_NODE_STAGE_SECRET_NAMESPACE
-} = CSI_SECRETS;
-
 export default {
-  name: 'DriverLonghornIO',
-
   components: {
     KeyValue,
     LabeledSelect,
@@ -54,35 +42,21 @@ export default {
     },
   },
 
-  async fetch() {
-    const inStore = this.$store.getters['currentProduct'].inStore;
-
-    await this.$store.dispatch(`${ inStore }/findAll`, { type: NAMESPACE });
-
-    const allSecrets = await this.$store.dispatch(`${ inStore }/findAll`, { type: SECRET });
-
-    // only show non-system secret to user to select
-    this.secrets = allSecrets.filter(secret => secret.isSystem === false);
-  },
   data() {
-    const inStore = this.$store.getters['currentProduct'].inStore;
-    const v2DataEngine = this.$store.getters[`${ inStore }/byId`](LONGHORN.SETTINGS, LONGHORN_V2_DATA_ENGINE) || {};
-
-    const longhornVersion = v2DataEngine.value === 'true' ? LONGHORN_VERSION_V2 : LONGHORN_VERSION_V1;
-
     if (this.realMode === _CREATE) {
       this.$set(this.value, 'parameters', {
         numberOfReplicas:    '3',
         staleReplicaTimeout: '30',
         diskSelector:        null,
         nodeSelector:        null,
-        encrypted:           'false',
-        migratable:          'true',
+        migratable:          'false',
+        engineVersion:       ENGINE_VERSION_V2
       });
     }
 
-    return { secrets: [] };
+    return {};
   },
+
   computed: {
     longhornNodes() {
       const inStore = this.$store.getters['currentProduct'].inStore;
@@ -126,29 +100,11 @@ export default {
       }];
     },
 
-    secretOptions() {
-      return this.secrets.map(secret => secret.id);
-    },
-
-    volumeEncryptionOptions() {
-      return [{
-        label: this.t('generic.yes'),
-        value: 'true'
-      }, {
-        label: this.t('generic.no'),
-        value: 'false'
-      }];
-    },
-
     parameters: {
       get() {
         const parameters = clone(this.value?.parameters) || {};
 
-        DEFAULT_PARAMETERS.forEach((key) => {
-          delete parameters[key];
-        });
-
-        Object.values(CSI_SECRETS).forEach((key) => {
+        DEFAULT_PARAMETERS.map((key) => {
           delete parameters[key];
         });
 
@@ -157,46 +113,6 @@ export default {
 
       set(value) {
         Object.assign(this.value.parameters, value);
-      }
-    },
-
-    volumeEncryption: {
-      set(neu) {
-        this.$set(this.value, 'parameters', {
-          ...this.value.parameters,
-          encrypted: neu
-        });
-      },
-
-      get() {
-        return this.value?.parameters?.encrypted || 'false';
-      }
-    },
-
-    secret: {
-      get() {
-        const selectedNs = this.value.parameters[CSI_PROVISIONER_SECRET_NAMESPACE];
-        const selectedName = this.value.parameters[CSI_PROVISIONER_SECRET_NAME];
-
-        if (selectedNs && selectedName) {
-          return `${ selectedNs }/${ selectedName }`;
-        }
-
-        return '';
-      },
-
-      set(selectedSecret) {
-        const [namespace, name] = selectedSecret.split('/');
-
-        this.$set(this.value, 'parameters', {
-          ...this.value.parameters,
-          [CSI_PROVISIONER_SECRET_NAME]:       name,
-          [CSI_NODE_PUBLISH_SECRET_NAME]:      name,
-          [CSI_NODE_STAGE_SECRET_NAME]:        name,
-          [CSI_PROVISIONER_SECRET_NAMESPACE]:  namespace,
-          [CSI_NODE_PUBLISH_SECRET_NAMESPACE]: namespace,
-          [CSI_NODE_STAGE_SECRET_NAMESPACE]:   namespace
-        });
       }
     },
 
@@ -308,31 +224,15 @@ export default {
         </LabeledSelect>
       </div>
     </div>
-    <div class="row mt-20">
-      <RadioGroup
-        v-model="value.parameters.migratable"
-        name="layer3NetworkMode"
-        :label="t('harvester.storage.parameters.migratable.label')"
-        :mode="mode"
-        :options="migratableOptions"
-      />
-    </div>
-    <div class="row mt-20">
-      <RadioGroup
-        v-model="volumeEncryption"
-        name="volumeEncryption"
-        :label="t('harvester.storage.volumeEncryption')"
-        :mode="mode"
-        :options="volumeEncryptionOptions"
-      />
-    </div>
-    <div v-if="value.parameters.encrypted === 'true'" class="row mt-20">
+    <div class="row mt-10">
       <div class="col span-6">
-        <LabeledSelect
-          v-model="secret"
-          :label="t('harvester.storage.secret')"
-          :options="secretOptions"
+        <RadioGroup
+          v-model="value.parameters.migratable"
+          name="layer3NetworkMode"
+          :label="t('harvester.storage.parameters.migratable.label')"
           :mode="mode"
+          :options="migratableOptions"
+          :disabled="true"
         />
       </div>
     </div>

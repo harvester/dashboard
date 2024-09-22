@@ -29,11 +29,13 @@ import HarvesterDisk from './HarvesterDisk';
 import HarvesterKsmtuned from './HarvesterKsmtuned';
 import HarvesterSeeder from './HarvesterSeeder';
 import Tags from '../../components/DiskTags';
-import { LONGHORN_DRIVER, LONGHORN_VERSION_V1 } from '@shell/models/persistentvolume';
-import { LVM_DRIVER } from '@shell/models/storage.k8s.io.storageclass';
+import { LONGHORN_DRIVER, LONGHORN_VERSION_V1, LONGHORN_VERSION_V2 } from '@shell/models/persistentvolume';
+import { LVM_DRIVER } from '../../models/harvester/storage.k8s.io.storageclass';
 import isEqual from 'lodash/isEqual';
 
 export const LONGHORN_SYSTEM = 'longhorn-system';
+
+export const LONGHORN_V2_DATA_ENGINE = 'longhorn-system/v2-data-engine';
 
 export default {
   name:       'HarvesterEditNode',
@@ -65,10 +67,11 @@ export default {
     const inStore = this.$store.getters['currentProduct'].inStore;
 
     const hash = {
-      longhornNodes: this.$store.dispatch(`${ inStore }/findAll`, { type: LONGHORN.NODES }),
-      blockDevices:  this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.BLOCK_DEVICE }),
-      addons:        this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.ADD_ONS }),
-      secrets:       this.$store.dispatch(`${ inStore }/findAll`, { type: SECRET }),
+      longhornNodes:        this.$store.dispatch(`${ inStore }/findAll`, { type: LONGHORN.NODES }),
+      blockDevices:         this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.BLOCK_DEVICE }),
+      addons:               this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.ADD_ONS }),
+      secrets:              this.$store.dispatch(`${ inStore }/findAll`, { type: SECRET }),
+      longhornV2DataEngine: this.$store.dispatch(`${ inStore }/find`, { type: LONGHORN.SETTINGS, id: LONGHORN_V2_DATA_ENGINE }),
     };
 
     if (this.$store.getters[`${ inStore }/schemaFor`](HCI.INVENTORY)) {
@@ -97,7 +100,7 @@ export default {
           displayName:        d?.displayName,
           forceFormatted:     corrupted ? true : d?.spec?.fileSystem?.forceFormatted || false,
           provisioner:        d?.spec?.provisioner?.lvm ? LVM_DRIVER : LONGHORN_DRIVER,
-          provisionerVersion: d?.spec?.provisioner?.longhorn?.engineVersion || LONGHORN_VERSION_V1, // todo get default from system version
+          provisionerVersion: d?.spec?.provisioner?.longhorn?.engineVersion || LONGHORN_VERSION_V1,
           lvmVolumeGroup:     d?.spec?.provisioner?.lvm?.vgName,
         };
       });
@@ -162,6 +165,13 @@ export default {
       return out;
     },
 
+    longhornSystemVersion() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const v2DataEngine = this.$store.getters[`${ inStore }/byId`](LONGHORN.SETTINGS, LONGHORN_V2_DATA_ENGINE) || {};
+
+      return v2DataEngine.value === 'true' ? LONGHORN_VERSION_V2 : LONGHORN_VERSION_V1;
+    },
+
     longhornDisks() {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const longhornNode = this.$store.getters[`${ inStore }/byId`](LONGHORN.NODES, `${ LONGHORN_SYSTEM }/${ this.value.id }`);
@@ -193,7 +203,7 @@ export default {
           forceFormatted:     blockDevice?.spec?.fileSystem?.forceFormatted || false,
           tags:               diskSpec?.[key]?.tags || [],
           provisioner:        blockDevice?.spec?.provisioner?.lvm ? LVM_DRIVER : LONGHORN_DRIVER,
-          provisionerVersion: blockDevice?.spec?.provisioner?.longhorn?.engineVersion || LONGHORN_VERSION_V1, // todo get default from system version
+          provisionerVersion: blockDevice?.spec?.provisioner?.longhorn?.engineVersion || LONGHORN_VERSION_V1,
           lvmVolumeGroup:     blockDevice?.spec?.provisioner?.lvm?.vgName,
         };
       });
@@ -331,7 +341,7 @@ export default {
         displayName:        disk?.displayName,
         forceFormatted,
         provisioner:        LONGHORN_DRIVER,
-        provisionerVersion: LONGHORN_VERSION_V1, // todo get default from system version
+        provisionerVersion: LONGHORN_VERSION_V1,
         lvmVolumeGroup:     null,
       });
     },
@@ -370,6 +380,7 @@ export default {
             break;
           case LVM_DRIVER:
             blockDevice.spec.provisioner = { lvm: { vgName: d.lvmVolumeGroup } };
+            blockDevice.spec.provision = true;
             break;
           }
 

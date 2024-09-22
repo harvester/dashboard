@@ -88,14 +88,14 @@ export default {
     },
 
     provisioner() {
-      let labelKey = `harvester.storage.storageClass.longhorn.${ LONGHORN_VERSION_V1 }.label`;
+      let labelKey = `harvester.host.disk.storage.longhorn.${ LONGHORN_VERSION_V1 }.label`;
 
       if (this.value?.blockDevice?.spec?.provisioner.longhorn) {
-        labelKey = `harvester.storage.storageClass.longhorn.${ this.value.blockDevice.spec.provisioner.engineVersion }.label`;
+        labelKey = `harvester.host.disk.storage.longhorn.${ this.value.blockDevice.spec.provisioner.longhorn.engineVersion }.label`;
       }
 
       if (this.value?.blockDevice?.spec?.provisioner.lvm) {
-        labelKey = 'harvester.storage.storageClass.lvm.label';
+        labelKey = 'harvester.host.disk.storage.lvm.label';
       }
 
       return this.t(labelKey);

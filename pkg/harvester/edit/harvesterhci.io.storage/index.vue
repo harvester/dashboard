@@ -18,10 +18,13 @@ import { STORAGE_CLASS, LONGHORN } from '@shell/config/types';
 import { CSI_DRIVER } from '../../types';
 import { allHash } from '@shell/utils/promise';
 import { clone } from '@shell/utils/object';
-import { LONGHORN_DRIVER, LONGHORN_VERSION_V1, LONGHORN_VERSION_V2 } from '@shell/models/persistentvolume';
-import { LVM_DRIVER } from '@shell/models/storage.k8s.io.storageclass';
+import { LONGHORN_DRIVER } from '@shell/models/persistentvolume';
+import { LVM_DRIVER } from '../../models/harvester/storage.k8s.io.storageclass';
 
 const LONGHORN_V2_DATA_ENGINE = 'longhorn-system/v2-data-engine';
+
+export const ENGINE_VERSION_V1 = 'v1';
+export const ENGINE_VERSION_V2 = 'v2';
 
 export const LVM_TOPOLOGY_LABEL = 'topology.lvm.csi/node';
 
@@ -78,17 +81,28 @@ export default {
 
     this.$set(this.value, 'parameters', this.value.parameters || {});
     this.$set(this.value, 'provisioner', this.value.provisioner || LONGHORN_DRIVER);
+
+    if (this.value.provisioner === LONGHORN_DRIVER) {
+      this.$set(this.value.parameters, 'engineVersion', this.value.longhornVersion);
+    }
+
     this.$set(this.value, 'allowVolumeExpansion', this.value.allowVolumeExpansion || allowVolumeExpansionOptions[0].value);
     this.$set(this.value, 'reclaimPolicy', this.value.reclaimPolicy || reclaimPolicyOptions[0].value);
     this.$set(this.value, 'volumeBindingMode', this.value.volumeBindingMode || volumeBindingModeOptions[0].value);
+
+    let provisioner = `${ this.value.provisioner || LONGHORN_DRIVER }`;
+
+    if (provisioner === LONGHORN_DRIVER) {
+      provisioner = `${ provisioner }_${ this.value.longhornVersion }`;
+    }
 
     return {
       reclaimPolicyOptions,
       allowVolumeExpansionOptions,
       volumeBindingModeOptions,
       mountOptions:    [],
-      provisioner:     LONGHORN_DRIVER,
       STORAGE_CLASS,
+      provisioner,
       allowedTopologies,
       defaultAddValue: {
         key:    '',
@@ -119,19 +133,37 @@ export default {
       return this.isCreate ? _CREATE : _VIEW;
     },
 
-    provisionerWatch() {
-      return this.value.provisioner;
-    },
-
     provisioners() {
-      const csiDrivers = this.$store.getters[`${ this.inStore }/all`](CSI_DRIVER) || [];
+      const out = [];
 
-      return csiDrivers.map((provisioner) => {
-        return {
-          label: this.provisionersLabelKeys[provisioner.name],
-          value: provisioner.name,
-        };
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const csiDrivers = this.$store.getters[`${ inStore }/all`](CSI_DRIVER) || [];
+
+      csiDrivers.forEach(({ name }) => {
+        switch (name) {
+        case LONGHORN_DRIVER:
+          out.push({
+            label: `harvester.storage.storageClass.longhorn.${ ENGINE_VERSION_V1 }.label`,
+            value: `${ name }_${ ENGINE_VERSION_V1 }`,
+          });
+
+          if (this.longhornSystemVersion === ENGINE_VERSION_V2 || this.value.longhornVersion === ENGINE_VERSION_V2) {
+            out.push({
+              label: `harvester.storage.storageClass.longhorn.${ ENGINE_VERSION_V2 }.label`,
+              value: `${ name }_${ ENGINE_VERSION_V2 }`,
+            });
+          }
+          break;
+        case LVM_DRIVER:
+          out.push({
+            label: 'harvester.storage.storageClass.lvm.label',
+            value: name,
+          });
+          break;
+        }
       });
+
+      return out;
     },
 
     schema() {
@@ -140,38 +172,21 @@ export default {
       return this.$store.getters[`${ inStore }/schemaFor`](STORAGE_CLASS);
     },
 
-    provisionersLabelKeys() {
-      return {
-        [LONGHORN_DRIVER]: `harvester.storage.storageClass.longhorn.${ this.longhornVersion }.label`,
-        [LVM_DRIVER]:      'harvester.storage.storageClass.lvm.label'
-      };
-    },
-
-    longhornVersion() {
+    longhornSystemVersion() {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const v2DataEngine = this.$store.getters[`${ inStore }/byId`](LONGHORN.SETTINGS, LONGHORN_V2_DATA_ENGINE) || {};
 
-      return v2DataEngine.value === 'true' ? LONGHORN_VERSION_V2 : LONGHORN_VERSION_V1;
-    },
-
-    isLonghornV2() {
-      return this.value.provisioner === LONGHORN_DRIVER && this.longhornVersion === LONGHORN_VERSION_V2;
-    },
-
-    isLvm() {
-      return this.value.provisioner === LVM_DRIVER;
+      return v2DataEngine.value === 'true' ? ENGINE_VERSION_V2 : ENGINE_VERSION_V1;
     },
   },
 
   watch: {
-    provisionerWatch() {
-      const parameters = {};
+    provisioner(neu) {
+      const [provisioner, engineVersion] = neu?.split('_');
 
-      if (this.isLonghornV2) {
-        parameters.migratable = false;
-      }
+      let parameters = {};
 
-      if (!this.isLvm) {
+      if (provisioner === LVM_DRIVER) {
         const matchLabelExpressions = (this.value.allowedTopologies?.[0]?.matchLabelExpressions || []).filter(t => t.key !== LVM_TOPOLOGY_LABEL);
 
         if (matchLabelExpressions.length > 0) {
@@ -181,11 +196,18 @@ export default {
         }
       }
 
+      this.$set(this.value, 'provisioner', provisioner);
+
+      if (provisioner === LONGHORN_DRIVER) {
+        parameters = { engineVersion };
+      }
+
+      this.$set(this.value, 'allowVolumeExpansion', this.value.provisioner === LONGHORN_DRIVER);
       this.$set(this.value, 'parameters', parameters);
     }
   },
 
-  created() {
+  created(neu) {
     this.registerBeforeHook(this.willSave, 'willSave');
   },
 
@@ -196,11 +218,6 @@ export default {
       } catch {
         return require(`./provisioners/custom`).default;
       }
-    },
-
-    updateProvisioner(provisioner) {
-      this.$set(this.value, 'provisioner', provisioner);
-      this.$set(this.value, 'allowVolumeExpansion', provisioner === LONGHORN_DRIVER);
     },
 
     willSave() {
@@ -259,7 +276,7 @@ export default {
       :register-before-hook="registerBeforeHook"
     />
     <LabeledSelect
-      :value="value.provisioner"
+      v-model="provisioner"
       label="Provisioner"
       :options="provisioners"
       :localized-label="true"
@@ -267,13 +284,12 @@ export default {
       :searchable="true"
       :taggable="true"
       class="mb-20"
-      @input="updateProvisioner($event)"
     />
     <Tabbed :side-tabs="true">
       <Tab name="parameters" :label="t('storageClass.parameters.label')" :weight="2">
         <component
-          :is="getComponent(value.provisioner)"
-          :key="value.provisioner"
+          :is="getComponent(provisioner)"
+          :key="provisioner"
           :value="value"
           :mode="modeOverride"
           :real-mode="realMode"

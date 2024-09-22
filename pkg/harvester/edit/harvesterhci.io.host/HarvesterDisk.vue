@@ -10,11 +10,16 @@ import { RadioGroup, RadioButton } from '@components/Form/Radio';
 import HarvesterDisk from '../../mixins/harvester-disk';
 import Tags from '../../components/DiskTags';
 import { HCI } from '../../types';
+import { HCI as HCI_LABELS_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 import { LONGHORN_SYSTEM } from './index';
 import { LONGHORN_DRIVER, LONGHORN_VERSION_V1, LONGHORN_VERSION_V2 } from '@shell/models/persistentvolume';
-import { LVM_DRIVER } from '@shell/models/storage.k8s.io.storageclass';
+import { LVM_DRIVER } from '../../models/harvester/storage.k8s.io.storageclass';
+import ModalWithCard from '@shell/components/ModalWithCard';
+import { randomStr } from '@shell/utils/string';
+import { LONGHORN_V2_DATA_ENGINE } from './index.vue';
+import { _EDIT } from '@shell/config/query-params';
 
-const LONGHORN_V2_DATA_ENGINE = 'longhorn-system/v2-data-engine';
+const _NEW = '_NEW';
 
 export default {
   components: {
@@ -25,6 +30,7 @@ export default {
     Banner,
     RadioGroup,
     RadioButton,
+    ModalWithCard,
     Tags,
   },
 
@@ -59,30 +65,72 @@ export default {
     const inStore = this.$store.getters['currentProduct'].inStore;
 
     await allHash({
-      csiDrivers:           this.$store.dispatch(`${ inStore }/findAll`, { type: CSI_DRIVER }),
-      longhornV2DataEngine: this.$store.dispatch(`${ inStore }/find`, { type: LONGHORN.SETTINGS, id: LONGHORN_V2_DATA_ENGINE }),
-      lvmVolumeGroups:      this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.LVM_VOLUME_GROUP }),
+      csiDrivers:      this.$store.dispatch(`${ inStore }/findAll`, { type: CSI_DRIVER }),
+      lvmVolumeGroups: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.LVM_VOLUME_GROUP }),
     });
+  },
+
+  data() {
+    let provisioner = `${ this.value.provisioner || LONGHORN_DRIVER }`;
+
+    if (provisioner === LONGHORN_DRIVER) {
+      provisioner = `${ provisioner }_${ this.value.provisionerVersion || LONGHORN_VERSION_V1 }`;
+    }
+
+    return {
+      provisioner,
+      volumeGroupDialog: null,
+      randomStr:         randomStr(10).toLowerCase(),
+    };
   },
 
   computed: {
     provisioners() {
+      const out = [];
+
       const inStore = this.$store.getters['currentProduct'].inStore;
       const csiDrivers = this.$store.getters[`${ inStore }/all`](CSI_DRIVER) || [];
 
-      return csiDrivers.map((provisioner) => {
-        return {
-          label: this.provisionersLabelKeys[provisioner.name],
-          value: provisioner.name,
-        };
+      csiDrivers.forEach(({ name }) => {
+        switch (name) {
+        case LONGHORN_DRIVER:
+          out.push({
+            label: `harvester.host.disk.storage.longhorn.${ LONGHORN_VERSION_V1 }.label`,
+            value: `${ name }_${ LONGHORN_VERSION_V1 }`,
+          });
+
+          if (this.longhornSystemVersion === LONGHORN_VERSION_V2 || this.value.provisionerVersion === LONGHORN_VERSION_V2) {
+            out.push({
+              label:    `harvester.host.disk.storage.longhorn.${ LONGHORN_VERSION_V2 }.label`,
+              value:    `${ name }_${ LONGHORN_VERSION_V2 }`,
+              disabled: this.forceLonghornV1
+            });
+          }
+          break;
+        case LVM_DRIVER:
+          out.push({
+            label: 'harvester.host.disk.storage.lvm.label',
+            value: name,
+          });
+          break;
+        }
       });
+
+      return out;
     },
 
     lvmVolumeGroups() {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const lvmVolumeGroups = this.$store.getters[`${ inStore }/all`](HCI.LVM_VOLUME_GROUP) || [];
 
-      return lvmVolumeGroups.filter(group => group.spec.nodeName === this.node.name).map(g => g.spec.vgName);
+      const out = lvmVolumeGroups.filter(group => group.spec.nodeName === this.node.name).map(g => g.spec.vgName);
+
+      out.unshift({
+        label: this.t('harvester.host.disk.lvmVolumeGroup.create'),
+        value: _NEW,
+      });
+
+      return out;
     },
 
     targetDisk() {
@@ -130,7 +178,7 @@ export default {
     },
 
     isProvisioned() {
-      return this.blockDevice?.spec.fileSystem.provisioned;
+      return this.blockDevice?.spec?.fileSystem?.provisioned;
     },
 
     forceFormattedDisabled() {
@@ -197,30 +245,82 @@ export default {
       return this.blockDevice.isFormatting;
     },
 
-    longhornVersion() {
+    longhornSystemVersion() {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const v2DataEngine = this.$store.getters[`${ inStore }/byId`](LONGHORN.SETTINGS, LONGHORN_V2_DATA_ENGINE) || {};
 
       return v2DataEngine.value === 'true' ? LONGHORN_VERSION_V2 : LONGHORN_VERSION_V1;
     },
 
+    forceLonghornV1() {
+      return this.node?.labels[HCI_LABELS_ANNOTATIONS.DISABLE_LONGHORN_V2_ENGINE] === 'true';
+    },
+
     isLvm() {
       return this.value.provisioner === LVM_DRIVER;
     },
 
-    isLonghornV1() {
-      return this.value.provisioner === LONGHORN_DRIVER && this.longhornVersion === LONGHORN_VERSION_V1;
+    isLonghorn() {
+      return this.value.provisioner === LONGHORN_DRIVER;
     },
 
-    provisionersLabelKeys() {
-      return {
-        [LONGHORN_DRIVER]: `harvester.storage.storageClass.longhorn.${ this.longhornVersion }.label`,
-        [LVM_DRIVER]:      'harvester.storage.storageClass.lvm.label'
-      };
+    isLonghornV1() {
+      return this.isLonghorn && (this.longhornSystemVersion === LONGHORN_VERSION_V1 || this.forceLonghornV1);
     },
+
+    provisionerTooltip() {
+      if (
+        this.mode === _EDIT &&
+        this.isLonghorn &&
+        this.longhornSystemVersion === LONGHORN_VERSION_V2 &&
+        this.forceLonghornV1
+      ) {
+        return this.t('harvester.storage.storageClass.longhorn.versionTooltip');
+      }
+
+      return null;
+    }
+  },
+
+  watch: {
+    provisioner(value) {
+      this.randomStr = randomStr(10).toLowerCase();
+
+      const [provisioner, provisionerVersion] = value?.split('_');
+
+      this.value.provisioner = provisioner;
+
+      if (provisioner === LONGHORN_DRIVER) {
+        this.value.provisionerVersion = provisionerVersion || LONGHORN_VERSION_V1;
+      } else {
+        delete this.value.provisionerVersion;
+      }
+    },
+
+    'value.lvmVolumeGroup'(neu) {
+      if (neu === _NEW) {
+        this.value.lvmVolumeGroup = null;
+        this.showCreateVolumeGroup();
+      }
+    }
   },
 
   methods: {
+    showCreateVolumeGroup() {
+      this.volumeGroupDialog = null;
+      this.$modal.show(this.randomStr);
+    },
+
+    hideCreateVolumeGroup() {
+      this.$modal.hide(this.randomStr);
+    },
+
+    saveCreateVolumeGroup(buttonCb) {
+      buttonCb(true);
+      this.value.lvmVolumeGroup = this.volumeGroupDialog;
+      this.hideCreateVolumeGroup();
+    },
+
     update() {
       this.$emit('input', this.value);
     },
@@ -327,13 +427,14 @@ export default {
       <div class="col span-6">
         <LabeledSelect
           v-if="value.isNew"
-          v-model="value.provisioner"
+          v-model="provisioner"
           :mode="mode"
           label-key="harvester.host.disk.provisioner"
           :localized-label="true"
           :searchable="true"
           :options="provisioners"
           :disabled="isProvisioned"
+          :tooltip="provisionerTooltip"
           @keydown.native.enter.prevent="()=>{}"
         />
       </div>
@@ -363,16 +464,38 @@ export default {
         <LabeledSelect
           v-model="value.lvmVolumeGroup"
           :mode="mode"
-          label-key="harvester.host.disk.lvmVolumeGroup"
+          label-key="harvester.host.disk.lvmVolumeGroup.label"
           :localized-label="true"
-          :searchable="true"
-          :options="lvmVolumeGroups"
+          :searchable="false"
+          :taggable="true"
+          :multiple="false"
           :required="true"
           :disabled="isProvisioned"
+          :options="lvmVolumeGroups"
           @keydown.native.enter.prevent="()=>{}"
         />
       </div>
     </div>
+    <ModalWithCard
+      :ref="randomStr"
+      :name="randomStr"
+      width="30%"
+      @finish="saveCreateVolumeGroup"
+    >
+      <template #title>
+        {{ t('harvester.host.disk.lvmVolumeGroup.label') }}
+      </template>
+
+      <template #content>
+        <LabeledInput
+          v-model="volumeGroupDialog"
+          :label="t('generic.name')"
+          class="mb-20"
+          required
+          @keydown.native.enter.prevent="()=>{}"
+        />
+      </template>
+    </ModalWithCard>
   </div>
 </template>
 

@@ -468,7 +468,17 @@ harvester:
       storageMaximum:
         label: Storage Maximum
       provisioner: Provisioner
-      lvmVolumeGroup: Volume Group
+      lvmVolumeGroup:
+        label: Volume Group
+        create: Create New...
+      storage:
+        longhorn:
+          LonghornV1:
+            label: Longhorn V1 (CSI)
+          LonghornV2:
+            label: Longhorn V2 (CSI)
+        lvm:
+          label: LVM
     tags:
       label: Host Tags
       addLabel: Add Host Tag
@@ -1140,10 +1150,11 @@ harvester:
     storageClass:
       label: Storage Class
       longhorn:
-        LonghornV1:
-          label: LonghornV1 (CSI)
-        LonghornV2:
-          label: LonghornV2 (CSI)
+        v1:
+          label: Longhorn V1 (CSI)
+        v2:
+          label: Longhorn V2 (CSI)
+        versionTooltip: Longhorn V2 is disabled for this node.
       lvm:
         label: LVM
     title: Storage Classes
@@ -1167,6 +1178,7 @@ harvester:
         label: Volume Group Type
       lvmVolumeGroup:
         label: Volume Group Name
+        no-options: No available Volume Grups, please add in the `Host > Storage` page
       node:
         label: Node
     allowedTopologies:
