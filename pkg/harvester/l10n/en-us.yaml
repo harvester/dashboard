@@ -1360,6 +1360,7 @@ harvester:
     claimError: Error enabling passthrough on {name}
     unclaimError: Error disabling passthrough on {name}
     cantUnclaim: You cannot disable passthrough on a device claimed by another user.
+    enablePassthroughWarning: 'Please re-enable the USB device if the device path changes in the following situations:<br/>&nbsp1) Re-plugging the USB device.<br/>&nbsp2) Rebooting the node.<br/><br/>An incorrect device path may cause passthrough to fail.'
 
   harvesterVlanConfigMigrateDialog:
     targetClusterNetwork:

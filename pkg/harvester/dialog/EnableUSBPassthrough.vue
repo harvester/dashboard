@@ -89,6 +89,10 @@ export default {
       class="text-default-text"
     />
 
+    <template #body>
+      <t k="harvester.usb.enablePassthroughWarning" :raw="true" />
+    </template>
+
     <div slot="actions" class="actions">
       <div class="buttons">
         <button class="btn role-secondary mr-10" @click="close">
