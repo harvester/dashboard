@@ -149,9 +149,15 @@ export default {
           <div class="text-label">
             {{ t('harvester.image.encryptionSecret') }}
           </div>
-          <n-link v-if="secretLink" :to="secretLink">
+          <n-link v-if="encryptionSecret && secretLink" :to="secretLink">
             {{ encryptionSecret }}
           </n-link>
+          <span v-else-if="encryptionSecret">
+            {{ encryptionSecret }}
+          </span>
+          <span v-else class="text-muted">
+            &mdash;
+          </span>
         </div>
       </div>
 
