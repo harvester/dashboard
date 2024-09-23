@@ -51,6 +51,7 @@ export const OS = [{
   value: 'oracle'
 }, {
   label: 'Red Hat',
+  match: ['redhat', 'rhel'],
   value: 'redhat'
 }, {
   label: 'openSUSE',
