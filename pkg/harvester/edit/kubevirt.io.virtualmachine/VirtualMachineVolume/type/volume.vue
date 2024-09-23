@@ -65,9 +65,16 @@ export default {
       return ucFirst(String(this.value.isEncrypted));
     },
 
+    readyToUse() {
+      const val = String(this.value.volumeBackups?.readyToUse || false);
+
+      return ucFirst(val);
+    },
+
     isView() {
       return this.mode === _VIEW;
     },
+
     pvcsResource() {
       const allPVCs = this.$store.getters['harvester/all'](PVC) || [];
 
@@ -243,16 +250,13 @@ export default {
           :value="encryptionValue"
         />
       </div>
-      <div
-        v-if="value.volumeBackups"
-        class="col span-6"
-      >
-        <InputOrDisplay :name="t('harvester.virtualMachine.volume.readyToUse')" :value="value.volumeBackups.readyToUse" :mode="mode">
-          <LabelValue
-            :name="t('harvester.virtualMachine.volume.readyToUse')"
-            :value="value.volumeBackups.readyToUse"
-          />
-        </InputOrDisplay>
+    </div>
+    <div class="row mb-20">
+      <div v-if="value.volumeBackups && isView" class="col span-3">
+        <LabelValue
+          :name="t('harvester.virtualMachine.volume.readyToUse')"
+          :value="readyToUse"
+        />
       </div>
     </div>
     <Banner

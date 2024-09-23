@@ -479,7 +479,8 @@ export function init($plugin, store) {
       name:   `${ PRODUCT_NAME }-c-cluster-resource`,
       params: { resource: HCI.SCHEDULE_VM_BACKUP }
     },
-    exact: false
+    exact:      false,
+    ifHaveType: HCI.SCHEDULE_VM_BACKUP,
   });
 
   configureType(HCI.BACKUP, { showListMasthead: false, showConfigView: false });

@@ -11,7 +11,6 @@ import { HCI } from '../../../../types';
 import { formatSi, parseSi } from '@shell/utils/units';
 import { VOLUME_TYPE, InterfaceOption } from '../../../../config/harvester-map';
 import { _VIEW } from '@shell/config/query-params';
-
 import { ucFirst } from '@shell/utils/string';
 
 export default {
@@ -99,6 +98,12 @@ export default {
       const image = this.imagesOption.find(I => I.value === this.value.image);
 
       return image ? image.label : '-';
+    },
+
+    readyToUse() {
+      const val = String(this.value.volumeBackups?.readyToUse || false);
+
+      return ucFirst(val);
     },
 
     pvcsResource() {
@@ -308,16 +313,13 @@ export default {
           :value="encryptionValue"
         />
       </div>
-      <div
-        v-if="value.volumeBackups"
-        class="col span-3"
-      >
-        <InputOrDisplay :name="t('harvester.virtualMachine.volume.readyToUse')" :value="value.volumeBackups.readyToUse" :mode="mode">
-          <LabelValue
-            :name="t('harvester.virtualMachine.volume.readyToUse')"
-            :value="value.volumeBackups.readyToUse"
-          />
-        </InputOrDisplay>
+    </div>
+    <div class="row mb-20">
+      <div v-if="value.volumeBackups && isView" class="col span-3">
+        <LabelValue
+          :name="t('harvester.virtualMachine.volume.readyToUse')"
+          :value="readyToUse"
+        />
       </div>
     </div>
     <Banner
