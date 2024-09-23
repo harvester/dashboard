@@ -15,7 +15,7 @@ export default class HciBlockDevice extends HarvesterResource {
   }
 
   get isChildPartProvisioned() {
-    const parts = this.childParts.filter(p => p.spec?.fileSystem?.provisioned) || [];
+    const parts = this.childParts.filter(p => p.isProvisioned) || [];
 
     return parts.length > 0;
   }
@@ -58,5 +58,10 @@ export default class HciBlockDevice extends HarvesterResource {
     const formatting = conditions.find(c => c.type === 'Formatting') || {};
 
     return formatting.status === 'True';
+  }
+
+  get isProvisioned() {
+    // spec.fileSystem.provisioned is deprecated
+    return this.spec?.fileSystem?.provisioned || this.spec?.provision;
   }
 }

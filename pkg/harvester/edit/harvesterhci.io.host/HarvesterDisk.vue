@@ -178,7 +178,7 @@ export default {
     },
 
     isProvisioned() {
-      return this.blockDevice?.spec?.fileSystem?.provisioned;
+      return this.blockDevice?.isProvisioned;
     },
 
     forceFormattedDisabled() {
