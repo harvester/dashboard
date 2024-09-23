@@ -554,8 +554,8 @@ harvester:
       saveVolume: Update Volume
       encryption: Encryption
       lockTooltip:
-        all: All volumes are encrypted
-        partial: Partial volumes are encrypted
+        all: All volumes are encrypted.
+        partial: Some volumes are encrypted.
       title:
         vmImage: Image Volume
         existingVolume: Existing Volume
