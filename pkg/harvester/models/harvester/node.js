@@ -489,7 +489,7 @@ export default class HciNode extends HarvesterResource {
   get unProvisionedDisks() {
     const blockDevices = this.blockDevices || [];
 
-    return blockDevices.filter(d => d?.spec?.fileSystem?.provisioned && d?.status?.provisionPhase !== 'Provisioned');
+    return blockDevices.filter(d => d?.isProvisioned && d?.status?.provisionPhase !== 'Provisioned');
   }
 
   get diskStatusCount() {

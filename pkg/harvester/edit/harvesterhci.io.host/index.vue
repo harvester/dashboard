@@ -82,11 +82,10 @@ export default {
 
     const blockDevices = this.$store.getters[`${ inStore }/all`](HCI.BLOCK_DEVICE);
     const provisionedBlockDevices = blockDevices.filter((d) => {
-      const provisioned = d?.spec?.fileSystem?.provisioned;
       const isCurrentNode = d?.spec?.nodeName === this.value.id;
       const isLonghornMounted = findBy(this.longhornDisks, 'name', d.metadata.name);
 
-      return provisioned && isCurrentNode && !isLonghornMounted;
+      return d?.isProvisioned && isCurrentNode && !isLonghornMounted;
     })
       .map((d) => {
         const corrupted = d?.status?.deviceStatus?.fileSystem?.corrupted;
@@ -356,10 +355,10 @@ export default {
       } else if (addDisks.length !== 0 && removeDisks.length === 0) {
         const updatedDisks = addDisks.filter((d) => {
           const blockDevice = this.$store.getters[`${ inStore }/byId`](HCI.BLOCK_DEVICE, `${ LONGHORN_SYSTEM }/${ d.name }`);
-          const { provisioned, forceFormatted } = blockDevice.spec.fileSystem;
+          const { forceFormatted } = blockDevice.spec.fileSystem;
           const { provisioner } = blockDevice.spec;
 
-          return !(provisioned && forceFormatted === d.forceFormatted && isEqual(provisioner, d.provisioner));
+          return !(blockDevice.isProvisioned && forceFormatted === d.forceFormatted && isEqual(provisioner, d.provisioner));
         });
 
         if (updatedDisks.length === 0) {
@@ -371,7 +370,7 @@ export default {
         await Promise.all(addDisks.map((d) => {
           const blockDevice = this.$store.getters[`${ inStore }/byId`](HCI.BLOCK_DEVICE, `${ LONGHORN_SYSTEM }/${ d.name }`);
 
-          blockDevice.spec.fileSystem.provisioned = true;
+          blockDevice.spec.provision = true;
           blockDevice.spec.fileSystem.forceFormatted = d.forceFormatted;
 
           switch (d.provisioner) {
@@ -380,7 +379,6 @@ export default {
             break;
           case LVM_DRIVER:
             blockDevice.spec.provisioner = { lvm: { vgName: d.lvmVolumeGroup } };
-            blockDevice.spec.provision = true;
             break;
           }
 
@@ -390,7 +388,7 @@ export default {
         await Promise.all(removeDisks.map((d) => {
           const blockDevice = this.$store.getters[`${ inStore }/byId`](HCI.BLOCK_DEVICE, `${ LONGHORN_SYSTEM }/${ d.name }`);
 
-          blockDevice.spec.fileSystem.provisioned = false;
+          blockDevice.spec.provision = false;
 
           return blockDevice.save();
         }));
@@ -443,7 +441,7 @@ export default {
           if ((!findBy(this.disks || [], 'name', d.metadata.name) &&
                 d?.spec?.nodeName === this.value.id &&
                 (!addedToNodeCondition || addedToNodeCondition?.status === 'False') &&
-                !d.spec?.fileSystem?.provisioned &&
+                !d?.isProvisioned &&
                 !isAdded) ||
                 isRemoved
           ) {
