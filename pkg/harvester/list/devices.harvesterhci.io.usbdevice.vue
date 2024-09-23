@@ -1,6 +1,5 @@
 <script>
 import { HCI } from '../types';
-import { STATE, SIMPLE_NAME } from '@shell/config/table-headers';
 import { allHash } from '@shell/utils/promise';
 import Banner from '@components/Banner/Banner.vue';
 import Loading from '@shell/components/Loading';
@@ -42,10 +41,6 @@ export default {
       hasPCIAddon:    false,
       schema:         null,
       toPciAddon:     `${ HCI.ADD_ONS }/harvester-system/${ ADD_ONS.PCI_DEVICE_CONTROLLER }?mode=edit`,
-      headers:        [
-        { ...STATE },
-        SIMPLE_NAME,
-      ],
     };
   },
 

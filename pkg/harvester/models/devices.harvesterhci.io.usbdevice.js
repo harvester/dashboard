@@ -36,14 +36,16 @@ export default class USBDevice extends SteveModel {
         icon:       'icon icon-fw icon-dot',
         label:      'Enable Passthrough',
         bulkable:   true,
-        bulkAction: 'enablePassthroughBulk'
+        bulkAction: 'enablePassthroughBulk',
+        weight:     1
       },
       {
         action:   'disablePassthrough',
         enabled:  this.status.enabled,
         icon:     'icon icon-fw icon-dot-open',
         label:    'Disable Passthrough',
-        bulkable: true
+        bulkable: true,
+        weight:   0
       },
     );
 
