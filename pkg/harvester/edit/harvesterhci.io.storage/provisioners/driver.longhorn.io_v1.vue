@@ -10,12 +10,14 @@ import { clone } from '@shell/utils/object';
 import { uniq } from '@shell/utils/array';
 import { ENGINE_VERSION_V1 } from '../index.vue';
 
+// UI components for Longhorn storage class parameters
 const DEFAULT_PARAMETERS = [
   'numberOfReplicas',
   'staleReplicaTimeout',
   'diskSelector',
   'nodeSelector',
   'migratable',
+  'encrypted',
   'engineVersion',
 ];
 
@@ -29,7 +31,7 @@ const {
 } = CSI_SECRETS;
 
 export default {
-  name: 'DriverLonghornIO',
+  name: 'DriverLonghornIOV1',
 
   components: {
     KeyValue,
@@ -70,12 +72,13 @@ export default {
         staleReplicaTimeout: '30',
         diskSelector:        null,
         nodeSelector:        null,
+        encrypted:           'false',
         migratable:          'true',
         engineVersion:       ENGINE_VERSION_V1
       });
     }
 
-    return {};
+    return { secrets: [] };
   },
   computed: {
     longhornNodes() {
@@ -327,7 +330,6 @@ export default {
           :label="t('harvester.storage.secret')"
           :options="secretOptions"
           :mode="mode"
-          :options="migratableOptions"
         />
       </div>
     </div>
