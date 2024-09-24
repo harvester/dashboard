@@ -74,7 +74,8 @@ export default {
       return nodes.filter((n) => {
         const isNotSelfNode = !!this.availableNodes.includes(n.id);
         const isNotWitnessNode = n.isEtcd !== 'true'; // do not allow to migrate to self node and witness node
-        const matchingCpuManagerConfig = n.isCPUManagerEnabled; // If cpu-pinning is enabled, filter-out non-enabled CPU manager nodes.
+        const isCpuPinning = this.actionResource?.spec?.template?.spec?.domain?.cpu?.dedicatedCpuPlacement;
+        const matchingCpuManagerConfig = !isCpuPinning || n.isCPUManagerEnabled; // If cpu-pinning is enabled, filter-out non-enabled CPU manager nodes.
 
         return isNotSelfNode && isNotWitnessNode && matchingCpuManagerConfig;
       }).map((n) => {
