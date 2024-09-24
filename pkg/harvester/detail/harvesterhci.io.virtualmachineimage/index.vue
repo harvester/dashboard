@@ -2,7 +2,8 @@
 import CopyToClipboardText from '@shell/components/CopyToClipboardText';
 import LabelValue from '@shell/components/LabelValue';
 import { DESCRIPTION } from '@shell/config/labels-annotations';
-import { HCI } from '@pkg/harvester/config/labels-annotations';
+import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
+import { HCI } from '../../types';
 import Tabbed from '@shell/components/Tabbed';
 import Tab from '@shell/components/Tabbed/Tab';
 import { findBy } from '@shell/utils/array';
@@ -31,10 +32,14 @@ export default {
     const inStore = this.$store.getters['currentProduct'].inStore;
 
     this.secrets = await this.$store.dispatch(`${ inStore }/findAll`, { type: SECRET });
+    this.images = await this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.IMAGE });
   },
 
   data() {
-    return { secrets: [] };
+    return {
+      secrets: [],
+      images:  []
+    };
   },
 
   computed: {
@@ -64,6 +69,34 @@ export default {
       return this.value?.spec?.sourceType === 'upload';
     },
 
+    sourceImage() {
+      const { sourceImageName, sourceImageNamespace } = this.value?.spec?.securityParameters || {};
+
+      if (sourceImageNamespace && sourceImageName) {
+        const imageId = `${ sourceImageNamespace }/${ sourceImageName }`;
+
+        return this.images.find(image => image.id === imageId);
+      }
+
+      return null;
+    },
+
+    sourceImageLink() {
+      return this.sourceImage?.detailLocation;
+    },
+
+    sourceImageId() {
+      if (this.sourceImage) {
+        return this.sourceImage.displayNameWithNamespace;
+      }
+
+      return '';
+    },
+
+    isEncryptedOrDecrypted() {
+      return ['encrypt', 'decrypt'].includes(this.value?.spec?.securityParameters?.cryptoOperation);
+    },
+
     encryptionSecret() {
       if (!this.value.isEncrypted) {
         return '-';
@@ -80,7 +113,7 @@ export default {
     },
 
     imageName() {
-      return this.value?.metadata?.annotations?.[HCI.IMAGE_NAME] || '-';
+      return this.value?.metadata?.annotations?.[HCI_ANNOTATIONS.IMAGE_NAME] || '-';
     },
   }
 };
@@ -144,7 +177,7 @@ export default {
         </div>
       </div>
 
-      <div v-if="value.isEncrypted" class="row">
+      <div v-if="value.isEncrypted" class="row mb-20">
         <div class="col span-12">
           <div class="text-label">
             {{ t('harvester.image.encryptionSecret') }}
@@ -154,6 +187,23 @@ export default {
           </n-link>
           <span v-else-if="encryptionSecret">
             {{ encryptionSecret }}
+          </span>
+          <span v-else class="text-muted">
+            &mdash;
+          </span>
+        </div>
+      </div>
+
+      <div v-if="isEncryptedOrDecrypted" class="row mb-20">
+        <div class="col span-12">
+          <div class="text-label">
+            {{ t('harvester.image.sourceImage') }}
+          </div>
+          <n-link v-if="sourceImageId && sourceImageLink" :to="sourceImageLink">
+            {{ sourceImageId }}
+          </n-link>
+          <span v-else-if="sourceImageId">
+            {{ sourceImageId }}
           </span>
           <span v-else class="text-muted">
             &mdash;
