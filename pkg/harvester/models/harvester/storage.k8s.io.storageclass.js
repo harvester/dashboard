@@ -3,7 +3,7 @@ import { HCI } from '../../types';
 import StorageClass from '@shell/models/storage.k8s.io.storageclass';
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../../config/harvester';
 import { LONGHORN_DRIVER } from '@shell/models/persistentvolume';
-import { ENGINE_VERSION_V1 } from '../../edit/harvesterhci.io.storage/index.vue';
+import { DATA_ENGINE_V1 } from '../../edit/harvesterhci.io.storage/index.vue';
 
 export const LVM_DRIVER = 'lvm.driver.harvesterhci.io';
 
@@ -38,7 +38,7 @@ export default class HciStorageClass extends StorageClass {
 
   get longhornVersion() {
     if (this.provisioner === LONGHORN_DRIVER) {
-      return (this.parameters || {}).engineVersion || ENGINE_VERSION_V1;
+      return (this.parameters || {}).dataEngine || DATA_ENGINE_V1;
     }
 
     return null;

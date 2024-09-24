@@ -8,7 +8,7 @@ import { _CREATE, _VIEW } from '@shell/config/query-params';
 import { CSI_SECRETS } from '@pkg/harvester/config/harvester-map';
 import { clone } from '@shell/utils/object';
 import { uniq } from '@shell/utils/array';
-import { ENGINE_VERSION_V1 } from '../index.vue';
+import { DATA_ENGINE_V1 } from '../index.vue';
 
 // UI components for Longhorn storage class parameters
 const DEFAULT_PARAMETERS = [
@@ -18,7 +18,7 @@ const DEFAULT_PARAMETERS = [
   'nodeSelector',
   'migratable',
   'encrypted',
-  'engineVersion',
+  'dataEngine',
 ];
 
 const {
@@ -74,7 +74,7 @@ export default {
         nodeSelector:        null,
         encrypted:           'false',
         migratable:          'true',
-        engineVersion:       ENGINE_VERSION_V1
+        dataEngine:          DATA_ENGINE_V1
       });
     }
 
