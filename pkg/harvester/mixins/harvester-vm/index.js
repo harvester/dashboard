@@ -122,11 +122,10 @@ export default {
     const hasPCISchema = !!this.$store.getters[`${ inStore }/schemaFor`](HCI.PCI_DEVICE);
     const hasSRIOVGPUSchema = !!this.$store.getters[`${ inStore }/schemaFor`](HCI.SR_IOVGPU_DEVICE);
 
-    const hasPCIAddon = res.addons.find(addon => addon.name === ADD_ONS.PCI_DEVICE_CONTROLLER)?.spec?.enabled === true;
-    const hasSriovgpuAddon = res.addons.find(addon => addon.name === ADD_ONS.NVIDIA_DRIVER_TOOLKIT_CONTROLLER)?.spec?.enabled === true;
+    const enabledAddons = res.addons.reduce((acc, addon) => ({ ...acc, [addon.name]: addon.spec?.enabled }), {});
 
-    this.enabledPCI = hasPCIAddon && hasPCISchema;
-    this.enabledSriovgpu = hasSriovgpuAddon && hasPCIAddon && hasSRIOVGPUSchema;
+    this.enabledPCI = hasPCISchema && enabledAddons[ADD_ONS.PCI_DEVICE_CONTROLLER];
+    this.enabledSriovgpu = hasSRIOVGPUSchema && enabledAddons[ADD_ONS.PCI_DEVICE_CONTROLLER] && enabledAddons[ADD_ONS.NVIDIA_DRIVER_TOOLKIT_CONTROLLER];
   },
 
   data() {

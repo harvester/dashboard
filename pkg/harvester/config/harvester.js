@@ -442,6 +442,7 @@ export function init($plugin, store) {
       HCI.PCI_DEVICE,
       HCI.SR_IOVGPU_DEVICE,
       HCI.VGPU_DEVICE,
+      HCI.USB_DEVICE,
       HCI.ADD_ONS,
       HCI.SECRET,
       HCI.SETTING
@@ -765,6 +766,41 @@ export function init($plugin, store) {
     isCreatable:                false,
     hiddenNamespaceGroupButton: true,
     listGroups:                 [
+      {
+        icon:       'icon-cluster',
+        value:      'node',
+        field:      'groupByNode',
+        hideColumn: 'node',
+        tooltipKey: 'resourceTable.groupBy.node'
+      }
+    ]
+  });
+
+  virtualType({
+    labelKey:   'harvester.usb.label',
+    group:      'advanced',
+    weight:     11,
+    name:       HCI.USB_DEVICE,
+    namespaced: false,
+    route:      {
+      name:   `${ PRODUCT_NAME }-c-cluster-resource`,
+      params: { resource: HCI.USB_DEVICE }
+    },
+    exact:      false,
+    ifHaveType: HCI.USB_DEVICE,
+  });
+
+  configureType(HCI.USB_DEVICE, {
+    isCreatable:                false,
+    hiddenNamespaceGroupButton: true,
+    listGroups:                 [
+      {
+        icon:       'icon-list-grouped',
+        value:      'description',
+        field:      'groupByDevice',
+        hideColumn: 'description',
+        tooltipKey: 'resourceTable.groupBy.device'
+      },
       {
         icon:       'icon-cluster',
         value:      'node',

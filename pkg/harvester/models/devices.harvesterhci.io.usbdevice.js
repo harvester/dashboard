@@ -22,17 +22,17 @@ const STATUS_DISPLAY = {
 };
 
 /**
- * Class representing PCI Device resource.
+ * Class representing USB Device resource.
  * @extends SteveModal
  */
-export default class PCIDevice extends SteveModel {
+export default class USBDevice extends SteveModel {
   get _availableActions() {
     const out = super._availableActions;
 
     out.push(
       {
         action:     'enablePassthroughBulk',
-        enabled:    !this.isEnabling,
+        enabled:    !this.passthroughClaim && !this.status.enabled,
         icon:       'icon icon-fw icon-dot',
         label:      'Enable Passthrough',
         bulkable:   true,
@@ -41,7 +41,7 @@ export default class PCIDevice extends SteveModel {
       },
       {
         action:   'disablePassthrough',
-        enabled:  this.isEnabling && this.claimedByMe,
+        enabled:  this.status.enabled,
         icon:     'icon icon-fw icon-dot-open',
         label:    'Disable Passthrough',
         bulkable: true,
@@ -69,9 +69,9 @@ export default class PCIDevice extends SteveModel {
   }
 
   get passthroughClaim() {
-    const passthroughClaims = this.$getters['all'](HCI.PCI_CLAIM) || [];
+    const passthroughClaims = this.$getters['all'](HCI.USB_CLAIM) || [];
 
-    return !!this.status && passthroughClaims.find(req => req?.spec?.nodeName === this.status?.nodeName && req?.spec?.address === this.status?.address);
+    return !!this.status && passthroughClaims.find(req => req?.status?.nodeName === this.status?.nodeName && req?.metadata?.name === this.metadata?.name);
   }
 
   // this is an id for each 'type' of device - there may be multiple instances of device CRs
@@ -100,23 +100,12 @@ export default class PCIDevice extends SteveModel {
     return this.claimedBy === userName;
   }
 
-  // isEnabled controls visibility in vm create page & ability to delete claim
-  // isEnabling controls ability to add claim
-  // there will be a brief period where isEnabling === true && isEnabled === false
-  get isEnabled() {
-    return !!this.passthroughClaim?.status?.passthroughEnabled;
-  }
-
-  get isEnabling() {
-    return !!this.passthroughClaim;
-  }
-
   // map status.passthroughEnabled to disabled/enabled & overwrite default dash colors
   get claimStatusDisplay() {
     if (!this.passthroughClaim) {
       return STATUS_DISPLAY.disabled;
     }
-    if (this.isEnabled) {
+    if (this.status.enabled) {
       return STATUS_DISPLAY.enabled;
     }
 
@@ -137,7 +126,7 @@ export default class PCIDevice extends SteveModel {
   enablePassthroughBulk(resources = this) {
     this.$dispatch('promptModal', {
       resources,
-      component: 'EnablePciPassthrough'
+      component: 'EnableUSBPassthrough'
     });
   }
 
@@ -146,13 +135,13 @@ export default class PCIDevice extends SteveModel {
   async disablePassthrough() {
     try {
       if (!this.claimedByMe) {
-        throw new Error(this.$rootGetters['i18n/t']('harvester.pci.cantUnclaim', { name: escapeHtml(this.metadata.name) }));
+        throw new Error(this.$rootGetters['i18n/t']('harvester.usb.cantUnclaim', { name: escapeHtml(this.metadata.name) }));
       } else {
         await this.passthroughClaim.remove();
       }
     } catch (err) {
       this.$dispatch('growl/fromError', {
-        title: this.$rootGetters['i18n/t']('harvester.pci.unclaimError', { name: escapeHtml(this.metadata.name) }),
+        title: this.$rootGetters['i18n/t']('harvester.usb.unclaimError', { name: escapeHtml(this.metadata.name) }),
         err,
       }, { root: true });
     }

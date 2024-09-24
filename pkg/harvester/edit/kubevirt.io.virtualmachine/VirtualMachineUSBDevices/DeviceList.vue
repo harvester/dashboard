@@ -1,16 +1,13 @@
 <script>
 import ResourceTable from '@shell/components/ResourceTable';
-import FilterBySriov from '../../../components/FilterBySriov';
 import { HCI } from '../../../types';
 import { STATE, SIMPLE_NAME } from '@shell/config/table-headers';
 import { defaultTableSortGenerationFn } from '@shell/components/ResourceTable.vue';
-import { allHash } from '@shell/utils/promise';
-import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 
 export default {
-  name: 'ListPciDevices',
+  name: 'ListUsbDevices',
 
-  components: { ResourceTable, FilterBySriov },
+  components: { ResourceTable },
 
   props: {
     schema: {
@@ -22,20 +19,18 @@ export default {
       type:     Array,
       required: true,
     },
-
   },
+
   async fetch() {
     const inStore = this.$store.getters['currentProduct'].inStore;
-    const _hash = {
-      pciclaims: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.PCI_CLAIM }),
-      sriovs:    this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.SR_IOV }),
-    };
 
-    await allHash(_hash);
+    await this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.USB_CLAIM });
   },
 
   data() {
     const isSingleProduct = this.$store.getters['isSingleProduct'];
+
+    // TODO add new column
     const headers = [
       { ...STATE },
       SIMPLE_NAME,
@@ -52,40 +47,38 @@ export default {
         sort:     ['status.nodeName']
       },
       {
-        name:  'address',
+        name:  'pciAddress',
         label: 'Address',
-        value: 'status.address',
-        sort:  ['status.address']
+        value: 'status.pciAddress',
+        sort:  ['status.pciAddress']
       },
       {
-        name:  'vendorid',
+        name:  'vendorID',
         label: 'Vendor ID',
-        value: 'status.vendorId',
-        sort:  ['status.vendorId', 'status.deviceId']
+        value: 'status.vendorID',
+        sort:  ['status.vendorID', 'status.productID']
       },
       {
-        name:  'deviceid',
-        label: 'Device ID',
-        value: 'status.deviceId',
-        sort:  ['status.deviceId', 'status.vendorId']
+        name:  'productID',
+        label: 'Product ID',
+        value: 'status.productID',
+        sort:  ['status.productID', 'status.vendorID']
       },
-
     ];
 
     if (!isSingleProduct) {
       headers.push( {
         name:  'claimed',
         label: 'Claimed By',
-        value: 'passthroughClaim.userName',
-        sort:  ['passthroughClaim.userName'],
+        value: 'claimedBy',
+        sort:  ['claimedBy'],
       });
     }
 
     return {
       headers,
-      rows:        [],
-      parentSriov: null,
-      filterRows:  []
+      rows:       [],
+      filterRows: []
     };
   },
 
@@ -97,20 +90,6 @@ export default {
       },
       immediate: true,
     },
-  },
-
-  computed: {
-    parentSriovOptions() {
-      const inStore = this.$store.getters['currentProduct'].inStore;
-      const allSriovs = this.$store.getters[`${ inStore }/all`](HCI.SR_IOV) || [];
-
-      return allSriovs.map((sriov) => {
-        return sriov.id;
-      });
-    },
-    parentSriovLabel() {
-      return HCI_ANNOTATIONS.PARENT_SRIOV;
-    }
   },
 
   methods: {
@@ -132,9 +111,8 @@ export default {
       return !rows.find(device => !device.passthroughClaim);
     },
 
-    changeRows(filterRows, parentSriov) {
+    changeRows(filterRows) {
       this.$set(this, 'filterRows', filterRows);
-      this.$set(this, 'parentSriov', parentSriov);
     },
 
     sortGenerationFn() {
@@ -146,6 +124,10 @@ export default {
 
       return base;
     },
+  },
+
+  typeDisplay() {
+    return this.t('harvester.usb.label');
   }
 };
 </script>
@@ -162,27 +144,17 @@ export default {
     <template #group-by="{group}">
       <div :ref="group.key" v-trim-whitespace class="group-tab">
         <button v-if="groupIsAllEnabled(group.rows)" type="button" class="btn btn-sm role-secondary mr-5" @click="e=>{disableGroup(group.rows); e.target.blur()}">
-          {{ t('harvester.pci.disableGroup') }}
+          {{ t('harvester.usb.disableGroup') }}
         </button>
         <button v-else type="button" class="btn btn-sm role-secondary mr-5" @click="e=>{enableGroup(group.rows); e.target.blur()}">
-          {{ t('harvester.pci.enableGroup') }}
+          {{ t('harvester.usb.enableGroup') }}
         </button>
         <span v-clean-html="group.key" />
       </div>
     </template>
     <template #cell:claimed="{row}">
-      <span v-if="row.isEnabled">{{ row.claimedBy }}</span>
+      <span v-if="row.status.enabled">{{ row.claimedBy }}</span>
       <span v-else class="text-muted">&mdash;</span>
-    </template>
-    <template #more-header-middle>
-      <FilterBySriov
-        ref="filterByParentSRIOV"
-        :parent-sriov-options="parentSriovOptions"
-        :parent-sriov-label="parentSriovLabel"
-        :label="t('harvester.sriov.parentSriov')"
-        :rows="rows"
-        @change-rows="changeRows"
-      />
     </template>
   </ResourceTable>
 </template>

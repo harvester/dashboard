@@ -201,6 +201,7 @@ harvester:
     accessCredentials: Access Credentials
     pciDevices: PCI Devices
     vGpuDevices: vGPU Devices
+    usbDevices: USB Devices
     vmScheduling: Virtual Machine Scheduling
     quotas: Quotas
     snapshots: Snapshots
@@ -262,8 +263,11 @@ harvester:
       suffix: to enable it to manage your PCI devices.
     noPCIPermission: Please contact your system administrator to enable the PCI devices first.
     enablePassthroughWarning: Please be careful not to use host-owned PCI devices (e.g., management and VLAN NICs). Incorrect device allocation may cause damage to your cluster, including node failure.
+
+  devices:
     matrixHostName: Host Name
     matrixDeviceClaimName: Device Claim Name
+  
   generic:
     close: Close
     open: Open
@@ -1195,6 +1199,9 @@ harvester:
         location: Driver Location
       parsingSpecError:
         The field 'spec.valuesContent' has invalid format.
+    usbController:
+      titles:
+        basic: Basic
 
   loadBalancer:
     label: Load Balancers
@@ -1333,6 +1340,27 @@ harvester:
     impossibleSelection: 'There are no hosts with all of the selected devices.'
     howToUseDevice: 'Use the table below to enable vGPU devices you want to use in this virtual machine.'
     deviceInTheSameHost: 'You can only select devices on the same host.'
+
+  usb:
+    label: USB Devices
+    noPermission: Please contact system admin to add Harvester addons first
+    goSetting:
+      prefix: The pcidevices-controller addon is not enabled, click
+      middle: here
+      suffix: to enable it to manage your USB devices.
+    enableGroup: Enable Group
+    disableGroup: Disable Group
+    available: Available USB Devices
+    compatibleNodes: Compatible Nodes
+    impossibleSelection: 'There are no hosts with all of the selected devices.'
+    howToUseDevice: 'Use the table below to enable USB passthrough on each device you want to use in this VM.'
+    deviceInTheSameHost: 'You can only select devices on the same host.'
+    showCompatibility: Show device compatibility matrix
+    hideCompatibility: Hide device compatibility matrix
+    claimError: Error enabling passthrough on {name}
+    unclaimError: Error disabling passthrough on {name}
+    cantUnclaim: You cannot disable passthrough on a device claimed by another user.
+    enablePassthroughWarning: 'Please re-enable the USB device if the device path changes in the following situations:<br/>&nbsp1) Re-plugging the USB device.<br/>&nbsp2) Rebooting the node.<br/><br/>An incorrect device path may cause passthrough to fail.'
 
   harvesterVlanConfigMigrateDialog:
     targetClusterNetwork:

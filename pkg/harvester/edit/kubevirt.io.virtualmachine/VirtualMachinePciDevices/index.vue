@@ -4,11 +4,11 @@ import { allHash } from '@shell/utils/promise';
 import { HCI } from '../../../types';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import Banner from '@components/Banner/Banner.vue';
-import CompatibilityMatrix from './CompatibilityMatrix';
+import CompatibilityMatrix from '../CompatibilityMatrix';
 import DeviceList from './DeviceList';
 
 import remove from 'lodash/remove';
-import { get, set } from '@shell/utils/object';
+import { set } from '@shell/utils/object';
 
 export default {
   name:       'VirtualMachinePCIDevices',
@@ -53,10 +53,13 @@ export default {
     const selectedDevices = [];
     const oldFormatDevices = [];
 
-    (this.value?.domain?.devices?.hostDevices || []).forEach(({ name, deviceName }) => {
+    const vmDevices = this.value?.domain?.devices?.hostDevices || [];
+    const otherDevices = this.otherDevices(vmDevices).map(({ name }) => name);
+
+    vmDevices.forEach(({ name, deviceName }) => {
       const checkName = (deviceName || '').split('/')?.[1];
 
-      if (checkName && name.includes(checkName)) {
+      if (checkName && name.includes(checkName) && !otherDevices.includes(name)) {
         oldFormatDevices.push(name);
       } else if (this.enabledDevices.find(device => device?.metadata?.name === name)) {
         selectedDevices.push(name);
@@ -94,7 +97,12 @@ export default {
         };
       });
 
-      set(this.value.domain.devices, 'hostDevices', formatted);
+      const devices = [
+        ...this.otherDevices(this.value.domain.devices.hostDevices || []),
+        ...formatted,
+      ];
+
+      set(this.value.domain.devices, 'hostDevices', devices);
     }
   },
 
@@ -113,9 +121,8 @@ export default {
         if (vm.metadata.name === this.vm?.metadata?.name) {
           return inUse;
         }
-        const devices = get(vm, 'spec.template.spec.domain.devices.hostDevices') || [];
 
-        devices.forEach((device) => {
+        vm.hostDevices.forEach((device) => {
           inUse[device.name] = { usedBy: [vm.metadata.name] };
         });
 
@@ -126,19 +133,19 @@ export default {
     },
 
     devicesByNode() {
-      const out = {};
+      return this.enabledDevices?.reduce((acc, device) => {
+        const nodeName = device.status?.nodeName;
 
-      this.enabledDevices.forEach((deviceCRD) => {
-        const nodeName = deviceCRD.status?.nodeName;
-
-        if (!out[nodeName]) {
-          out[nodeName] = [deviceCRD];
-        } else {
-          out[nodeName].push(deviceCRD);
+        if (nodeName) {
+          if (!acc[nodeName]) {
+            acc[nodeName] = [];
+          } else {
+            acc[nodeName].push(device);
+          }
         }
-      });
 
-      return out;
+        return acc;
+      }, {});
     },
 
     // determine which nodes contain all devices selected
@@ -185,6 +192,10 @@ export default {
   },
 
   methods: {
+    otherDevices(vmDevices) {
+      return vmDevices.filter(device => !this.pciDevices.find(pci => device.name === pci.name));
+    },
+
     nodeNameFromUid(uid) {
       for (const deviceUid in this.uniqueDevices) {
         const nodes = this.uniqueDevices[deviceUid].nodes;

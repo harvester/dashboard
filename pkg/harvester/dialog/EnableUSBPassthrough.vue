@@ -6,7 +6,7 @@ import AsyncButton from '@shell/components/AsyncButton';
 import { escapeHtml } from '@shell/utils/string';
 
 export default {
-  name: 'HarvesterEnablePassthrough',
+  name: 'HarvesterEnableUSBPassthrough',
 
   components: {
     AsyncButton,
@@ -47,19 +47,19 @@ export default {
         const actionResource = this.resources[i];
         const inStore = this.$store.getters['currentProduct'].inStore;
         const pt = await this.$store.dispatch(`${ inStore }/create`, {
-          type:     HCI.PCI_CLAIM,
+          type:     HCI.USB_CLAIM,
           metadata: {
             name:            actionResource.metadata.name,
             ownerReferences: [{
               apiVersion: 'devices.harvesterhci.io/v1beta1',
-              kind:       'PCIDevice',
+              kind:       'USBDevice',
               name:       actionResource.metadata.name,
               uid:        actionResource.metadata.uid,
             }]
           },
           spec: {
-            address:  actionResource.status.address,
-            nodeName: actionResource.status.nodeName,
+            pciAddress: actionResource.status.pciAddress,
+            nodeName:   actionResource.status.nodeName,
             userName
           }
         } );
@@ -70,7 +70,7 @@ export default {
           this.close();
         } catch (err) {
           this.$store.dispatch('growl/fromError', {
-            title: this.t('harvester.pci.claimError', { name: escapeHtml(actionResource.metadata.name) }),
+            title: this.t('harvester.usb.claimError', { name: escapeHtml(actionResource.metadata.name) }),
             err,
           }, { root: true });
           buttonCb(false);
@@ -90,7 +90,7 @@ export default {
     />
 
     <template #body>
-      {{ t('harvester.pci.enablePassthroughWarning') }}
+      <t k="harvester.usb.enablePassthroughWarning" :raw="true" />
     </template>
 
     <div slot="actions" class="actions">
