@@ -23,8 +23,8 @@ import { LVM_DRIVER } from '../../models/harvester/storage.k8s.io.storageclass';
 
 const LONGHORN_V2_DATA_ENGINE = 'longhorn-system/v2-data-engine';
 
-export const ENGINE_VERSION_V1 = 'v1';
-export const ENGINE_VERSION_V2 = 'v2';
+export const DATA_ENGINE_V1 = 'v1';
+export const DATA_ENGINE_V2 = 'v2';
 
 export const LVM_TOPOLOGY_LABEL = 'topology.lvm.csi/node';
 
@@ -83,7 +83,7 @@ export default {
     this.$set(this.value, 'provisioner', this.value.provisioner || LONGHORN_DRIVER);
 
     if (this.value.provisioner === LONGHORN_DRIVER) {
-      this.$set(this.value.parameters, 'engineVersion', this.value.longhornVersion);
+      this.$set(this.value.parameters, 'dataEngine', this.value.longhornVersion);
     }
 
     this.$set(this.value, 'allowVolumeExpansion', this.value.allowVolumeExpansion || allowVolumeExpansionOptions[0].value);
@@ -143,14 +143,14 @@ export default {
         switch (name) {
         case LONGHORN_DRIVER:
           out.push({
-            label: `harvester.storage.storageClass.longhorn.${ ENGINE_VERSION_V1 }.label`,
-            value: `${ name }_${ ENGINE_VERSION_V1 }`,
+            label: `harvester.storage.storageClass.longhorn.${ DATA_ENGINE_V1 }.label`,
+            value: `${ name }_${ DATA_ENGINE_V1 }`,
           });
 
-          if (this.longhornSystemVersion === ENGINE_VERSION_V2 || this.value.longhornVersion === ENGINE_VERSION_V2) {
+          if (this.longhornSystemVersion === DATA_ENGINE_V2 || this.value.longhornVersion === DATA_ENGINE_V2) {
             out.push({
-              label: `harvester.storage.storageClass.longhorn.${ ENGINE_VERSION_V2 }.label`,
-              value: `${ name }_${ ENGINE_VERSION_V2 }`,
+              label: `harvester.storage.storageClass.longhorn.${ DATA_ENGINE_V2 }.label`,
+              value: `${ name }_${ DATA_ENGINE_V2 }`,
             });
           }
           break;
@@ -176,13 +176,13 @@ export default {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const v2DataEngine = this.$store.getters[`${ inStore }/byId`](LONGHORN.SETTINGS, LONGHORN_V2_DATA_ENGINE) || {};
 
-      return v2DataEngine.value === 'true' ? ENGINE_VERSION_V2 : ENGINE_VERSION_V1;
+      return v2DataEngine.value === 'true' ? DATA_ENGINE_V2 : DATA_ENGINE_V1;
     },
   },
 
   watch: {
     provisioner(neu) {
-      const [provisioner, engineVersion] = neu?.split('_');
+      const [provisioner, dataEngine] = neu?.split('_');
 
       let parameters = {};
 
@@ -199,7 +199,7 @@ export default {
       this.$set(this.value, 'provisioner', provisioner);
 
       if (provisioner === LONGHORN_DRIVER) {
-        parameters = { engineVersion };
+        parameters = { dataEngine };
       }
 
       this.$set(this.value, 'allowVolumeExpansion', this.value.provisioner === LONGHORN_DRIVER);
