@@ -211,7 +211,7 @@ export default {
     },
 
     showFormattedWarning() {
-      const out = this.newDisks.filter(d => d.forceFormatted && d.isNew) || [];
+      const out = this.newDisks.filter(d => d.forceFormatted && d.isNew && d.provisionerVersion === LONGHORN_VERSION_V1) || [];
 
       return out.length > 0;
     },
