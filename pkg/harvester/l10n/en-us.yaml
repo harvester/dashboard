@@ -126,7 +126,7 @@ harvester:
       warning: Warning
       error: Error
   action:
-    createVM: Create a Virtual Machine
+    createVM: Create Virtual Machine
     start: Start
     restart: Restart
     softreboot: Soft Reboot
@@ -135,6 +135,8 @@ harvester:
     deepClone: Clone
     shallowClone: Clone Template
     unpause: Unpause
+    encryptImage: Encrypt Image
+    decryptImage: Decrypt Image
     ejectCDROM: Eject CD-ROM
     editVMQuota: Edit VM Quota
     launchFormTemplate: Launch instance from template
@@ -738,7 +740,7 @@ harvester:
     urlTip: 'Supports the <code>raw</code> and <code>qcow2</code> image formats which are supported by <a href="https://www.qemu.org/docs/master/system/images.html#disk-image-file-formats" target="_blank">qemu</a>. Bootable ISO images can also be used and are treated like <code>raw</code> images.'
     fileName: File Name
     uploadFile: Upload File
-    source: Source
+    source: Source Type
     sourceType:
       download: URL
       upload: File
