@@ -460,6 +460,10 @@ export default class VirtVm extends HarvesterResource {
     return null;
   }
 
+  get isCpuPinning() {
+    return this.spec?.template?.spec?.domain?.cpu?.dedicatedCpuPlacement === true;
+  }
+
   get isVMExpectedRunning() {
     if (!this?.spec) {
       return false;
