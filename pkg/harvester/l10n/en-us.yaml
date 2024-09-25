@@ -1178,7 +1178,7 @@ harvester:
         label: Volume Group Type
       lvmVolumeGroup:
         label: Volume Group Name
-        no-options: No available Volume Grups, please add in the `Host > Storage` page
+        no-options: No available Volume Groups, please add in the `Host > Storage` page
       node:
         label: Node
     allowedTopologies:
