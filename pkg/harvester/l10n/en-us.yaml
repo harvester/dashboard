@@ -521,6 +521,7 @@ harvester:
       label: Enable CPU Pinning
       tooltip: Enable CPU Pinning brings better performance and reduce latency for the virtual machine 
       restartVMMessage: Changing the CPU Pinning setting requires a virtual machine reboot for the change to take effect
+      migrationMessage: This virtual machine can only be migrated to a target node that has CPU Manager enabled, as CPU Pinning is configured.
     restartNow: |-
       {restart, select,
         true {Restart}
