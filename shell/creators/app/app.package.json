@@ -8,6 +8,6 @@
   "dependencies": {},
   "resolutions": {
     "**/webpack": "4",
-    "@types/node": "^16"
+    "@types/node": "16.11.7"
   }  
 }
