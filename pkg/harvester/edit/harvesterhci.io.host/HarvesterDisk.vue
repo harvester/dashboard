@@ -265,7 +265,7 @@ export default {
     },
 
     isLonghornV1() {
-      return this.isLonghorn && (this.longhornSystemVersion === LONGHORN_VERSION_V1 || this.forceLonghornV1);
+      return this.isLonghorn && this.value.provisionerVersion === LONGHORN_VERSION_V1;
     },
 
     provisionerTooltip() {
@@ -293,7 +293,7 @@ export default {
       if (provisioner === LONGHORN_DRIVER) {
         this.value.provisionerVersion = provisionerVersion || LONGHORN_VERSION_V1;
       } else {
-        delete this.value.provisionerVersion;
+        this.value.provisionerVersion = undefined;
       }
     },
 
@@ -424,16 +424,15 @@ export default {
     </div>
 
     <div class="row mt-10">
-      <div class="col span-6">
+      <div :class="`col span-${ value.isNew ? '6': '12' }`">
         <LabeledSelect
-          v-if="value.isNew"
           v-model="provisioner"
           :mode="mode"
           label-key="harvester.host.disk.provisioner"
           :localized-label="true"
           :searchable="true"
           :options="provisioners"
-          :disabled="isProvisioned"
+          :disabled="isProvisioned || !value.isNew"
           :tooltip="provisionerTooltip"
           @keydown.native.enter.prevent="()=>{}"
         />
