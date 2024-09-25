@@ -1319,7 +1319,7 @@ harvester:
     vGpuDevices: vGPU Devices
     showMore: Show More
     parentSriov: Filter By Parent SR-IOV GPU
-    noPermission: Please contact your system admiistrator to add Harvester add-ons first.
+    noPermission: Please contact your system administrator to add Harvester add-ons first.
     goSetting:
       prefix: The nvidia-driver-toolkit add-on is not enabled, click
       middle: here
