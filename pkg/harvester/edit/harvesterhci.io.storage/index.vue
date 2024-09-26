@@ -28,6 +28,9 @@ export const DATA_ENGINE_V2 = 'v2';
 
 export const LVM_TOPOLOGY_LABEL = 'topology.lvm.csi/node';
 
+const VOLUME_BINDING_MODE_IMMEDIATE = 'Immediate';
+const VOLUME_BINDING_MODE_WAIT = 'WaitForFirstConsumer';
+
 export default {
   name: 'HarvesterStorage',
 
@@ -69,11 +72,11 @@ export default {
     const volumeBindingModeOptions = [
       {
         label: this.t('storageClass.customize.volumeBindingMode.now'),
-        value: 'Immediate'
+        value: VOLUME_BINDING_MODE_IMMEDIATE
       },
       {
         label: this.t('harvester.storage.customize.volumeBindingMode.later'),
-        value: 'WaitForFirstConsumer'
+        value: VOLUME_BINDING_MODE_WAIT
       }
     ];
 
@@ -81,14 +84,17 @@ export default {
 
     this.$set(this.value, 'parameters', this.value.parameters || {});
     this.$set(this.value, 'provisioner', this.value.provisioner || LONGHORN_DRIVER);
+    this.$set(this.value, 'allowVolumeExpansion', this.value.allowVolumeExpansion || allowVolumeExpansionOptions[0].value);
+    this.$set(this.value, 'reclaimPolicy', this.value.reclaimPolicy || reclaimPolicyOptions[0].value);
 
     if (this.value.provisioner === LONGHORN_DRIVER) {
       this.$set(this.value.parameters, 'dataEngine', this.value.longhornVersion);
+      this.$set(this.value, 'volumeBindingMode', this.value.volumeBindingMode || VOLUME_BINDING_MODE_IMMEDIATE);
     }
 
-    this.$set(this.value, 'allowVolumeExpansion', this.value.allowVolumeExpansion || allowVolumeExpansionOptions[0].value);
-    this.$set(this.value, 'reclaimPolicy', this.value.reclaimPolicy || reclaimPolicyOptions[0].value);
-    this.$set(this.value, 'volumeBindingMode', this.value.volumeBindingMode || volumeBindingModeOptions[0].value);
+    if (this.value.provisioner === LVM_DRIVER) {
+      this.$set(this.value, 'volumeBindingMode', this.value.volumeBindingMode || VOLUME_BINDING_MODE_WAIT);
+    }
 
     let provisioner = `${ this.value.provisioner || LONGHORN_DRIVER }`;
 
@@ -97,6 +103,7 @@ export default {
     }
 
     return {
+      LVM_DRIVER,
       reclaimPolicyOptions,
       allowVolumeExpansionOptions,
       volumeBindingModeOptions,
@@ -194,14 +201,16 @@ export default {
         } else {
           delete this.value.allowedTopologies;
         }
-      }
 
-      this.$set(this.value, 'provisioner', provisioner);
+        this.$set(this.value, 'volumeBindingMode', VOLUME_BINDING_MODE_WAIT);
+      }
 
       if (provisioner === LONGHORN_DRIVER) {
         parameters = { dataEngine };
+        this.$set(this.value, 'volumeBindingMode', VOLUME_BINDING_MODE_IMMEDIATE);
       }
 
+      this.$set(this.value, 'provisioner', provisioner);
       this.$set(this.value, 'allowVolumeExpansion', this.value.provisioner === LONGHORN_DRIVER);
       this.$set(this.value, 'parameters', parameters);
     }
@@ -324,6 +333,7 @@ export default {
               :label="t('storageClass.customize.volumeBindingMode.label')"
               :mode="modeOverride"
               :options="volumeBindingModeOptions"
+              :disabled="provisioner === LVM_DRIVER"
             />
           </div>
         </div>
