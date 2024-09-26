@@ -159,6 +159,7 @@ export default {
 
     storageClasses() {
       const inStore = this.$store.getters['currentProduct'].inStore;
+
       return this.$store.getters[`${ inStore }/all`](STORAGE_CLASS);
     },
 
@@ -227,7 +228,7 @@ export default {
     update() {
       let imageAnnotations = '';
       let storageClassName = this.value.spec.storageClassName;
-      const storageClassDataEngine = this.storageClasses.find((sc) => sc.name === storageClassName)?.parameters?.dataEngine;
+      const storageClassDataEngine = this.storageClasses.find(sc => sc.name === storageClassName)?.parameters?.dataEngine;
 
       if (this.isVMImage && this.imageId) {
         const images = this.$store.getters['harvester/all'](HCI.IMAGE);
@@ -243,7 +244,7 @@ export default {
 
       const spec = {
         ...this.value.spec,
-        resources: { requests: { storage: this.storage } },
+        resources:   { requests: { storage: this.storage } },
         storageClassName,
         accessModes: storageClassDataEngine === DATA_ENGINE_V2 ? ['ReadWriteOnce'] : ['ReadWriteMany'],
       };
