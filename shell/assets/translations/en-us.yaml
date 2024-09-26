@@ -346,7 +346,7 @@ addClusterMemberDialog:
   title: Add Cluster Member
 
 addonConfigConfirmation:
-  title: Add-On Config Reset
+  title: Add-on Configuration Reset
   body: Changing the Kubernetes Version can reset the add-on configuration values. Confirm that the values are as expected before continuing.
 
 addProjectMemberDialog:
@@ -749,7 +749,7 @@ backupRestoreOperator:
   encryption: Encryption
   encryptionConfigName:
     backuptip: 'Any secret in the <code>cattle-resource-system</code> namespace that has an <code>encryption-provider-config.yaml</code> key. <br/>The contents of this file are necessary to perform a restore from this backup, and are not stored by Rancher Backup.'
-    label: Encryption Config Secret
+    label: Encryption Configuration Secret
     options:
       none: Store the contents of the backup unencrypted
       secret: 'Encrypt backups using an <a target="_blank" rel="noopener noreferrer nofollow" href="https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/#understanding-the-encryption-at-rest-configuration">Encryption Configuration Secret</a> (Recommended)'
@@ -1116,7 +1116,7 @@ cluster:
       label: Google
     rancher-vsphere:
       label: vSphere
-      note: '<b>Important:</b> Configure the vSphere Cloud Provider and Storage Provider options in the Add-On Configuration tab.'
+      note: '<b>Important:</b> Configure the vSphere Cloud Provider and Storage Provider options in the Add-on Configuration tab.'
     harvester:
       label: Harvester
   copyConfig: Copy KubeConfig to Clipboard
@@ -1532,7 +1532,7 @@ cluster:
           label: Cloud Init
           placeholder: e.g. http://my_host/cloud-config.yml
           note: Cloud-init file or url to set in the guestinfo
-        cloudConfigYaml: Cloud Config YAML
+        cloudConfigYaml: Cloud Configuration YAML
         os: Operating System
       tags:
         label: Tags
@@ -4292,7 +4292,7 @@ projectMembers:
     servicesManage: Manage Services
     persistentvolumeclaimsManage: Manage Volumes
     workloadsManage: Manage Workloads
-    configmapsView: View Config Maps
+    configmapsView: View Configuration Maps
     ingressView: View Ingress
     monitoringUiView: View Monitoring
     projectcatalogsView: View Project Catalogs
@@ -6805,8 +6805,8 @@ typeLabel:
     }
   management.cattle.io.rkeaddon: |-
     {count, plural,
-      one { RkeAddon }
-      other { RkeAddons }
+      one { RKEAddon }
+      other { RKEAddons }
     }
   management.cattle.io.rkek8sserviceoption: |-
     {count, plural,
@@ -6815,8 +6815,8 @@ typeLabel:
     }
   management.cattle.io.rkek8ssystemimage: |-
     {count, plural,
-      one { RkeK8sSystemImage }
-      other { RkeK8sSystemImages }
+      one { RKEK8sSystemImage }
+      other { RKEK8sSystemImages }
     }
   rbac.authorization.k8s.io.clusterrolebinding: |-
     {count, plural,
@@ -6955,7 +6955,7 @@ registryConfig:
 
 advancedSettings:
   label: Settings
-  subtext: Typical users will not need to change these. Proceed with caution, incorrect values can break your {appName} installation. Settings which have been customized from default settings are tagged 'Modified'.
+  subtext: Users will not need to change these settings. Proceed with caution as incorrect values can break your {appName} installation. Settings that have been customized from default settings are tagged with 'Modified'.
   show: Show
   hide: Hide
   none: None
@@ -7064,7 +7064,7 @@ performance:
     checkboxLabel: Disable websocket notifications
   gc:
     label: Resource Garbage Collection
-    description: The UI will cache Kuberentes resources locally to avoid having to re-fetch them. In some cases, this can lead to a large amount of data stored in the browser. Enable this setting to periodically remove them.
+    description: The UI will cache Kubernetes resources locally to avoid having to re-fetch them. In some cases, this can lead to a large amount of data stored in the browser. Enable this setting to periodically remove them.
     checkboxLabel: Enable Garbage Collection
     whenRun:
       description: Update when garbage collection runs
@@ -7183,7 +7183,7 @@ resourceQuota:
   helpText: Configure how much of the resources the namespace as a whole can consume.
   helpTextDetail: The amount of resources the namespace as a whole can consume.
   helpTextHarvester: VMs need to reserve additional memory overhead.
-  configMaps: Config Maps
+  configMaps: Configuration Maps
   limitsCpu: CPU Limit
   limitsMemory: Memory Limit
   persistentVolumeClaims: Persistent Volume Claims
@@ -7302,7 +7302,7 @@ legacy:
   alerts: Alerts
   apps: Apps
   catalogs: Catalogs
-  configMaps: Config Maps
+  configMaps: Configuration Maps
   configuration: Configuration
   globalDnsEntries: Global DNS Entries
   globalDnsProviders: Global DNS Providers
