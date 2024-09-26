@@ -157,6 +157,9 @@ export default {
   },
 
   methods: {
+    cancelAction() {
+      this.$router.go(-1);
+    },
     async saveRestore(buttonCb) {
       this.update();
 
@@ -241,7 +244,7 @@ export default {
       <LabeledSelect v-if="!restoreNewVm" v-model="deletionPolicy" :label="t('harvester.backup.restore.deletePreviousVolumes')" :options="deletionPolicyOption" />
     </div>
 
-    <Footer mode="create" class="footer" :errors="errors" @save="saveRestore" @done="done" />
+    <Footer mode="create" class="footer" :errors="errors" @save="saveRestore" @done="cancelAction" />
   </div>
 </template>
 

@@ -3,6 +3,7 @@ import ResourceTable from '@shell/components/ResourceTable';
 import { STATE, NAME, AGE } from '@shell/config/table-headers';
 import { allSettled } from '../../utils/promise';
 import { BACKUP_TYPE } from '../../config/types';
+import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 import { HCI } from '../../types';
 import { schema } from '../../list/harvesterhci.io.vmsnapshot';
 
@@ -58,7 +59,7 @@ export default {
       let r = this.rows.filter(row => row.spec?.type === BACKUP_TYPE.SNAPSHOT);
 
       if (this.id) {
-        r = r.filter(row => row.metadata.annotations?.['harvesterhci.io/svmbackupId'] === this.id);
+        r = r.filter(row => row.metadata.annotations?.[HCI_ANNOTATIONS.SVM_BACKUP_ID] === this.id);
       }
 
       return r;
