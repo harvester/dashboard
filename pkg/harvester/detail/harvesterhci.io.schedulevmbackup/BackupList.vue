@@ -4,6 +4,7 @@ import { STATE, NAME, AGE } from '@shell/config/table-headers';
 import { allSettled } from '../../utils/promise';
 import { BACKUP_TYPE } from '../../config/types';
 import { HCI } from '../../types';
+import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 
 export default {
   name: 'BackupList',
@@ -90,7 +91,7 @@ export default {
       let r = this.rows.filter(row => row.spec?.type === BACKUP_TYPE.BACKUP);
 
       if (this.id) {
-        r = r.filter(backup => backup.metadata.annotations?.['harvesterhci.io/svmbackupId'] === this.id);
+        r = r.filter(backup => backup.metadata.annotations?.[HCI_ANNOTATIONS.SVM_BACKUP_ID] === this.id);
       }
 
       return r;

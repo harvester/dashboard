@@ -51,5 +51,11 @@ export const HCI = {
   PARENT_SRIOV_GPU:               'harvesterhci.io/parentSRIOVGPUDevice',
   VM_MAINTENANCE_MODE_STRATEGY:   'harvesterhci.io/maintain-mode-strategy',
   NODE_CPU_MANAGER_UPDATE_STATUS: 'harvesterhci.io/cpu-manager-update-status',
+<<<<<<< HEAD
   CPU_MANAGER:                    'cpumanager'
+=======
+  CPU_MANAGER:                    'cpumanager',
+  VM_DEVICE_ALLOCATION_DETAILS:   'harvesterhci.io/deviceAllocationDetails',
+  SVM_BACKUP_ID:                  'harvesterhci.io/svmbackupId',
+>>>>>>> eabd94355 (fix Restore New / Restore Existing action route)
 };

@@ -69,7 +69,7 @@ export default {
     </template>
 
     <v-popover
-      trigger="click"
+      :trigger="scheduleOptions.length ? 'click' : 'manual'"
       placement="bottom-end"
     >
       <slot name="header">
