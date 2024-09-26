@@ -14,7 +14,7 @@ const DEFAULT_PARAMETERS = [
   'vgName'
 ];
 
-const DEFAUL_TOPOLOGIES = [{
+const DEFAULT_TOPOLOGIES = [{
   matchLabelExpressions: [{
     key:    LVM_TOPOLOGY_LABEL,
     values: []
@@ -64,7 +64,7 @@ export default {
     node(value) {
       delete (this.value.parameters.vgName);
 
-      const allowedTopologies = [...DEFAUL_TOPOLOGIES];
+      const allowedTopologies = [...DEFAULT_TOPOLOGIES];
 
       allowedTopologies[0].matchLabelExpressions[0].values = [value];
 
