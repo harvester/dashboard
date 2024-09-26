@@ -19,6 +19,7 @@ import { _CREATE } from '@shell/config/query-params';
 import CreateEditView from '@shell/mixins/create-edit-view';
 import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 import { STATE, NAME, AGE, NAMESPACE } from '@shell/config/table-headers';
+import { DATA_ENGINE_V2 } from './harvesterhci.io.storage/index.vue';
 
 export default {
   name: 'HarvesterVolume',
@@ -156,11 +157,13 @@ export default {
       return VOLUME_DATA_SOURCE_KIND[this.value.spec?.dataSource?.kind];
     },
 
-    storageClassOptions() {
+    storageClasses() {
       const inStore = this.$store.getters['currentProduct'].inStore;
-      const storages = this.$store.getters[`${ inStore }/all`](STORAGE_CLASS);
+      return this.$store.getters[`${ inStore }/all`](STORAGE_CLASS);
+    },
 
-      const out = storages.filter(s => !s.parameters?.backingImage).map((s) => {
+    storageClassOptions() {
+      return this.storageClasses.filter(s => !s.parameters?.backingImage).map((s) => {
         const label = s.isDefault ? `${ s.name } (${ this.t('generic.default') })` : s.name;
 
         return {
@@ -168,8 +171,6 @@ export default {
           value: s.name,
         };
       }) || [];
-
-      return out;
     },
 
     frontend() {
@@ -226,6 +227,7 @@ export default {
     update() {
       let imageAnnotations = '';
       let storageClassName = this.value.spec.storageClassName;
+      const storageClassDataEngine = this.storageClasses.find((sc) => sc.name === storageClassName)?.parameters?.dataEngine;
 
       if (this.isVMImage && this.imageId) {
         const images = this.$store.getters['harvester/all'](HCI.IMAGE);
@@ -242,7 +244,8 @@ export default {
       const spec = {
         ...this.value.spec,
         resources: { requests: { storage: this.storage } },
-        storageClassName
+        storageClassName,
+        accessModes: storageClassDataEngine === DATA_ENGINE_V2 ? ['ReadWriteOnce'] : ['ReadWriteMany'],
       };
 
       this.value.setAnnotations(imageAnnotations);
