@@ -278,14 +278,14 @@ harvester:
     goSetting:
       prefix: The pcidevices-controller add-on is not enabled, click
       middle: here
-      suffix: to enable it to manage your PCI devices.
+      suffix: to enable the add-on to successfully manage your PCI devices.
     noPCIPermission: Please contact your system administrator to enable the PCI devices first.
     enablePassthroughWarning: Please be careful not to use host-owned PCI devices (e.g., management and VLAN NICs). Incorrect device allocation may cause damage to your cluster, including node failure.
 
   devices:
     matrixHostName: Host Name
     matrixDeviceClaimName: Device Claim Name
-  
+
   generic:
     close: Close
     open: Open
@@ -535,7 +535,7 @@ harvester:
         Shutdown: Shutdown
     cpuPinning:
       label: Enable CPU Pinning
-      tooltip: Enable CPU Pinning brings better performance and reduce latency for the virtual machine 
+      tooltip: Enable CPU Pinning brings better performance and reduce latency for the virtual machine
       restartVMMessage: Changing the CPU Pinning setting requires a virtual machine reboot for the change to take effect
       migrationMessage: This virtual machine can only be migrated to a target node that has CPU Manager enabled, as CPU Pinning is configured.
     restartNow: |-
@@ -550,7 +550,7 @@ harvester:
       tpm: Enable TPM
       cpuManager:
         prefix: You must enable CPU Manager for at least one node in
-        middle: 'host page' 
+        middle: 'host page'
         suffix: to enable CPU Pinning for VM
     usbTip: Provides an absolute pointer device which often helps with getting a consistent mouse cursor position in VNC.
     sshTitle: Add Public SSH Key
@@ -593,7 +593,7 @@ harvester:
       addNetwork: Add Network
       addPort:  Add Port
     cloudConfig:
-      title: Cloud Config
+      title: Cloud Configuration
       createTemplateTitle: 'Create {name}.'
       createNew: Create new...
       cloudInit:
@@ -653,7 +653,7 @@ harvester:
         instance: Virtual Machines
         monitor: Monitor Data
         keypairs: SSH Keys
-        cloudConfig: Cloud Config
+        cloudConfig: Cloud Configuration
         metrics: Virtual Machine Metrics
       details:
         title:
@@ -874,7 +874,7 @@ harvester:
       viewSetting:
         prefix: Click
         middle: here
-        suffix: to view the backup config.
+        suffix: to view the backup configuration.
       testConnect:
         actionLabel: Test connection
         waitingLabel: Testing connection...
@@ -995,7 +995,7 @@ harvester:
           addRewrite: Add Rewrite
         addMirror: Add Mirror
       configs:
-        configs: Configs
+        configs: Configurations
         registryEDQNorIP: Registry FDQN or IP
         registryPlaceholder: myregistry.local:5000
         username: Username
@@ -1003,7 +1003,7 @@ harvester:
         auth: Auth
         identityToken: Identity Token
         insecureSkipVerify: InsecureSkipVerify
-        addConfig: Add Config
+        addConfig: Add Configuration
 
     upgrade:
       selectExitImage: Please select the OS image to upgrade.
@@ -1075,7 +1075,7 @@ harvester:
     configuration:
       label: Configuration
     alertmanagerConfig:
-      label: Alertmanager Configs
+      label: Alertmanager Configuration
       diabledMonitoringTips:
         prefix: 'Enable the'
         middle: 'monitoring'
@@ -1188,7 +1188,7 @@ harvester:
           label: Mode
         miimon:
           label: Miimon
-          tooltip: <Code>-1</Code> means to keep the original value
+          tooltip: Miimon specifies the MII link monitoring frequency in milliseconds. <Code>-1</Code> means to keep the original value.
     nodeSelector:
       matchingNodes:
         matchesSome: |-
@@ -1394,9 +1394,9 @@ harvester:
 
   usb:
     label: USB Devices
-    noPermission: Please contact system admin to add Harvester addons first
+    noPermission: Please contact system admin to add Harvester add-ons first
     goSetting:
-      prefix: The pcidevices-controller addon is not enabled, click
+      prefix: The pcidevices-controller add-on is not enabled, click
       middle: here
       suffix: to enable it to manage your USB devices.
     enableGroup: Enable Group
@@ -1516,8 +1516,8 @@ typeLabel:
     }
   harvesterhci.io.networkattachmentdefinition: |-
     {count, plural,
-      one { Virtual Machines Network }
-      other { Virtual Machines Networks }
+      one { Virtual Machine Network }
+      other { Virtual Machine Networks }
     }
   harvesterhci.io.volume: |-
     {count, plural,
@@ -1546,8 +1546,8 @@ typeLabel:
     }
   harvesterhci.io.virtualmachinebackup: |-
     {count, plural,
-      one { Virtual Machines Backup }
-      other { Virtual Machines Backups }
+      one { Virtual Machine Backup }
+      other { Virtual Machine Backups }
     }
   harvesterhci.io.cloudtemplate: |-
     {count, plural,
@@ -1561,8 +1561,8 @@ typeLabel:
     }
   harvesterhci.io.vmsnapshot: |-
     {count, plural,
-      one { Virtual Machines Snapshot }
-      other { Virtual Machines Snapshots }
+      one { Virtual Machine Snapshot }
+      other { Virtual Machine Snapshots }
     }
   network.harvesterhci.io.vlanconfig: |-
     {count, plural,
