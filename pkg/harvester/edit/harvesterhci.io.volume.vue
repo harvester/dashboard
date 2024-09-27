@@ -19,6 +19,7 @@ import { _CREATE } from '@shell/config/query-params';
 import CreateEditView from '@shell/mixins/create-edit-view';
 import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 import { STATE, NAME, AGE, NAMESPACE } from '@shell/config/table-headers';
+import { LVM_DRIVER } from '../models/harvester/storage.k8s.io.storageclass';
 import { DATA_ENGINE_V2 } from './harvesterhci.io.storage/index.vue';
 
 export default {
@@ -228,7 +229,10 @@ export default {
     update() {
       let imageAnnotations = '';
       let storageClassName = this.value.spec.storageClassName;
-      const storageClassDataEngine = this.storageClasses.find(sc => sc.name === storageClassName)?.parameters?.dataEngine;
+
+      const storageClass = this.storageClasses.find(sc => sc.name === storageClassName);
+      const storageClassProvisioner = storageClass?.provisioner;
+      const storageClassDataEngine = storageClass?.parameters?.dataEngine;
 
       if (this.isVMImage && this.imageId) {
         const images = this.$store.getters['harvester/all'](HCI.IMAGE);
@@ -246,7 +250,7 @@ export default {
         ...this.value.spec,
         resources:   { requests: { storage: this.storage } },
         storageClassName,
-        accessModes: storageClassDataEngine === DATA_ENGINE_V2 ? ['ReadWriteOnce'] : ['ReadWriteMany'],
+        accessModes: storageClassProvisioner === LVM_DRIVER || storageClassDataEngine === DATA_ENGINE_V2 ? ['ReadWriteOnce'] : ['ReadWriteMany'],
       };
 
       this.value.setAnnotations(imageAnnotations);
