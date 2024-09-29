@@ -8,7 +8,7 @@ import { LabeledInput } from '@components/Form/LabeledInput';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import ModalWithCard from '@shell/components/ModalWithCard';
 
-import { PVC, STORAGE_CLASS } from '@shell/config/types';
+import { PVC } from '@shell/config/types';
 import { HCI } from '../../../types';
 import { clone } from '@shell/utils/object';
 import { removeObject } from '@shell/utils/array';
@@ -172,10 +172,7 @@ export default {
       };
 
       if (type === SOURCE_TYPE.NEW) {
-        const inStore = this.$store.getters['currentProduct'].inStore;
-        const defaultStorage = this.$store.getters[`${ inStore }/all`](STORAGE_CLASS).find( O => O.isDefault);
-
-        neu.storageClassName = defaultStorage?.metadata?.name || 'longhorn';
+        neu.storageClassName = this.defaultStorageClass?.metadata?.name || 'longhorn';
       }
 
       this.rows.push(neu);

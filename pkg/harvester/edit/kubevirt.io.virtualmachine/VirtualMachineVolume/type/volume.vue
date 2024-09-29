@@ -11,6 +11,8 @@ import { VOLUME_TYPE, InterfaceOption } from '../../../../config/harvester-map';
 import { _VIEW } from '@shell/config/query-params';
 import LabelValue from '@shell/components/LabelValue';
 import { ucFirst } from '@shell/utils/string';
+import { LVM_DRIVER } from '../../../../models/harvester/storage.k8s.io.storageclass';
+import { DATA_ENGINE_V2 } from '../../../../edit/harvesterhci.io.storage/index.vue';
 
 export default {
   name:       'HarvesterEditVolume',
@@ -85,10 +87,12 @@ export default {
       return !this.value.newCreateId && this.isEdit && this.isVirtualType;
     },
 
-    storageClassOptions() {
-      const storages = this.$store.getters[`harvester/all`](STORAGE_CLASS) || [];
+    storageClasses() {
+      return this.$store.getters[`harvester/all`](STORAGE_CLASS) || [];
+    },
 
-      const out = storages.filter(s => !s.parameters?.backingImage).map((s) => {
+    storageClassOptions() {
+      return this.storageClasses.filter(s => !s.parameters?.backingImage).map((s) => {
         const label = s.isDefault ? `${ s.name } (${ this.t('generic.default') })` : s.name;
 
         return {
@@ -96,12 +100,21 @@ export default {
           value: s.name,
         };
       }) || [];
-
-      return out;
     },
   },
 
   watch: {
+    'value.storageClassName': {
+      immediate: true,
+      handler(neu) {
+        const storageClass = this.storageClasses.find(sc => sc.name === neu);
+        const provisioner = storageClass?.provisioner;
+        const engine = storageClass?.parameters?.dataEngine;
+
+        this.value.accessMode = provisioner === LVM_DRIVER || engine === DATA_ENGINE_V2 ? 'ReadWriteOnce' : 'ReadWriteMany';
+      }
+    },
+
     'value.type'(neu) {
       if (neu === 'cd-rom') {
         this.$set(this.value, 'bus', 'sata');
