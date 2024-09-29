@@ -25,6 +25,9 @@ import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations
 import impl, { QGA_JSON, USB_TABLET } from './impl';
 import { uniq } from '@shell/utils/array';
 import { parseVolumeClaimTemplates } from '../../utils/vm';
+import { LONGHORN_VERSION_V1, LONGHORN_VERSION_V2 } from '@shell/models/persistentvolume';
+
+const LONGHORN_V2_DATA_ENGINE = 'longhorn-system/v2-data-engine';
 
 export const MANAGEMENT_NETWORK = 'management Network';
 
@@ -100,6 +103,7 @@ export default {
       vms:               this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VM }),
       secrets:           this.$store.dispatch(`${ inStore }/findAll`, { type: SECRET }),
       addons:            this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.ADD_ONS }),
+      longhornV2Engine:  this.$store.dispatch(`${ inStore }/find`, { type: LONGHORN.SETTINGS, id: LONGHORN_V2_DATA_ENGINE }),
     };
 
     if (this.$store.getters[`${ inStore }/schemaFor`](NODE)) {
@@ -241,7 +245,7 @@ export default {
     defaultStorageClass() {
       const defaultStorage = this.$store.getters[`${ this.inStore }/all`](STORAGE_CLASS).find( O => O.isDefault);
 
-      return defaultStorage?.metadata?.name || 'longhorn';
+      return defaultStorage;
     },
 
     storageClassSetting() {
@@ -252,6 +256,12 @@ export default {
       } catch (e) {
         return {};
       }
+    },
+
+    longhornSystemVersion() {
+      const v2DataEngine = this.$store.getters[`${ this.inStore }/byId`](LONGHORN.SETTINGS, LONGHORN_V2_DATA_ENGINE) || {};
+
+      return v2DataEngine.value === 'true' ? LONGHORN_VERSION_V2 : LONGHORN_VERSION_V1;
     },
 
     customVolumeMode() {
@@ -445,7 +455,7 @@ export default {
           id:               randomStr(5),
           source:           SOURCE_TYPE.IMAGE,
           name:             'disk-0',
-          accessMode:       'ReadWriteMany',
+          accessMode:       this.longhornSystemVersion === LONGHORN_VERSION_V2 ? 'ReadWriteOnce' : 'ReadWriteMany',
           bus,
           volumeName:       '',
           size,
