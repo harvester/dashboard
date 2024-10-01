@@ -818,7 +818,7 @@ export function init($plugin, store) {
   });
 
   virtualType({
-    label:      'Addons',
+    label:      'Add-ons',
     group:      'advanced',
     name:       HCI.ADD_ONS,
     ifHaveType: HCI.ADD_ONS,

@@ -1563,6 +1563,11 @@ typeLabel:
       one { Cluster Network }
       other { Cluster Networks }
     }
+  harvesterhci.io.addon: |-
+    {count, plural,
+      one { Add-on }
+      other { Add-ons }
+    }
   devices.harvesterhci.io.sriovnetworkdevice: |-
     {count, plural,
       one { SR-IOV Network Device }
