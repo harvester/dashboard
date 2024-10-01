@@ -69,7 +69,7 @@ export default {
   },
 
   typeDisplay() {
-    return this.$store.getters['type-map/labelFor'](schema);
+    return this.$store.getters['type-map/labelFor'](schema, 99);
   }
 };
 </script>
