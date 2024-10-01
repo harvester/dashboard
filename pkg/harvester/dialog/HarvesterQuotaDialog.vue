@@ -88,7 +88,6 @@ export default {
         v-int-number
         :label="t('harvester.snapshot.totalSnapshotSize')"
         :disabled="false"
-        :mode="create"
         :input-exponent="3"
         :increment="1024"
         :output-modifier="true"
