@@ -8,6 +8,7 @@ import VGpuDeviceList from './VGpuDeviceList';
 
 import remove from 'lodash/remove';
 import { set } from '@shell/utils/object';
+import { uniq } from '@shell/utils/array';
 
 export default {
   name:       'VirtualMachineVGpuDevices',
@@ -45,7 +46,10 @@ export default {
       this[key] = res[key];
     }
 
-    (this.value?.domain?.devices?.gpus || []).forEach(({ name }) => {
+    uniq([
+      ...(this.value?.domain?.devices?.gpus || []).map(({ name }) => name),
+      ...Object.values(this.vm?.provisionedVGpus).reduce((acc, gpus) => [...acc, ...gpus], [])
+    ]).forEach((name) => {
       if (this.enabledDevices.find(device => device?.metadata?.name === name)) {
         this.selectedDevices.push(name);
       }
