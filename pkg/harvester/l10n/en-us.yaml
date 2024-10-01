@@ -1029,7 +1029,7 @@ harvester:
     configuration:
       label: Configuration
     alertmanagerConfig:
-      label: Alertmanager Configuration
+      label: Alertmanager Configurations
       diabledMonitoringTips:
         prefix: 'Enable the'
         middle: 'monitoring'
@@ -1049,13 +1049,13 @@ harvester:
         fluentbit: Fluentbit
         fluentd: Fluentd
     clusterFlow:
-      label: Cluster Flow
+      label: Cluster Flows
     clusterOutput:
-      label: Cluster Output
+      label: Cluster Outputs
     flow:
-      label: Flow
+      label: Flows
     output:
-      label: Output
+      label: Outputs
     diabledTips:
         prefix: 'Enable'
         middle: 'logging'
