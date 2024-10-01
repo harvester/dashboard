@@ -899,6 +899,7 @@ harvester:
       cert: Upload a self-signed SSL certificate
     vlanChangeTip: The newly modified default network interface only applies to newly added nodes, not existing ones.
     defaultPhysicalNIC: Default Network Interface
+    modifiedMessage: Settings that have been customized from default settings are tagged with 'Modified'.
     percentTip: The value in parentheses represents the distribution percentage of the network interface on all hosts. If an interface less than 100% is selected, the user needs to manually specify the network interface on the host where the vlan network configuration fails.
     message:
       ca:
