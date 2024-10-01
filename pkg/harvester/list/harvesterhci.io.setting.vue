@@ -138,7 +138,7 @@ export default {
   <div v-else>
     <Banner color="warning" class="settings-banner">
       <div>
-        {{ t('advancedSettings.subtext') }}
+        {{ t('harvester.setting.modifiedMessage') }}
       </div>
     </Banner>
 
