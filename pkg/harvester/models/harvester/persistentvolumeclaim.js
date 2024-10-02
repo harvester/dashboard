@@ -10,6 +10,9 @@ import { get, clone } from '@shell/utils/object';
 import { colorForState } from '@shell/plugins/dashboard-store/resource-class';
 import HarvesterResource from '../harvester';
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../../config/harvester';
+import { STORAGE_CLASS } from '@shell/config/types';
+import { LONGHORN_DRIVER } from '@shell/models/persistentvolume';
+import { DATA_ENGINE_V2 } from '../../edit/harvesterhci.io.storage/index.vue';
 
 const DEGRADED_ERROR = 'replica scheduling failed';
 
@@ -30,20 +33,27 @@ export default class HciPv extends HarvesterResource {
   }
 
   get availableActions() {
-    const out = super._availableActions;
+    let out = super._availableActions;
+
     const clone = out.find(action => action.action === 'goToClone');
 
     if (clone) {
       clone.action = 'goToCloneVolume';
     }
 
+    if (this.storageClass.provisioner !== LONGHORN_DRIVER || this.storageClass.longhornVersion !== DATA_ENGINE_V2) {
+      out = [
+        {
+          action:  'exportImage',
+          enabled: this.hasAction('export') && !this.isEncrypted,
+          icon:    'icon icon-copy',
+          label:   this.t('harvester.action.exportImage')
+        },
+        ...out
+      ];
+    }
+
     return [
-      {
-        action:  'exportImage',
-        enabled: this.hasAction('export') && !this.isEncrypted,
-        icon:    'icon icon-copy',
-        label:   this.t('harvester.action.exportImage')
-      },
       {
         action:  'cancelExpand',
         enabled: this.hasAction('cancelExpand'),
@@ -92,6 +102,12 @@ export default class HciPv extends HarvesterResource {
     const keys = [HCI_ANNOTATIONS.IMAGE_ID, DESCRIPTION];
 
     this.metadata.annotations = pick(this.metadata.annotations, keys);
+  }
+
+  get storageClass() {
+    const inStore = this.$rootGetters['currentProduct'].inStore;
+
+    return this.$rootGetters[`${ inStore }/all`](STORAGE_CLASS).find(sc => sc.name === this.spec.storageClassName);
   }
 
   get canUpdate() {
