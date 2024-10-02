@@ -757,6 +757,8 @@ harvester:
     externalLink:
       tips: Check volume details
     rebuildingMessage: 'Rebuilding: {percentage}%'
+    longhorn:
+      disableResize: 'Longhorn V2 volumes cannot be resized.'
 
   image:
     label: Images
