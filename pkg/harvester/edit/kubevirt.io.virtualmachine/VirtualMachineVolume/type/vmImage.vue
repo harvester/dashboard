@@ -12,6 +12,8 @@ import { formatSi, parseSi } from '@shell/utils/units';
 import { VOLUME_TYPE, InterfaceOption } from '../../../../config/harvester-map';
 import { _VIEW } from '@shell/config/query-params';
 import { ucFirst } from '@shell/utils/string';
+import { LONGHORN_DRIVER } from '@shell/models/persistentvolume';
+import { DATA_ENGINE_V2 } from '../../../harvesterhci.io.storage/index.vue';
 
 export default {
   name: 'HarvesterEditVMImage',
@@ -112,6 +114,10 @@ export default {
       return allPVCs.find((P) => {
         return this.namespace ? P.id === `${ this.namespace }/${ this.value.volumeName }` : true;
       });
+    },
+
+    isLonghornV2() {
+      return this.value.pvc?.storageClass?.provisioner === LONGHORN_DRIVER && this.value.pvc?.storageClass?.longhornVersion === DATA_ENGINE_V2;
     }
   },
 
@@ -278,6 +284,7 @@ export default {
             :label="t('harvester.fields.size')"
             :mode="mode"
             :required="validateRequired"
+            :disable="isLonghornV2"
             suffix="GiB"
             @input="update"
           />
