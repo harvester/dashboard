@@ -101,12 +101,6 @@ export default {
   },
 
   methods: {
-    // show() {
-    //   // console.log('🚀 ~ NoVNCconsoleCustomKeys ~ show:');
-    //   // this.showModal = true;
-    //   // this.$refs.recordShortcutKeys.open();
-    // },
-
     closeRecordingModal() {
       window.removeEventListener('keydown', this.handleShortcut);
       this.$emit('close');
