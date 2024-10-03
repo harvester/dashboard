@@ -153,10 +153,14 @@ harvester:
     snapshot: Take Snapshot
     pvcClone: Clone Volume
 <<<<<<< HEAD
+<<<<<<< HEAD
     vmSnapshot: Take VM Snapshot
 =======
     vmSnapshot: Take Snapshot
 >>>>>>> 85b311da3 (Port app-modal into harvester shell)
+=======
+    vmSnapshot: Take Virtual Machine Snapshot
+>>>>>>> 5f6559533 (revert: take vm snapshot wording)
     shutdown: Shut Down
     powerOn: Power On
     reboot: Reboot
