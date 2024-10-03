@@ -81,6 +81,7 @@ export default {
       provisioner,
       volumeGroupDialog: null,
       randomStr:         randomStr(10).toLowerCase(),
+      isOpen:            false
     };
   },
 
@@ -308,11 +309,11 @@ export default {
   methods: {
     showCreateVolumeGroup() {
       this.volumeGroupDialog = null;
-      this.$modal.show(this.randomStr);
+      this.isOpen = true;
     },
 
     hideCreateVolumeGroup() {
-      this.$modal.hide(this.randomStr);
+      this.isOpen = false;
     },
 
     saveCreateVolumeGroup(buttonCb) {
@@ -476,10 +477,12 @@ export default {
       </div>
     </div>
     <ModalWithCard
+      v-if="isOpen"
       :ref="randomStr"
       :name="randomStr"
       width="30%"
       @finish="saveCreateVolumeGroup"
+      @close="hideCreateVolumeGroup"
     >
       <template #title>
         {{ t('harvester.host.disk.lvmVolumeGroup.label') }}
