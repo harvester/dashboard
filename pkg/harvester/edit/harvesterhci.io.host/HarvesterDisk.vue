@@ -41,7 +41,22 @@ export default {
     },
   },
   data() {
+<<<<<<< HEAD
     return {};
+=======
+    let provisioner = `${ this.value.provisioner || LONGHORN_DRIVER }`;
+
+    if (provisioner === LONGHORN_DRIVER) {
+      provisioner = `${ provisioner }_${ this.value.provisionerVersion || LONGHORN_VERSION_V1 }`;
+    }
+
+    return {
+      provisioner,
+      volumeGroupDialog: null,
+      randomStr:         randomStr(10).toLowerCase(),
+      isOpen:            false
+    };
+>>>>>>> 874e19146 (remove this. in HarvesterDisk.vue)
   },
   computed: {
     targetDisk() {
@@ -155,6 +170,24 @@ export default {
     },
   },
   methods: {
+<<<<<<< HEAD
+=======
+    showCreateVolumeGroup() {
+      this.volumeGroupDialog = null;
+      this.isOpen = true;
+    },
+
+    hideCreateVolumeGroup() {
+      this.isOpen = false;
+    },
+
+    saveCreateVolumeGroup(buttonCb) {
+      buttonCb(true);
+      this.value.lvmVolumeGroup = this.volumeGroupDialog;
+      this.hideCreateVolumeGroup();
+    },
+
+>>>>>>> 874e19146 (remove this. in HarvesterDisk.vue)
     update() {
       this.$emit('input', this.value);
     },
@@ -280,6 +313,31 @@ export default {
         </RadioGroup>
       </div>
     </div>
+<<<<<<< HEAD
+=======
+    <ModalWithCard
+      v-if="isOpen"
+      :ref="randomStr"
+      :name="randomStr"
+      width="30%"
+      @finish="saveCreateVolumeGroup"
+      @close="hideCreateVolumeGroup"
+    >
+      <template #title>
+        {{ t('harvester.host.disk.lvmVolumeGroup.label') }}
+      </template>
+
+      <template #content>
+        <LabeledInput
+          v-model="volumeGroupDialog"
+          :label="t('generic.name')"
+          class="mb-20"
+          required
+          @keydown.native.enter.prevent="()=>{}"
+        />
+      </template>
+    </ModalWithCard>
+>>>>>>> 874e19146 (remove this. in HarvesterDisk.vue)
   </div>
 </template>
 
