@@ -4,7 +4,6 @@ import UnitInput from '@shell/components/form/UnitInput';
 import InputOrDisplay from '@shell/components/InputOrDisplay';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
-import { Banner } from '@components/Banner';
 import { PVC, STORAGE_CLASS } from '@shell/config/types';
 import { formatSi, parseSi } from '@shell/utils/units';
 import { VOLUME_TYPE, InterfaceOption } from '../../../../config/harvester-map';
@@ -18,7 +17,7 @@ import { LONGHORN_DRIVER } from '@shell/models/persistentvolume';
 export default {
   name:       'HarvesterEditVolume',
   components: {
-    InputOrDisplay, Loading, LabeledInput, LabeledSelect, UnitInput, LabelValue, Banner
+    InputOrDisplay, Loading, LabeledInput, LabeledSelect, UnitInput, LabelValue
   },
 
   props: {

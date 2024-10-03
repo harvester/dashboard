@@ -4,7 +4,9 @@ import ResourceTable from '@shell/components/ResourceTable';
 import HarvesterVolumeState from '../formatters/HarvesterVolumeState';
 
 import { allSettled } from '../utils/promise';
-import { PV, PVC, SCHEMA, LONGHORN, STORAGE_CLASS } from '@shell/config/types';
+import {
+  PV, PVC, SCHEMA, LONGHORN, STORAGE_CLASS
+} from '@shell/config/types';
 import { HCI, VOLUME_SNAPSHOT } from '../types';
 import { STATE, AGE, NAME, NAMESPACE } from '@shell/config/table-headers';
 

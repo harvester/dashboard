@@ -11,9 +11,9 @@ import ModalWithCard from '@shell/components/ModalWithCard';
 import { PVC } from '@shell/config/types';
 import { HCI } from '../../../types';
 import { clone } from '@shell/utils/object';
-import { ucFirst } from '@shell/utils/string';
+import { ucFirst, randomStr } from '@shell/utils/string';
 import { removeObject } from '@shell/utils/array';
-import { randomStr } from '@shell/utils/string';
+
 import { SOURCE_TYPE } from '../../../config/harvester-map';
 import { _VIEW, _EDIT, _CREATE } from '@shell/config/query-params';
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../../../config/harvester';
