@@ -3,7 +3,7 @@ import KeyValue from '@shell/components/form/KeyValue';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import RadioGroup from '@components/Form/Radio/RadioGroup';
-import { SECRET, NAMESPACE, LONGHORN } from '@shell/config/types';
+import { SECRET, LONGHORN } from '@shell/config/types';
 import { _CREATE, _VIEW } from '@shell/config/query-params';
 import { CSI_SECRETS } from '@pkg/harvester/config/harvester-map';
 import { clone } from '@shell/utils/object';
@@ -55,16 +55,6 @@ export default {
     },
   },
 
-  async fetch() {
-    const inStore = this.$store.getters['currentProduct'].inStore;
-
-    await this.$store.dispatch(`${ inStore }/findAll`, { type: NAMESPACE });
-
-    const allSecrets = await this.$store.dispatch(`${ inStore }/findAll`, { type: SECRET });
-
-    // only show non-system secret to user to select
-    this.secrets = allSecrets.filter(secret => secret.isSystem === false);
-  },
   data() {
     if (this.realMode === _CREATE) {
       this.$set(this.value, 'parameters', {
@@ -78,9 +68,19 @@ export default {
       });
     }
 
-    return { secrets: [] };
+    return { };
   },
+
   computed: {
+    secrets() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+
+      const allSecrets = this.$store.getters[`${ inStore }/all`](SECRET);
+
+      // only show non-system secret to user to select
+      return allSecrets.filter(secret => secret.isSystem === false);
+    },
+
     longhornNodes() {
       const inStore = this.$store.getters['currentProduct'].inStore;
 
@@ -322,6 +322,7 @@ export default {
         :label="t('harvester.storage.volumeEncryption')"
         :mode="mode"
         :options="volumeEncryptionOptions"
+        :disabled="true"
       />
     </div>
     <div v-if="value.parameters.encrypted === 'true'" class="row mt-20">
