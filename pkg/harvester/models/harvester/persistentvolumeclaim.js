@@ -49,6 +49,12 @@ export default class HciPv extends HarvesterResource {
           icon:    'icon icon-copy',
           label:   this.t('harvester.action.exportImage')
         },
+        {
+          action:  'snapshot',
+          enabled: this.hasAction('snapshot'),
+          icon:    'icon icon-backup',
+          label:   this.t('harvester.action.snapshot'),
+        },
         ...out
       ];
     }
@@ -59,12 +65,6 @@ export default class HciPv extends HarvesterResource {
         enabled: this.hasAction('cancelExpand'),
         icon:    'icon icon-backup',
         label:   this.t('harvester.action.cancelExpand')
-      },
-      {
-        action:  'snapshot',
-        enabled: this.hasAction('snapshot'),
-        icon:    'icon icon-backup',
-        label:   this.t('harvester.action.snapshot'),
       },
       ...out
     ];

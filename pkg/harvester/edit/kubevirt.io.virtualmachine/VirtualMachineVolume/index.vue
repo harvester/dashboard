@@ -18,8 +18,6 @@ import { SOURCE_TYPE } from '../../../config/harvester-map';
 import { _VIEW, _EDIT, _CREATE } from '@shell/config/query-params';
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../../../config/harvester';
 import { PLUGIN_DEVELOPER, DEV } from '@shell/store/prefs';
-import { DATA_ENGINE_V2 } from '../../../edit/harvesterhci.io.storage/index.vue';
-import { LONGHORN_DRIVER } from '@shell/models/persistentvolume';
 
 export default {
   components: {
@@ -260,7 +258,7 @@ export default {
     },
 
     isLonghornV2(volume) {
-      return volume?.pvc?.storageClass?.provisioner === LONGHORN_DRIVER && volume?.pvc?.storageClass?.longhornVersion === DATA_ENGINE_V2;
+      return volume?.pvc?.storageClass?.isLonghornV2;
     }
   },
 };

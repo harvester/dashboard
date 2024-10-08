@@ -22,7 +22,6 @@ import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations
 import { STATE, NAME, AGE, NAMESPACE } from '@shell/config/table-headers';
 import { LVM_DRIVER } from '../models/harvester/storage.k8s.io.storageclass';
 import { DATA_ENGINE_V2 } from './harvesterhci.io.storage/index.vue';
-import { LONGHORN_DRIVER } from '@shell/models/persistentvolume';
 
 export default {
   name: 'HarvesterVolume',
@@ -225,7 +224,7 @@ export default {
     },
 
     isLonghornV2() {
-      return this.value.storageClass?.provisioner === LONGHORN_DRIVER && this.value.storageClass?.longhornVersion === DATA_ENGINE_V2;
+      return this.value.storageClass?.isLonghornV2;
     }
   },
 
