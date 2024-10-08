@@ -2,7 +2,9 @@
 import ConsoleBar from '../components/VMConsoleBar';
 import ResourceTable from '@shell/components/ResourceTable';
 import HarvesterVmState from '../formatters/HarvesterVmState';
-import { PVC, PV, NODE, POD, STORAGE_CLASS } from '@shell/config/types';
+import {
+  PVC, PV, NODE, POD, STORAGE_CLASS
+} from '@shell/config/types';
 import { STATE, AGE, NAME, NAMESPACE } from '@shell/config/table-headers';
 import { HCI } from '../types';
 import { allHash } from '@shell/utils/promise';

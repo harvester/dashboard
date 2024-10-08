@@ -599,11 +599,12 @@ export default class VirtVm extends HarvesterResource {
     const pvcs = this.$rootGetters[`${ this.productInStore }/all`](PVC);
 
     const volumeClaimNames = this.spec.template.spec.volumes?.map(v => v.persistentVolumeClaim?.claimName).filter(v => !!v) || [];
+
     return pvcs.filter(pvc => volumeClaimNames.includes(pvc.metadata.name));
   }
 
   get longhornV2Volumes() {
-    return this.volumes.filter((volume) => volume.storageClass.isLonghornV2);
+    return this.volumes.filter(volume => volume.storageClass.isLonghornV2);
   }
 
   get encryptedVolumeType() {
