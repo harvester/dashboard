@@ -14,7 +14,7 @@ import Loading from '@shell/components/Loading';
 
 import { _CREATE, _VIEW } from '@shell/config/query-params';
 import { mapFeature, UNSUPPORTED_STORAGE_DRIVERS } from '@shell/store/features';
-import { STORAGE_CLASS, LONGHORN } from '@shell/config/types';
+import { STORAGE_CLASS, LONGHORN, SECRET, NAMESPACE } from '@shell/config/types';
 import { CSI_DRIVER } from '../../types';
 import { allHash } from '@shell/utils/promise';
 import { clone } from '@shell/utils/object';
@@ -122,6 +122,8 @@ export default {
     const inStore = this.$store.getters['currentProduct'].inStore;
 
     await allHash({
+      namespaces:           this.$store.dispatch(`${ inStore }/findAll`, { type: NAMESPACE }),
+      secrets:              this.$store.dispatch(`${ inStore }/findAll`, { type: SECRET }),
       storages:             this.$store.dispatch(`${ inStore }/findAll`, { type: STORAGE_CLASS }),
       longhornNodes:        this.$store.dispatch(`${ inStore }/findAll`, { type: LONGHORN.NODES }),
       csiDrivers:           this.$store.dispatch(`${ inStore }/findAll`, { type: CSI_DRIVER }),

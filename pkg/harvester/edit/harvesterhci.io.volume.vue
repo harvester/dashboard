@@ -7,6 +7,7 @@ import ResourceTabs from '@shell/components/form/ResourceTabs';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import NameNsDescription from '@shell/components/form/NameNsDescription';
+import { Banner } from '@components/Banner';
 
 import { allHash } from '@shell/utils/promise';
 import { get } from '@shell/utils/object';
@@ -21,11 +22,13 @@ import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations
 import { STATE, NAME, AGE, NAMESPACE } from '@shell/config/table-headers';
 import { LVM_DRIVER } from '../models/harvester/storage.k8s.io.storageclass';
 import { DATA_ENGINE_V2 } from './harvesterhci.io.storage/index.vue';
+import { LONGHORN_DRIVER } from '@shell/models/persistentvolume';
 
 export default {
   name: 'HarvesterVolume',
 
   components: {
+    Banner,
     Tab,
     UnitInput,
     CruResource,
@@ -219,6 +222,10 @@ export default {
 
     rebuildStatus() {
       return this.value.longhornEngine?.status?.rebuildStatus;
+    },
+
+    isLonghornV2() {
+      return this.value.storageClass?.provisioner === LONGHORN_DRIVER && this.value.storageClass?.longhornVersion === DATA_ENGINE_V2;
     }
   },
 
@@ -340,10 +347,15 @@ export default {
           :output-modifier="true"
           :increment="1024"
           :mode="mode"
+          :disabled="isLonghornV2"
           required
           class="mb-20"
           @input="update"
         />
+
+        <Banner v-if="isLonghornV2" color="warning">
+          <span>{{ t('harvester.volume.longhorn.disableResize') }}</span>
+        </Banner>
       </Tab>
       <Tab v-if="!isCreate" name="details" :label="t('harvester.volume.tabs.details')" :weight="2.5" class="bordered-table">
         <LabeledInput v-model="frontendDisplay" class="mb-20" :mode="mode" :disabled="true" :label="t('harvester.volume.frontend')" />

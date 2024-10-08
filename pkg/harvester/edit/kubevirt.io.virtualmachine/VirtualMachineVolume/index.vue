@@ -11,12 +11,15 @@ import ModalWithCard from '@shell/components/ModalWithCard';
 import { PVC } from '@shell/config/types';
 import { HCI } from '../../../types';
 import { clone } from '@shell/utils/object';
+import { ucFirst, randomStr } from '@shell/utils/string';
 import { removeObject } from '@shell/utils/array';
-import { randomStr } from '@shell/utils/string';
+
 import { SOURCE_TYPE } from '../../../config/harvester-map';
 import { _VIEW, _EDIT, _CREATE } from '@shell/config/query-params';
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../../../config/harvester';
 import { PLUGIN_DEVELOPER, DEV } from '@shell/store/prefs';
+import { DATA_ENGINE_V2 } from '../../../edit/harvesterhci.io.storage/index.vue';
+import { LONGHORN_DRIVER } from '@shell/models/persistentvolume';
 
 export default {
   components: {
@@ -80,6 +83,7 @@ export default {
 
   data() {
     return {
+      ucFirst,
       SOURCE_TYPE,
       rows:    clone(this.value),
       nameIdx: 1,
@@ -253,6 +257,10 @@ export default {
 
     getImageDisplayName(id) {
       return this.$store.getters['harvester/all'](HCI.IMAGE).find(image => image.id === id)?.spec?.displayName;
+    },
+
+    isLonghornV2(volume) {
+      return volume?.pvc?.storageClass?.provisioner === LONGHORN_DRIVER && volume?.pvc?.storageClass?.longhornVersion === DATA_ENGINE_V2;
     }
   },
 };
@@ -327,7 +335,24 @@ export default {
               </div>
             </div>
 
-            <Banner v-if="volume.volumeStatus && !isCreate" class="mt-15 volume-status" color="warning" :label="volume.volumeStatus" />
+            <div class="mt-15">
+              <Banner
+                v-if="volume.volumeStatus && !isCreate"
+                class="volume-status"
+                color="warning"
+                :label="ucFirst(volume.volumeStatus)"
+              />
+              <Banner
+                v-if="value.volumeBackups && value.volumeBackups.error && value.volumeBackups.error.message"
+                color="error"
+                :label="ucFirst(value.volumeBackups.error.message)"
+              />
+              <Banner
+                v-if="isLonghornV2(volume) && !isView"
+                color="warning"
+                :label="t('harvester.volume.longhorn.disableResize')"
+              />
+            </div>
           </InfoBox>
         </div>
       </transition-group>
@@ -428,5 +453,9 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .banner {
+    margin: 10px 0;
   }
 </style>

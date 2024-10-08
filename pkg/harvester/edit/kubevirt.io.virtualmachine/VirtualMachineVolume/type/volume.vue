@@ -4,7 +4,6 @@ import UnitInput from '@shell/components/form/UnitInput';
 import InputOrDisplay from '@shell/components/InputOrDisplay';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
-import { Banner } from '@components/Banner';
 import { PVC, STORAGE_CLASS } from '@shell/config/types';
 import { formatSi, parseSi } from '@shell/utils/units';
 import { VOLUME_TYPE, InterfaceOption } from '../../../../config/harvester-map';
@@ -13,11 +12,12 @@ import LabelValue from '@shell/components/LabelValue';
 import { ucFirst } from '@shell/utils/string';
 import { LVM_DRIVER } from '../../../../models/harvester/storage.k8s.io.storageclass';
 import { DATA_ENGINE_V2 } from '../../../../edit/harvesterhci.io.storage/index.vue';
+import { LONGHORN_DRIVER } from '@shell/models/persistentvolume';
 
 export default {
   name:       'HarvesterEditVolume',
   components: {
-    InputOrDisplay, Loading, LabeledInput, LabeledSelect, UnitInput, LabelValue, Banner
+    InputOrDisplay, Loading, LabeledInput, LabeledSelect, UnitInput, LabelValue
   },
 
   props: {
@@ -101,6 +101,10 @@ export default {
         };
       }) || [];
     },
+
+    isLonghornV2() {
+      return this.value.pvc?.storageClass?.provisioner === LONGHORN_DRIVER && this.value.pvc?.storageClass?.longhornVersion === DATA_ENGINE_V2;
+    }
   },
 
   watch: {
@@ -233,6 +237,7 @@ export default {
             :mode="mode"
             :required="validateRequired"
             :label="t('harvester.fields.size')"
+            :disabled="isLonghornV2"
             @input="update"
           />
         </InputOrDisplay>
@@ -272,11 +277,5 @@ export default {
         />
       </div>
     </div>
-    <Banner
-      v-if="value.volumeBackups && value.volumeBackups.error && value.volumeBackups.error.message"
-      color="error"
-      class="mb-20"
-      :label="value.volumeBackups.error.message"
-    />
   </div>
 </template>
