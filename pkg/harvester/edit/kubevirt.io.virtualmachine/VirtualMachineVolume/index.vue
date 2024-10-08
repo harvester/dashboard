@@ -348,7 +348,7 @@ export default {
                 :label="ucFirst(value.volumeBackups.error.message)"
               />
               <Banner
-                v-if="isLonghornV2(volume)"
+                v-if="isLonghornV2(volume) && !isView"
                 color="warning"
                 :label="t('harvester.volume.longhorn.disableResize')"
               />
