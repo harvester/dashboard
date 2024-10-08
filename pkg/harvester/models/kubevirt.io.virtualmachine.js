@@ -152,7 +152,7 @@ export default class VirtVm extends HarvesterResource {
       },
       {
         action:  'takeVMSnapshot',
-        enabled: !!this.actions?.backup,
+        enabled: !!this.actions?.backup && !this.longhornV2Volumes.length,
         icon:    'icon icon-snapshot',
         label:   this.t('harvester.action.vmSnapshot')
       },
@@ -595,16 +595,21 @@ export default class VirtVm extends HarvesterResource {
     return vmis.find(VMI => VMI.id === this.id);
   }
 
-  get encryptedVolumeType() {
-    const inStore = this.productInStore;
-    const pvcs = this.$rootGetters[`${ inStore }/all`](PVC);
+  get volumes() {
+    const pvcs = this.$rootGetters[`${ this.productInStore }/all`](PVC);
 
     const volumeClaimNames = this.spec.template.spec.volumes?.map(v => v.persistentVolumeClaim?.claimName).filter(v => !!v) || [];
-    const volumes = pvcs.filter(pvc => volumeClaimNames.includes(pvc.metadata.name));
+    return pvcs.filter(pvc => volumeClaimNames.includes(pvc.metadata.name));
+  }
 
-    if (volumes.every(vol => vol.isEncrypted)) {
+  get longhornV2Volumes() {
+    return this.volumes.filter((volume) => volume.storageClass.isLonghornV2);
+  }
+
+  get encryptedVolumeType() {
+    if (this.volumes.every(vol => vol.isEncrypted)) {
       return 'all';
-    } else if (volumes.some(vol => vol.isEncrypted)) {
+    } else if (this.volumes.some(vol => vol.isEncrypted)) {
       return 'partial';
     } else {
       return 'none';
