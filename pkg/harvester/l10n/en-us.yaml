@@ -118,7 +118,7 @@ harvester:
       name: 'New Volume Name'
       success: 'New Volume { name } restored successfully.'
     vmSnapshot:
-      title: Take VM Snapshot
+      title: Take Virtual Machine Snapshot
       name: Name
       success: 'Take virtual machine Snapshot { name } successfully.'
     restart:
@@ -144,7 +144,7 @@ harvester:
     encryptImage: Encrypt Image
     decryptImage: Decrypt Image
     ejectCDROM: Eject CD-ROM
-    editVMQuota: Edit VM Quota
+    editVMQuota: Edit Virtual Machine Quota
     launchFormTemplate: Launch instance from template
     modifyTemplate: Modify template (Create new version)
     setDefaultVersion: Set default version
