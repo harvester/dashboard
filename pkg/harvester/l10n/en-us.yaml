@@ -195,7 +195,7 @@ harvester:
     retain: Retain
     scheduleType: Type
     maxFailure: Max Failure
-    sourceVm: Source VM
+    sourceVm: Source Virtual Machine
     vmSchedule: Virtual Machine Schedule
     hostIp: Host IP
     vm:
