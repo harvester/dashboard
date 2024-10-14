@@ -13,6 +13,7 @@ import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../../config/harvester';
 
 import { LONGHORN_DRIVER } from '@shell/models/persistentvolume';
 import { DATA_ENGINE_V2 } from '../../edit/harvesterhci.io.storage/index.vue';
+import { LVM_DRIVER } from './storage.k8s.io.storageclass';
 
 const DEGRADED_ERROR = 'replica scheduling failed';
 
@@ -35,10 +36,15 @@ export default class HciPv extends HarvesterResource {
   get availableActions() {
     let out = super._availableActions;
 
-    const clone = out.find(action => action.action === 'goToClone');
+    // LVM and Longhorn V2 provisioner do not support volume clone feature yet
+    if (this.storageClass.provisioner === LVM_DRIVER || this.storageClass.longhornVersion === DATA_ENGINE_V2) {
+      out = out.filter(action => action.action !== 'goToClone');
+    } else {
+      const clone = out.find(action => action.action === 'goToClone');
 
-    if (clone) {
-      clone.action = 'goToCloneVolume';
+      if (clone) {
+        clone.action = 'goToCloneVolume';
+      }
     }
 
     if (this.storageClass.provisioner !== LONGHORN_DRIVER || this.storageClass.longhornVersion !== DATA_ENGINE_V2) {
