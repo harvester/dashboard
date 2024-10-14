@@ -64,7 +64,7 @@ export default {
         NAMESPACE,
         {
           name:      'targetVM',
-          labelKey:  'tableHeaders.targetVm',
+          labelKey:  'harvester.tableHeaders.targetVm',
           value:     'attachVM',
           align:     'left',
           sort:      'attachVM',
