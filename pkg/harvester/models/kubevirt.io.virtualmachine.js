@@ -15,6 +15,7 @@ import { matchesSomeRegex } from '@shell/utils/string';
 import { LABELS_TO_IGNORE_REGEX } from '@shell/config/labels-annotations';
 import { BACKUP_TYPE } from '../config/types';
 import { parseVolumeClaimTemplates } from '@pkg/utils/vm';
+import { LVM_DRIVER } from './harvester/storage.k8s.io.storageclass';
 
 export const OFF = 'Off';
 
@@ -89,12 +90,17 @@ const IgnoreMessages = ['pod has unbound immediate PersistentVolumeClaims'];
 
 export default class VirtVm extends HarvesterResource {
   get availableActions() {
-    const out = super._availableActions;
+    let out = super._availableActions;
 
-    const clone = out.find(action => action.action === 'goToClone');
+    // VM attached with Longhorn V2 or LVM volume doesn't support clone feature
+    if (this.longhornV2Volumes.length > 0 || this.lvmVolumes.length > 0) {
+      out = out.filter(action => action.action !== 'goToClone');
+    } else {
+      const clone = out.find(action => action.action === 'goToClone');
 
-    if (clone) {
-      clone.action = 'goToCloneVM';
+      if (clone) {
+        clone.action = 'goToCloneVM';
+      }
     }
 
     return [
@@ -601,6 +607,10 @@ export default class VirtVm extends HarvesterResource {
     const volumeClaimNames = this.spec.template.spec.volumes?.map(v => v.persistentVolumeClaim?.claimName).filter(v => !!v) || [];
 
     return pvcs.filter(pvc => volumeClaimNames.includes(pvc.metadata.name));
+  }
+
+  get lvmVolumes() {
+    return this.volumes.filter(volume => volume.storageClass.provisioner === LVM_DRIVER);
   }
 
   get longhornV2Volumes() {
