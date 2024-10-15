@@ -95,11 +95,8 @@ export default {
       useTemplate:       false,
       hostname,
       isRestartImmediately,
-<<<<<<< HEAD
       RunStrategys,
-=======
-      // isOpen:            false,
->>>>>>> 85b311da3 (Port app-modal into harvester shell)
+      isOpen:            false,
     };
   },
 
