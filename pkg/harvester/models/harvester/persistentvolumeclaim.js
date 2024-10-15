@@ -15,7 +15,7 @@ import { LONGHORN_DRIVER } from '@shell/models/persistentvolume';
 import { DATA_ENGINE_V2 } from '../../edit/harvesterhci.io.storage/index.vue';
 import { LVM_DRIVER } from './storage.k8s.io.storageclass';
 
-const DEGRADED_ERROR = 'replica scheduling failed';
+const DEGRADED_ERRORS = ['replica scheduling failed', 'precheck new replica failed'];
 
 export default class HciPv extends HarvesterResource {
   applyDefaults(_, realMode) {
@@ -122,7 +122,7 @@ export default class HciPv extends HarvesterResource {
 
   get stateDisplay() {
     const volumeError = this.relatedPV?.metadata?.annotations?.[HCI_ANNOTATIONS.VOLUME_ERROR];
-    const degradedVolume = volumeError === DEGRADED_ERROR;
+    const degradedVolume = DEGRADED_ERRORS.includes(volumeError);
     const status = this?.status?.phase === 'Bound' && !volumeError && this.isLonghornVolumeReady ? 'Ready' : 'Not Ready';
 
     const conditions = this?.status?.conditions || [];
@@ -141,7 +141,7 @@ export default class HciPv extends HarvesterResource {
   // state is similar with stateDisplay, the reason we keep this property is the status of In-use should not be displayed on vm detail page
   get state() {
     const volumeError = this.relatedPV?.metadata?.annotations?.[HCI_ANNOTATIONS.VOLUME_ERROR];
-    const degradedVolume = volumeError === DEGRADED_ERROR;
+    const degradedVolume = DEGRADED_ERRORS.includes(volumeError);
     let status = this?.status?.phase === 'Bound' && !volumeError ? 'Ready' : 'Not Ready';
 
     const conditions = this?.status?.conditions || [];
