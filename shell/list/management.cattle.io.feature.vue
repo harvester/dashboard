@@ -8,6 +8,7 @@ import { LabeledInput } from '@components/Form/LabeledInput';
 import { MANAGEMENT } from '@shell/config/types';
 import { SETTING } from '@shell/config/settings';
 import ResourceFetch from '@shell/mixins/resource-fetch';
+import AppModal from '@shell/components/AppModal';
 
 export default {
   components: {
@@ -15,7 +16,8 @@ export default {
     Banner,
     Card,
     ResourceTable,
-    LabeledInput
+    LabeledInput,
+    AppModal
   },
   mixins: [ResourceFetch],
   props:  {
@@ -66,6 +68,7 @@ export default {
       serverUrlSetting: {},
       serverUrl:        '',
       noUrlSet:         false,
+      showModal:        false,
     };
   },
 
@@ -96,9 +99,9 @@ export default {
   watch: {
     showPromptUpdate(show) {
       if (show) {
-        this.$modal.show('toggleFlag');
+        this.showModal = true;
       } else {
-        this.$modal.hide('toggleFlag');
+        this.showModal = false;
       }
     },
 
@@ -214,14 +217,15 @@ export default {
         </div>
       </template>
     </ResourceTable>
-    <modal
+    <app-modal
+      v-if="showModal"
       class="update-modal"
       name="toggleFlag"
       :width="350"
       height="auto"
       styles="max-height: 100vh;"
       :click-to-close="!restart || !waiting"
-      @closed="close"
+      @close="close"
     >
       <Card
         v-if="!waiting"
@@ -319,7 +323,7 @@ export default {
           </button>
         </template>
       </Card>
-    </modal>
+    </app-modal>
   </div>
 </template>
 

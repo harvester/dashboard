@@ -7,6 +7,7 @@ import ModalWithCard from '@shell/components/ModalWithCard';
 const PREFERED_SHORTCUT_KEYS = 'prefered-shortcut-keys';
 
 export default {
+  name:       'NovncConsoleCustomKeys',
   components: {
     ModalWithCard, Banner, AsyncButton
   },
@@ -100,10 +101,6 @@ export default {
   },
 
   methods: {
-    show() {
-      this.$refs.recordShortcutKeys.open();
-    },
-
     closeRecordingModal() {
       window.removeEventListener('keydown', this.handleShortcut);
       this.$emit('close');
@@ -170,7 +167,10 @@ export default {
 </script>
 
 <template>
-  <ModalWithCard ref="recordShortcutKeys" name="recordShortcutKeys" :width="550">
+  <ModalWithCard
+    name="recordShortcutKeys"
+    :width="550"
+  >
     <template #title>
       <t k="harvester.virtualMachine.detail.console.customShortcutKeys" />
     </template>

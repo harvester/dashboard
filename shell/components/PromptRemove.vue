@@ -9,11 +9,13 @@ import { uniq } from '@shell/utils/array';
 import AsyncButton from '@shell/components/AsyncButton';
 import { CATALOG as CATALOG_ANNOTATIONS } from '@shell/config/labels-annotations';
 import { CATALOG } from '@shell/config/types';
+import AppModal from '@shell/components/AppModal.vue';
+
 export default {
   name: 'PromptRemove',
 
   components: {
-    Card, Checkbox, AsyncButton
+    Card, Checkbox, AsyncButton, AppModal
   },
   props: {
     /**
@@ -37,7 +39,8 @@ export default {
       preventDelete:       false,
       removeComponent:     this.$store.getters['type-map/importCustomPromptRemove'](resource),
       chartsToRemoveIsApp: false,
-      chartsDeleteCrd:     false
+      chartsDeleteCrd:     false,
+      showModal:           false,
     };
   },
   computed: {
@@ -164,7 +167,7 @@ export default {
           this.chartsToRemoveIsApp = true;
         }
 
-        this.$modal.show('promptRemove');
+        this.showModal = true;
 
         let { resource } = this.$route.params;
 
@@ -176,7 +179,7 @@ export default {
 
         this.removeComponent = this.$store.getters['type-map/importCustomPromptRemove'](resource);
       } else {
-        this.$modal.hide('promptRemove');
+        this.showModal = false;
       }
     },
 
@@ -244,6 +247,8 @@ export default {
         // where the custom dialog needs to delete additional resources - it handles those and retrurns false to get us
         // to delete the main resource
         if (handled === undefined || handled) {
+          this.close();
+
           return;
         }
       }
@@ -272,9 +277,14 @@ export default {
     },
     async parallelRemove(btnCB) {
       try {
+        if (typeof this.toRemove[0].bulkRemove !== 'undefined') {
+          await this.toRemove[0].bulkRemove(this.toRemove, {});
+        } else {
+          await Promise.all(this.toRemove.map(resource => resource.remove()));
+        }
+
         const spoofedTypes = this.getSpoofedTypes(this.toRemove);
 
-        await Promise.all(this.toRemove.map(resource => resource.remove()));
         await this.refreshSpoofedTypes(spoofedTypes);
         this.done();
       } catch (err) {
@@ -321,13 +331,14 @@ export default {
 </script>
 
 <template>
-  <modal
-    class="remove-modal"
+  <app-modal
+    v-if="showModal"
+    custom-class="remove-modal"
     name="promptRemove"
     :width="400"
     height="auto"
     styles="max-height: 100vh;"
-    @closed="close"
+    @close="close"
   >
     <Card
       class="prompt-remove"
@@ -416,7 +427,7 @@ export default {
         />
       </template>
     </Card>
-  </modal>
+  </app-modal>
 </template>
 
 <style lang='scss'>
@@ -427,15 +438,6 @@ export default {
     #confirm {
       width: 90%;
       margin-left: 3px;
-    }
-
-    .remove-modal {
-        border-radius: var(--border-radius);
-        overflow: scroll;
-        max-height: 100vh;
-        & ::-webkit-scrollbar-corner {
-          background: rgba(0,0,0,0);
-        }
     }
 
     .actions {

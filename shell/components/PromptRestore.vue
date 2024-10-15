@@ -14,6 +14,7 @@ import { DATE_FORMAT, TIME_FORMAT } from '@shell/store/prefs';
 import { escapeHtml } from '@shell/utils/string';
 import day from 'dayjs';
 import { sortBy } from '@shell/utils/sort';
+import AppModal from '@shell/components/AppModal.vue';
 
 export default {
   components: {
@@ -28,7 +29,7 @@ export default {
   name: 'PromptRestore',
 
   mixins: [
-    ChildHook,
+    ChildHook, AppModal
   ],
 
   data() {
@@ -86,12 +87,10 @@ export default {
     async showPromptRestore(show) {
       if (show) {
         this.loaded = true;
-        this.$modal.show('promptRestore');
         await this.fetchSnapshots();
         this.selectDefaultSnapshot();
       } else {
         this.loaded = false;
-        this.$modal.hide('promptRestore');
       }
     }
   },
@@ -204,12 +203,14 @@ export default {
 </script>
 
 <template>
-  <modal
-    class="promptrestore-modal"
+  <app-modal
+    v-if="loaded"
+    custom-class="promptrestore-modal"
     name="promptRestore"
     styles="background-color: var(--nav-bg); border-radius: var(--border-radius); max-height: 100vh;"
     height="auto"
     :scrollable="true"
+    @close="close"
   >
     <Card
       v-if="loaded"
@@ -287,7 +288,7 @@ export default {
         />
       </div>
     </Card>
-  </modal>
+  </app-modal>
 </template>
 
 <style lang='scss' scoped>
@@ -303,22 +304,22 @@ export default {
       min-height: 16px;
     }
 
-    ::v-deep .card-container .card-actions {
-      display: block;
-
-      button:not(:last-child) {
-        margin-right: 10px;
-      }
-
-      .banner {
-        display: flex;
-      }
-    }
-
     // Position dialog buttons on the right-hand side of the dialog
     .dialog-actions {
       display: flex;
       justify-content: flex-end;
+    }
+  }
+
+  .prompt-restore ::v-deep .card-wrap .card-actions {
+    display: block;
+
+    button:not(:last-child) {
+      margin-right: 10px;
+    }
+
+    .banner {
+      display: flex;
     }
   }
 </style>

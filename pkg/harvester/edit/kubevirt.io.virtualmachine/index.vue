@@ -96,6 +96,7 @@ export default {
       hostname,
       isRestartImmediately,
       RunStrategys,
+      isOpen:            false,
     };
   },
 
@@ -380,8 +381,10 @@ export default {
       }
 
       return new Promise((resolve) => {
-        this.$modal.show('restartDialog');
-        this.$refs.restartDialog.resolve = resolve;
+        if (this.$refs.restartDialog) {
+          this.$refs.restartDialog.open();
+          this.$refs.restartDialog.resolve = resolve;
+        }
       });
     },
 
@@ -741,7 +744,10 @@ export default {
       </Tab>
     </Tabbed>
 
-    <RestartVMDialog ref="restartDialog" :vm="value" />
+    <RestartVMDialog
+      ref="restartDialog"
+      :vm="value"
+    />
   </CruResource>
 </template>
 
