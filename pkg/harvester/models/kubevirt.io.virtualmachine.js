@@ -92,8 +92,8 @@ export default class VirtVm extends HarvesterResource {
   get availableActions() {
     let out = super._availableActions;
 
-    // VM attached with Longhorn V2 or LVM volume doesn't support clone feature
-    if (this.longhornV2Volumes.length > 0 || this.lvmVolumes.length > 0) {
+    // VM attached with Longhorn V2 volume doesn't support clone feature
+    if (this.longhornV2Volumes.length > 0) {
       out = out.filter(action => action.action !== 'goToClone');
     } else {
       const clone = out.find(action => action.action === 'goToClone');
