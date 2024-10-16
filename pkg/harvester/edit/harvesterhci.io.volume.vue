@@ -8,7 +8,6 @@ import LabeledSelect from '@shell/components/form/LabeledSelect';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import NameNsDescription from '@shell/components/form/NameNsDescription';
 import { Banner } from '@components/Banner';
-
 import { allHash } from '@shell/utils/promise';
 import { get } from '@shell/utils/object';
 import { HCI, VOLUME_SNAPSHOT } from '../types';
@@ -16,7 +15,7 @@ import { STORAGE_CLASS, LONGHORN, PV } from '@shell/config/types';
 import { sortBy } from '@shell/utils/sort';
 import { saferDump } from '@shell/utils/create-yaml';
 import { InterfaceOption, VOLUME_DATA_SOURCE_KIND } from '../config/harvester-map';
-import { _CREATE } from '@shell/config/query-params';
+import { _CREATE, _EDIT } from '@shell/config/query-params';
 import CreateEditView from '@shell/mixins/create-edit-view';
 import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 import { STATE, NAME, AGE, NAMESPACE } from '@shell/config/table-headers';
@@ -93,6 +92,10 @@ export default {
   computed: {
     isBlank() {
       return this.source === 'blank';
+    },
+
+    isEdit() {
+      return this.mode === _EDIT;
     },
 
     isVMImage() {
@@ -346,13 +349,13 @@ export default {
           :output-modifier="true"
           :increment="1024"
           :mode="mode"
-          :disabled="isLonghornV2"
+          :disabled="isLonghornV2 && isEdit"
           required
           class="mb-20"
           @input="update"
         />
 
-        <Banner v-if="isLonghornV2" color="warning">
+        <Banner v-if="isLonghornV2 && isEdit" color="warning">
           <span>{{ t('harvester.volume.longhorn.disableResize') }}</span>
         </Banner>
       </Tab>
