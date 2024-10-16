@@ -25,7 +25,6 @@ import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations
 import impl, { QGA_JSON, USB_TABLET } from './impl';
 import { uniq } from '@shell/utils/array';
 import { parseVolumeClaimTemplates } from '../../utils/vm';
-import { LONGHORN_VERSION_V1, LONGHORN_VERSION_V2 } from '@shell/models/persistentvolume';
 
 const LONGHORN_V2_DATA_ENGINE = 'longhorn-system/v2-data-engine';
 
@@ -258,12 +257,6 @@ export default {
       }
     },
 
-    longhornSystemVersion() {
-      const v2DataEngine = this.$store.getters[`${ this.inStore }/byId`](LONGHORN.SETTINGS, LONGHORN_V2_DATA_ENGINE) || {};
-
-      return v2DataEngine.value === 'true' ? LONGHORN_VERSION_V2 : LONGHORN_VERSION_V1;
-    },
-
     customVolumeMode() {
       return this.storageClassSetting.volumeMode || 'Block';
     },
@@ -455,7 +448,7 @@ export default {
           id:               randomStr(5),
           source:           SOURCE_TYPE.IMAGE,
           name:             'disk-0',
-          accessMode:       this.longhornSystemVersion === LONGHORN_VERSION_V2 ? 'ReadWriteOnce' : 'ReadWriteMany',
+          accessMode:       'ReadWriteMany', // root disk only support LHv1 volume, should be RWX
           bus,
           volumeName:       '',
           size,
