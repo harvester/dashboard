@@ -357,6 +357,7 @@ export default {
       :yamlPreview="preview"
       :yamlSave="save"
       :yamlUnpreview="unpreview"
+      :canDiff="canDiff"
     >
       <Footer
         v-if="showFooter"
