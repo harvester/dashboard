@@ -124,8 +124,8 @@ export default {
             <span v-if="setting.customized" class="modified">
               Modified
             </span>
-            <span v-if="setting.technicalPreview" v-clean-tooltip="t('advancedSettings.technicalPreview')" class="technical-preview">
-              Technical Preview
+            <span v-if="setting.experimental" v-clean-tooltip="t('advancedSettings.experimental')" class="experimental">
+              Experimental
             </span>
           </h1>
           <h2 v-clean-html="t(setting.description, {}, true)">
@@ -216,9 +216,9 @@ export default {
   font-size: 12px;
 }
 
-.technical-preview {
+.experimental {
   margin-left: 10px;
-  border: 1px solid var(--warning);
+  border: 1px solid var(--error);
   border-radius: 5px;
   padding: 2px 10px;
   font-size: 12px;
