@@ -85,7 +85,7 @@ export const HCI_ALLOWED_SETTINGS = {
     kind: 'json', from: 'import', canReset: true
   },
   [HCI_SETTING.KUBECONFIG_DEFAULT_TOKEN_TTL_MINUTES]:   {},
-  [HCI_SETTING.LONGHORN_V2_DATA_ENGINE_ENABLED]:        { kind: 'boolean', technicalPreview: true },
+  [HCI_SETTING.LONGHORN_V2_DATA_ENGINE_ENABLED]:        { kind: 'boolean', experimental: true },
   [HCI_SETTING.ADDITIONAL_GUEST_MEMORY_OVERHEAD_RATIO]: { kind: 'string', from: 'import' },
 };
 

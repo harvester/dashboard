@@ -1488,7 +1488,7 @@ harvester:
       placeholder: 'topology.kubernetes.io/zone'
 
 advancedSettings:
-  technicalPreview: 'Technical Previews allow users to test and evaluate early-access functionality prior to official supported releases'
+  experimental: 'Experimental features allow users to test and evaluate early-access functionality prior to official supported releases'
   descriptions:
     'harv-vlan': Default Network Interface name of the VLAN network.
     'harv-backup-target': Custom backup target to store virtual machine backups.
