@@ -188,7 +188,7 @@ export default {
             <Checkbox v-model="readyReleaseNote" class="check" type="checkbox" label-key="harvester.upgradePage.checkReady" />
           </div>
 
-          <Banner v-if="errors.length" color="warning">
+          <Banner v-if="errors.length" color="error">
             {{ errors }}
           </Banner>
         </div>
