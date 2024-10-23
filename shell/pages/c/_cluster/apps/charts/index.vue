@@ -177,10 +177,14 @@ export default {
       });
     },
 
-    getFeaturedCharts() {
-      const allCharts = (this.filteredCharts || []);
-
-      const featuredCharts = allCharts.filter(value => value.featured).sort((a, b) => a.featured - b.featured);
+    /**
+     * Filter valid charts (alll filters minus user provided ones) by whether they are featured or not
+     *
+     * This will power the carousel
+     */
+    featuredCharts() {
+      const filteredCharts = this.filterCharts({});
+      const featuredCharts = filteredCharts.filter(value => value.featured).sort((a, b) => a.featured - b.featured);
 
       return featuredCharts.slice(0, 5);
     },

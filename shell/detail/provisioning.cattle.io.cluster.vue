@@ -82,7 +82,26 @@ export default {
 
   async fetch() {
     await this.value.waitForProvisioner();
-    const fetchOne = {};
+
+    const extClass = this.$plugin.getDynamic('provisioner', this.value.machineProvider);
+
+    if (extClass) {
+      this.extProvider = new extClass({
+        dispatch: this.$store.dispatch,
+        getters:  this.$store.getters,
+        axios:    this.$store.$axios,
+        $plugin:  this.$store.app.$plugin,
+        $t:       this.t
+      });
+      this.extDetailTabs = {
+        ...this.extDetailTabs,
+        ...this.extProvider.detailTabs
+      };
+      this.extCustomParams = { provider: this.value.machineProvider };
+    }
+
+    const schema = this.$store.getters[`management/schemaFor`](CAPI.RANCHER_CLUSTER);
+    const fetchOne = { schemaDefinitions: schema.fetchResourceFields() };
 
     if ( this.$store.getters['management/canList'](CAPI.MACHINE_DEPLOYMENT) ) {
       fetchOne.machineDeployments = this.$store.dispatch('management/findAll', { type: CAPI.MACHINE_DEPLOYMENT });
