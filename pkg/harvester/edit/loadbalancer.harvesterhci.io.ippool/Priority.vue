@@ -31,7 +31,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['isRancherInHarvester', 'isStandaloneHarvester']),
+    ...mapGetters(['isRancherInHarvester', 'isStandaloneHarvester', 'allNamespaces']),
 
     isView() {
       return this.mode === _VIEW;
@@ -48,6 +48,28 @@ export default {
     showProjectAndCluster() {
       return !this.isStandaloneHarvester;
     },
+
+    uniqNamespaceOptions() {
+      const selectedNamespaces = this.rows.map(row => row.namespace);
+
+      const out = (this.allNamespaces || []).map((namespace) => {
+        const disabled = (selectedNamespaces.includes(namespace.id) || selectedNamespaces.includes('*')) && selectedNamespaces.length > 1;
+
+        return {
+          label: selectedNamespaces.includes('*') && selectedNamespaces.length > 1 ? `${ namespace.id } (${ this.t('harvester.ipPool.scope.overlap') })` : namespace.id,
+          value: namespace.id,
+          disabled,
+        };
+      });
+
+      const disabled = (selectedNamespaces.includes('*') || selectedNamespaces.find(n => n !== '*' && n)) && selectedNamespaces.length > 1;
+
+      return [{
+        label: (selectedNamespaces.find(n => n !== '*' && n) && selectedNamespaces.length > 1) ? `${ this.t('generic.all') } (${ this.t('harvester.ipPool.scope.overlap') })` : this.t('generic.all'),
+        value: '*',
+        disabled,
+      }, ...out];
+    },
   },
 
   created() {
@@ -59,7 +81,11 @@ export default {
       const defaultRow = { namespace: '*' };
 
       if (!this.showProjectAndCluster) {
-        this.rows.push(defaultRow);
+        if (this.rows.length === 0) {
+          this.rows.push(defaultRow);
+        } else {
+          this.rows.push({ namespace: '' });
+        }
       } else {
         this.rows.push({
           ...defaultRow,
@@ -128,6 +154,7 @@ export default {
           :mode="mode"
           :rows="rows"
           :idx="idx"
+          :uniqNamespaceOptions="uniqNamespaceOptions"
           @input="queueUpdate"
           @remove="remove(idx)"
         />
