@@ -109,7 +109,7 @@ export default {
   <app-modal
     v-if="showModal"
     custom-class="bundleModal"
-    name="bundle-modal andy"
+    name="bundle-modal"
     :click-to-close="false"
     :width="550"
     :height="390"
