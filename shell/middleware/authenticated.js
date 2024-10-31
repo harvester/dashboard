@@ -15,63 +15,11 @@ import dynamicPluginLoader from '@shell/pkg/dynamic-plugin-loader';
 import { AFTER_LOGIN_ROUTE, WORKSPACE } from '@shell/store/prefs';
 import { BACK_TO } from '@shell/config/local-storage';
 import { NAME as FLEET_NAME } from '@shell/config/product/fleet.js';
-
-const getPackageFromRoute = (route) => {
-  if (!route?.meta) {
-    return;
-  }
-  // Sometimes meta is an array... sometimes not
-  const arraySafe = Array.isArray(route.meta) ? route.meta : [route.meta];
-
-  return arraySafe.find(m => !!m.pkg)?.pkg;
-};
+import { getClusterFromRoute, getProductFromRoute, getPackageFromRoute } from '@shell/utils/router';
 
 let beforeEachSetup = false;
 
-function findMeta(route, key) {
-  if (route?.meta) {
-    const meta = Array.isArray(route.meta) ? route.meta : [route.meta];
-
-    for (let i = 0; i < meta.length; i++) {
-      if (meta[i][key]) {
-        return meta[i][key];
-      }
-    }
-  }
-
-  return undefined;
-}
-
-export function getClusterFromRoute(to) {
-  let cluster = to.params?.cluster;
-
-  if (!cluster) {
-    cluster = findMeta(to, 'cluster');
-  }
-
-  return cluster;
-}
-
-export function getProductFromRoute(to) {
-  let product = to.params?.product;
-
-  if ( !product ) {
-    const match = to.name?.match(/^c-cluster-([^-]+)/);
-
-    if ( match ) {
-      product = match[1];
-    }
-  }
-
-  // If still no product, see if the route indicates the product via route metadata
-  if (!product) {
-    product = findMeta(to, 'product');
-  }
-
-  return product;
-}
-
-function setProduct(store, to) {
+function setProduct(store, to, redirect) {
   let product = getProductFromRoute(to);
 
   if ( !product ) {
