@@ -84,7 +84,7 @@ export default {
   methods: {
     resourceNames,
     remove() {
-      const parentComponent = this.$parent.$parent.$parent;
+      const parentComponent = this.$parent.$parent.$parent.$parent;
 
       let goTo;
 
