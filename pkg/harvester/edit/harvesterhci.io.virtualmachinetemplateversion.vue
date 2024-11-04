@@ -356,19 +356,6 @@ export default {
             />
           </div>
         </div>
-
-        <div class="row mb-20">
-          <div class="col span-6">
-            <Checkbox
-              v-model="cpuPinning"
-              class="check"
-              type="checkbox"
-              label-key="harvester.virtualMachine.cpuPinning.label"
-              :mode="mode"
-            />
-          </div>
-        </div>
-
         <div class="row mb-20">
           <a v-if="showAdvanced" v-t="'harvester.generic.showMore'" role="button" @click="toggleAdvanced" />
           <a v-else v-t="'harvester.generic.showMore'" role="button" @click="toggleAdvanced" />
@@ -399,6 +386,14 @@ export default {
         />
 
         <div class="spacer"></div>
+        <Checkbox
+          v-model="cpuPinning"
+          class="check"
+          type="checkbox"
+          tooltip-key="harvester.virtualMachine.cpuPinning.tooltip"
+          label-key="harvester.virtualMachine.cpuPinning.label"
+          :mode="mode"
+        />
         <Checkbox
           v-model="installUSBTablet"
           class="check"
