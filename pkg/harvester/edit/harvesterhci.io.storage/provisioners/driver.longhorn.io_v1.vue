@@ -8,7 +8,7 @@ import { _CREATE, _VIEW } from '@shell/config/query-params';
 import { CSI_SECRETS } from '@pkg/harvester/config/harvester-map';
 import { clone } from '@shell/utils/object';
 import { uniq } from '@shell/utils/array';
-import { DATA_ENGINE_V1 } from '../index.vue';
+import { DATA_ENGINE_V1 } from '../../../models/harvester/persistentvolumeclaim';
 
 // UI components for Longhorn storage class parameters
 const DEFAULT_PARAMETERS = [

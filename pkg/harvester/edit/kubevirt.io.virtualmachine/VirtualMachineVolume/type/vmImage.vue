@@ -115,7 +115,7 @@ export default {
     },
 
     isLonghornV2() {
-      return this.value.pvc?.storageClass?.isLonghornV2;
+      return this.value.pvc?.isLonghornV2 || this.value.pvc?.storageClass?.isLonghornV2;
     }
   },
 

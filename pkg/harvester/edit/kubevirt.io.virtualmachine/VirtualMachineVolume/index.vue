@@ -258,7 +258,7 @@ export default {
     },
 
     isLonghornV2(volume) {
-      return volume?.pvc?.storageClass?.isLonghornV2;
+      return volume?.pvc?.isLonghornV2 || volume?.pvc?.storageClass?.isLonghornV2;
     }
   },
 };

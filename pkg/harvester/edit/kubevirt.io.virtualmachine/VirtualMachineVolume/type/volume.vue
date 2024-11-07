@@ -11,7 +11,7 @@ import { _VIEW } from '@shell/config/query-params';
 import LabelValue from '@shell/components/LabelValue';
 import { ucFirst } from '@shell/utils/string';
 import { LVM_DRIVER } from '../../../../models/harvester/storage.k8s.io.storageclass';
-import { DATA_ENGINE_V2 } from '../../../../edit/harvesterhci.io.storage/index.vue';
+import { DATA_ENGINE_V2 } from '../../../../models/harvester/persistentvolumeclaim';
 
 export default {
   name:       'HarvesterEditVolume',
@@ -102,7 +102,7 @@ export default {
     },
 
     isLonghornV2() {
-      return this.value.pvc?.storageClass?.isLonghornV2;
+      return this.value.pvc?.isLonghornV2 || this.value.pvc?.storageClass?.isLonghornV2;
     }
   },
 
@@ -110,11 +110,7 @@ export default {
     'value.storageClassName': {
       immediate: true,
       handler(neu) {
-        const storageClass = this.storageClasses.find(sc => sc.name === neu);
-        const provisioner = storageClass?.provisioner;
-        const engine = storageClass?.parameters?.dataEngine;
-
-        this.value.accessMode = provisioner === LVM_DRIVER || engine === DATA_ENGINE_V2 ? 'ReadWriteOnce' : 'ReadWriteMany';
+        this.value.accessMode = this.getAccessMode(neu);
       }
     },
 
@@ -146,6 +142,18 @@ export default {
   },
 
   methods: {
+    getAccessMode(storageClassName) {
+      const storageClass = this.storageClasses.find(sc => sc.name === storageClassName);
+
+      let readWriteOnce = this.value.pvc?.isLvm || this.value.pvc?.isLonghornV2;
+
+      if (storageClass) {
+        readWriteOnce = storageClass.provisioner === LVM_DRIVER || storageClass.parameters?.dataEngine === DATA_ENGINE_V2;
+      }
+
+      return readWriteOnce ? 'ReadWriteOnce' : 'ReadWriteMany';
+    },
+
     update() {
       this.$emit('update');
     },
