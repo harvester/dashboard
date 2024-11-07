@@ -99,6 +99,11 @@ export default class SteveSchema extends Schema {
    */
   get resourceFields(): ResourceFields {
     if (this.requiresResourceFields) {
+      // workaround to avoid throw below error on Rancher 2.8.x
+      if (!this.schemaDefinitionsIds && !this.schemaDefinition) {
+        return {};
+      }
+
       if (!this.schemaDefinitionsIds) {
         throw new Error(`Cannot find resourceFields for Schema ${ this.id } (schemaDefinitions have not been fetched) `);
       }
