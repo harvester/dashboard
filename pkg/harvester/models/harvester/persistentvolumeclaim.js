@@ -10,11 +10,13 @@ import { get, clone } from '@shell/utils/object';
 import { colorForState } from '@shell/plugins/dashboard-store/resource-class';
 import HarvesterResource from '../harvester';
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../../config/harvester';
-
+import { LVM_DRIVER } from './storage.k8s.io.storageclass';
 import { LONGHORN_DRIVER } from '@shell/models/persistentvolume';
-import { DATA_ENGINE_V2 } from '../../edit/harvesterhci.io.storage/index.vue';
 
 const DEGRADED_ERRORS = ['replica scheduling failed', 'precheck new replica failed'];
+
+export const DATA_ENGINE_V1 = 'v1';
+export const DATA_ENGINE_V2 = 'v2';
 
 export default class HciPv extends HarvesterResource {
   applyDefaults(_, realMode) {
@@ -36,7 +38,7 @@ export default class HciPv extends HarvesterResource {
     let out = super._availableActions;
 
     // Longhorn V2 provisioner do not support volume clone feature yet
-    if (this.storageClass.longhornVersion === DATA_ENGINE_V2) {
+    if (this.isLonghornV2) {
       out = out.filter(action => action.action !== 'goToClone');
     } else {
       const clone = out.find(action => action.action === 'goToClone');
@@ -46,7 +48,7 @@ export default class HciPv extends HarvesterResource {
       }
     }
 
-    if (this.storageClass.provisioner !== LONGHORN_DRIVER || this.storageClass.longhornVersion !== DATA_ENGINE_V2) {
+    if (!this.isLonghorn || !this.isLonghornV2) {
       out = [
         {
           action:  'exportImage',
@@ -303,6 +305,26 @@ export default class HciPv extends HarvesterResource {
 
   get relatedPV() {
     return this.$rootGetters['harvester/all'](PV).find(pv => pv.metadata?.name === this.spec?.volumeName);
+  }
+
+  get volumeProvider() {
+    return this.relatedPV?.spec.csi?.driver;
+  }
+
+  get dataEngine() {
+    return this.relatedPV?.spec.csi?.volumeAttributes?.dataEngine;
+  }
+
+  get isLvm() {
+    return this.volumeProvider === LVM_DRIVER;
+  }
+
+  get isLonghorn() {
+    return this.volumeProvider === LONGHORN_DRIVER;
+  }
+
+  get isLonghornV2() {
+    return this.dataEngine === DATA_ENGINE_V2;
   }
 
   get resourceExternalLink() {

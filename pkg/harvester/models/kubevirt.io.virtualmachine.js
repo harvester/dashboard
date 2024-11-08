@@ -15,7 +15,6 @@ import { matchesSomeRegex } from '@shell/utils/string';
 import { LABELS_TO_IGNORE_REGEX } from '@shell/config/labels-annotations';
 import { BACKUP_TYPE } from '../config/types';
 import { parseVolumeClaimTemplates } from '@pkg/utils/vm';
-import { LVM_DRIVER } from './harvester/storage.k8s.io.storageclass';
 
 export const OFF = 'Off';
 
@@ -610,11 +609,11 @@ export default class VirtVm extends HarvesterResource {
   }
 
   get lvmVolumes() {
-    return this.volumes.filter(volume => volume.storageClass.provisioner === LVM_DRIVER);
+    return this.volumes.filter(volume => volume?.isLvm);
   }
 
   get longhornV2Volumes() {
-    return this.volumes.filter(volume => volume.storageClass.isLonghornV2);
+    return this.volumes.filter(volume => volume?.isLonghornV2);
   }
 
   get encryptedVolumeType() {

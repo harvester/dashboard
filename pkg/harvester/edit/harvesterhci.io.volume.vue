@@ -20,7 +20,7 @@ import CreateEditView from '@shell/mixins/create-edit-view';
 import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 import { STATE, NAME, AGE, NAMESPACE } from '@shell/config/table-headers';
 import { LVM_DRIVER } from '../models/harvester/storage.k8s.io.storageclass';
-import { DATA_ENGINE_V2 } from './harvesterhci.io.storage/index.vue';
+import { DATA_ENGINE_V2 } from '../models/harvester/persistentvolumeclaim';
 
 export default {
   name: 'HarvesterVolume',
@@ -224,24 +224,28 @@ export default {
 
     rebuildStatus() {
       return this.value.longhornEngine?.status?.rebuildStatus;
-    },
-
-    isLonghornV2() {
-      return this.value.storageClass?.isLonghornV2;
     }
   },
 
   methods: {
+    getAccessMode() {
+      const storageClassName = this.value.spec.storageClassName;
+      const storageClass = this.storageClasses.find(sc => sc.name === storageClassName);
+
+      let readWriteOnce = this.value.isLvm || this.value.isLonghornV2;
+
+      if (storageClass) {
+        readWriteOnce = storageClass.provisioner === LVM_DRIVER || storageClass.parameters?.dataEngine === DATA_ENGINE_V2;
+      }
+
+      return readWriteOnce ? ['ReadWriteOnce'] : ['ReadWriteMany'];
+    },
     willSave() {
       this.update();
     },
     update() {
       let imageAnnotations = '';
       let storageClassName = this.value.spec.storageClassName;
-
-      const storageClass = this.storageClasses.find(sc => sc.name === storageClassName);
-      const storageClassProvisioner = storageClass?.provisioner;
-      const storageClassDataEngine = storageClass?.parameters?.dataEngine;
 
       if (this.isVMImage && this.imageId) {
         const images = this.$store.getters['harvester/all'](HCI.IMAGE);
@@ -259,7 +263,7 @@ export default {
         ...this.value.spec,
         resources:   { requests: { storage: this.storage } },
         storageClassName,
-        accessModes: storageClassProvisioner === LVM_DRIVER || storageClassDataEngine === DATA_ENGINE_V2 ? ['ReadWriteOnce'] : ['ReadWriteMany'],
+        accessModes: this.getAccessMode(),
       };
 
       this.value.setAnnotations(imageAnnotations);
@@ -349,13 +353,13 @@ export default {
           :output-modifier="true"
           :increment="1024"
           :mode="mode"
-          :disabled="isLonghornV2 && isEdit"
+          :disabled="value?.isLonghornV2 && isEdit"
           required
           class="mb-20"
           @input="update"
         />
 
-        <Banner v-if="isLonghornV2 && isEdit" color="warning">
+        <Banner v-if="value?.isLonghornV2 && isEdit" color="warning">
           <span>{{ t('harvester.volume.longhorn.disableResize') }}</span>
         </Banner>
       </Tab>

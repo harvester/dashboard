@@ -20,11 +20,9 @@ import { allHash } from '@shell/utils/promise';
 import { clone } from '@shell/utils/object';
 import { LONGHORN_DRIVER } from '@shell/models/persistentvolume';
 import { LVM_DRIVER } from '../../models/harvester/storage.k8s.io.storageclass';
+import { DATA_ENGINE_V1, DATA_ENGINE_V2 } from '../../models/harvester/persistentvolumeclaim';
 
 const LONGHORN_V2_DATA_ENGINE = 'longhorn-system/v2-data-engine';
-
-export const DATA_ENGINE_V1 = 'v1';
-export const DATA_ENGINE_V2 = 'v2';
 
 export const LVM_TOPOLOGY_LABEL = 'topology.lvm.csi/node';
 
