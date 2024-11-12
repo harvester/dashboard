@@ -55,7 +55,7 @@ export default class HciStorageClass extends StorageClass {
       key = `harvester.storage.storageClass.lvm.label`;
     }
 
-    return key ? this.$rootGetters['i18n/t'](key) : null;
+    return key ? this.$rootGetters['i18n/t'](key) : this.provisioner;
   }
 
   get isLonghornV2() {
