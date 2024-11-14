@@ -1,7 +1,5 @@
 # Harvester Dashboard
 
-[![Build Status](http://drone-publish.rancher.io/api/badges/harvester/dashboard/status.svg)](http://drone-publish.rancher.io/harvester/dashboard)
-
 Harvester Dashboard UI, Harvester is an open-source hyper-converged infrastructure (HCI) software built on Kubernetes.
 
 ## Running for Development
