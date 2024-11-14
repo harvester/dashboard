@@ -82,6 +82,8 @@ harvester:
       namespace: Namespace
       message:
         success: 'Image { name } created successfully.'
+        support:
+          longhorn: The volume uses Longhorn V2 engine, which does not <a href="https://docs.harvesterhci.io/v1.4/advanced/longhorn-v2/#limitations" target="_blank">support</a> the Export Image action.
     migration:
       failedMessage: Latest migration failed!
       title: Migration
@@ -110,11 +112,16 @@ harvester:
       name: Name
       message:
         success: 'Take Snapshot { name } successfully.'
+        support:
+          longhorn: The volume uses Longhorn V2 engine, which does not <a href="https://docs.harvesterhci.io/v1.4/advanced/longhorn-v2/#limitations" target="_blank">support</a> the Take Snapshot action.
+  
     volumeClone:
       title: Clone Volume
       name: Name
       message:
         success: 'New Volume { name } cloned successfully.'
+        support:
+          longhorn: The volume uses Longhorn V2 engine, which does not <a href="https://docs.harvesterhci.io/v1.4/advanced/longhorn-v2/#limitations" target="_blank">support</a> the clone action.
     restoreSnapshot:
       title: Restore Snapshot
       name: 'New Volume Name'
