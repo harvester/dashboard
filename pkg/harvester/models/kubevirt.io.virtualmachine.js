@@ -91,11 +91,11 @@ export default class VirtVm extends HarvesterResource {
   get availableActions() {
     let out = super._availableActions;
 
-          const clone = out.find(action => action.action === 'goToClone');
+    const clone = out.find(action => action.action === 'goToClone');
 
-      if (clone) {
-        clone.action = 'goToCloneVM';
-          }
+    if (clone) {
+      clone.action = 'goToCloneVM';
+    }
 
     return [
       {
@@ -152,7 +152,7 @@ export default class VirtVm extends HarvesterResource {
       },
       {
         action:  'takeVMSnapshot',
-        enabled: !!this.actions?.backup && !this.longhornV2Volumes.length,
+        enabled: !!this.actions?.backup,
         icon:    'icon icon-snapshot',
         label:   this.t('harvester.action.vmSnapshot')
       },
