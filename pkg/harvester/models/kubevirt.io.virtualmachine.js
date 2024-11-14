@@ -89,7 +89,7 @@ const IgnoreMessages = ['pod has unbound immediate PersistentVolumeClaims'];
 
 export default class VirtVm extends HarvesterResource {
   get availableActions() {
-    let out = super._availableActions;
+    const out = super._availableActions;
 
     const clone = out.find(action => action.action === 'goToClone');
 

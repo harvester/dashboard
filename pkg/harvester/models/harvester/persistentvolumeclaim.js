@@ -35,7 +35,7 @@ export default class HciPv extends HarvesterResource {
   }
 
   get availableActions() {
-    let out = super._availableActions;
+    const out = super._availableActions;
 
     const clone = out.find(action => action.action === 'goToClone');
 
@@ -44,19 +44,19 @@ export default class HciPv extends HarvesterResource {
     }
 
     return [
-        {
-          action:  'exportImage',
-          enabled: this.hasAction('export') && !this.isEncrypted,
-          icon:    'icon icon-copy',
-          label:   this.t('harvester.action.exportImage')
-        },
-        {
-          action:  'snapshot',
-          enabled: this.hasAction('snapshot'),
-          icon:    'icon icon-backup',
-          label:   this.t('harvester.action.snapshot'),
-        },
-              {
+      {
+        action:  'exportImage',
+        enabled: this.hasAction('export') && !this.isEncrypted,
+        icon:    'icon icon-copy',
+        label:   this.t('harvester.action.exportImage')
+      },
+      {
+        action:  'snapshot',
+        enabled: this.hasAction('snapshot'),
+        icon:    'icon icon-backup',
+        label:   this.t('harvester.action.snapshot'),
+      },
+      {
         action:  'cancelExpand',
         enabled: this.hasAction('cancelExpand'),
         icon:    'icon icon-backup',

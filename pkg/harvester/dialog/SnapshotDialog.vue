@@ -73,7 +73,8 @@ export default {
       <Banner v-if="actionResource?.isLonghornV2" color="warning">
         <t k="harvester.modal.snapshot.message.support.longhorn" :raw="true" />
       </Banner>
-      <LabeledInput v-else
+      <LabeledInput
+        v-else
         v-model="name"
         :label="t('harvester.modal.snapshot.name')"
         required
