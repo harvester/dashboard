@@ -89,17 +89,12 @@ const IgnoreMessages = ['pod has unbound immediate PersistentVolumeClaims'];
 
 export default class VirtVm extends HarvesterResource {
   get availableActions() {
-    let out = super._availableActions;
+    const out = super._availableActions;
 
-    // VM attached with Longhorn V2 volume doesn't support clone feature
-    if (this.longhornV2Volumes.length > 0) {
-      out = out.filter(action => action.action !== 'goToClone');
-    } else {
-      const clone = out.find(action => action.action === 'goToClone');
+    const clone = out.find(action => action.action === 'goToClone');
 
-      if (clone) {
-        clone.action = 'goToCloneVM';
-      }
+    if (clone) {
+      clone.action = 'goToCloneVM';
     }
 
     return [
@@ -157,7 +152,7 @@ export default class VirtVm extends HarvesterResource {
       },
       {
         action:  'takeVMSnapshot',
-        enabled: !!this.actions?.backup && !this.longhornV2Volumes.length,
+        enabled: !!this.actions?.backup,
         icon:    'icon icon-snapshot',
         label:   this.t('harvester.action.vmSnapshot')
       },

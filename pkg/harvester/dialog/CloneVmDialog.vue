@@ -91,15 +91,22 @@ export default {
     </template>
 
     <template #body>
-      <Checkbox v-model="cloneData" class="mb-10" label-key="harvester.modal.cloneVM.type" />
+      <template v-if="!actionResource?.longhornV2Volumes.length">
+        <Checkbox v-model="cloneData" class="mb-10" label-key="harvester.modal.cloneVM.type" />
 
-      <LabeledInput
-        v-show="cloneData"
-        v-model="name"
-        class="mb-20"
-        :label="t('harvester.modal.cloneVM.name')"
-        required
-      />
+        <LabeledInput
+          v-show="cloneData"
+          v-model="name"
+          class="mb-20"
+          :label="t('harvester.modal.cloneVM.name')"
+          required
+        />
+      </template>
+      <template v-else>
+        <Banner color="warning">
+          <t k="harvester.modal.cloneVM.message.support.longhorn" :raw="true" />
+        </Banner>
+      </template>
     </template>
 
     <div slot="actions" class="actions">
@@ -109,6 +116,7 @@ export default {
         </button>
 
         <AsyncButton
+          v-if="!actionResource?.longhornV2Volumes.length"
           mode="create"
           :action-label="cloneData ? t('harvester.modal.cloneVM.action.create') : t('harvester.modal.cloneVM.action.clone')"
           :disabled="cloneData && !name"

@@ -74,12 +74,16 @@ harvester:
         tip: Please enter a virtual machine name!
         success: 'Virtual machine { name } cloned successfully.'
         failed: 'Failed clone virtual machine!'
+        support:
+          longhorn: The virtual machine uses Longhorn v2 volumes, which do not <a href="https://docs.harvesterhci.io/v1.4/advanced/longhorn-v2/#limitations" target="_blank">support</a> the Clone action.
     exportImage:
       title: Export to Image
       name: Name
       namespace: Namespace
       message:
         success: 'Image { name } created successfully.'
+        support:
+          longhorn: The volume uses Longhorn V2 engine, which does not <a href="https://docs.harvesterhci.io/v1.4/advanced/longhorn-v2/#limitations" target="_blank">support</a> the Export Image action.
     migration:
       failedMessage: Latest migration failed!
       title: Migration
@@ -108,11 +112,15 @@ harvester:
       name: Name
       message:
         success: 'Take Snapshot { name } successfully.'
+        support:
+          longhorn: The volume uses Longhorn V2 engine, which does not <a href="https://docs.harvesterhci.io/v1.4/advanced/longhorn-v2/#limitations" target="_blank">support</a> the Take Snapshot action.
     volumeClone:
       title: Clone Volume
       name: Name
       message:
         success: 'New Volume { name } cloned successfully.'
+        support:
+          longhorn: The volume uses Longhorn V2 engine, which does not <a href="https://docs.harvesterhci.io/v1.4/advanced/longhorn-v2/#limitations" target="_blank">support</a> the Clone action.
     restoreSnapshot:
       title: Restore Snapshot
       name: 'New Volume Name'
@@ -120,7 +128,10 @@ harvester:
     vmSnapshot:
       title: Take Virtual Machine Snapshot
       name: Name
-      success: 'Take virtual machine Snapshot { name } successfully.'
+      message:
+        success: 'Take virtual machine Snapshot { name } successfully.'
+        support:
+          longhorn: The VM uses Longhorn v2 volumes, which do not <a href="https://docs.harvesterhci.io/v1.4/advanced/longhorn-v2/#limitations" target="_blank">support</a> the Take Snapshot action.
     restart:
       title: Restart Virtual Machine
       tip: Restart the virtual machine for configuration changes to take effect.

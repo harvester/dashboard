@@ -141,27 +141,34 @@ export default {
     </template>
 
     <template #body>
-      <LabeledSelect
-        v-model="namespace"
-        :label="t('harvester.modal.exportImage.namespace')"
-        :options="namespaces"
-        class="mb-20"
-        required
-      />
+      <template v-if="actionResource?.isLonghornV2">
+        <Banner color="warning">
+          <t k="harvester.modal.exportImage.message.support.longhorn" :raw="true" />
+        </Banner>
+      </template>
+      <template v-else>
+        <LabeledSelect
+          v-model="namespace"
+          :label="t('harvester.modal.exportImage.namespace')"
+          :options="namespaces"
+          class="mb-20"
+          required
+        />
 
-      <LabeledInput
-        v-model="name"
-        :label="t('harvester.modal.exportImage.name')"
-        required
-      />
+        <LabeledInput
+          v-model="name"
+          :label="t('harvester.modal.exportImage.name')"
+          required
+        />
 
-      <LabeledSelect
-        v-model="storageClassName"
-        :options="storageClassOptions"
-        :label="t('harvester.storage.storageClass.label')"
-        class="mt-20"
-        required
-      />
+        <LabeledSelect
+          v-model="storageClassName"
+          :options="storageClassOptions"
+          :label="t('harvester.storage.storageClass.label')"
+          class="mt-20"
+          required
+        />
+      </template>
     </template>
 
     <div slot="actions" class="actions">
@@ -171,6 +178,7 @@ export default {
         </button>
 
         <AsyncButton
+          v-if="!actionResource?.isLonghornV2"
           mode="create"
           :disabled="disableSave"
           @click="save"

@@ -35,38 +35,27 @@ export default class HciPv extends HarvesterResource {
   }
 
   get availableActions() {
-    let out = super._availableActions;
+    const out = super._availableActions;
 
-    // Longhorn V2 provisioner do not support volume clone feature yet
-    if (this.isLonghornV2) {
-      out = out.filter(action => action.action !== 'goToClone');
-    } else {
-      const clone = out.find(action => action.action === 'goToClone');
+    const clone = out.find(action => action.action === 'goToClone');
 
-      if (clone) {
-        clone.action = 'goToCloneVolume';
-      }
-    }
-
-    if (!this.isLonghorn || !this.isLonghornV2) {
-      out = [
-        {
-          action:  'exportImage',
-          enabled: this.hasAction('export') && !this.isEncrypted,
-          icon:    'icon icon-copy',
-          label:   this.t('harvester.action.exportImage')
-        },
-        {
-          action:  'snapshot',
-          enabled: this.hasAction('snapshot'),
-          icon:    'icon icon-backup',
-          label:   this.t('harvester.action.snapshot'),
-        },
-        ...out
-      ];
+    if (clone) {
+      clone.action = 'goToCloneVolume';
     }
 
     return [
+      {
+        action:  'exportImage',
+        enabled: this.hasAction('export') && !this.isEncrypted,
+        icon:    'icon icon-copy',
+        label:   this.t('harvester.action.exportImage')
+      },
+      {
+        action:  'snapshot',
+        enabled: this.hasAction('snapshot'),
+        icon:    'icon icon-backup',
+        label:   this.t('harvester.action.snapshot'),
+      },
       {
         action:  'cancelExpand',
         enabled: this.hasAction('cancelExpand'),
