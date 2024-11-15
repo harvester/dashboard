@@ -75,7 +75,7 @@ harvester:
         success: 'Virtual machine { name } cloned successfully.'
         failed: 'Failed clone virtual machine!'
         support:
-          longhorn: The VM uses Longhorn v2 volumes, which do not <a href="https://docs.harvesterhci.io/v1.4/advanced/longhorn-v2/#limitations" target="_blank">support</a> the clone action.
+          longhorn: The virtual machine uses Longhorn v2 volumes, which do not <a href="https://docs.harvesterhci.io/v1.4/advanced/longhorn-v2/#limitations" target="_blank">support</a> the Clone action.
     exportImage:
       title: Export to Image
       name: Name
