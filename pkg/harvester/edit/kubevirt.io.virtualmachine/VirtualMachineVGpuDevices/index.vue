@@ -11,7 +11,11 @@ import { set } from '@shell/utils/object';
 import { uniq } from '@shell/utils/array';
 
 export default {
+<<<<<<< HEAD
   name:       'VirtualMachinedevices',
+=======
+  name:       'VirtualMachineVGpuDevices',
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   components: {
     Banner,
     LabeledSelect,
@@ -105,6 +109,7 @@ export default {
     },
 
     devicesByNode() {
+<<<<<<< HEAD
       const out = {};
 
       this.enabledDevices.forEach((deviceCRD) => {
@@ -118,6 +123,21 @@ export default {
       });
 
       return out;
+=======
+      return this.enabledDevices?.reduce((acc, device) => {
+        const nodeName = device.spec?.nodeName;
+
+        if (nodeName) {
+          if (!acc[nodeName]) {
+            acc[nodeName] = [];
+          } else {
+            acc[nodeName].push(device);
+          }
+        }
+
+        return acc;
+      }, {});
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     },
 
     compatibleNodes() {

@@ -256,6 +256,24 @@ export const DESCRIPTION = {
   width:    300,
 };
 
+<<<<<<< HEAD
+=======
+export const NS_SNAPSHOT_QUOTA = {
+  name:          'NamespaceSnapshotQuota',
+  labelKey:      'harvester.tableHeaders.totalSnapshotQuota',
+  value:         'snapshotSizeQuota',
+  sort:          'snapshotSizeQuota',
+  align:         'center',
+  formatter:     'Si',
+  formatterOpts: {
+    opts: {
+      increment: 1024, addSuffix: true, suffix: 'i',
+    },
+    needParseSi: false
+  },
+};
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 export const DURATION = {
   name:      'duration',
   labelKey:  'tableHeaders.duration',

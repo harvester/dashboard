@@ -2,18 +2,34 @@
 import { findBy } from '@shell/utils/array';
 import UnitInput from '@shell/components/form/UnitInput';
 import { LabeledInput } from '@components/Form/LabeledInput';
+<<<<<<< HEAD
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import InputOrDisplay from '@shell/components/InputOrDisplay';
+=======
+import LabelValue from '@shell/components/LabelValue';
+import LabeledSelect from '@shell/components/form/LabeledSelect';
+import InputOrDisplay from '@shell/components/InputOrDisplay';
+import { Banner } from '@components/Banner';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 import { PVC } from '@shell/config/types';
 import { HCI } from '../../../../types';
 import { formatSi, parseSi } from '@shell/utils/units';
 import { VOLUME_TYPE, InterfaceOption } from '../../../../config/harvester-map';
+<<<<<<< HEAD
+=======
+import { _VIEW } from '@shell/config/query-params';
+import { ucFirst } from '@shell/utils/string';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 export default {
   name: 'HarvesterEditVMImage',
 
   components: {
+<<<<<<< HEAD
     UnitInput, LabeledInput, LabeledSelect, InputOrDisplay
+=======
+    UnitInput, LabeledInput, LabeledSelect, InputOrDisplay, LabelValue, Banner
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   },
 
   props: {
@@ -73,6 +89,17 @@ export default {
   },
 
   computed: {
+<<<<<<< HEAD
+=======
+    encryptionValue() {
+      return ucFirst(String(this.value.isEncrypted));
+    },
+
+    isView() {
+      return this.mode === _VIEW;
+    },
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     imagesOption() {
       return this.images.filter(c => c.isReady).sort((a, b) => a.creationTimestamp > b.creationTimestamp ? -1 : 1).map( (I) => {
         return {
@@ -88,12 +115,28 @@ export default {
       return image ? image.label : '-';
     },
 
+<<<<<<< HEAD
+=======
+    readyToUse() {
+      const val = String(this.value.volumeBackups?.readyToUse || false);
+
+      return ucFirst(val);
+    },
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     pvcsResource() {
       const allPVCs = this.$store.getters['harvester/all'](PVC) || [];
 
       return allPVCs.find((P) => {
         return this.namespace ? P.id === `${ this.namespace }/${ this.value.volumeName }` : true;
       });
+<<<<<<< HEAD
+=======
+    },
+
+    isLonghornV2() {
+      return this.value.pvc?.isLonghornV2 || this.value.pvc?.storageClass?.isLonghornV2;
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     }
   },
 
@@ -140,6 +183,7 @@ export default {
 
     onImageChange() {
       const imageResource = this.$store.getters['harvester/all'](HCI.IMAGE)?.find( I => this.value.image === I.id);
+<<<<<<< HEAD
 
       if (this.idx === 0) {
         if (/iso$/i.test(imageResource?.imageSuffix)) {
@@ -149,6 +193,26 @@ export default {
           this.$set(this.value, 'type', 'disk');
           this.$set(this.value, 'bus', 'virtio');
         }
+=======
+      const isIsoImage = /iso$/i.test(imageResource?.imageSuffix);
+      const imageSize = Math.max(imageResource?.status?.size, imageResource?.status?.virtualSize);
+
+      if (isIsoImage) {
+        this.$set(this.value, 'type', 'cd-rom');
+        this.$set(this.value, 'bus', 'sata');
+      } else {
+        this.$set(this.value, 'type', 'disk');
+        this.$set(this.value, 'bus', 'virtio');
+      }
+
+      if (imageSize) {
+        let imageSizeGiB = Math.ceil(imageSize / 1024 / 1024 / 1024);
+
+        if (!isIsoImage) {
+          imageSizeGiB = Math.max(imageSizeGiB, 10);
+        }
+        this.$set(this.value, 'size', `${ imageSizeGiB }Gi`);
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       }
 
       this.update();
@@ -251,6 +315,10 @@ export default {
             :label="t('harvester.fields.size')"
             :mode="mode"
             :required="validateRequired"
+<<<<<<< HEAD
+=======
+            :disable="isLonghornV2"
+>>>>>>> b5455bcb (fix: separate used/allocated units)
             suffix="GiB"
             @input="update"
           />
@@ -261,7 +329,11 @@ export default {
     <div class="row mb-20">
       <div
         data-testid="input-hevi-bus"
+<<<<<<< HEAD
         class="col span-3"
+=======
+        class="col span-6"
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       >
         <InputOrDisplay
           :name="t('harvester.virtualMachine.volume.bus')"
@@ -277,6 +349,33 @@ export default {
           />
         </InputOrDisplay>
       </div>
+<<<<<<< HEAD
     </div>
+=======
+      <div
+        v-if="isView"
+        class="col span-3"
+      >
+        <LabelValue
+          :name="t('harvester.virtualMachine.volume.encryption')"
+          :value="encryptionValue"
+        />
+      </div>
+    </div>
+    <div class="row mb-20">
+      <div v-if="value.volumeBackups && isView" class="col span-3">
+        <LabelValue
+          :name="t('harvester.virtualMachine.volume.readyToUse')"
+          :value="readyToUse"
+        />
+      </div>
+    </div>
+    <Banner
+      v-if="value.volumeBackups && value.volumeBackups.error && value.volumeBackups.error.message"
+      color="error"
+      class="mb-20"
+      :label="value.volumeBackups.error.message"
+    />
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   </div>
 </template>

@@ -11,7 +11,13 @@ import { allHash } from '@shell/utils/promise';
 import { randomStr } from '@shell/utils/string';
 import { base64Decode } from '@shell/utils/crypto';
 import { formatSi, parseSi } from '@shell/utils/units';
+<<<<<<< HEAD
 import { ADD_ONS, SOURCE_TYPE, ACCESS_CREDENTIALS } from '../../config/harvester-map';
+=======
+import {
+  ADD_ONS, SOURCE_TYPE, ACCESS_CREDENTIALS, maintenanceStrategies, runStrategies
+} from '../../config/harvester-map';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 import { _CLONE, _CREATE, _VIEW } from '@shell/config/query-params';
 import {
   PV, PVC, STORAGE_CLASS, NODE, SECRET, CONFIG_MAP, NETWORK_ATTACHMENT, NAMESPACE, LONGHORN
@@ -24,6 +30,11 @@ import impl, { QGA_JSON, USB_TABLET } from './impl';
 import { uniq } from '@shell/utils/array';
 import { parseVolumeClaimTemplates } from '../../utils/vm';
 
+<<<<<<< HEAD
+=======
+const LONGHORN_V2_DATA_ENGINE = 'longhorn-system/v2-data-engine';
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 export const MANAGEMENT_NETWORK = 'management Network';
 
 export const OS = [{
@@ -49,6 +60,10 @@ export const OS = [{
   value: 'oracle'
 }, {
   label: 'Red Hat',
+<<<<<<< HEAD
+=======
+  match: ['redhat', 'rhel'],
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   value: 'redhat'
 }, {
   label: 'openSUSE',
@@ -97,6 +112,10 @@ export default {
       vms:               this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VM }),
       secrets:           this.$store.dispatch(`${ inStore }/findAll`, { type: SECRET }),
       addons:            this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.ADD_ONS }),
+<<<<<<< HEAD
+=======
+      longhornV2Engine:  this.$store.dispatch(`${ inStore }/find`, { type: LONGHORN.SETTINGS, id: LONGHORN_V2_DATA_ENGINE }),
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     };
 
     if (this.$store.getters[`${ inStore }/schemaFor`](NODE)) {
@@ -120,11 +139,18 @@ export default {
     const hasPCISchema = !!this.$store.getters[`${ inStore }/schemaFor`](HCI.PCI_DEVICE);
     const hasSRIOVGPUSchema = !!this.$store.getters[`${ inStore }/schemaFor`](HCI.SR_IOVGPU_DEVICE);
 
+<<<<<<< HEAD
     const hasPCIAddon = res.addons.find(addon => addon.name === ADD_ONS.PCI_DEVICE_CONTROLLER)?.spec?.enabled === true;
     const hasSriovgpuAddon = res.addons.find(addon => addon.name === ADD_ONS.NVIDIA_DRIVER_TOOLKIT_CONTROLLER)?.spec?.enabled === true;
 
     this.enabledPCI = hasPCIAddon && hasPCISchema;
     this.enabledSriovgpu = hasSriovgpuAddon && hasPCIAddon && hasSRIOVGPUSchema;
+=======
+    const enabledAddons = res.addons.reduce((acc, addon) => ({ ...acc, [addon.name]: addon.spec?.enabled }), {});
+
+    this.enabledPCI = hasPCISchema && enabledAddons[ADD_ONS.PCI_DEVICE_CONTROLLER];
+    this.enabledSriovgpu = hasSRIOVGPUSchema && enabledAddons[ADD_ONS.PCI_DEVICE_CONTROLLER] && enabledAddons[ADD_ONS.NVIDIA_DRIVER_TOOLKIT_CONTROLLER];
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   },
 
   data() {
@@ -136,6 +162,12 @@ export default {
       spec:                          null,
       osType:                        'linux',
       sshKey:                        [],
+<<<<<<< HEAD
+=======
+      maintenanceStrategies,
+      maintenanceStrategy:           'Migrate',
+      runStrategies,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       runStrategy:                   'RerunOnFailure',
       installAgent:                  true,
       hasCreateVolumes:              [],
@@ -164,6 +196,10 @@ export default {
       enabledSriovgpu:               false,
       immutableMode:                 this.realMode === _CREATE ? _CREATE : _VIEW,
       terminationGracePeriodSeconds: '',
+<<<<<<< HEAD
+=======
+      cpuPinning:                    false,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     };
   },
 
@@ -235,7 +271,11 @@ export default {
     defaultStorageClass() {
       const defaultStorage = this.$store.getters[`${ this.inStore }/all`](STORAGE_CLASS).find( O => O.isDefault);
 
+<<<<<<< HEAD
       return defaultStorage?.metadata?.name || 'longhorn';
+=======
+      return defaultStorage;
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     },
 
     storageClassSetting() {
@@ -297,7 +337,11 @@ export default {
       } = config;
 
       const vm = this.resource === HCI.VM ? value : this.resource === HCI.BACKUP ? this.value.status?.source : value.spec.vm;
+<<<<<<< HEAD
 
+=======
+      const volumeBackups = this.resource === HCI.BACKUP ? this.value.status?.volumeBackups : null;
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       const spec = vm?.spec;
 
       if (!spec) {
@@ -316,6 +360,14 @@ export default {
         };
       }
 
+<<<<<<< HEAD
+=======
+      if (!vm.metadata.labels) {
+        vm.metadata.labels = {};
+      }
+      const maintenanceStrategy = vm.metadata.labels?.[HCI_ANNOTATIONS.VM_MAINTENANCE_MODE_STRATEGY] || 'Migrate';
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       const runStrategy = spec.runStrategy || 'RerunOnFailure';
       const machineType = value.machineType;
       const cpu = spec.template.spec.domain?.cpu?.cores;
@@ -326,7 +378,12 @@ export default {
       const sshKey = this.getSSHFromAnnotation(spec) || [];
 
       const imageId = this.getRootImageId(vm) || '';
+<<<<<<< HEAD
       const diskRows = this.getDiskRows(vm);
+=======
+      const diskRows = this.getDiskRows(vm, volumeBackups);
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       const networkRows = this.getNetworkRows(vm, { fromTemplate, init });
       const hasCreateVolumes = this.getHasCreatedVolumes(spec) || [];
 
@@ -352,6 +409,10 @@ export default {
       const efiEnabled = this.isEfiEnabled(spec);
       const tpmEnabled = this.isTpmEnabled(spec);
       const secureBoot = this.isSecureBoot(spec);
+<<<<<<< HEAD
+=======
+      const cpuPinning = this.isCpuPinning(spec);
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
       const secretRef = this.getSecret(spec);
       const accessCredentials = this.getAccessCredentials(spec);
@@ -362,6 +423,10 @@ export default {
       }
 
       this.$set(this, 'spec', spec);
+<<<<<<< HEAD
+=======
+      this.$set(this, 'maintenanceStrategy', maintenanceStrategy);
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       this.$set(this, 'runStrategy', runStrategy);
       this.$set(this, 'secretRef', secretRef);
       this.$set(this, 'accessCredentials', accessCredentials);
@@ -382,6 +447,10 @@ export default {
       this.$set(this, 'efiEnabled', efiEnabled);
       this.$set(this, 'tpmEnabled', tpmEnabled);
       this.$set(this, 'secureBoot', secureBoot);
+<<<<<<< HEAD
+=======
+      this.$set(this, 'cpuPinning', cpuPinning);
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
       this.$set(this, 'hasCreateVolumes', hasCreateVolumes);
       this.$set(this, 'networkRows', networkRows);
@@ -392,7 +461,11 @@ export default {
       this.refreshYamlEditor();
     },
 
+<<<<<<< HEAD
     getDiskRows(vm) {
+=======
+    getDiskRows(vm, volBackups) {
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       const namespace = vm.metadata.namespace;
       const _volumes = vm.spec.template.spec.volumes || [];
       const _disks = vm.spec.template.spec.domain.devices.disks || [];
@@ -401,10 +474,39 @@ export default {
       let out = [];
 
       if (_disks.length === 0) {
+<<<<<<< HEAD
+=======
+        let bus = 'virtio';
+        let type = HARD_DISK;
+        let size = '10Gi';
+
+        const imageResource = this.images.find( I => this.imageId === I.id);
+
+        const isIsoImage = /iso$/i.test(imageResource?.imageSuffix);
+        const imageSize = Math.max(imageResource?.status?.size, imageResource?.status?.virtualSize);
+        const isEncrypted = imageResource?.isEncrypted || false;
+        const volumeBackups = volBackups?.find(vBackup => vBackup.volumeName === 'disk-0') || null ;
+
+        if (isIsoImage) {
+          bus = 'sata';
+          type = CD_ROM;
+        }
+
+        if (imageSize) {
+          let imageSizeGiB = Math.ceil(imageSize / 1024 / 1024 / 1024);
+
+          if (!isIsoImage) {
+            imageSizeGiB = Math.max(imageSizeGiB, 10);
+          }
+          size = `${ imageSizeGiB }Gi`;
+        }
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         out.push({
           id:               randomStr(5),
           source:           SOURCE_TYPE.IMAGE,
           name:             'disk-0',
+<<<<<<< HEAD
           accessMode:       'ReadWriteMany',
           bus:              'virtio',
           volumeName:       '',
@@ -413,6 +515,18 @@ export default {
           storageClassName: '',
           image:            this.imageId,
           volumeMode:       'Block',
+=======
+          accessMode:       'ReadWriteMany', // root disk only support LHv1 volume, should be RWX
+          bus,
+          volumeName:       '',
+          size,
+          type,
+          storageClassName: '',
+          image:            this.imageId,
+          volumeMode:       'Block',
+          isEncrypted,
+          volumeBackups,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         });
       } else {
         out = _disks.map( (DISK, index) => {
@@ -489,7 +603,16 @@ export default {
             minExponent: 3,
           });
 
+<<<<<<< HEAD
           const volumeStatus = this.pvcs.find(P => P.id === `${ this.value.metadata.namespace }/${ volumeName }`)?.relatedPV?.metadata?.annotations?.[HCI_ANNOTATIONS.VOLUME_ERROR];
+=======
+          const pvc = this.pvcs.find(P => P.id === `${ this.value.metadata.namespace }/${ volumeName }`);
+
+          const volumeStatus = pvc?.relatedPV?.metadata?.annotations?.[HCI_ANNOTATIONS.VOLUME_ERROR];
+
+          const isEncrypted = pvc?.isEncrypted || false;
+          const volumeBackups = volBackups?.find(vBackup => vBackup.volumeName === DISK.name) || null;
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
           return {
             id:         randomStr(5),
@@ -509,7 +632,13 @@ export default {
             hotpluggable,
             volumeStatus,
             dataSource,
+<<<<<<< HEAD
             namespace
+=======
+            namespace,
+            isEncrypted,
+            volumeBackups,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
           };
         });
       }
@@ -574,6 +703,15 @@ export default {
       } else {
         vm.metadata.annotations[HCI_ANNOTATIONS.VM_RESERVED_MEMORY] = this.reservedMemory;
       }
+<<<<<<< HEAD
+=======
+
+      if (this.maintenanceStrategy === 'Migrate') {
+        delete vm.metadata.labels[HCI_ANNOTATIONS.VM_MAINTENANCE_MODE_STRATEGY];
+      } else {
+        vm.metadata.labels[HCI_ANNOTATIONS.VM_MAINTENANCE_MODE_STRATEGY] = this.maintenanceStrategy;
+      }
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     },
 
     parseDiskRows(disk) {
@@ -819,6 +957,13 @@ export default {
       }
     },
 
+<<<<<<< HEAD
+=======
+    getMaintenanceStrategyOptionLabel(opt) {
+      return this.t(`harvester.virtualMachine.maintenanceStrategy.options.${ opt.label || opt }`);
+    },
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     getInitUserData(config) {
       const _QGA_JSON = this.getMatchQGA(config.osType);
 
@@ -1339,6 +1484,17 @@ export default {
       }
     },
 
+<<<<<<< HEAD
+=======
+    setCpuPinning(value) {
+      if (value) {
+        set(this.spec.template.spec.domain.cpu, 'dedicatedCpuPlacement', true);
+      } else {
+        this.$delete(this.spec.template.spec.domain.cpu, 'dedicatedCpuPlacement');
+      }
+    },
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     setTPM(tpmEnabled) {
       if (tpmEnabled) {
         set(this.spec.template.spec.domain.devices, 'tpm', {});
@@ -1462,6 +1618,13 @@ export default {
       this.setBootMethod({ efi: this.efiEnabled, secureBoot: val });
     },
 
+<<<<<<< HEAD
+=======
+    cpuPinning(value) {
+      this.setCpuPinning(value);
+    },
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     tpmEnabled(val) {
       this.setTPM(val);
     },

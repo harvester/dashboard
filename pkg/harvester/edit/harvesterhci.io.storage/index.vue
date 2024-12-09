@@ -14,12 +14,29 @@ import Loading from '@shell/components/Loading';
 
 import { _CREATE, _VIEW } from '@shell/config/query-params';
 import { mapFeature, UNSUPPORTED_STORAGE_DRIVERS } from '@shell/store/features';
+<<<<<<< HEAD
 import { STORAGE_CLASS, LONGHORN } from '@shell/config/types';
 import { CSI_DRIVER } from '../../types';
 import { allHash } from '@shell/utils/promise';
 import { clone } from '@shell/utils/object';
 
 const LONGHORN_DRIVER = 'driver.longhorn.io';
+=======
+import { STORAGE_CLASS, LONGHORN, SECRET, NAMESPACE } from '@shell/config/types';
+import { CSI_DRIVER } from '../../types';
+import { allHash } from '@shell/utils/promise';
+import { clone } from '@shell/utils/object';
+import { LONGHORN_DRIVER } from '@shell/models/persistentvolume';
+import { LVM_DRIVER } from '../../models/harvester/storage.k8s.io.storageclass';
+import { DATA_ENGINE_V1, DATA_ENGINE_V2 } from '../../models/harvester/persistentvolumeclaim';
+
+const LONGHORN_V2_DATA_ENGINE = 'longhorn-system/v2-data-engine';
+
+export const LVM_TOPOLOGY_LABEL = 'topology.lvm.csi/node';
+
+const VOLUME_BINDING_MODE_IMMEDIATE = 'Immediate';
+const VOLUME_BINDING_MODE_WAIT = 'WaitForFirstConsumer';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 export default {
   name: 'HarvesterStorage',
@@ -62,6 +79,7 @@ export default {
     const volumeBindingModeOptions = [
       {
         label: this.t('storageClass.customize.volumeBindingMode.now'),
+<<<<<<< HEAD
         value: 'Immediate'
       },
       {
@@ -71,31 +89,73 @@ export default {
     ];
 
     const allowedTopologies = clone(this.value.allowedTopologies?.[0]?.matchLabelExpressions || []);
+=======
+        value: VOLUME_BINDING_MODE_IMMEDIATE
+      },
+      {
+        label: this.t('harvester.storage.customize.volumeBindingMode.later'),
+        value: VOLUME_BINDING_MODE_WAIT
+      }
+    ];
+
+    const allowedTopologies = clone(this.value.allowedTopologies?.[0]?.matchLabelExpressions || []).filter(t => t.key !== LVM_TOPOLOGY_LABEL);
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
     this.$set(this.value, 'parameters', this.value.parameters || {});
     this.$set(this.value, 'provisioner', this.value.provisioner || LONGHORN_DRIVER);
     this.$set(this.value, 'allowVolumeExpansion', this.value.allowVolumeExpansion || allowVolumeExpansionOptions[0].value);
     this.$set(this.value, 'reclaimPolicy', this.value.reclaimPolicy || reclaimPolicyOptions[0].value);
+<<<<<<< HEAD
     this.$set(this.value, 'volumeBindingMode', this.value.volumeBindingMode || volumeBindingModeOptions[0].value);
 
     return {
+=======
+
+    if (this.value.provisioner === LONGHORN_DRIVER) {
+      this.$set(this.value.parameters, 'dataEngine', this.value.longhornVersion);
+      this.$set(this.value, 'volumeBindingMode', this.value.volumeBindingMode || VOLUME_BINDING_MODE_IMMEDIATE);
+    }
+
+    if (this.value.provisioner === LVM_DRIVER) {
+      this.$set(this.value, 'volumeBindingMode', this.value.volumeBindingMode || VOLUME_BINDING_MODE_WAIT);
+    }
+
+    let provisioner = `${ this.value.provisioner || LONGHORN_DRIVER }`;
+
+    if (provisioner === LONGHORN_DRIVER) {
+      provisioner = `${ provisioner }_${ this.value.longhornVersion }`;
+    }
+
+    return {
+      LVM_DRIVER,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       reclaimPolicyOptions,
       allowVolumeExpansionOptions,
       volumeBindingModeOptions,
       mountOptions:    [],
+<<<<<<< HEAD
       provisioner:     LONGHORN_DRIVER,
       STORAGE_CLASS,
+=======
+      STORAGE_CLASS,
+      provisioner,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       allowedTopologies,
       defaultAddValue: {
         key:    '',
         values: [],
+<<<<<<< HEAD
       }
+=======
+      },
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     };
   },
 
   async fetch() {
     const inStore = this.$store.getters['currentProduct'].inStore;
 
+<<<<<<< HEAD
     const hash = {
       storages:      this.$store.dispatch(`${ inStore }/findAll`, { type: STORAGE_CLASS }),
       longhornNodes: this.$store.dispatch(`${ inStore }/findAll`, { type: LONGHORN.NODES }),
@@ -103,6 +163,16 @@ export default {
     };
 
     await allHash(hash);
+=======
+    await allHash({
+      namespaces:           this.$store.dispatch(`${ inStore }/findAll`, { type: NAMESPACE }),
+      secrets:              this.$store.dispatch(`${ inStore }/findAll`, { type: SECRET }),
+      storages:             this.$store.dispatch(`${ inStore }/findAll`, { type: STORAGE_CLASS }),
+      longhornNodes:        this.$store.dispatch(`${ inStore }/findAll`, { type: LONGHORN.NODES }),
+      csiDrivers:           this.$store.dispatch(`${ inStore }/findAll`, { type: CSI_DRIVER }),
+      longhornV2DataEngine: this.$store.dispatch(`${ inStore }/find`, { type: LONGHORN.SETTINGS, id: LONGHORN_V2_DATA_ENGINE }),
+    });
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   },
 
   computed: {
@@ -116,6 +186,7 @@ export default {
       return this.isCreate ? _CREATE : _VIEW;
     },
 
+<<<<<<< HEAD
     provisionerWatch() {
       return this.value.provisioner;
     },
@@ -130,6 +201,39 @@ export default {
           value: provisioner.name,
         };
       });
+=======
+    provisioners() {
+      const out = [];
+
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const csiDrivers = this.$store.getters[`${ inStore }/all`](CSI_DRIVER) || [];
+
+      csiDrivers.forEach(({ name }) => {
+        switch (name) {
+        case LONGHORN_DRIVER:
+          out.push({
+            label: `harvester.storage.storageClass.longhorn.${ DATA_ENGINE_V1 }.label`,
+            value: `${ name }_${ DATA_ENGINE_V1 }`,
+          });
+
+          if (this.longhornSystemVersion === DATA_ENGINE_V2 || this.value.longhornVersion === DATA_ENGINE_V2) {
+            out.push({
+              label: `harvester.storage.storageClass.longhorn.${ DATA_ENGINE_V2 }.label`,
+              value: `${ name }_${ DATA_ENGINE_V2 }`,
+            });
+          }
+          break;
+        case LVM_DRIVER:
+          out.push({
+            label: 'harvester.storage.storageClass.lvm.label',
+            value: name,
+          });
+          break;
+        }
+      });
+
+      return out;
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     },
 
     schema() {
@@ -137,6 +241,7 @@ export default {
 
       return this.$store.getters[`${ inStore }/schemaFor`](STORAGE_CLASS);
     },
+<<<<<<< HEAD
   },
 
   watch: {
@@ -146,6 +251,47 @@ export default {
   },
 
   created() {
+=======
+
+    longhornSystemVersion() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const v2DataEngine = this.$store.getters[`${ inStore }/byId`](LONGHORN.SETTINGS, LONGHORN_V2_DATA_ENGINE) || {};
+
+      return v2DataEngine.value === 'true' ? DATA_ENGINE_V2 : DATA_ENGINE_V1;
+    },
+  },
+
+  watch: {
+    provisioner(neu) {
+      const [provisioner, dataEngine] = neu?.split('_');
+
+      let parameters = {};
+
+      if (provisioner === LVM_DRIVER) {
+        const matchLabelExpressions = (this.value.allowedTopologies?.[0]?.matchLabelExpressions || []).filter(t => t.key !== LVM_TOPOLOGY_LABEL);
+
+        if (matchLabelExpressions.length > 0) {
+          this.$set(this.value, 'allowedTopologies', [{ matchLabelExpressions }]);
+        } else {
+          delete this.value.allowedTopologies;
+        }
+
+        this.$set(this.value, 'volumeBindingMode', VOLUME_BINDING_MODE_WAIT);
+      }
+
+      if (provisioner === LONGHORN_DRIVER) {
+        parameters = { dataEngine };
+        this.$set(this.value, 'volumeBindingMode', VOLUME_BINDING_MODE_IMMEDIATE);
+      }
+
+      this.$set(this.value, 'provisioner', provisioner);
+      this.$set(this.value, 'allowVolumeExpansion', this.value.provisioner === LONGHORN_DRIVER);
+      this.$set(this.value, 'parameters', parameters);
+    }
+  },
+
+  created(neu) {
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     this.registerBeforeHook(this.willSave, 'willSave');
   },
 
@@ -158,11 +304,14 @@ export default {
       }
     },
 
+<<<<<<< HEAD
     updateProvisioner(provisioner) {
       this.$set(this.value, 'provisioner', provisioner);
       this.$set(this.value, 'allowVolumeExpansion', provisioner === LONGHORN_DRIVER);
     },
 
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     willSave() {
       Object.keys(this.value.parameters).forEach((key) => {
         if (this.value.parameters[key] === null || this.value.parameters[key] === '') {
@@ -174,10 +323,22 @@ export default {
     },
 
     formatAllowedTopoloties() {
+<<<<<<< HEAD
       const neu = this.allowedTopologies;
 
       if (!neu || neu.length === 0) {
         delete this.value.allowedTopologies;
+=======
+      const neu = this.allowedTopologies.filter(t => t.key !== LVM_TOPOLOGY_LABEL);
+      const lvmMatchExpression = (this.value.allowedTopologies?.[0]?.matchLabelExpressions || []).filter(t => t.key === LVM_TOPOLOGY_LABEL);
+
+      if (!neu || neu.length === 0) {
+        if (lvmMatchExpression.length > 0) {
+          this.value.allowedTopologies = [{ matchLabelExpressions: lvmMatchExpression }];
+        } else {
+          delete this.value.allowedTopologies;
+        }
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
         return;
       }
@@ -185,7 +346,11 @@ export default {
       const matchLabelExpressions = neu.filter(R => !!R.key.trim() && (R.values.length > 0 && !R.values.find(V => !V.trim())));
 
       if (matchLabelExpressions.length > 0) {
+<<<<<<< HEAD
         this.value.allowedTopologies = [{ matchLabelExpressions }];
+=======
+        this.value.allowedTopologies = [{ matchLabelExpressions: [...matchLabelExpressions, ...lvmMatchExpression] }];
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       }
     }
   }
@@ -214,7 +379,11 @@ export default {
       :register-before-hook="registerBeforeHook"
     />
     <LabeledSelect
+<<<<<<< HEAD
       :value="value.provisioner"
+=======
+      v-model="provisioner"
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       label="Provisioner"
       :options="provisioners"
       :localized-label="true"
@@ -222,13 +391,21 @@ export default {
       :searchable="true"
       :taggable="true"
       class="mb-20"
+<<<<<<< HEAD
       @input="updateProvisioner($event)"
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     />
     <Tabbed :side-tabs="true">
       <Tab name="parameters" :label="t('storageClass.parameters.label')" :weight="2">
         <component
+<<<<<<< HEAD
           :is="getComponent(value.provisioner)"
           :key="value.provisioner"
+=======
+          :is="getComponent(provisioner)"
+          :key="provisioner"
+>>>>>>> b5455bcb (fix: separate used/allocated units)
           :value="value"
           :mode="modeOverride"
           :real-mode="realMode"
@@ -263,6 +440,10 @@ export default {
               :label="t('storageClass.customize.volumeBindingMode.label')"
               :mode="modeOverride"
               :options="volumeBindingModeOptions"
+<<<<<<< HEAD
+=======
+              :disabled="provisioner === LVM_DRIVER"
+>>>>>>> b5455bcb (fix: separate used/allocated units)
             />
           </div>
         </div>

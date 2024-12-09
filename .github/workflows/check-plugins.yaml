@@ -13,7 +13,11 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
+<<<<<<< HEAD
         node-version: '14.x'
+=======
+        node-version: '16.x'
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     - name: Validate Plugin build system
       run: ./shell/scripts/test-plugins-build.sh
       shell: bash

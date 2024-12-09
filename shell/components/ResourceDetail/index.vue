@@ -156,6 +156,11 @@ export default {
       }
 
       if ( as === _YAML ) {
+<<<<<<< HEAD
+=======
+        // fetch resourceFields for createYaml
+        await schema.fetchResourceFields();
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         yaml = createYaml(schemas, resource, data);
       }
     } else {

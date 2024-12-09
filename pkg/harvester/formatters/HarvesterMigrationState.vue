@@ -25,13 +25,25 @@ export default {
 
       return vmi;
     },
+<<<<<<< HEAD
     state() {
       return this.vmiResource?.migrationState?.status || '';
+=======
+    migrationState() {
+      return this.vmiResource?.migrationState?.status || '';
+    },
+    migrationBackground() {
+      return this.vmiResource?.migrationStateBackground || '';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     }
   },
 
   watch: {
+<<<<<<< HEAD
     state(neu) {
+=======
+    migrationState(neu) {
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       this.$emit('state-changed', neu);
     }
   },
@@ -39,9 +51,15 @@ export default {
 </script>
 
 <template>
+<<<<<<< HEAD
   <div v-if="state">
     <span v-if="!showSuccess">/</span>
     <BadgeState :label="vmiResource.migrationState.status" :color="vmiResource.migrationStateBackground" />
+=======
+  <div v-if="migrationState">
+    <span v-if="!showSuccess">/</span>
+    <BadgeState :label="migrationState" :color="migrationBackground" />
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   </div>
 </template>
 

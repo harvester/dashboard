@@ -28,6 +28,10 @@ import {
 
 import {
   IMAGE_DOWNLOAD_SIZE,
+<<<<<<< HEAD
+=======
+  IMAGE_VIRTUAL_SIZE,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   FINGERPRINT,
   IMAGE_PROGRESS,
   SNAPSHOT_TARGET_VOLUME,
@@ -36,8 +40,13 @@ import {
 import { IF_HAVE } from '@shell/store/type-map';
 
 const TEMPLATE = HCI.VM_VERSION;
+<<<<<<< HEAD
 const MONITORING_GROUP = 'Monitoring & Logging::Monitoring';
 const LOGGING_GROUP = 'Monitoring & Logging::Logging';
+=======
+const MONITORING_GROUP = 'Monitoring and Logging::Monitoring';
+const LOGGING_GROUP = 'Monitoring and Logging::Logging';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 export const PRODUCT_NAME = 'harvester';
 
@@ -220,6 +229,10 @@ export function init($plugin, store) {
     NAMESPACE_COL,
     IMAGE_PROGRESS,
     IMAGE_DOWNLOAD_SIZE,
+<<<<<<< HEAD
+=======
+    IMAGE_VIRTUAL_SIZE,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     AGE
   ]);
   virtualType({
@@ -235,6 +248,10 @@ export function init($plugin, store) {
     exact: false
   });
 
+<<<<<<< HEAD
+=======
+  // show Projects/Namespace nav when integrated in Rancher dashboard
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   basicType(['projects-namespaces']);
   virtualType({
     ifHave:     IF_HAVE.MULTI_CLUSTER,
@@ -418,6 +435,10 @@ export function init($plugin, store) {
 
   basicType(
     [
+<<<<<<< HEAD
+=======
+      HCI.SCHEDULE_VM_BACKUP,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       HCI.BACKUP,
       HCI.SNAPSHOT,
       HCI.VM_SNAPSHOT,
@@ -439,6 +460,10 @@ export function init($plugin, store) {
       HCI.PCI_DEVICE,
       HCI.SR_IOVGPU_DEVICE,
       HCI.VGPU_DEVICE,
+<<<<<<< HEAD
+=======
+      HCI.USB_DEVICE,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       HCI.ADD_ONS,
       HCI.SECRET,
       HCI.SETTING
@@ -464,6 +489,23 @@ export function init($plugin, store) {
     exact: false
   });
 
+<<<<<<< HEAD
+=======
+  configureType(HCI.SCHEDULE_VM_BACKUP, { showListMasthead: false, showConfigView: false });
+  virtualType({
+    labelKey:   'harvester.schedule.label',
+    name:       HCI.SCHEDULE_VM_BACKUP,
+    namespaced: true,
+    weight:     201,
+    route:      {
+      name:   `${ PRODUCT_NAME }-c-cluster-resource`,
+      params: { resource: HCI.SCHEDULE_VM_BACKUP }
+    },
+    exact:      false,
+    ifHaveType: HCI.SCHEDULE_VM_BACKUP,
+  });
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   configureType(HCI.BACKUP, { showListMasthead: false, showConfigView: false });
   virtualType({
     labelKey:   'harvester.backup.label',
@@ -772,6 +814,44 @@ export function init($plugin, store) {
     ]
   });
 
+<<<<<<< HEAD
+=======
+  virtualType({
+    labelKey:   'harvester.usb.label',
+    group:      'advanced',
+    weight:     11,
+    name:       HCI.USB_DEVICE,
+    namespaced: false,
+    route:      {
+      name:   `${ PRODUCT_NAME }-c-cluster-resource`,
+      params: { resource: HCI.USB_DEVICE }
+    },
+    exact:      false,
+    ifHaveType: HCI.USB_DEVICE,
+  });
+
+  configureType(HCI.USB_DEVICE, {
+    isCreatable:                false,
+    hiddenNamespaceGroupButton: true,
+    listGroups:                 [
+      {
+        icon:       'icon-list-grouped',
+        value:      'description',
+        field:      'groupByDevice',
+        hideColumn: 'description',
+        tooltipKey: 'resourceTable.groupBy.device'
+      },
+      {
+        icon:       'icon-cluster',
+        value:      'node',
+        field:      'groupByNode',
+        hideColumn: 'node',
+        tooltipKey: 'resourceTable.groupBy.node'
+      }
+    ]
+  });
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   configureType(HCI.ADD_ONS, {
     isCreatable: false,
     isRemovable: false,
@@ -779,7 +859,11 @@ export function init($plugin, store) {
   });
 
   virtualType({
+<<<<<<< HEAD
     label:      'Addons',
+=======
+    label:      'Add-ons',
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     group:      'advanced',
     name:       HCI.ADD_ONS,
     ifHaveType: HCI.ADD_ONS,

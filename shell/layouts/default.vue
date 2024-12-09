@@ -36,7 +36,11 @@ import { getVersionInfo, markSeenReleaseNotes } from '@shell/utils/version';
 import { sortBy } from '@shell/utils/sort';
 import PageHeaderActions from '@shell/mixins/page-actions';
 import BrowserTabVisibility from '@shell/mixins/browser-tab-visibility';
+<<<<<<< HEAD
 import { getClusterFromRoute, getProductFromRoute } from '@shell/middleware/authenticated';
+=======
+import { getClusterFromRoute, getProductFromRoute } from '@shell/utils/router';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 import { BOTTOM } from '@shell/utils/position';
 import { BLANK_CLUSTER } from '@shell/store';
 
@@ -84,7 +88,13 @@ export default {
   computed: {
     ...mapState(['managementReady', 'clusterReady']),
     ...mapGetters(['productId', 'clusterId', 'namespaceMode', 'isExplorer', 'currentProduct', 'isSingleProduct', 'isRancherInHarvester', 'isVirtualCluster']),
+<<<<<<< HEAD
     ...mapGetters({ locale: 'i18n/selectedLocaleLabel', availableLocales: 'i18n/availableLocales' }),
+=======
+    ...mapGetters({
+      locale: 'i18n/selectedLocaleLabel', availableLocales: 'i18n/availableLocales', hasMultipleLocales: 'i18n/hasMultipleLocales'
+    }),
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     ...mapGetters('type-map', ['activeProducts']),
 
     afterLoginRoute: mapPref(AFTER_LOGIN_ROUTE),
@@ -678,9 +688,15 @@ export default {
           >
             {{ displayVersion }}
           </span>
+<<<<<<< HEAD
 
           <span v-if="isSingleProduct">
             <v-popover
+=======
+          <span v-if="isSingleProduct">
+            <v-popover
+              v-if="hasMultipleLocales"
+>>>>>>> b5455bcb (fix: separate used/allocated units)
               popover-class="localeSelector"
               placement="top"
               trigger="click"
@@ -901,10 +917,17 @@ export default {
 
     NAV .footer {
       margin: 20px;
+<<<<<<< HEAD
 
       display: flex;
       flex: 0;
       flex-direction: row;
+=======
+      display: flex;
+      flex: 0;
+      flex-direction: row;
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       > * {
         flex: 1;
         color: var(--link);

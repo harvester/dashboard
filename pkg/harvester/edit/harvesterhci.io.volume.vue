@@ -7,7 +7,11 @@ import ResourceTabs from '@shell/components/form/ResourceTabs';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import NameNsDescription from '@shell/components/form/NameNsDescription';
+<<<<<<< HEAD
 
+=======
+import { Banner } from '@components/Banner';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 import { allHash } from '@shell/utils/promise';
 import { get } from '@shell/utils/object';
 import { HCI, VOLUME_SNAPSHOT } from '../types';
@@ -15,15 +19,28 @@ import { STORAGE_CLASS, LONGHORN, PV } from '@shell/config/types';
 import { sortBy } from '@shell/utils/sort';
 import { saferDump } from '@shell/utils/create-yaml';
 import { InterfaceOption, VOLUME_DATA_SOURCE_KIND } from '../config/harvester-map';
+<<<<<<< HEAD
 import { _CREATE } from '@shell/config/query-params';
 import CreateEditView from '@shell/mixins/create-edit-view';
 import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 import { STATE, NAME, AGE, NAMESPACE } from '@shell/config/table-headers';
+=======
+import { _CREATE, _EDIT } from '@shell/config/query-params';
+import CreateEditView from '@shell/mixins/create-edit-view';
+import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
+import { STATE, NAME, AGE, NAMESPACE } from '@shell/config/table-headers';
+import { LVM_DRIVER } from '../models/harvester/storage.k8s.io.storageclass';
+import { DATA_ENGINE_V2 } from '../models/harvester/persistentvolumeclaim';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 export default {
   name: 'HarvesterVolume',
 
   components: {
+<<<<<<< HEAD
+=======
+    Banner,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     Tab,
     UnitInput,
     CruResource,
@@ -56,6 +73,10 @@ export default {
     const hash = await allHash(_hash);
 
     this.snapshots = hash.snapshots;
+<<<<<<< HEAD
+=======
+    this.images = hash.images;
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
     const defaultStorage = this.$store.getters[`harvester/all`](STORAGE_CLASS).find( O => O.isDefault);
 
@@ -77,6 +98,10 @@ export default {
       storage,
       imageId,
       snapshots: [],
+<<<<<<< HEAD
+=======
+      images:    [],
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     };
   },
 
@@ -89,6 +114,13 @@ export default {
       return this.source === 'blank';
     },
 
+<<<<<<< HEAD
+=======
+    isEdit() {
+      return this.mode === _EDIT;
+    },
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     isVMImage() {
       return this.source === 'url';
     },
@@ -108,10 +140,15 @@ export default {
     },
 
     imageOption() {
+<<<<<<< HEAD
       const choices = this.$store.getters['harvester/all'](HCI.IMAGE);
 
       return sortBy(
         choices
+=======
+      return sortBy(
+        this.images
+>>>>>>> b5455bcb (fix: separate used/allocated units)
           .filter(obj => obj.isReady)
           .map((obj) => {
             return {
@@ -156,11 +193,22 @@ export default {
       return VOLUME_DATA_SOURCE_KIND[this.value.spec?.dataSource?.kind];
     },
 
+<<<<<<< HEAD
     storageClassOptions() {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const storages = this.$store.getters[`${ inStore }/all`](STORAGE_CLASS);
 
       const out = storages.filter(s => !s.parameters?.backingImage).map((s) => {
+=======
+    storageClasses() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+
+      return this.$store.getters[`${ inStore }/all`](STORAGE_CLASS);
+    },
+
+    storageClassOptions() {
+      return this.storageClasses.filter(s => !s.parameters?.backingImage).map((s) => {
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         const label = s.isDefault ? `${ s.name } (${ this.t('generic.default') })` : s.name;
 
         return {
@@ -168,8 +216,11 @@ export default {
           value: s.name,
         };
       }) || [];
+<<<<<<< HEAD
 
       return out;
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     },
 
     frontend() {
@@ -220,6 +271,21 @@ export default {
   },
 
   methods: {
+<<<<<<< HEAD
+=======
+    getAccessMode() {
+      const storageClassName = this.value.spec.storageClassName;
+      const storageClass = this.storageClasses.find(sc => sc.name === storageClassName);
+
+      let readWriteOnce = this.value.isLvm || this.value.isLonghornV2;
+
+      if (storageClass) {
+        readWriteOnce = storageClass.provisioner === LVM_DRIVER || storageClass.parameters?.dataEngine === DATA_ENGINE_V2;
+      }
+
+      return readWriteOnce ? ['ReadWriteOnce'] : ['ReadWriteMany'];
+    },
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     willSave() {
       this.update();
     },
@@ -241,15 +307,35 @@ export default {
 
       const spec = {
         ...this.value.spec,
+<<<<<<< HEAD
         resources: { requests: { storage: this.storage } },
         storageClassName
+=======
+        resources:   { requests: { storage: this.storage } },
+        storageClassName,
+        accessModes: this.getAccessMode(),
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       };
 
       this.value.setAnnotations(imageAnnotations);
 
       this.$set(this.value, 'spec', spec);
     },
+<<<<<<< HEAD
 
+=======
+    updateImage() {
+      if (this.isVMImage && this.imageId) {
+        const imageResource = this.images?.find(image => this.imageId === image.id);
+        const imageSize = Math.max(imageResource?.status?.size, imageResource?.status?.virtualSize);
+
+        if (imageSize) {
+          this.storage = `${ Math.ceil(imageSize / 1024 / 1024 / 1024) }Gi`;
+        }
+      }
+      this.update();
+    },
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     generateYaml() {
       const out = saferDump(this.value);
 
@@ -300,7 +386,11 @@ export default {
           required
           :mode="mode"
           class="mb-20"
+<<<<<<< HEAD
           @input="update"
+=======
+          @input="updateImage"
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         />
 
         <LabeledSelect
@@ -322,10 +412,21 @@ export default {
           :output-modifier="true"
           :increment="1024"
           :mode="mode"
+<<<<<<< HEAD
+=======
+          :disabled="value?.isLonghornV2 && isEdit"
+>>>>>>> b5455bcb (fix: separate used/allocated units)
           required
           class="mb-20"
           @input="update"
         />
+<<<<<<< HEAD
+=======
+
+        <Banner v-if="value?.isLonghornV2 && isEdit" color="warning">
+          <span>{{ t('harvester.volume.longhorn.disableResize') }}</span>
+        </Banner>
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       </Tab>
       <Tab v-if="!isCreate" name="details" :label="t('harvester.volume.tabs.details')" :weight="2.5" class="bordered-table">
         <LabeledInput v-model="frontendDisplay" class="mb-20" :mode="mode" :disabled="true" :label="t('harvester.volume.frontend')" />

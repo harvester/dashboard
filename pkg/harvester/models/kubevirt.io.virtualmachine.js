@@ -1,7 +1,11 @@
 import Vue from 'vue';
 import { load } from 'js-yaml';
 import { omitBy, pickBy } from 'lodash';
+<<<<<<< HEAD
 
+=======
+import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../config/harvester';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 import { colorForState } from '@shell/plugins/dashboard-store/resource-class';
 import { POD, NODE, PVC } from '@shell/config/types';
 import { HCI } from '../types';
@@ -134,7 +138,11 @@ export default class VirtVm extends HarvesterResource {
       {
         action:  'softrebootVM',
         enabled: !!this.actions?.softreboot,
+<<<<<<< HEAD
         icon:    'icon icon-refresh',
+=======
+        icon:    'icon icon-pipeline',
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         label:   this.t('harvester.action.softreboot')
       },
       {
@@ -153,10 +161,29 @@ export default class VirtVm extends HarvesterResource {
       {
         action:  'takeVMSnapshot',
         enabled: !!this.actions?.backup,
+<<<<<<< HEAD
         icon:    'icon icon-backup',
         label:   this.t('harvester.action.vmSnapshot')
       },
       {
+=======
+        icon:    'icon icon-snapshot',
+        label:   this.t('harvester.action.vmSnapshot')
+      },
+      {
+        action:  'editVMQuota',
+        enabled: !!this.actions?.updateResourceQuota && !!this.actions.deleteResourceQuota,
+        icon:    'icon icon-storage',
+        label:   this.t('harvester.action.editVMQuota')
+      },
+      {
+        action:  'createSchedule',
+        enabled: true,
+        icon:    'icon icon-history',
+        label:   this.t('harvester.action.createSchedule')
+      },
+      {
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         action:  'restoreVM',
         enabled: !!this.actions?.restore,
         icon:    'icon icon-backup-restore',
@@ -318,6 +345,19 @@ export default class VirtVm extends HarvesterResource {
     );
   }
 
+<<<<<<< HEAD
+=======
+  createSchedule(resources = this) {
+    const router = this.currentRouter();
+
+    router.push({
+      name:   `${ HARVESTER_PRODUCT }-c-cluster-resource-create`,
+      params: { resource: HCI.SCHEDULE_VM_BACKUP },
+      query:  { vmNamespace: this.metadata.namespace, vmName: this.metadata.name }
+    });
+  }
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   backupVM(resources = this) {
     this.$dispatch('promptModal', {
       resources,
@@ -332,6 +372,17 @@ export default class VirtVm extends HarvesterResource {
     });
   }
 
+<<<<<<< HEAD
+=======
+  editVMQuota(resources = this) {
+    this.$dispatch('promptModal', {
+      resources,
+      snapshotSizeQuota: this.snapshotSizeQuota,
+      component:         'HarvesterQuotaDialog'
+    });
+  }
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   unplugVolume(diskName) {
     const resources = this;
 
@@ -446,6 +497,13 @@ export default class VirtVm extends HarvesterResource {
     return null;
   }
 
+<<<<<<< HEAD
+=======
+  get isCpuPinning() {
+    return this.spec?.template?.spec?.domain?.cpu?.dedicatedCpuPlacement === true;
+  }
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   get isVMExpectedRunning() {
     if (!this?.spec) {
       return false;
@@ -542,6 +600,20 @@ export default class VirtVm extends HarvesterResource {
     return null;
   }
 
+<<<<<<< HEAD
+=======
+  get nsResourceQuota() {
+    const inStore = this.productInStore;
+    const allResQuotas = this.$rootGetters[`${ inStore }/all`](HCI.RESOURCE_QUOTA);
+
+    return allResQuotas.find( RQ => RQ.namespace === this.metadata.namespace);
+  }
+
+  get snapshotSizeQuota() {
+    return this.nsResourceQuota?.spec?.snapshotLimit?.vmTotalSnapshotSizeQuota?.[this.metadata.name];
+  }
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   get vmi() {
     const inStore = this.productInStore;
 
@@ -550,6 +622,35 @@ export default class VirtVm extends HarvesterResource {
     return vmis.find(VMI => VMI.id === this.id);
   }
 
+<<<<<<< HEAD
+=======
+  get volumes() {
+    const pvcs = this.$rootGetters[`${ this.productInStore }/all`](PVC);
+
+    const volumeClaimNames = this.spec.template.spec.volumes?.map(v => v.persistentVolumeClaim?.claimName).filter(v => !!v) || [];
+
+    return pvcs.filter(pvc => volumeClaimNames.includes(pvc.metadata.name));
+  }
+
+  get lvmVolumes() {
+    return this.volumes.filter(volume => volume?.isLvm);
+  }
+
+  get longhornV2Volumes() {
+    return this.volumes.filter(volume => volume?.isLonghornV2);
+  }
+
+  get encryptedVolumeType() {
+    if (this.volumes.every(vol => vol.isEncrypted)) {
+      return 'all';
+    } else if (this.volumes.some(vol => vol.isEncrypted)) {
+      return 'partial';
+    } else {
+      return 'none';
+    }
+  }
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   get isError() {
     const conditions = get(this.vmi, 'status.conditions');
     const vmiFailureCond = findBy(conditions, 'type', 'Failure');

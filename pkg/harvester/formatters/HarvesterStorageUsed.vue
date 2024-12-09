@@ -72,17 +72,35 @@ export default {
       return stats;
     },
 
+<<<<<<< HEAD
     units() {
+=======
+    allocatedUnits() {
+      const exponent = exponentNeeded(this.storageStats.total, 1024);
+
+      return `${ UNITS[exponent] }iB`;
+    },
+
+    usedUnits() {
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       const exponent = exponentNeeded(this.storageStats.maximum, 1024);
 
       return `${ UNITS[exponent] }iB`;
     },
 
+<<<<<<< HEAD
     used() {
       let out = this.formatter(this.storageStats.used);
 
       if (!Number.parseFloat(out) > 0) {
         out = this.formatter(this.storageStats.used, { canRoundToZero: false });
+=======
+    formatUsed() {
+      let out = this.formatter(this.storageStats.used);
+
+      if (!Number.parseFloat(out) > 0) {
+        out = this.formatter(this.storageStats.used, { canRoundToZero: true });
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       }
 
       return out;
@@ -92,7 +110,11 @@ export default {
       let out = this.formatter(this.storageStats.scheduled);
 
       if (!Number.parseFloat(out) > 0) {
+<<<<<<< HEAD
         out = this.formatter(this.storageStats.scheduled, { canRoundToZero: false });
+=======
+        out = this.formatter(this.storageStats.scheduled, { canRoundToZero: true });
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       }
 
       return out;
@@ -100,9 +122,15 @@ export default {
 
     usedAmountTemplateValues() {
       return {
+<<<<<<< HEAD
         used:  this.used,
         total: this.formatter(this.storageStats.maximum),
         unit:  this.units,
+=======
+        used:  this.formatUsed,
+        total: this.formatter(this.storageStats.maximum),
+        unit:  this.usedUnits,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       };
     },
 
@@ -110,7 +138,11 @@ export default {
       return {
         used:  this.formatAllocated,
         total: this.formatter(this.storageStats.total),
+<<<<<<< HEAD
         unit:  this.units,
+=======
+        unit:  this.allocatedUnits,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       };
     },
   },
@@ -141,7 +173,11 @@ export default {
       <ConsumptionGauge
         :capacity="storageStats.total"
         :used="storageStats.scheduled"
+<<<<<<< HEAD
         :units="units"
+=======
+        :units="allocatedUnits"
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         :number-formatter="formatter"
         :resource-name="resourceName"
       >
@@ -161,7 +197,11 @@ export default {
     <ConsumptionGauge
       :capacity="storageStats.maximum"
       :used="storageStats.used"
+<<<<<<< HEAD
       :units="units"
+=======
+      :units="usedUnits"
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       :number-formatter="formatter"
       :resource-name="showAllocated ? '' : resourceName"
       :class="{

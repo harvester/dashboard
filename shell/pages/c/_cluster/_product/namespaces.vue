@@ -68,9 +68,15 @@ export default {
     >
       <template #cell:project="{row}">
         <span v-if="row.project">{{ row.project.nameDisplay }}</span>
+<<<<<<< HEAD
         <span
           v-else
           class="text-muted"
+=======
+        <span
+          v-else
+          class="text-muted"
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         >&ndash;</span>
       </template>
     </ResourceTable>

@@ -39,6 +39,10 @@ export default {
     scalingDownPrompt: mapPref(SCALE_POOL_PROMPT),
 
     ...mapGetters(['isSingleProduct']),
+<<<<<<< HEAD
+=======
+    ...mapGetters({ hasMultipleLocales: 'i18n/hasMultipleLocales' }),
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
     theme: {
       get() {
@@ -177,7 +181,14 @@ export default {
       class="mb-20"
     />
     <!-- Language -->
+<<<<<<< HEAD
     <div class="mt-10 mb-10">
+=======
+    <div
+      v-if="hasMultipleLocales"
+      class="mt-10 mb-10"
+    >
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       <h4 v-t="'prefs.language'" />
       <div class="row">
         <div class="col span-4">
@@ -189,7 +200,10 @@ export default {
     </div>
     <!-- Theme -->
     <div class="mt-10 mb-10">
+<<<<<<< HEAD
       <hr>
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       <h4 v-t="'prefs.theme.label'" />
       <ButtonGroup
         v-model="theme"

@@ -240,6 +240,10 @@ export default {
   .actions {
     width: 100%;
     display: flex;
+<<<<<<< HEAD
     justify-content: end;
+=======
+    justify-content: flex-end;
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   }
 </style>

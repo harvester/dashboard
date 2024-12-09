@@ -128,7 +128,11 @@ export default {
       type: MANAGEMENT.FEATURE, id: 'multi-cluster-management', opt: { url: `/v1/${ MANAGEMENT.FEATURE }/multi-cluster-management` }
     });
 
+<<<<<<< HEAD
     const mcmEnabled = (mcmFeature?.spec?.value || mcmFeature?.status?.default) && !productName === 'Harvester';
+=======
+    const mcmEnabled = (mcmFeature?.spec?.value || mcmFeature?.status?.default) && productName !== 'Harvester';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
     let serverUrl;
 

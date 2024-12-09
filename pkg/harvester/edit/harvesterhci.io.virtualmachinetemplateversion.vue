@@ -21,7 +21,10 @@ import SSHKey from './kubevirt.io.virtualmachine/VirtualMachineSSHKey';
 
 import { HCI } from '../types';
 import { randomStr } from '@shell/utils/string';
+<<<<<<< HEAD
 import { RunStrategys } from '../config/harvester-map';
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 import { _CONFIG, _EDIT, _VIEW } from '@shell/config/query-params';
 import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 
@@ -76,7 +79,10 @@ export default {
       description:      '',
       defaultVersion:   null,
       isDefaultVersion: false,
+<<<<<<< HEAD
       RunStrategys,
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     };
   },
 
@@ -264,7 +270,11 @@ export default {
       <Tab
         name="nodeScheduling"
         :label="t('workload.container.titles.nodeScheduling')"
+<<<<<<< HEAD
         :weight="-89"
+=======
+        :weight="-3"
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       >
         <template #default="{active}">
           <NodeScheduling
@@ -276,7 +286,11 @@ export default {
         </template>
       </Tab>
 
+<<<<<<< HEAD
       <Tab :label="t('harvester.tab.vmScheduling')" name="vmScheduling" :weight="-90">
+=======
+      <Tab :label="t('harvester.tab.vmScheduling')" name="vmScheduling" :weight="-4">
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         <template #default="{active}">
           <PodAffinity
             :key="active"
@@ -290,13 +304,49 @@ export default {
         </template>
       </Tab>
 
+<<<<<<< HEAD
+=======
+      <Tab
+        :name="t('generic.labels')"
+        :label="t('harvester.tab.instanceLabel')"
+        :weight="-5"
+      >
+        <Labels
+          :default-container-class="'labels-and-annotations-container'"
+          :value="value"
+          :mode="mode"
+          :display-side-by-side="false"
+          :show-annotations="false"
+          :show-label-title="false"
+        >
+          <template #labels="{toggler}">
+            <KeyValue
+              key="labels"
+              :value="value.instanceLabels"
+              :protected-keys="value.systemLabels || []"
+              :toggle-filter="toggler"
+              :add-label="t('labels.addLabel')"
+              :mode="mode"
+              :read-allowed="false"
+              :value-can-be-empty="true"
+              @input="value.setInstanceLabels($event)"
+            />
+          </template>
+        </Labels>
+      </Tab>
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       <Tab name="advanced" :label="t('harvester.tab.advanced')" :weight="-99">
         <div class="row mb-20">
           <div class="col span-6">
             <LabeledSelect
               v-model="runStrategy"
               label-key="harvester.virtualMachine.runStrategy"
+<<<<<<< HEAD
               :options="RunStrategys"
+=======
+              :options="runStrategies"
+>>>>>>> b5455bcb (fix: separate used/allocated units)
               :mode="mode"
             />
           </div>
@@ -312,6 +362,27 @@ export default {
         </div>
 
         <div class="row mb-20">
+<<<<<<< HEAD
+=======
+          <div class="col span-6">
+            <LabeledSelect
+              v-model="maintenanceStrategy"
+              label-key="harvester.virtualMachine.maintenanceStrategy.label"
+              :options="maintenanceStrategies"
+              :get-option-label="getMaintenanceStrategyOptionLabel"
+              :mode="mode"
+            />
+          </div>
+          <div class="col span-6">
+            <Reserved
+              :reserved-memory="reservedMemory"
+              :mode="mode"
+              @updateReserved="updateReserved"
+            />
+          </div>
+        </div>
+        <div class="row mb-20">
+>>>>>>> b5455bcb (fix: separate used/allocated units)
           <a v-if="showAdvanced" v-t="'harvester.generic.showMore'" role="button" @click="toggleAdvanced" />
           <a v-else v-t="'harvester.generic.showMore'" role="button" @click="toggleAdvanced" />
         </div>
@@ -319,6 +390,7 @@ export default {
         <div v-if="showAdvanced">
           <div class="row mb-20">
             <div class="col span-6">
+<<<<<<< HEAD
               <Reserved
                 :reserved-memory="reservedMemory"
                 :mode="mode"
@@ -326,6 +398,8 @@ export default {
               />
             </div>
             <div class="col span-6">
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
               <UnitInput
                 v-model="terminationGracePeriodSeconds"
                 :suffix="terminationGracePeriodSeconds == 1 ? 'Second' : 'Seconds'"
@@ -349,6 +423,17 @@ export default {
 
         <div class="spacer"></div>
         <Checkbox
+<<<<<<< HEAD
+=======
+          v-model="cpuPinning"
+          class="check"
+          type="checkbox"
+          tooltip-key="harvester.virtualMachine.cpuPinning.tooltip"
+          label-key="harvester.virtualMachine.cpuPinning.label"
+          :mode="mode"
+        />
+        <Checkbox
+>>>>>>> b5455bcb (fix: separate used/allocated units)
           v-model="installUSBTablet"
           class="check"
           type="checkbox"
@@ -389,6 +474,7 @@ export default {
           :mode="mode"
         />
       </Tab>
+<<<<<<< HEAD
 
       <Tab
         :name="t('generic.labels')"
@@ -418,6 +504,8 @@ export default {
           </template>
         </Labels>
       </Tab>
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     </Tabbed>
   </CruResource>
 </template>

@@ -109,7 +109,11 @@ export default {
   <app-modal
     v-if="showModal"
     custom-class="bundleModal"
+<<<<<<< HEAD
     name="bundle-modal andy"
+=======
+    name="bundle-modal"
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     :click-to-close="false"
     :width="550"
     :height="390"

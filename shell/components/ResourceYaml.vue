@@ -357,6 +357,10 @@ export default {
       :yamlPreview="preview"
       :yamlSave="save"
       :yamlUnpreview="unpreview"
+<<<<<<< HEAD
+=======
+      :canDiff="canDiff"
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     >
       <Footer
         v-if="showFooter"

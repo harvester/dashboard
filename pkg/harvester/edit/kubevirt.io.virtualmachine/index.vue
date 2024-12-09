@@ -1,7 +1,11 @@
 <script>
 import { isEqual } from 'lodash';
 import { mapGetters } from 'vuex';
+<<<<<<< HEAD
 
+=======
+import { Banner } from '@components/Banner';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 import Tabbed from '@shell/components/Tabbed';
 import Tab from '@shell/components/Tabbed/Tab';
 import { Checkbox } from '@components/Form/Checkbox';
@@ -12,7 +16,11 @@ import LabeledSelect from '@shell/components/form/LabeledSelect';
 import NameNsDescription from '@shell/components/form/NameNsDescription';
 import UnitInput from '@shell/components/form/UnitInput';
 import Labels from '@shell/components/form/Labels';
+<<<<<<< HEAD
 
+=======
+import MessageLink from '@shell/components/MessageLink';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 import Reserved from './VirtualMachineReserved';
 import SSHKey from './VirtualMachineSSHKey';
 import Volume from './VirtualMachineVolume';
@@ -23,14 +31,22 @@ import NodeScheduling from '@shell/components/form/NodeScheduling';
 import PodAffinity from '@shell/components/form/PodAffinity';
 import AccessCredentials from './VirtualMachineAccessCredentials';
 import PciDevices from './VirtualMachinePciDevices/index';
+<<<<<<< HEAD
 import VirtualMachineVGpuDevices from './VirtualMachineVGpuDevices/index';
+=======
+import VGpuDevices from './VirtualMachineVGpuDevices/index';
+import UsbDevices from './VirtualMachineUSBDevices/index';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 import RestartVMDialog from '../../dialog/RestartVMDialog';
 import KeyValue from '@shell/components/form/KeyValue';
 
 import { clear } from '@shell/utils/array';
 import { clone } from '@shell/utils/object';
 import { HCI } from '../../types';
+<<<<<<< HEAD
 import { RunStrategys } from '../../config/harvester-map';
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 import { saferDump } from '@shell/utils/create-yaml';
 import { exceptionToErrorsArray } from '@shell/utils/error';
 import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
@@ -66,8 +82,16 @@ export default {
     PciDevices,
     RestartVMDialog,
     UnitInput,
+<<<<<<< HEAD
     VirtualMachineVGpuDevices,
     KeyValue,
+=======
+    VGpuDevices,
+    KeyValue,
+    Banner,
+    MessageLink,
+    UsbDevices,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   },
 
   mixins: [CreateEditView, VM_MIXIN],
@@ -95,14 +119,28 @@ export default {
       useTemplate:       false,
       hostname,
       isRestartImmediately,
+<<<<<<< HEAD
       RunStrategys,
       isOpen:            false,
+=======
+      // isOpen:            false,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     };
   },
 
   computed: {
     ...mapGetters({ t: 'i18n/t' }),
 
+<<<<<<< HEAD
+=======
+    to() {
+      return {
+        name:   'harvester-c-cluster-resource',
+        params: { cluster: this.$store.getters['clusterId'], resource: HCI.HOST },
+      };
+    },
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     machineTypeOptions() {
       return [{
         label: 'None',
@@ -173,6 +211,29 @@ export default {
     hasStartAction() {
       return this.value.hasAction('start');
     },
+<<<<<<< HEAD
+=======
+
+    enableCpuPinningCheckbox() {
+      if (this.mode === 'create') {
+        return this.nodes.some(node => node.isCPUManagerEnabled); // any one of nodes has label cpuManager=true
+      }
+
+      return true;
+    },
+
+    showCpuPinningBanner() {
+      if (this.mode === 'edit') {
+        return this.cpuPinning !== !!this.cloneVM.spec.template.spec.domain.cpu.dedicatedCpuPlacement;
+      }
+
+      if (this.mode === 'create') {
+        return this.nodes.every(node => !node.isCPUManagerEnabled); // no node enabled CPU manager
+      }
+
+      return false;
+    }
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   },
 
   watch: {
@@ -578,24 +639,74 @@ export default {
       </Tab>
 
       <Tab v-if="enabledSriovgpu" :label="t('harvester.tab.vGpuDevices')" name="vGpuDevices" :weight="-6">
+<<<<<<< HEAD
         <VirtualMachineVGpuDevices :mode="mode" :value="spec.template.spec" :vm="value" />
       </Tab>
 
       <Tab v-if="isEdit" :label="t('harvester.tab.accessCredentials')" name="accessCredentials" :weight="-7">
+=======
+        <VGpuDevices :mode="mode" :value="spec.template.spec" :vm="value" />
+      </Tab>
+
+      <Tab v-if="enabledPCI" :label="t('harvester.tab.usbDevices')" name="usbDevices" :weight="-7">
+        <UsbDevices :mode="mode" :value="spec.template.spec" :vm="value" />
+      </Tab>
+
+      <Tab v-if="isEdit" :label="t('harvester.tab.accessCredentials')" name="accessCredentials" :weight="-8">
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         <AccessCredentials v-model="accessCredentials" :mode="mode" :resource="value" :is-qemu-installed="isQemuInstalled" />
+      </Tab>
+
+      <Tab
+<<<<<<< HEAD
+        name="advanced"
+        :label="t('harvester.tab.advanced')"
+        :weight="-8"
+=======
+        name="instanceLabel"
+        :label="t('harvester.tab.instanceLabel')"
+        :weight="-8"
+      >
+        <Labels
+          :default-container-class="'labels-and-annotations-container'"
+          :value="value"
+          :mode="mode"
+          :display-side-by-side="false"
+          :show-annotations="false"
+          :show-label-title="false"
+        >
+          <template #labels="{toggler}">
+            <KeyValue
+              key="labels"
+              :value="value.instanceLabels"
+              :protected-keys="value.systemLabels || []"
+              :toggle-filter="toggler"
+              :add-label="t('labels.addLabel')"
+              :mode="mode"
+              :read-allowed="false"
+              :value-can-be-empty="true"
+              @input="value.setInstanceLabels($event)"
+            />
+          </template>
+        </Labels>
       </Tab>
 
       <Tab
         name="advanced"
         :label="t('harvester.tab.advanced')"
-        :weight="-8"
+        :weight="-9"
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       >
         <div class="row mb-20">
           <div class="col span-6">
             <LabeledSelect
               v-model="runStrategy"
               label-key="harvester.virtualMachine.runStrategy"
+<<<<<<< HEAD
               :options="RunStrategys"
+=======
+              :options="runStrategies"
+>>>>>>> b5455bcb (fix: separate used/allocated units)
               :mode="mode"
             />
           </div>
@@ -611,6 +722,28 @@ export default {
         </div>
 
         <div class="row mb-20">
+<<<<<<< HEAD
+=======
+          <div class="col span-6">
+            <LabeledSelect
+              v-model="maintenanceStrategy"
+              label-key="harvester.virtualMachine.maintenanceStrategy.label"
+              :options="maintenanceStrategies"
+              :get-option-label="getMaintenanceStrategyOptionLabel"
+              :mode="mode"
+            />
+          </div>
+          <div class="col span-6">
+            <Reserved
+              :reserved-memory="reservedMemory"
+              :mode="mode"
+              @updateReserved="updateReserved"
+            />
+          </div>
+        </div>
+
+        <div class="row mb-20">
+>>>>>>> b5455bcb (fix: separate used/allocated units)
           <a v-if="showAdvanced" v-t="'harvester.generic.showMore'" role="button" @click="toggleAdvanced" />
           <a v-else v-t="'harvester.generic.showMore'" role="button" @click="toggleAdvanced" />
         </div>
@@ -638,6 +771,7 @@ export default {
 
           <div class="row mb-20">
             <div class="col span-6">
+<<<<<<< HEAD
               <Reserved
                 :reserved-memory="reservedMemory"
                 :mode="mode"
@@ -645,6 +779,8 @@ export default {
               />
             </div>
             <div class="col span-6">
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
               <UnitInput
                 v-model="terminationGracePeriodSeconds"
                 :suffix="terminationGracePeriodSeconds == 1 ? 'Second' : 'Seconds'"
@@ -670,6 +806,19 @@ export default {
         />
 
         <Checkbox
+<<<<<<< HEAD
+=======
+          v-model="cpuPinning"
+          :disabled="!enableCpuPinningCheckbox"
+          class="check"
+          type="checkbox"
+          tooltip-key="harvester.virtualMachine.cpuPinning.tooltip"
+          label-key="harvester.virtualMachine.cpuPinning.label"
+          :mode="mode"
+        />
+
+        <Checkbox
+>>>>>>> b5455bcb (fix: separate used/allocated units)
           v-model="installUSBTablet"
           class="check mt-20"
           type="checkbox"
@@ -712,6 +861,7 @@ export default {
           :label="t('harvester.virtualMachine.secureBoot')"
           :mode="mode"
         />
+<<<<<<< HEAD
       </Tab>
 
       <Tab
@@ -741,6 +891,23 @@ export default {
             />
           </template>
         </Labels>
+=======
+        <Banner
+          v-if="showCpuPinningBanner"
+          color="warning"
+        >
+          <MessageLink
+            v-if="mode === 'create'"
+            :to="to"
+            prefix-label="harvester.virtualMachine.advancedOptions.cpuManager.prefix"
+            middle-label="harvester.virtualMachine.advancedOptions.cpuManager.middle"
+            suffix-label="harvester.virtualMachine.advancedOptions.cpuManager.suffix"
+          />
+          <span v-if="mode==='edit'">
+            {{ t('harvester.virtualMachine.cpuPinning.restartVMMessage') }}
+          </span>
+        </Banner>
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       </Tab>
     </Tabbed>
 

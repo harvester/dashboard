@@ -12,6 +12,15 @@ import { stateDisplay, colorForState } from '@shell/plugins/dashboard-store/reso
 import { _CLONE } from '@shell/config/query-params';
 import HarvesterResource from './harvester';
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../config/harvester';
+<<<<<<< HEAD
+=======
+import { CSI_SECRETS } from '@pkg/harvester/config/harvester-map';
+
+const {
+  CSI_PROVISIONER_SECRET_NAME,
+  CSI_PROVISIONER_SECRET_NAMESPACE,
+} = CSI_SECRETS;
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 function isReady() {
   function getStatusConditionOfType(type, defaultValue = []) {
@@ -53,6 +62,23 @@ export default class HciVmImage extends HarvesterResource {
         disabled: !this.isReady,
       },
       {
+<<<<<<< HEAD
+=======
+        action:   'encryptImage',
+        enabled:  !this.isEncrypted,
+        icon:     'icon icon-lock',
+        label:    this.t('harvester.action.encryptImage'),
+        disabled: !this.isReady,
+      },
+      {
+        action:   'decryptImage',
+        enabled:  this.isEncrypted,
+        icon:     'icon icon-unlock',
+        label:    this.t('harvester.action.decryptImage'),
+        disabled: !this.isReady,
+      },
+      {
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         action:  'download',
         enabled: this.links?.download,
         icon:    'icon icon-download',
@@ -62,6 +88,39 @@ export default class HciVmImage extends HarvesterResource {
     ];
   }
 
+<<<<<<< HEAD
+=======
+  encryptImage() {
+    const router = this.currentRouter();
+
+    router.push({
+      name:   `${ HARVESTER_PRODUCT }-c-cluster-resource-create`,
+      params: { resource: HCI.IMAGE },
+      query:  {
+        image:           this,
+        fromPage:        HCI.IMAGE,
+        sourceType:      'clone',
+        cryptoOperation: 'encrypt'
+      }
+    });
+  }
+
+  decryptImage() {
+    const router = this.currentRouter();
+
+    router.push({
+      name:   `${ HARVESTER_PRODUCT }-c-cluster-resource-create`,
+      params: { resource: HCI.IMAGE },
+      query:  {
+        image:           this,
+        fromPage:        HCI.IMAGE,
+        sourceType:      'clone',
+        cryptoOperation: 'decrypt'
+      }
+    });
+  }
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   applyDefaults(resources = this, realMode) {
     if (realMode !== _CLONE) {
       Vue.set(this.metadata, 'labels', { [HCI_ANNOTATIONS.OS_TYPE]: '', [HCI_ANNOTATIONS.IMAGE_SUFFIX]: '' });
@@ -102,6 +161,13 @@ export default class HciVmImage extends HarvesterResource {
     const imported = this.getStatusConditionOfType('Imported');
 
     if (imported?.status === 'Unknown') {
+<<<<<<< HEAD
+=======
+      if (this.spec.sourceType === 'restore') {
+        return 'Restoring';
+      }
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       if (this.spec.sourceType === 'download') {
         return 'Downloading';
       }
@@ -124,6 +190,31 @@ export default class HciVmImage extends HarvesterResource {
     return stateDisplay(this.metadata.state.name);
   }
 
+<<<<<<< HEAD
+=======
+  get encryptionSecret() {
+    const secretNS = this.spec.storageClassParameters[CSI_PROVISIONER_SECRET_NAMESPACE];
+    const secretName = this.spec.storageClassParameters[CSI_PROVISIONER_SECRET_NAME];
+
+    if (secretNS && secretName) {
+      return `${ secretNS }/${ secretName }`;
+    }
+
+    return '';
+  }
+
+  get isEncrypted() {
+    return this.spec.sourceType === 'clone' &&
+    this.spec.securityParameters?.cryptoOperation === 'encrypt' &&
+    !!this.spec.securityParameters?.sourceImageName &&
+    !!this.spec.securityParameters?.sourceImageNamespace;
+  }
+
+  get displayNameWithNamespace() {
+    return `${ this.metadata.namespace }/${ this.spec.displayName }`;
+  }
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   get imageMessage() {
     if (this.uploadError) {
       return ucFirst(this.uploadError);
@@ -169,6 +260,24 @@ export default class HciVmImage extends HarvesterResource {
     });
   }
 
+<<<<<<< HEAD
+=======
+  get virtualSize() {
+    const virtualSize = this.status?.virtualSize;
+
+    if (!virtualSize) {
+      return '-';
+    }
+
+    return formatSi(virtualSize, {
+      increment:    1024,
+      maxPrecision: 2,
+      suffix:       'B',
+      firstSuffix:  'B',
+    });
+  }
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   getStatusConditionOfType(type, defaultValue = []) {
     const conditions = Array.isArray(get(this, 'status.conditions')) ? this.status.conditions : defaultValue;
 

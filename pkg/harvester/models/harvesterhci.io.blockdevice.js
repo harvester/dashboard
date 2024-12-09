@@ -15,7 +15,11 @@ export default class HciBlockDevice extends HarvesterResource {
   }
 
   get isChildPartProvisioned() {
+<<<<<<< HEAD
     const parts = this.childParts.filter(p => p.spec?.fileSystem?.provisioned) || [];
+=======
+    const parts = this.childParts.filter(p => p.isProvisioned) || [];
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
     return parts.length > 0;
   }
@@ -59,4 +63,12 @@ export default class HciBlockDevice extends HarvesterResource {
 
     return formatting.status === 'True';
   }
+<<<<<<< HEAD
+=======
+
+  get isProvisioned() {
+    // spec.fileSystem.provisioned is deprecated
+    return this.spec?.fileSystem?.provisioned || this.spec?.provision;
+  }
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 }

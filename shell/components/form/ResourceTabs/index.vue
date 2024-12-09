@@ -72,6 +72,10 @@ export default {
       selectedTab:   this.defaultTab,
       didLoadEvents: false,
       extensionTabs: getApplicableExtensionEnhancements(this, ExtensionPoint.TAB, TabLocation.RESOURCE_DETAIL, this.$route),
+<<<<<<< HEAD
+=======
+      inStore,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     };
   },
 
@@ -80,6 +84,7 @@ export default {
   },
 
   computed: {
+<<<<<<< HEAD
     showConditions() {
       const inStore = this.$store.getters['currentStore'](this.value.type);
 
@@ -89,6 +94,34 @@ export default {
 
       return false;
     },
+=======
+    /**
+     * Sync checks for showing the conditions tab
+     */
+    preShowConditions() {
+      return this.isView && this.needConditions && this.value?.type;
+    },
+
+    /**
+    * Conditions come from a resource's `status`. They are used by both core resources like workloads as well as those from CRDs
+    *
+    * Check here if the resource type contains conditions via the schema resourceFields
+    */
+    showConditions() {
+      if (!this.preShowConditions) {
+        return false;
+      }
+
+      if (!this.schema.hasResourceFields) {
+        console.warn('Schema does not contain resourceFields, unable to check for status.conditions'); // eslint-disable-line no-console
+
+        return false;
+      }
+
+      return this.$store.getters[`${ this.inStore }/pathExistsInSchema`](this.value.type, 'status.conditions');
+    },
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     showEvents() {
       return this.isView && this.needEvents && this.hasEvents;
     },

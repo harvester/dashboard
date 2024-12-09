@@ -44,6 +44,7 @@ export default {
 
   watch: {
     publicKey(neu) {
+<<<<<<< HEAD
       this.value.spec.publicKey = neu;
 
       const splitSSH = neu.split(/\s+/);
@@ -53,6 +54,19 @@ export default {
           this.value.metadata.name = splitSSH[2].split('@')[0];
           this.randomString = randomStr(10).toLowerCase();
         }
+=======
+      const trimNeu = neu.trim();
+
+      this.value.spec.publicKey = trimNeu;
+
+      const splitSSH = trimNeu.split(/\s+/);
+
+      if (splitSSH.length === 3 && !this.value.metadata.name) {
+        const keyComment = splitSSH[2];
+
+        this.randomString = randomStr(10).toLowerCase();
+        this.value.metadata.name = keyComment.includes('@') ? keyComment.split('@')[0] : keyComment;
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       }
     }
   },

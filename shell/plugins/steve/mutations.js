@@ -13,6 +13,10 @@ import { keyForSubscribe } from '@shell/plugins/steve/resourceWatcher';
 import { perfLoadAll } from '@shell/plugins/steve/performanceTesting';
 import Vue from 'vue';
 import { classify } from '@shell/plugins/dashboard-store/classify';
+<<<<<<< HEAD
+=======
+import SteveSchema from '@shell/models/steve-schema';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 function registerNamespace(state, namespace) {
   let cache = state.podsByNamespace[namespace];
@@ -156,11 +160,23 @@ export default {
   },
 
   reset(state) {
+<<<<<<< HEAD
     resetStore(state, this.commit);
+=======
+    // Reset generic store things.... then steve specific things
+
+    resetStore(state, this.commit);
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     this.commit(`${ state.config.namespace }/resetSubscriptions`);
 
     // Clear the podsByNamespace cache
     state.podsByNamespace = {};
+<<<<<<< HEAD
+=======
+
+    SteveSchema.reset(state.config.namespace);
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   },
 
   loadMulti(state, { data, ctx }) {

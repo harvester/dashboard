@@ -29,11 +29,19 @@ export default {
     },
   },
 
+<<<<<<< HEAD
   fetch() {
     this.errors = [];
 
     try {
       this.fields = this.$store.getters['plugins/fieldsForDriver'](this.provider);
+=======
+  async fetch() {
+    this.errors = [];
+
+    try {
+      this.fields = await this.$store.getters['plugins/fieldsForDriver'](this.provider);
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       const name = `rke-machine-config.cattle.io.${ this.provider }config`;
 
       if ( !this.fields ) {
@@ -42,6 +50,18 @@ export default {
     } catch (e) {
       this.errors = exceptionToErrorsArray(e);
     }
+<<<<<<< HEAD
+=======
+
+    const normanType = this.$store.getters['plugins/credentialFieldForDriver'](this.provider);
+    const normanSchema = this.$store.getters['rancher/schemaFor'](`${ normanType }credentialconfig`);
+
+    if ( normanSchema ) {
+      this.cloudCredentialKeys = Object.keys(normanSchema.resourceFields || {});
+    } else {
+      this.cloudCredentialKeys = await this.$store.getters['plugins/fieldNamesForDriver'](this.provider);
+    }
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   },
 
   data() {
@@ -51,6 +71,7 @@ export default {
     };
   },
 
+<<<<<<< HEAD
   computed: {
     cloudCredentialKeys() {
       const normanType = this.$store.getters['plugins/credentialFieldForDriver'](this.provider);
@@ -64,6 +85,8 @@ export default {
     }
   },
 
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   watch: {
     'credentialId'() {
       this.$fetch();

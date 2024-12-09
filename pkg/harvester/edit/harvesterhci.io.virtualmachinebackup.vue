@@ -159,6 +159,13 @@ export default {
   },
 
   methods: {
+<<<<<<< HEAD
+=======
+    cancelAction() {
+      this.$router.go(-1);
+    },
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     async saveRestore(buttonCb) {
       this.update();
 
@@ -261,7 +268,11 @@ export default {
       />
     </div>
 
+<<<<<<< HEAD
     <Footer mode="create" class="footer" :errors="errors" @save="saveRestore" @done="done" />
+=======
+    <Footer mode="create" class="footer" :errors="errors" @save="saveRestore" @done="cancelAction" />
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   </div>
 </template>
 

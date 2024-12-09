@@ -2,6 +2,10 @@ import { HCI } from '../types';
 import { get, clone } from '@shell/utils/object';
 import { findBy } from '@shell/utils/array';
 import { colorForState } from '@shell/plugins/dashboard-store/resource-class';
+<<<<<<< HEAD
+=======
+import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 import { _CREATE } from '@shell/config/query-params';
 import HarvesterResource from './harvester';
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../config/harvester';
@@ -18,9 +22,14 @@ export default class HciVmBackup extends HarvesterResource {
 
   get detailLocation() {
     const detailLocation = clone(this._detailLocation);
+<<<<<<< HEAD
     const route = this.currentRoute();
 
     detailLocation.params.resource = route.params.resource;
+=======
+
+    detailLocation.params.resource = HCI.BACKUP;
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
     return detailLocation;
   }
@@ -81,6 +90,7 @@ export default class HciVmBackup extends HarvesterResource {
   }
 
   restoreExistingVM(resource = this) {
+<<<<<<< HEAD
     const route = this.currentRoute();
     const router = this.currentRouter();
 
@@ -88,10 +98,23 @@ export default class HciVmBackup extends HarvesterResource {
       name:   `${ HARVESTER_PRODUCT }-c-cluster-resource-create`,
       params: { resource: route.params.resource },
       query:  { restoreMode: 'existing', resourceName: resource.name }
+=======
+    const router = this.currentRouter();
+    const targetResource = resource.spec.type === BACKUP_TYPE.BACKUP ? HCI.BACKUP : HCI.VM_SNAPSHOT;
+
+    router.push({
+      name:   `${ HARVESTER_PRODUCT }-c-cluster-resource-create`,
+      params: { resource: targetResource },
+      query:  {
+        restoreMode:  'existing',
+        resourceName: resource.name,
+      }
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     });
   }
 
   restoreNewVM(resource = this) {
+<<<<<<< HEAD
     const route = this.currentRoute();
     const router = this.currentRouter();
 
@@ -99,6 +122,18 @@ export default class HciVmBackup extends HarvesterResource {
       name:   `${ HARVESTER_PRODUCT }-c-cluster-resource-create`,
       params: { resource: route.params.resource },
       query:  { restoreMode: 'new', resourceName: resource.name }
+=======
+    const router = this.currentRouter();
+    const targetResource = resource.spec.type === BACKUP_TYPE.BACKUP ? HCI.BACKUP : HCI.VM_SNAPSHOT;
+
+    router.push({
+      name:   `${ HARVESTER_PRODUCT }-c-cluster-resource-create`,
+      params: { resource: targetResource },
+      query:  {
+        restoreMode:  'new',
+        resourceName: resource.name,
+      }
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     });
   }
 
@@ -125,6 +160,13 @@ export default class HciVmBackup extends HarvesterResource {
     return colorForState(state);
   }
 
+<<<<<<< HEAD
+=======
+  get sourceSchedule() {
+    return this.metadata?.annotations[HCI_ANNOTATIONS.SVM_BACKUP_ID];
+  }
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   get attachVM() {
     return this.spec.source.name;
   }

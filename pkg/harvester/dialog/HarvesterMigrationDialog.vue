@@ -68,12 +68,28 @@ export default {
       return resource;
     },
 
+<<<<<<< HEAD
+=======
+    cpuPinningAlertMessage() {
+      return this.t('harvester.virtualMachine.cpuPinning.migrationMessage');
+    },
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     nodeNameList() {
       const nodes = this.$store.getters['harvester/all'](NODE);
 
       return nodes.filter((n) => {
+<<<<<<< HEAD
         // do not allow to migrate to self node and witness node
         return n.isEtcd !== 'true' && !!this.availableNodes.includes(n.id);
+=======
+        const isNotSelfNode = !!this.availableNodes.includes(n.id);
+        const isNotWitnessNode = n.isEtcd !== 'true'; // do not allow to migrate to self node and witness node
+        const isCpuPinning = this.actionResource?.isCpuPinning;
+        const matchingCpuManagerConfig = !isCpuPinning || n.isCPUManagerEnabled; // If cpu-pinning is enabled, filter-out non-enabled CPU manager nodes.
+
+        return isNotSelfNode && isNotWitnessNode && matchingCpuManagerConfig;
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       }).map((n) => {
         let label = n?.metadata?.name;
         const value = n?.metadata?.name;
@@ -140,6 +156,10 @@ export default {
     </template>
 
     <template #body>
+<<<<<<< HEAD
+=======
+      <Banner v-if="actionResource?.isCpuPinning" color="warning" :label="cpuPinningAlertMessage" />
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       <LabeledSelect
         v-model="nodeName"
         :label="t('harvester.modal.migration.fields.nodeName.label')"
@@ -160,7 +180,10 @@ export default {
           @click="apply"
         />
       </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       <Banner v-for="(err, i) in errors" :key="i" color="error" :label="err" />
     </div>
   </Card>

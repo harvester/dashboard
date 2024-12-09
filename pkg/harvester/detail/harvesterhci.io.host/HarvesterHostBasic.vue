@@ -48,6 +48,16 @@ export default {
     customName() {
       return this.value.metadata?.annotations?.[HCI_ANNOTATIONS.HOST_CUSTOM_NAME];
     },
+<<<<<<< HEAD
+=======
+    cpuManagerStatus() {
+      if (this.value.isCPUManagerEnableInProgress) {
+        return this.t('generic.loading');
+      }
+
+      return this.t(`generic.${ this.value.isCPUManagerEnabled ? 'enabled' : 'disabled' }`);
+    },
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
     consoleUrl() {
       const consoleUrl = this.value.metadata?.annotations?.[HCI_ANNOTATIONS.HOST_CONSOLE_URL];
@@ -224,6 +234,12 @@ export default {
     </div>
 
     <div class="row mb-20">
+<<<<<<< HEAD
+=======
+      <div v-if="!value.isEtcd" class="col span-6">
+        <LabelValue :name="t('harvester.host.detail.cpuManager')" :value="cpuManagerStatus" />
+      </div>
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       <div class="col span-6">
         <LabelValue :name="t('harvester.host.detail.consoleUrl')" :value="consoleUrl.value">
           <a slot="value" :href="consoleUrl.value" target="_blank">{{ consoleUrl.display }}</a>

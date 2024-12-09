@@ -1,6 +1,10 @@
 <script>
 import CreateEditView from '@shell/mixins/create-edit-view';
 import { SECRET, LOGGING, SCHEMA } from '@shell/config/types';
+<<<<<<< HEAD
+=======
+import Loading from '@shell/components/Loading';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 import Tabbed from '@shell/components/Tabbed';
 import Tab from '@shell/components/Tabbed/Tab';
 import CruResource from '@shell/components/CruResource';
@@ -19,18 +23,61 @@ import YamlEditor, { EDITOR_MODES } from '@shell/components/YamlEditor';
 
 export default {
   components: {
+<<<<<<< HEAD
     Banner, CruResource, Labels, LabeledSelect, NameNsDescription, Tab, Tabbed, YamlEditor
   },
+=======
+    Banner, CruResource, Labels, LabeledSelect, NameNsDescription, Tab, Tabbed, YamlEditor, Loading
+  }, //
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
   mixins: [CreateEditView],
 
   async fetch() {
+<<<<<<< HEAD
     await this.$store.dispatch('cluster/findAll', { type: SECRET });
   },
 
   data() {
     const schemas = this.$store.getters['cluster/all'](SCHEMA);
 
+=======
+    const schemas = this.$store.getters['cluster/all'](SCHEMA);
+    const resourceSchema = this.$store.getters['cluster/byId'](SCHEMA, LOGGING.OUTPUT);
+
+    await this.$store.dispatch('cluster/findAll', { type: SECRET });
+    const schemaDefinition = await resourceSchema.fetchResourceFields();
+
+    let bufferYaml = '';
+
+    if ( !isEmpty(this.value.spec[this.selectedProvider]?.buffer) ) {
+      bufferYaml = jsyaml.dump(this.value.spec[this.selectedProvider].buffer);
+    } else if (schemaDefinition) {
+      bufferYaml = createYaml(
+        schemas,
+        `io.banzaicloud.logging.v1beta1.Output.spec.${ this.selectedProvider }.buffer`,
+        {},
+        true,
+        1,
+        '',
+        LOGGING.OUTPUT
+      );
+
+      // createYaml doesn't support passing reference types (array, map) as the first type. As such
+      // I'm manipulating the output since I'm not sure it's something we want to actually support
+      // seeing as it's really createResourceYaml and this here is a gray area between spoofed types
+      // and just a field within a spec.
+      bufferYaml = bufferYaml.substring(bufferYaml.indexOf('\n') + 1).replace(/# {2}/g, '#');
+    }
+
+    if (bufferYaml.length) {
+      this.bufferYaml = bufferYaml;
+      this.initialBufferYaml = bufferYaml;
+    }
+  },
+
+  data() {
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     if (this.isCreate) {
       this.value.metadata.namespace = 'default';
     }
@@ -44,8 +91,11 @@ export default {
     }));
 
     if (this.mode !== _VIEW) {
+<<<<<<< HEAD
       this.$set(this.value, 'spec', this.value.spec || {});
 
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       providers.forEach((provider) => {
         this.$set(this.value.spec, provider.name, this.value.spec[provider.name] || clone(provider.default));
       });
@@ -58,6 +108,7 @@ export default {
       return !isEmpty(correctedSpecProvider) && !isEqual(correctedSpecProvider, provider.default);
     });
 
+<<<<<<< HEAD
     const selectedProvider = selectedProviders?.[0]?.value || providers[0].value;
 
     let bufferYaml;
@@ -80,6 +131,17 @@ export default {
       selectedProvider,
       hasMultipleProvidersSelected: selectedProviders?.length > 1,
       selectedProviders,
+=======
+    const hasMultipleProvidersSelected = selectedProviders?.length > 1;
+
+    const selectedProvider = selectedProviders?.[0]?.value || providers[0].value;
+
+    return {
+      bufferYaml: '',
+      providers,
+      selectedProvider,
+      hasMultipleProvidersSelected,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       LOGGING
     };
   },
@@ -157,7 +219,15 @@ export default {
 </script>
 
 <template>
+<<<<<<< HEAD
   <div class="output">
+=======
+  <Loading v-if="$fetchState.pending" />
+  <div
+    v-else
+    class="output"
+  >
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     <CruResource
       :done-route="doneRoute"
       :mode="cruMode"

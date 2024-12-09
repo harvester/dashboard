@@ -11,7 +11,10 @@ import { _VIEW } from '@shell/config/query-params';
 import DataTemplate from './DataTemplate';
 
 const _NEW = '_NEW';
+<<<<<<< HEAD
 const _NONE = '_NONE';
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 export default {
   components: {
@@ -82,21 +85,27 @@ export default {
       value: _NEW,
     });
 
+<<<<<<< HEAD
     optionUser.unshift({
       label: this.t('harvester.virtualMachine.cloudConfig.cloudInit.placeholder'),
       value: _NONE,
     });
 
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     optionNetwork.unshift({
       label: this.t('harvester.virtualMachine.cloudConfig.createNew'),
       value: _NEW,
     });
 
+<<<<<<< HEAD
     optionNetwork.unshift({
       label: this.t('harvester.virtualMachine.cloudConfig.cloudInit.placeholder'),
       value: _NONE,
     });
 
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     this.optionUser = optionUser;
     this.optionNetwork = optionNetwork;
   },

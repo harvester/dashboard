@@ -27,8 +27,11 @@ export default {
 
     if (this.hasSchema) {
       try {
+<<<<<<< HEAD
         const inStore = this.$store.getters['currentProduct'].inStore;
 
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         const hash = await allHash({
           sriovgpus:   this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.SR_IOVGPU_DEVICE }),
           vGpuDevices: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VGPU_DEVICE }),

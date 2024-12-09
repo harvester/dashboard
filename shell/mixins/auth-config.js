@@ -196,7 +196,11 @@ export default {
           }
         }
         if (wasEnabled && configType === 'oauth') {
+<<<<<<< HEAD
           await this.model.save({ ignoreFields: ['oauthCredential', 'serviceAccountCredential'] });
+=======
+          await this.model.save({ ignoreFields: ['oauthCredential', 'serviceAccountCredential'] } );
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         } else {
           await this.model.save();
         }

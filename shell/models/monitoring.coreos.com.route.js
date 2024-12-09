@@ -34,7 +34,11 @@ export default class Route extends SteveModel {
   }
 
   async save() {
+<<<<<<< HEAD
     const errors = await this.validationErrors(this);
+=======
+    const errors = this.validationErrors(this);
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
     if (!isEmpty(errors)) {
       return Promise.reject(errors);

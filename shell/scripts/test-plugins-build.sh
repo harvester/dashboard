@@ -25,8 +25,12 @@ if [ $SKIP_SETUP == "false" ]; then
 
   if [ $RET -ne 0 ]; then
     echo "Verdaccio not installed"
+<<<<<<< HEAD
 
     npm install -g verdaccio
+=======
+    npm install -g verdaccio@5.32.2
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   fi
 
   set +e

@@ -8,6 +8,10 @@
   "dependencies": {},
   "resolutions": {
     "**/webpack": "4",
+<<<<<<< HEAD
     "@types/node": "^16"
+=======
+    "@types/node": "16.11.7"
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   }  
 }

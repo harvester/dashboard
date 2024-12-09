@@ -6,6 +6,10 @@ import {
   CAPI, METRIC, NODE, SCHEMA, LONGHORN, POD
 } from '@shell/config/types';
 import { HCI } from '../types';
+<<<<<<< HEAD
+=======
+import { DOC_LINKS } from '../config/doc-links';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 import { allHash } from '@shell/utils/promise';
 import metricPoller from '@shell/mixins/metric-poller';
 
@@ -90,6 +94,11 @@ export default {
           search:    ['internalIp'],
           value:     'internalIp',
           formatter: 'CopyToClipboard',
+<<<<<<< HEAD
+=======
+          sort:      ['internalIp'],
+          align:     'center',
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         },
       ];
 
@@ -126,6 +135,20 @@ export default {
         out.splice(-1, 0, storageHeader);
       }
 
+<<<<<<< HEAD
+=======
+      out.push({
+        name:          'cpuManager',
+        labelKey:      'harvester.tableHeaders.cpuManager',
+        value:         'id',
+        formatter:     'HarvesterCPUPinning',
+        formatterOpts: { rows: this.rows },
+        width:         150,
+        align:         'center',
+
+      });
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       if (this.hasLonghornSchema) {
         out.push({
           name:      'diskState',
@@ -142,7 +165,11 @@ export default {
         name:  'console',
         label: ' ',
         align: 'right',
+<<<<<<< HEAD
         width: 65,
+=======
+        width: 80,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       });
 
       return out;
@@ -150,6 +177,13 @@ export default {
 
     schema() {
       return schema;
+<<<<<<< HEAD
+=======
+    },
+
+    consoleDocLink() {
+      return DOC_LINKS.CONSOLE_URL;
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     }
   },
   methods: {
@@ -168,7 +202,19 @@ export default {
 
     goto(row) {
       window.open(row.consoleUrl, '_blank');
+<<<<<<< HEAD
     }
+=======
+    },
+
+    consoleTooltip(row) {
+      if (!row.consoleUrl) {
+        return this.t('harvester.host.noConsoleUrl');
+      }
+
+      return '';
+    },
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   },
 
   typeDisplay() {
@@ -198,10 +244,28 @@ export default {
       v-on="$listeners"
     >
       <template #cell:console="{row}">
+<<<<<<< HEAD
         <button type="button" class="btn btn-sm role-primary" :disabled="!row.consoleUrl" @click="goto(row)">
           {{ t('harvester.host.console') }}
         </button>
+=======
+        <div class="console-button">
+          <button v-clean-tooltip="consoleTooltip(row)" type="button" class="mr-5 btn btn-sm role-primary" :disabled="!row.consoleUrl" @click="goto(row)">
+            {{ t('harvester.host.console') }}
+          </button>
+          <a v-if="!row.consoleUrl" :href="consoleDocLink" target="_blank"><i class="icon icon-info" /></a>
+        </div>
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       </template>
     </ResourceTable>
   </div>
 </template>
+<<<<<<< HEAD
+=======
+
+<style lang="scss" scoped>
+  .console-button {
+    display: flex;
+  }
+</style>
+>>>>>>> b5455bcb (fix: separate used/allocated units)

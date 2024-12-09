@@ -117,9 +117,17 @@ export const SNAPSHOT = { CLUSTER_NAME: 'rke.cattle.io/cluster-name' };
 export const ISTIO = { AUTO_INJECTION: 'istio-injection' };
 
 const CATTLE_REGEX = /cattle\.io\//;
+<<<<<<< HEAD
 
 export const LABELS_TO_IGNORE_REGEX = [
   CATTLE_REGEX
+=======
+const VM_MAINTENANCE_MODE_STRATEGY = /harvesterhci\.io\/maintain-mode-strategy/;
+
+export const LABELS_TO_IGNORE_REGEX = [
+  CATTLE_REGEX,
+  VM_MAINTENANCE_MODE_STRATEGY
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 ];
 
 export const ANNOTATIONS_TO_IGNORE_REGEX = [

@@ -7,6 +7,10 @@ import HarvesterSupportBundle from '../../../../dialog/HarvesterSupportBundle';
 import CommunityLinks from '@shell/components/CommunityLinks';
 import { SCHEMA } from '@shell/config/types';
 import { HCI } from '../../../../types';
+<<<<<<< HEAD
+=======
+import { DOC_LINKS } from '../../../../config/doc-links';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 export default {
   layout: 'default',
@@ -73,13 +77,26 @@ export default {
       const { host, params } = this.internalPrefix;
 
       return `https://${ host }/k8s/clusters/${ params.cluster }/api/v1/namespaces/longhorn-system/services/http:longhorn-frontend:80/proxy/#/dashboard`;
+<<<<<<< HEAD
     }
+=======
+    },
+
+    rancherIntegrationLink() {
+      return DOC_LINKS.RANCHER_INTEGRATION_URL;
+    },
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   },
 
   methods: {
     open() {
       this.$store.commit('harvester-common/toggleBundleModal', true);
+<<<<<<< HEAD
     }
+=======
+    },
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   }
 };
 </script>
@@ -132,7 +149,11 @@ export default {
               </h2>
               <div>
                 <p class="warning">
+<<<<<<< HEAD
                   <t k="harvester.support.internal.rancher.titleDescription" :raw="true" />
+=======
+                  <t k="harvester.support.internal.rancher.titleDescription" :raw="true" :url="rancherIntegrationLink" />
+>>>>>>> b5455bcb (fix: separate used/allocated units)
                 </p>
               </div>
             </div>

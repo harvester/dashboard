@@ -1,6 +1,10 @@
 <script>
 import CreateEditView from '@shell/mixins/create-edit-view';
+<<<<<<< HEAD
 import { SECRET, LOGGING, SCHEMA } from '@shell/config/types';
+=======
+import { LOGGING, SCHEMA } from '@shell/config/types';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 import Tabbed from '@shell/components/Tabbed';
 import Tab from '@shell/components/Tabbed/Tab';
 import CruResource from '@shell/components/CruResource';
@@ -30,12 +34,52 @@ export default {
   mixins: [CreateEditView],
 
   async fetch() {
+<<<<<<< HEAD
     await this.$store.dispatch('harvester/findAll', { type: SECRET });
   },
 
   data() {
     const schemas = this.$store.getters['harvester/all'](SCHEMA);
 
+=======
+    const schemas = this.$store.getters['harvester/all'](SCHEMA);
+
+    const resourceSchema = this.$store.getters['harvester/byId'](SCHEMA, LOGGING.OUTPUT);
+
+    const schemaDefinition = await resourceSchema.fetchResourceFields();
+
+    let bufferYaml = '';
+
+    if ( !isEmpty(this.value.spec[this.selectedProvider]?.buffer) ) {
+      bufferYaml = jsyaml.dump(this.value.spec[this.selectedProvider].buffer);
+    } else if (schemaDefinition) {
+      bufferYaml = createYaml(
+        schemas,
+        `io.banzaicloud.logging.v1beta1.Output.spec.${ this.selectedProvider }.buffer`,
+        {},
+        true,
+        1,
+        '',
+        LOGGING.OUTPUT
+      );
+
+      // createYaml doesn't support passing reference types (array, map) as the first type. As such
+      // I'm manipulating the output since I'm not sure it's something we want to actually support
+      // seeing as it's really createResourceYaml and this here is a gray area between spoofed types
+      // and just a field within a spec.
+      bufferYaml = bufferYaml.substring(bufferYaml.indexOf('\n') + 1).replace(/# {2}/g, '#');
+    }
+
+    if (bufferYaml.length) {
+      this.bufferYaml = bufferYaml;
+      this.initialBufferYaml = bufferYaml;
+
+      this.$refs.yaml.updateValue(this.bufferYaml);
+    }
+  },
+
+  data() {
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     if (this.isCreate) {
       this.value.metadata.namespace = 'default';
     }
@@ -65,6 +109,7 @@ export default {
 
     const selectedProvider = selectedProviders?.[0]?.value || providers[0].value;
 
+<<<<<<< HEAD
     let bufferYaml;
 
     if ( !isEmpty(this.value.spec[selectedProvider]?.buffer) ) {
@@ -81,6 +126,11 @@ export default {
     return {
       bufferYaml,
       initialBufferYaml:            bufferYaml,
+=======
+    return {
+      bufferYaml:                   '',
+      initialBufferYaml:            '',
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       providers,
       selectedProvider,
       hasMultipleProvidersSelected: selectedProviders.length > 1,

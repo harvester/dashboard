@@ -16,10 +16,15 @@ import { downloadFile, generateZip } from '@shell/utils/download';
 import { clone, get } from '@shell/utils/object';
 import { eachLimit } from '@shell/utils/promise';
 import { sortableNumericSuffix } from '@shell/utils/sort';
+<<<<<<< HEAD
 import { coerceStringTypeToScalarType, escapeHtml, ucFirst } from '@shell/utils/string';
 import {
   displayKeyFor,
   validateBoolean,
+=======
+import { escapeHtml, ucFirst } from '@shell/utils/string';
+import {
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   validateChars,
   validateDnsLikeTypes,
   validateLength,
@@ -32,6 +37,7 @@ import forIn from 'lodash/forIn';
 import isEmpty from 'lodash/isEmpty';
 import isFunction from 'lodash/isFunction';
 import isString from 'lodash/isString';
+<<<<<<< HEAD
 import uniq from 'lodash/uniq';
 import Vue from 'vue';
 
@@ -52,6 +58,14 @@ const STRING_LIKE_TYPES = [
   'hostname',
 ];
 const DNS_LIKE_TYPES = ['dnsLabel', 'dnsLabelRestricted', 'hostname'];
+=======
+import Vue from 'vue';
+
+import { ExtensionPoint, ActionLocation } from '@shell/core/types';
+import { getApplicableExtensionEnhancements } from '@shell/core/plugin-helpers';
+
+export const DNS_LIKE_TYPES = ['dnsLabel', 'dnsLabelRestricted', 'hostname'];
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 const REMAP_STATE = {
   disabled:                 'inactive',
@@ -1070,6 +1084,7 @@ export default class Resource {
    */
   processSaveResponse(res) { }
 
+<<<<<<< HEAD
   async _save(opt = {}) {
     delete this.__rehydrate;
     delete this.__clone;
@@ -1077,6 +1092,12 @@ export default class Resource {
     const forNew = !this.id;
 
     const errors = await this.validationErrors(this, opt.ignoreFields);
+=======
+  async _save(opt = { }) {
+    const forNew = !this.id;
+
+    const errors = this.validationErrors(this, opt);
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
     if (!isEmpty(errors)) {
       return Promise.reject(errors);
@@ -1607,6 +1628,7 @@ export default class Resource {
     return errors;
   }
 
+<<<<<<< HEAD
   validationErrors(data = this, ignoreFields) {
     const errors = [];
     const {
@@ -1694,6 +1716,16 @@ export default class Resource {
     }
 
     return uniq([...errors, ...this.customValidationErrors(data)]);
+=======
+  /**
+   * Check this instance is valid against
+   * - any custom dashboard validation
+   *
+   * Models can override this and call super.validationErrors
+   */
+  validationErrors(data = this, opts = { }) {
+    return this.customValidationErrors(data);
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   }
 
   get ownersByType() {

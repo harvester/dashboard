@@ -5,6 +5,10 @@ import SYSTEM_NAMESPACES from '@shell/config/system-namespaces';
 import { get } from '@shell/utils/object';
 import { NAMESPACE } from '@shell/config/types';
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '@pkg/harvester/config/harvester';
+<<<<<<< HEAD
+=======
+import { HCI } from '../../types';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 const OBSCURE_NAMESPACE_PREFIX = [
   'c-', // cluster namespace
@@ -37,15 +41,41 @@ export default class HciNamespace extends namespace {
       weight:     -10,
     };
 
+<<<<<<< HEAD
+=======
+    const editQuotaAction = {
+      action:  'editNSQuota',
+      label:   this.t('harvester.modal.quota.editQuota'),
+      icon:    'icon icon-storage',
+      enabled: !!this?.actions?.updateResourceQuota && !!this?.actions?.deleteResourceQuota,
+      weight:  -11,
+    };
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     if (remove > -1) {
       out.splice(remove, 1);
     }
 
     insertAt(out, out.length - 1, promptRemove);
+<<<<<<< HEAD
+=======
+    insertAt(out, out.length - 5, editQuotaAction);
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
     return out;
   }
 
+<<<<<<< HEAD
+=======
+  editNSQuota(resources = this) {
+    this.$dispatch('promptModal', {
+      resources,
+      snapshotSizeQuota: this.snapshotSizeQuota,
+      component:         'HarvesterQuotaDialog'
+    });
+  }
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   promptRemove(resources = this) {
     this.$dispatch('promptModal', {
       resources,
@@ -54,6 +84,20 @@ export default class HciNamespace extends namespace {
     });
   }
 
+<<<<<<< HEAD
+=======
+  get nsResourceQuota() {
+    const inStore = this.$rootGetters['currentProduct'].inStore;
+    const allResQuotas = this.$rootGetters[`${ inStore }/all`](HCI.RESOURCE_QUOTA);
+
+    return allResQuotas.find( RQ => RQ.metadata.namespace === this.id);
+  }
+
+  get snapshotSizeQuota() {
+    return this.nsResourceQuota?.spec?.snapshotLimit?.namespaceTotalSnapshotSizeQuota;
+  }
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   get isSystem() {
     const systemNamespaces = ['fleet-default'];
 

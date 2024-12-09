@@ -164,16 +164,28 @@ export const getters = {
   },
 
   fieldNamesForDriver(state, getters) {
+<<<<<<< HEAD
     return (name) => {
       const schema = getters.schemaForDriver(name);
 
+=======
+    return async(name) => {
+      const schema = getters.schemaForDriver(name);
+
+      await schema.fetchResourceFields();
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       if ( !schema ) {
         // eslint-disable-next-line no-console
         console.error(`Machine Driver Config schema not found for ${ name }`);
 
         return [];
       }
+<<<<<<< HEAD
 
+=======
+      // This is used in places where `createPopulated` has been called, which has called fetchResourceFields to populate resourceFields
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       const out = Object.keys(schema?.resourceFields || {});
 
       removeObjects(out, ['apiVersion', 'dockerPort', 'kind', 'metadata']);
@@ -183,9 +195,17 @@ export const getters = {
   },
 
   fieldsForDriver(state, getters) {
+<<<<<<< HEAD
     return (name) => {
       const schema = getters.schemaForDriver(name);
       const names = getters.fieldNamesForDriver(name);
+=======
+    return async(name) => {
+      const schema = getters.schemaForDriver(name);
+
+      await schema.fetchResourceFields();
+      const names = await getters.fieldNamesForDriver(name);
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
       const out = {};
 

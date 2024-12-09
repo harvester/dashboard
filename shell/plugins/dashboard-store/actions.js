@@ -540,8 +540,20 @@ export default {
     return data.map(d => classify(ctx, d));
   },
 
+<<<<<<< HEAD
   createPopulated(ctx, userData) {
     const data = ctx.getters['defaultFor'](userData.type);
+=======
+  async createPopulated(ctx, userData) {
+    let data = null;
+
+    const schema = ctx.getters['schemaFor'](userData.type);
+
+    if (schema) {
+      await schema.fetchResourceFields();
+      data = ctx.getters['defaultFor'](userData.type, schema);
+    }
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
     merge(data, userData);
 

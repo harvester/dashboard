@@ -1,7 +1,10 @@
 export const HCI = {
   CLOUD_INIT:                     'harvesterhci.io/cloud-init-template',
   CURRENT_IP:                     'rke2.io/internal-ip',
+<<<<<<< HEAD
   OWNED_BY:                       'harvesterhci.io/owned-by',
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   IMAGE_ID:                       'harvesterhci.io/imageId',
   SSH_NAMES:                      'harvesterhci.io/sshNames',
   NETWORK_IPS:                    'network.harvesterhci.io/ips',
@@ -54,4 +57,9 @@ export const HCI = {
   NODE_CPU_MANAGER_UPDATE_STATUS: 'harvesterhci.io/cpu-manager-update-status',
   CPU_MANAGER:                    'cpumanager',
   VM_DEVICE_ALLOCATION_DETAILS:   'harvesterhci.io/deviceAllocationDetails',
+<<<<<<< HEAD
+=======
+  SVM_BACKUP_ID:                  'harvesterhci.io/svmbackupId',
+  DISABLE_LONGHORN_V2_ENGINE:     'node.longhorn.io/disable-v2-data-engine'
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 };

@@ -70,7 +70,15 @@ export default {
       {{ t('harvester.modal.snapshot.title') }}
     </template>
     <template #body>
+<<<<<<< HEAD
       <LabeledInput
+=======
+      <Banner v-if="actionResource?.isLonghornV2" color="warning">
+        <t k="harvester.modal.snapshot.message.support.longhorn" :raw="true" />
+      </Banner>
+      <LabeledInput
+        v-else
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         v-model="name"
         :label="t('harvester.modal.snapshot.name')"
         required
@@ -82,6 +90,10 @@ export default {
           {{ t('generic.cancel') }}
         </button>
         <AsyncButton
+<<<<<<< HEAD
+=======
+          v-if="!actionResource?.isLonghornV2"
+>>>>>>> b5455bcb (fix: separate used/allocated units)
           mode="create"
           :disabled="disableSave"
           @click="save"

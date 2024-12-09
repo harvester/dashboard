@@ -15,6 +15,7 @@ import dynamicPluginLoader from '@shell/pkg/dynamic-plugin-loader';
 import { AFTER_LOGIN_ROUTE, WORKSPACE } from '@shell/store/prefs';
 import { BACK_TO } from '@shell/config/local-storage';
 import { NAME as FLEET_NAME } from '@shell/config/product/fleet.js';
+<<<<<<< HEAD
 
 const getPackageFromRoute = (route) => {
   if (!route?.meta) {
@@ -72,6 +73,13 @@ export function getProductFromRoute(to) {
 }
 
 function setProduct(store, to) {
+=======
+import { getClusterFromRoute, getProductFromRoute, getPackageFromRoute } from '@shell/utils/router';
+
+let beforeEachSetup = false;
+
+function setProduct(store, to, redirect) {
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   let product = getProductFromRoute(to);
 
   if ( !product ) {

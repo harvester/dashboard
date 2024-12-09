@@ -237,7 +237,11 @@ export default {
     },
     parserSeparators: {
       type:    Array,
+<<<<<<< HEAD
       default: () => [': ', '='],
+=======
+      default: () => [':', '='],
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     },
     loading: {
       default: false,
@@ -492,6 +496,7 @@ export default {
       }
       this.$emit('input', out);
     },
+<<<<<<< HEAD
     onPaste(index, event, pastedValue) {
       const text = event.clipboardData.getData('text/plain');
       const lines = text.split('\n');
@@ -500,6 +505,16 @@ export default {
 
         return line.split(splitter);
       });
+=======
+    onPaste(index, event) {
+      const text = event.clipboardData.getData('text/plain');
+      const lines = text.split('\n');
+      const splits = lines.map((line) => {
+        const splitter = this.parserSeparators.find(sep => line.includes(sep));
+
+        return splitter ? line.split(splitter) : '';
+      }).filter(split => split && split.length > 0);
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
       if (splits.length === 0 || (splits.length === 1 && splits[0].length < 2)) {
         return;

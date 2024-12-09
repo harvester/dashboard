@@ -1,7 +1,10 @@
 # Harvester Dashboard
 
+<<<<<<< HEAD
 [![Build Status](http://drone-publish.rancher.io/api/badges/harvester/dashboard/status.svg)](http://drone-publish.rancher.io/harvester/dashboard)
 
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 Harvester Dashboard UI, Harvester is an open-source hyper-converged infrastructure (HCI) software built on Kubernetes.
 
 ## Running for Development
@@ -33,7 +36,11 @@ In this mode, you need to have Rancher and import Harvester, more detail in [Har
 yarn build-pkg harvester && yarn serve-pkgs
 
 # Open another terminal
+<<<<<<< HEAD
 HARVESTER_PKG_URL=http://127.0.0.1:4500/harvester-${version}/harvester-${version}.umd.min.js API=https://your-rancher-ip yarn mem-dev
+=======
+HARVESTER_PKG_URL=http://127.0.0.1:4500/harvester-${version}/harvester-${version}.umd.min.js API=https://your-rancher-ip RANCHER_ENV=harvester yarn mem-dev
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 # Example 
 # HARVESTER_PKG_URL=http://127.0.0.1:4500/harvester-1.2.0/harvester-1.2.0.umd.min.js API=https://192.168.1.122 yarn mem-dev

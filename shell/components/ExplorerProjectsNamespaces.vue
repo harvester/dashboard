@@ -1,9 +1,15 @@
 <script>
 import { mapGetters } from 'vuex';
 import ResourceTable from '@shell/components/ResourceTable';
+<<<<<<< HEAD
 import { STATE, AGE, NAME } from '@shell/config/table-headers';
 import { uniq } from '@shell/utils/array';
 import { MANAGEMENT, NAMESPACE, VIRTUAL_TYPES } from '@shell/config/types';
+=======
+import { STATE, AGE, NAME, NS_SNAPSHOT_QUOTA } from '@shell/config/table-headers';
+import { uniq } from '@shell/utils/array';
+import { MANAGEMENT, NAMESPACE, VIRTUAL_TYPES, HCI } from '@shell/config/types';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 import { PROJECT_ID, FLAT_VIEW } from '@shell/config/query-params';
 import Masthead from '@shell/components/ResourceList/Masthead';
 import { mapPref, GROUP_RESOURCES, ALL_NAMESPACES, DEV } from '@shell/store/prefs';
@@ -12,6 +18,10 @@ import { defaultTableSortGenerationFn } from '@shell/components/ResourceTable.vu
 import { NAMESPACE_FILTER_ALL_ORPHANS } from '@shell/utils/namespace-filter';
 import ResourceFetch from '@shell/mixins/resource-fetch';
 import DOMPurify from 'dompurify';
+<<<<<<< HEAD
+=======
+import { HARVESTER_NAME as HARVESTER } from '@shell/config/features';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 export default {
   name:       'ListProjectNamespace',
@@ -35,6 +45,10 @@ export default {
   async fetch() {
     const inStore = this.$store.getters['currentStore'](NAMESPACE);
 
+<<<<<<< HEAD
+=======
+    this.harvesterResourceQuotaSchema = this.$store.getters[`${ inStore }/schemaFor`](HCI.RESOURCE_QUOTA);
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     this.schema = this.$store.getters[`${ inStore }/schemaFor`](NAMESPACE);
     this.projectSchema = this.$store.getters[`management/schemaFor`](MANAGEMENT.PROJECT);
 
@@ -53,6 +67,10 @@ export default {
     return {
       loadResources:                [NAMESPACE],
       loadIndeterminate:            true,
+<<<<<<< HEAD
+=======
+      harvesterResourceQuotaSchema: null,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       schema:                       null,
       projects:                     [],
       projectSchema:                null,
@@ -84,6 +102,7 @@ export default {
     isNamespaceCreatable() {
       return (this.schema?.collectionMethods || []).includes('POST');
     },
+<<<<<<< HEAD
     headers() {
       const project = {
         name:  'project',
@@ -98,6 +117,35 @@ export default {
         this.groupPreference === 'none' ? project : null,
         AGE
       ].filter(h => h);
+=======
+    isHarvester() {
+      return this.$store.getters['currentProduct'].inStore === HARVESTER;
+    },
+    headers() {
+      const headers = [
+        STATE,
+        NAME,
+      ];
+
+      if (this.groupPreference === 'none') {
+        const projectHeader = {
+          name:  'project',
+          label: this.t('tableHeaders.project'),
+          value: 'project.nameDisplay',
+          sort:  ['projectNameSort', 'nameSort'],
+        };
+
+        headers.push(projectHeader);
+      }
+
+      if (this.isHarvester && this.harvesterResourceQuotaSchema) {
+        headers.push(NS_SNAPSHOT_QUOTA);
+      }
+
+      headers.push(AGE);
+
+      return headers;
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     },
     projectIdsWithNamespaces() {
       const ids = this.rows

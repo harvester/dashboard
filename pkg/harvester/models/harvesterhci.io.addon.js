@@ -2,6 +2,10 @@ import HarvesterResource from './harvester';
 import { HCI as HCI_ANNOTATIONS } from '../config/labels-annotations';
 import jsyaml from 'js-yaml';
 import startCase from 'lodash/startCase';
+<<<<<<< HEAD
+=======
+import { HCI } from '../types';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 export default class HciAddonConfig extends HarvesterResource {
   get availableActions() {
@@ -106,6 +110,13 @@ export default class HciAddonConfig extends HarvesterResource {
     return failedCondition?.message || super.stateDescription;
   }
 
+<<<<<<< HEAD
+=======
+  get parentNameOverride() {
+    return this.$rootGetters['i18n/t'](`typeLabel."${ HCI.ADD_ONS }"`, { count: 1 })?.trim();
+  }
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   get displayName() {
     const isExperimental = this.metadata?.labels?.[HCI_ANNOTATIONS.ADDON_EXPERIMENTAL] === 'true';
 

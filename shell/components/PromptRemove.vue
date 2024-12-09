@@ -247,8 +247,11 @@ export default {
         // where the custom dialog needs to delete additional resources - it handles those and retrurns false to get us
         // to delete the main resource
         if (handled === undefined || handled) {
+<<<<<<< HEAD
           // this.close();
 
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
           return;
         }
       }

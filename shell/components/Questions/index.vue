@@ -13,6 +13,10 @@ import ArrayType from './Array';
 import MapType from './QuestionMap';
 import ReferenceType from './Reference';
 import CloudCredentialType from './CloudCredential';
+<<<<<<< HEAD
+=======
+import Loading from '@shell/components/Loading';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 export const knownTypes = {
   string:          StringType,
@@ -108,7 +112,15 @@ function migrate(expr) {
 }
 
 export default {
+<<<<<<< HEAD
   components: { Tab, ...knownTypes },
+=======
+  components: {
+    ...knownTypes,
+    Tab,
+    Loading,
+  },
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
   props: {
     mode: {
@@ -158,6 +170,16 @@ export default {
     }
   },
 
+<<<<<<< HEAD
+=======
+  async fetch() {
+    // If this source is a schema, ensure the schema's `resourceFields` is populated
+    if (this.source.type === 'schema' && this.source.requiresResourceFields) {
+      await this.source.fetchResourceFields();
+    }
+  },
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   data() {
     return { valueGeneration: 0 };
   },
@@ -427,7 +449,15 @@ export default {
 </script>
 
 <template>
+<<<<<<< HEAD
   <form v-if="asTabs">
+=======
+  <Loading
+    v-if="$fetchState.pending"
+    mode="relative"
+  />
+  <form v-else-if="asTabs">
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     <Tab
       v-for="g in groups"
       :key="g.name"

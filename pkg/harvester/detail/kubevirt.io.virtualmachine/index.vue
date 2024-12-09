@@ -2,6 +2,10 @@
 import { mapGetters } from 'vuex';
 import Tabbed from '@shell/components/Tabbed';
 import Tab from '@shell/components/Tabbed/Tab';
+<<<<<<< HEAD
+=======
+import LabelValue from '@shell/components/LabelValue';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 import { EVENT, SERVICE, POD } from '@shell/config/types';
 import { HCI } from '../../types';
 import CreateEditView from '@shell/mixins/create-edit-view';
@@ -9,7 +13,10 @@ import VM_MIXIN from '../../mixins/harvester-vm';
 import DashboardMetrics from '@shell/components/DashboardMetrics';
 import { allHash, setPromiseResult } from '@shell/utils/promise';
 import { allDashboardsExist } from '@shell/utils/grafana';
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 import CloudConfig from '../../edit/kubevirt.io.virtualmachine/VirtualMachineCloudConfig';
 import Volume from '../../edit/kubevirt.io.virtualmachine/VirtualMachineVolume';
 import Network from '../../edit/kubevirt.io.virtualmachine/VirtualMachineNetwork';
@@ -22,6 +29,10 @@ import OverviewBasics from './VirtualMachineTabs/VirtualMachineBasics';
 import OverviewKeypairs from './VirtualMachineTabs/VirtualMachineKeypairs';
 import KeyValue from '@shell/components/form/KeyValue';
 import Labels from '@shell/components/form/Labels';
+<<<<<<< HEAD
+=======
+import { formatSi } from '@shell/utils/units';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 const VM_METRICS_DETAIL_URL = '/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/d/harvester-vm-detail-1/vm-info-detail?orgId=1';
 
@@ -33,6 +44,10 @@ export default {
     Tabbed,
     Events,
     OverviewBasics,
+<<<<<<< HEAD
+=======
+    LabelValue,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     Volume,
     Network,
     OverviewKeypairs,
@@ -57,15 +72,27 @@ export default {
 
   data() {
     return {
+<<<<<<< HEAD
       switchToCloud: false,
       VM_METRICS_DETAIL_URL,
       showVmMetrics: false,
+=======
+      hasResourceQuotaSchema: false,
+      switchToCloud:          false,
+      VM_METRICS_DETAIL_URL,
+      showVmMetrics:          false,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     };
   },
 
   async created() {
     const inStore = this.$store.getters['currentProduct'].inStore;
 
+<<<<<<< HEAD
+=======
+    this.hasResourceQuotaSchema = !!this.$store.getters[`${ inStore }/schemaFor`](HCI.RESOURCE_QUOTA);
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     const hash = {
       pods:     this.$store.dispatch(`${ inStore }/findAll`, { type: POD }),
       services: this.$store.dispatch(`${ inStore }/findAll`, { type: SERVICE }),
@@ -75,6 +102,13 @@ export default {
       restore:  this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.RESTORE }),
     };
 
+<<<<<<< HEAD
+=======
+    if (this.hasResourceQuotaSchema) {
+      hash.resourceQuotas = this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.RESOURCE_QUOTA });
+    }
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     await allHash(hash);
 
     setPromiseResult(
@@ -88,6 +122,25 @@ export default {
   computed: {
     ...mapGetters(['currentCluster']),
 
+<<<<<<< HEAD
+=======
+    totalSnapshotSize() {
+      if (this.value.snapshotSizeQuota === undefined || this.value.snapshotSizeQuota === null) {
+        return ' - ';
+      }
+
+      if (this.value.snapshotSizeQuota === 0) {
+        return '0';
+      }
+
+      return formatSi(this.value.snapshotSizeQuota, {
+        increment: 1024,
+        addSuffix: true,
+        suffix:    'i',
+      });
+    },
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     vmi() {
       const inStore = this.$store.getters['currentProduct'].inStore;
 
@@ -175,10 +228,24 @@ export default {
         <Network v-model="networkRows" mode="view" />
       </Tab>
 
+<<<<<<< HEAD
       <Tab name="keypairs" :label="t('harvester.virtualMachine.detail.tabs.keypairs')" class="bordered-table" :weight="3">
         <OverviewKeypairs v-model="value" />
       </Tab>
 
+=======
+      <Tab name="keypairs" :label="t('harvester.virtualMachine.detail.tabs.keypairs')" class="bordered-table" :weight="4">
+        <OverviewKeypairs v-model="value" />
+      </Tab>
+
+      <Tab v-if="hasResourceQuotaSchema" name="quotas" :label="t('harvester.tab.quotas')" :weight="3">
+        <LabelValue
+          :name="t('harvester.snapshot.totalSnapshotSize')"
+          :value="totalSnapshotSize"
+        />
+      </Tab>
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       <Tab
         v-if="showVmMetrics"
         name="vm-metrics"

@@ -4,11 +4,19 @@ import { allHash } from '@shell/utils/promise';
 import { HCI } from '../../../types';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import Banner from '@components/Banner/Banner.vue';
+<<<<<<< HEAD
 import CompatibilityMatrix from './CompatibilityMatrix';
 import DeviceList from './DeviceList';
 
 import remove from 'lodash/remove';
 import { get, set } from '@shell/utils/object';
+=======
+import CompatibilityMatrix from '../CompatibilityMatrix';
+import DeviceList from './DeviceList';
+
+import remove from 'lodash/remove';
+import { set } from '@shell/utils/object';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 export default {
   name:       'VirtualMachinePCIDevices',
@@ -53,10 +61,20 @@ export default {
     const selectedDevices = [];
     const oldFormatDevices = [];
 
+<<<<<<< HEAD
     (this.value?.domain?.devices?.hostDevices || []).forEach(({ name, deviceName }) => {
       const checkName = (deviceName || '').split('/')?.[1];
 
       if (checkName && name.includes(checkName)) {
+=======
+    const vmDevices = this.value?.domain?.devices?.hostDevices || [];
+    const otherDevices = this.otherDevices(vmDevices).map(({ name }) => name);
+
+    vmDevices.forEach(({ name, deviceName }) => {
+      const checkName = (deviceName || '').split('/')?.[1];
+
+      if (checkName && name.includes(checkName) && !otherDevices.includes(name)) {
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         oldFormatDevices.push(name);
       } else if (this.enabledDevices.find(device => device?.metadata?.name === name)) {
         selectedDevices.push(name);
@@ -94,7 +112,16 @@ export default {
         };
       });
 
+<<<<<<< HEAD
       set(this.value.domain.devices, 'hostDevices', formatted);
+=======
+      const devices = [
+        ...this.otherDevices(this.value.domain.devices.hostDevices || []),
+        ...formatted,
+      ];
+
+      set(this.value.domain.devices, 'hostDevices', devices);
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     }
   },
 
@@ -113,9 +140,14 @@ export default {
         if (vm.metadata.name === this.vm?.metadata?.name) {
           return inUse;
         }
+<<<<<<< HEAD
         const devices = get(vm, 'spec.template.spec.domain.devices.hostDevices') || [];
 
         devices.forEach((device) => {
+=======
+
+        vm.hostDevices.forEach((device) => {
+>>>>>>> b5455bcb (fix: separate used/allocated units)
           inUse[device.name] = { usedBy: [vm.metadata.name] };
         });
 
@@ -126,6 +158,7 @@ export default {
     },
 
     devicesByNode() {
+<<<<<<< HEAD
       const out = {};
 
       this.enabledDevices.forEach((deviceCRD) => {
@@ -139,6 +172,21 @@ export default {
       });
 
       return out;
+=======
+      return this.enabledDevices?.reduce((acc, device) => {
+        const nodeName = device.status?.nodeName;
+
+        if (nodeName) {
+          if (!acc[nodeName]) {
+            acc[nodeName] = [];
+          } else {
+            acc[nodeName].push(device);
+          }
+        }
+
+        return acc;
+      }, {});
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     },
 
     // determine which nodes contain all devices selected
@@ -185,6 +233,13 @@ export default {
   },
 
   methods: {
+<<<<<<< HEAD
+=======
+    otherDevices(vmDevices) {
+      return vmDevices.filter(device => !this.pciDevices.find(pci => device.name === pci.name));
+    },
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     nodeNameFromUid(uid) {
       for (const deviceUid in this.uniqueDevices) {
         const nodes = this.uniqueDevices[deviceUid].nodes;

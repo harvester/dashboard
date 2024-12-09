@@ -155,8 +155,11 @@ export default {
   },
 
   data(props) {
+<<<<<<< HEAD
     const yaml = this.createResourceYaml();
 
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     this.$on('createNamespace', (e) => {
       // When createNamespace is set to true,
       // the UI will attempt to create a new namespace
@@ -164,18 +167,43 @@ export default {
       this.createNamespace = e;
     });
 
+<<<<<<< HEAD
+=======
+    const inStore = this.$store.getters['currentStore'](this.resource);
+    const schema = this.$store.getters[`${ inStore }/schemaFor`](this.resource.type);
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     return {
       isCancelModal:   false,
       createNamespace: false,
       showAsForm:      this.$route.query[AS] !== _YAML,
+<<<<<<< HEAD
       resourceYaml:    yaml,
       initialYaml:     yaml,
+=======
+      /**
+       * Initialised on demand (given that it needs to make a request to fetch schema definition)
+       */
+      resourceYaml:    null,
+      /**
+       * Initialised on demand (given that it needs to make a request to fetch schema definition)
+       */
+      initialYaml:     null,
+      /**
+       * Save a copy of the initial resource. This is used to calc the initial yaml later on
+       */
+      initialResource: clone(this.resource),
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       abbrSizes:       {
         3: '24px',
         4: '18px',
         5: '16px',
         6: '14px'
       },
+<<<<<<< HEAD
+=======
+      schema
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     };
   },
 
@@ -197,6 +225,7 @@ export default {
       return this.validationPassed;
     },
 
+<<<<<<< HEAD
     canDiff() {
       return this.initialYaml !== this.resourceYaml;
     },
@@ -206,6 +235,10 @@ export default {
       const schema = this.$store.getters[`${ inStore }/schemaFor`](this.resource.type);
 
       return !(schema?.resourceMethods?.includes('blocked-PUT'));
+=======
+    canEditYaml() {
+      return !(this.schema?.resourceMethods?.includes('blocked-PUT'));
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     },
 
     showYaml() {
@@ -306,8 +339,14 @@ export default {
       }
     },
 
+<<<<<<< HEAD
     createResourceYaml(modifiers) {
       const resource = this.resource;
+=======
+    async createResourceYaml(modifiers, resource = this.resource) {
+      // Required to populate yaml comments and default values
+      await this.schema?.fetchResourceFields();
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
       if ( typeof this.generateYaml === 'function' ) {
         return this.generateYaml.apply(this, resource);
@@ -323,11 +362,21 @@ export default {
     },
 
     async showPreviewYaml() {
+<<<<<<< HEAD
+=======
+      // Required to populate yaml comments and default values
+      await this.schema?.fetchResourceFields();
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       if ( this.applyHooks ) {
         await this.applyHooks(BEFORE_SAVE_HOOKS);
       }
 
+<<<<<<< HEAD
       const resourceYaml = this.createResourceYaml(this.yamlModifiers);
+=======
+      const resourceYaml = await this.createResourceYaml(this.yamlModifiers);
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
       this.resourceYaml = resourceYaml;
       this.showAsForm = false;
@@ -397,6 +446,20 @@ export default {
         event.preventDefault();
       }
     }
+<<<<<<< HEAD
+=======
+  },
+
+  watch: {
+    async showAsForm(neu) {
+      if (!neu) {
+        // Entering yaml mode
+        if (!this.initialYaml) {
+          this.initialYaml = await this.createResourceYaml(undefined, this.initialResource);
+        }
+      }
+    }
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   }
 };
 </script>
@@ -670,8 +733,14 @@ export default {
         </slot>
       </template>
       <!------ YAML ------>
+<<<<<<< HEAD
       <section
         v-else-if="showYaml"
+=======
+      <!-- Hide this section until it's needed. This means we don't need to upfront create initialYaml -->
+      <section
+        v-else-if="showYaml && !showAsForm"
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         class="cru-resource-yaml-container resource-container cru__content"
       >
         <ResourceYaml
@@ -688,7 +757,11 @@ export default {
           class="resource-container cru__content"
           @error="e=>$emit('error', e)"
         >
+<<<<<<< HEAD
           <template #yamlFooter="{yamlSave, showPreview, yamlPreview, yamlUnpreview}">
+=======
+          <template #yamlFooter="{yamlSave, showPreview, yamlPreview, yamlUnpreview, canDiff}">
+>>>>>>> b5455bcb (fix: separate used/allocated units)
             <slot name="cru-yaml-footer">
               <CruResourceFooter
                 class="cru__footer"

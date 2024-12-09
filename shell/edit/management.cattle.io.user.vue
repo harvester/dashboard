@@ -8,6 +8,10 @@ import CruResource from '@shell/components/CruResource';
 import { exceptionToErrorsArray } from '@shell/utils/error';
 import { _CREATE, _EDIT } from '@shell/config/query-params';
 import Loading from '@shell/components/Loading';
+<<<<<<< HEAD
+=======
+import { wait } from '@shell/utils/async';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 export default {
   components: {
@@ -159,7 +163,11 @@ export default {
         // - Fetching the norman user again sometimes shows the correct value, sometimes not
         // - Even if the fetched norman user shows the correct value, it doesn't show up in the steve user
         //   - Looks like we re-request the stale version via socket?
+<<<<<<< HEAD
         await new Promise(resolve => setTimeout(resolve, 5000));
+=======
+        await wait(5000);
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       }
 
       // Save user updates

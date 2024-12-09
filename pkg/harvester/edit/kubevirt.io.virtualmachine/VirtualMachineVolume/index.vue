@@ -8,11 +8,20 @@ import { LabeledInput } from '@components/Form/LabeledInput';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import ModalWithCard from '@shell/components/ModalWithCard';
 
+<<<<<<< HEAD
 import { PVC, STORAGE_CLASS } from '@shell/config/types';
 import { HCI } from '../../../types';
 import { clone } from '@shell/utils/object';
 import { removeObject } from '@shell/utils/array';
 import { randomStr } from '@shell/utils/string';
+=======
+import { PVC } from '@shell/config/types';
+import { HCI } from '../../../types';
+import { clone } from '@shell/utils/object';
+import { ucFirst, randomStr } from '@shell/utils/string';
+import { removeObject } from '@shell/utils/array';
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 import { SOURCE_TYPE } from '../../../config/harvester-map';
 import { _VIEW, _EDIT, _CREATE } from '@shell/config/query-params';
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../../../config/harvester';
@@ -80,6 +89,10 @@ export default {
 
   data() {
     return {
+<<<<<<< HEAD
+=======
+      ucFirst,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       SOURCE_TYPE,
       rows:    clone(this.value),
       nameIdx: 1,
@@ -173,10 +186,14 @@ export default {
       };
 
       if (type === SOURCE_TYPE.NEW) {
+<<<<<<< HEAD
         const inStore = this.$store.getters['currentProduct'].inStore;
         const defaultStorage = this.$store.getters[`${ inStore }/all`](STORAGE_CLASS).find( O => O.isDefault);
 
         neu.storageClassName = defaultStorage?.metadata?.name || 'longhorn';
+=======
+        neu.storageClassName = this.defaultStorageClass?.metadata?.name || 'longhorn';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       }
 
       this.rows.push(neu);
@@ -223,13 +240,23 @@ export default {
       }
     },
 
+<<<<<<< HEAD
     headerFor(type) {
       return {
+=======
+    headerFor(type, hasVolBackups = false) {
+      const mainHeader = {
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         [SOURCE_TYPE.NEW]:           this.$store.getters['i18n/t']('harvester.virtualMachine.volume.title.volume'),
         [SOURCE_TYPE.IMAGE]:         this.$store.getters['i18n/t']('harvester.virtualMachine.volume.title.vmImage'),
         [SOURCE_TYPE.ATTACH_VOLUME]: this.$store.getters['i18n/t']('harvester.virtualMachine.volume.title.existingVolume'),
         [SOURCE_TYPE.CONTAINER]:     this.$store.getters['i18n/t']('harvester.virtualMachine.volume.title.container'),
       }[type];
+<<<<<<< HEAD
+=======
+
+      return hasVolBackups ? `${ mainHeader } and Backups` : mainHeader;
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     },
 
     update() {
@@ -254,6 +281,13 @@ export default {
 
     getImageDisplayName(id) {
       return this.$store.getters['harvester/all'](HCI.IMAGE).find(image => image.id === id)?.spec?.displayName;
+<<<<<<< HEAD
+=======
+    },
+
+    isLonghornV2(volume) {
+      return volume?.pvc?.isLonghornV2 || volume?.pvc?.storageClass?.isLonghornV2;
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     }
   },
 };
@@ -292,7 +326,11 @@ export default {
               </span>
 
               <span v-else>
+<<<<<<< HEAD
                 {{ headerFor(volume.source) }}
+=======
+                {{ headerFor(volume.source, !!volume?.volumeBackups) }}
+>>>>>>> b5455bcb (fix: separate used/allocated units)
               </span>
             </h3>
             <div>
@@ -328,7 +366,28 @@ export default {
               </div>
             </div>
 
+<<<<<<< HEAD
             <Banner v-if="volume.volumeStatus && !isCreate" class="mt-15 volume-status" color="warning" :label="volume.volumeStatus" />
+=======
+            <div class="mt-15">
+              <Banner
+                v-if="volume.volumeStatus && !isCreate"
+                class="volume-status"
+                color="warning"
+                :label="ucFirst(volume.volumeStatus)"
+              />
+              <Banner
+                v-if="value.volumeBackups && value.volumeBackups.error && value.volumeBackups.error.message"
+                color="error"
+                :label="ucFirst(value.volumeBackups.error.message)"
+              />
+              <Banner
+                v-if="isLonghornV2(volume) && !isView"
+                color="warning"
+                :label="t('harvester.volume.longhorn.disableResize')"
+              />
+            </div>
+>>>>>>> b5455bcb (fix: separate used/allocated units)
           </InfoBox>
         </div>
       </transition-group>
@@ -430,4 +489,11 @@ export default {
     justify-content: center;
     align-items: center;
   }
+<<<<<<< HEAD
+=======
+
+  .banner {
+    margin: 10px 0;
+  }
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 </style>

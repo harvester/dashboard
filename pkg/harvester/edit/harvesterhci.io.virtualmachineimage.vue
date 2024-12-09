@@ -8,7 +8,10 @@ import NameNsDescription from '@shell/components/form/NameNsDescription';
 import { RadioGroup } from '@components/Form/Radio';
 import Select from '@shell/components/form/Select';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 import CreateEditView from '@shell/mixins/create-edit-view';
 import { OS } from '../mixins/harvester-vm';
 import { VM_IMAGE_FILE_FORMAT } from '../validators/vm-image';
@@ -17,7 +20,15 @@ import { exceptionToErrorsArray } from '@shell/utils/error';
 import { allHash } from '@shell/utils/promise';
 import { STORAGE_CLASS } from '@shell/config/types';
 import { HCI } from '../types';
+<<<<<<< HEAD
 
+=======
+import { LVM_DRIVER } from '../models/harvester/storage.k8s.io.storageclass';
+
+const ENCRYPT = 'encrypt';
+const DECRYPT = 'decrypt';
+const CLONE = 'clone';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 const DOWNLOAD = 'download';
 const UPLOAD = 'upload';
 const rawORqcow2 = 'raw_qcow2';
@@ -57,11 +68,41 @@ export default {
     const defaultStorage = this.$store.getters[`${ inStore }/all`](STORAGE_CLASS).find(s => s.isDefault);
 
     this.$set(this, 'storageClassName', this.storageClassName || defaultStorage?.metadata?.name || 'longhorn');
+<<<<<<< HEAD
   },
 
   data() {
     if ( !this.value.spec ) {
       this.$set(this.value, 'spec', { sourceType: DOWNLOAD });
+=======
+    this.images = this.$store.getters[`${ inStore }/all`](HCI.IMAGE);
+
+    const { securityParameters } = this.value.spec;
+
+    // edit and view mode should show the source image
+    if (securityParameters) {
+      // image ns/name = image.id
+      const sourceImage = `${ securityParameters.sourceImageNamespace }/${ securityParameters.sourceImageName }`;
+
+      this.selectedImage = this.images.find(image => image.id === sourceImage);
+    }
+  },
+
+  data() {
+    // pass from Encrypt Image / Decrypt Image actions
+    const { image, sourceType, cryptoOperation } = this.$route.query || {};
+
+    if ( !this.value.spec ) {
+      this.$set(this.value, 'spec', { sourceType: sourceType || DOWNLOAD });
+    }
+
+    if (image && cryptoOperation) {
+      this.$set(this.value.spec, 'securityParameters', {
+        cryptoOperation,
+        sourceImageName:      image.metadata.name,
+        sourceImageNamespace: image.metadata.namespace
+      });
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     }
 
     if (!this.value.metadata.name) {
@@ -69,12 +110,23 @@ export default {
     }
 
     return {
+<<<<<<< HEAD
       url:      this.value.spec.url,
       files:    [],
       resource: '',
       headers:  {},
       fileUrl:  '',
       file:     '',
+=======
+      selectedImage: image || null,
+      images:        [],
+      url:           this.value.spec.url,
+      files:         [],
+      resource:      '',
+      headers:       {},
+      fileUrl:       '',
+      file:          '',
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     };
   },
 
@@ -92,13 +144,27 @@ export default {
     },
 
     showEditAsYaml() {
+<<<<<<< HEAD
       return this.value.spec.sourceType === DOWNLOAD;
     },
 
+=======
+      return this.value.spec.sourceType === DOWNLOAD || this.value.spec.sourceType === CLONE;
+    },
+    radioGroupOptions() {
+      return [
+        DOWNLOAD,
+        UPLOAD,
+        ENCRYPT,
+        DECRYPT
+      ];
+    },
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     storageClassOptions() {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const storages = this.$store.getters[`${ inStore }/all`](STORAGE_CLASS);
 
+<<<<<<< HEAD
       const out = storages.filter(s => !s.parameters?.backingImage).map((s) => {
         const label = s.isDefault ? `${ s.name } (${ this.t('generic.default') })` : s.name;
 
@@ -109,6 +175,18 @@ export default {
       }) || [];
 
       return out;
+=======
+      return storages
+        .filter(s => !s.parameters?.backingImage && s.provisioner !== LVM_DRIVER) // Lvm storage is not supported.
+        .map((s) => {
+          const label = s.isDefault ? `${ s.name } (${ this.t('generic.default') })` : s.name;
+
+          return {
+            label,
+            value: s.name,
+          };
+        }) || [];
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     },
 
     storageClassName: {
@@ -120,6 +198,62 @@ export default {
         this.value.metadata.annotations[HCI_ANNOTATIONS.STORAGE_CLASS] = nue;
       }
     },
+<<<<<<< HEAD
+=======
+    sourceImageOptions() {
+      let options = [];
+
+      if (this.value.spec.sourceType !== CLONE) {
+        return options;
+      }
+      if (this.value.spec.securityParameters.cryptoOperation === ENCRYPT) {
+        options = this.images.filter(image => !image.isEncrypted);
+      } else {
+        options = this.images.filter(image => image.isEncrypted);
+      }
+
+      return options.map(image => image.displayNameWithNamespace);
+    },
+    sourceImage: {
+      get() {
+        if (this.selectedImage) {
+          return this.selectedImage.displayNameWithNamespace;
+        }
+
+        return '';
+      },
+      set(neu) {
+        this.selectedImage = this.images.find(i => i.displayNameWithNamespace === neu);
+        // sourceImageName should bring the name of the image
+        this.value.spec.securityParameters.sourceImageName = this.selectedImage?.metadata.name || '';
+        this.value.spec.securityParameters.sourceImageNamespace = this.selectedImage?.metadata.namespace || '';
+      }
+    },
+    sourceType: {
+      get() {
+        if (this.value.spec.sourceType === CLONE) {
+          return this.value.spec?.securityParameters?.cryptoOperation;
+        } else {
+          return this.value.spec.sourceType;
+        }
+      },
+
+      set(neu) {
+        if (neu === DECRYPT || neu === ENCRYPT) {
+          this.value.spec.sourceType = CLONE;
+          this.$set(this.value.spec, 'securityParameters', {
+            cryptoOperation:      neu,
+            sourceImageName:      '',
+            sourceImageNamespace: this.value.metadata.namespace
+          });
+          this.selectedImage = null;
+        } else {
+          this.$delete(this.value.spec, 'securityParameters');
+          this.value.spec.sourceType = neu;
+        }
+      }
+    }
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   },
 
   watch: {
@@ -297,6 +431,7 @@ export default {
       >
         <RadioGroup
           v-if="isCreate"
+<<<<<<< HEAD
           v-model="value.spec.sourceType"
           name="model"
           :options="[
@@ -306,6 +441,16 @@ export default {
           :labels="[
             t('harvester.image.sourceType.download'),
             t('harvester.image.sourceType.upload'),
+=======
+          v-model="sourceType"
+          name="model"
+          :options="radioGroupOptions"
+          :labels="[
+            t('harvester.image.sourceType.download'),
+            t('harvester.image.sourceType.upload'),
+            t('harvester.image.sourceType.encrypt'),
+            t('harvester.image.sourceType.decrypt'),
+>>>>>>> b5455bcb (fix: separate used/allocated units)
           ]"
           :mode="mode"
         />
@@ -331,7 +476,11 @@ export default {
               :tooltip="t('harvester.image.urlTip', {}, true)"
             />
 
+<<<<<<< HEAD
             <div v-else>
+=======
+            <div v-else-if="value.spec.sourceType === 'upload'">
+>>>>>>> b5455bcb (fix: separate used/allocated units)
               <LabeledInput
                 v-if="isView"
                 v-model="imageName"
@@ -376,6 +525,19 @@ export default {
               label-key="harvester.image.checksum"
               :tooltip="t('harvester.image.checksumTip')"
             />
+<<<<<<< HEAD
+=======
+
+            <LabeledSelect
+              v-if="value.spec.sourceType === 'clone'"
+              v-model="sourceImage"
+              :options="sourceImageOptions"
+              :label="t('harvester.image.sourceImage')"
+              :mode="mode"
+              :disabled="isEdit"
+              class="mb-20"
+            />
+>>>>>>> b5455bcb (fix: separate used/allocated units)
           </div>
         </div>
       </Tab>
@@ -412,6 +574,7 @@ export default {
           @focusKey="focusKey"
           @input="value.setLabels($event)"
         >
+<<<<<<< HEAD
           <template #key="{ row, keyName, queueUpdate}">
             <input
               ref="key"
@@ -421,10 +584,16 @@ export default {
             />
           </template>
 
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
           <template #value="{row, keyName, valueName, queueUpdate}">
             <Select
               v-if="internalAnnotations(row)"
               v-model="row[valueName]"
+<<<<<<< HEAD
+=======
+              :mode="mode"
+>>>>>>> b5455bcb (fix: separate used/allocated units)
               :searchable="true"
               :clearable="false"
               :options="calculateOptions(row[keyName])"

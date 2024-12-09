@@ -103,11 +103,18 @@ export default {
 
     const blockDevices = this.$store.getters[`${ inStore }/all`](HCI.BLOCK_DEVICE);
     const provisionedBlockDevices = blockDevices.filter((d) => {
+<<<<<<< HEAD
       const provisioned = d?.spec?.fileSystem?.provisioned;
       const isCurrentNode = d?.spec?.nodeName === this.value.id;
       const isLonghornMounted = findBy(this.longhornDisks, 'name', d.metadata.name);
 
       return provisioned && isCurrentNode && !isLonghornMounted;
+=======
+      const isCurrentNode = d?.spec?.nodeName === this.value.id;
+      const isLonghornMounted = findBy(this.longhornDisks, 'name', d.metadata.name);
+
+      return d?.isProvisioned && isCurrentNode && !isLonghornMounted;
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     })
       .map((d) => {
         return {

@@ -15,6 +15,10 @@ import DefaultBackend from './DefaultBackend';
 import Certificates from './Certificates';
 import Rules from './Rules';
 import IngressClass from './IngressClass';
+<<<<<<< HEAD
+=======
+import Loading from '@shell/components/Loading';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 export default {
   name:       'CRUIngress',
@@ -28,7 +32,12 @@ export default {
     Rules,
     Tab,
     Tabbed,
+<<<<<<< HEAD
     Error
+=======
+    Error,
+    Loading,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   },
   mixins: [CreateEditView, FormValidation],
   props:  {
@@ -46,9 +55,16 @@ export default {
   async fetch() {
     this.ingressClassSchema = this.$store.getters[`cluster/schemaFor`](INGRESS_CLASS);
     const hash = await allHash({
+<<<<<<< HEAD
       secrets:        this.$store.dispatch('cluster/findAll', { type: SECRET }),
       services:       this.$store.dispatch('cluster/findAll', { type: SERVICE }),
       ingressClasses: this.ingressClassSchema ? this.$store.dispatch('cluster/findAll', { type: INGRESS_CLASS }) : Promise.resolve([]),
+=======
+      secrets:               this.$store.dispatch('cluster/findAll', { type: SECRET }),
+      services:              this.$store.dispatch('cluster/findAll', { type: SERVICE }),
+      ingressClasses:        this.ingressClassSchema ? this.$store.dispatch('cluster/findAll', { type: INGRESS_CLASS }) : Promise.resolve([]),
+      ingressResourceFields: this.schema.fetchResourceFields(),
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     });
 
     this.allServices = hash.services;
@@ -191,7 +207,13 @@ export default {
 };
 </script>
 <template>
+<<<<<<< HEAD
   <CruResource
+=======
+  <Loading v-if="$fetchState.pending" />
+  <CruResource
+    v-else
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     :done-route="doneRoute"
     :mode="mode"
     :resource="value"

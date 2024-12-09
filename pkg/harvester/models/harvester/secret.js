@@ -2,6 +2,10 @@ import { clone } from '@shell/utils/object';
 import { HCI } from '../../types';
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../../config/harvester';
 import Secret from '@shell/models/secret';
+<<<<<<< HEAD
+=======
+import { NAMESPACE } from '@shell/config/types';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 export default class HciSecret extends Secret {
   get _detailLocation() {
@@ -52,6 +56,17 @@ export default class HciSecret extends Secret {
     return this.doneOverride;
   }
 
+<<<<<<< HEAD
+=======
+  get isSystem() {
+    const inStore = this.$rootGetters['currentProduct'].inStore;
+
+    const systemNs = this.$rootGetters[`${ inStore }/all`](NAMESPACE).filter(ns => ns.isSystem === true).map(ns => ns.metadata.name);
+
+    return systemNs.includes(this.metadata.namespace);
+  }
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   get details() {
     const out = [
       {

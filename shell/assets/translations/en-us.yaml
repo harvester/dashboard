@@ -101,7 +101,11 @@ generic:
 
   deprecated: Deprecated
   placeholder: "e.g. {text}"
+<<<<<<< HEAD
   moreInfo: More Info
+=======
+  moreInfo: More Information
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   selectors:
     label: Selector
     matchingResources:
@@ -195,7 +199,11 @@ nav:
     restoreCards: Restore hidden cards
   userMenu:
     preferences: Preferences
+<<<<<<< HEAD
     accountAndKeys: Account & API Keys
+=======
+    accountAndKeys: Account and API Keys
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     logOut: Log Out
   failWhale:
     reload: Reload
@@ -203,7 +211,11 @@ nav:
 
 product:
   apps: Apps
+<<<<<<< HEAD
   auth: Users & Authentication
+=======
+  auth: Users and Authentication
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   backup: Rancher Backups
   cis: CIS Benchmark
   ecm: Cluster Manager
@@ -337,17 +349,29 @@ accountAndKeys:
       accessKey: Access Key
       secretKey: Secret Key
       bearerToken: Bearer Token
+<<<<<<< HEAD
       saveWarning: Save the info above! This is the only time you'll be able to see it. If you lose it, you'll need to create a new API key.
       keyCreated: A new API Key has been created
       bearerTokenTip: "Access Key and Secret Key can be sent as the username and password for HTTP Basic auth to authorize requests. You can also combine them to use as a Bearer token:"
       ttlLimitedWarning: The Expiry time for this API Key was reduced due to system configuration
+=======
+      saveWarning: Save the above information! This is the only time you will be able to see it. If you lose it, you will need to create a new API key.
+      keyCreated: A new API key has been created
+      bearerTokenTip: "Access Key and Secret Key can be sent as the username and password for HTTP basic authentication to authorize requests. You can also combine them to use as a Bearer token:"
+      ttlLimitedWarning: The Expiry time for this API key was reduced due to system configuration
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 addClusterMemberDialog:
   title: Add Cluster Member
 
 addonConfigConfirmation:
+<<<<<<< HEAD
   title: Add-On Config Reset
   body: Changing the Kubernetes Version can reset the Add-On Config values. You should check that the values are as expected before continuing.
+=======
+  title: Add-on Configuration Reset
+  body: Changing the Kubernetes Version can reset the add-on configuration values. Confirm that the values are as expected before continuing.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 addProjectMemberDialog:
   title: Add Project Member
@@ -355,11 +379,19 @@ addProjectMemberDialog:
 authConfig:
   accessMode:
     label: 'Configure who should be able to login and use {vendor}'
+<<<<<<< HEAD
     required: Restrict access to only the authorized users & groups
     restricted: 'Allow members of clusters and projects, plus authorized users & groups'
     unrestricted: Allow any valid user
   allowedPrincipalIds:
     title: Authorized Users & Groups
+=======
+    required: Restrict access to only the authorized users and groups
+    restricted: 'Allow members of clusters and projects, plus authorized users and groups'
+    unrestricted: Allow any valid user
+  allowedPrincipalIds:
+    title: Authorized Users and Groups
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   associatedWarning: 'Note: The {provider} user you authenticate as will be associated as an alternate way to login to the {vendor} user you are currently logged in as <code>{username}</code>; all the global permissions, project, and cluster role bindings of this {vendor} user will also apply to the {provider} user.'
   github:
     clientId:
@@ -384,7 +416,11 @@ authConfig:
         3: <li>Click the "New OAuth App" button.</li>
       suffix:
         1: <li>Click "Register application"</li>
+<<<<<<< HEAD
         2: <li>Copy and paste the Client ID and Client Secret of your newly created OAuth app into the fields below</li>
+=======
+        2: <li>Copy and paste the client ID and client secret of your newly created OAuth app into the fields below</li>
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     host:
       label: GitHub Enterprise Host
       placeholder: e.g. github.mycompany.example
@@ -408,7 +444,11 @@ authConfig:
       1:
         title: 'Click <a href="https://console.developers.google.com/apis/credentials" target="_blank" rel="noopener noreferrer nofollow">here</a> to open applications settings in a new window'
         body:
+<<<<<<< HEAD
          1: Login to your account. Navigate to "APIs & Services" and then select "OAuth consent screen".
+=======
+         1: Login to your account. Navigate to "APIs and Services" and then select "OAuth consent screen".
+>>>>>>> b5455bcb (fix: separate used/allocated units)
          2: 'Authorized domains:'
          3: 'Application homepage link: '
          4: 'Under Scopes for Google APIs, enable "email", "profile", and "openid".'
@@ -417,7 +457,11 @@ authConfig:
       2:
         title: 'Navigate to the "Credentials" tab to create your OAuth client ID'
         body:
+<<<<<<< HEAD
           1: 'Select the "Create Credentials" dropdown, and select "OAuth clientID", then select "Web application".'
+=======
+          1: 'Select the "Create Credentials" drop-down, and select "OAuth clientID", then select "Web application".'
+>>>>>>> b5455bcb (fix: separate used/allocated units)
           2: 'Authorized Javascript origins:'
           3: 'Authorized redirect URIs:'
           4: 'Click "Create", and then click on the "Download JSON" button.'
@@ -428,14 +472,22 @@ authConfig:
         body:
           1: Create a service account.
           2: Generate a key for the service account.
+<<<<<<< HEAD
           3: Add the service account as an OAuth client in your google domain.
+=======
+          3: Add the service account as an OAuth client in your Google domain.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   ldap:
     freeipa: Configure a FreeIPA server
     activedirectory: Configure an Active Directory account
     openldap: Configure an OpenLDAP server
     defaultLoginDomain:
       label: Default Login Domain
+<<<<<<< HEAD
       placeholder: eg mycompany
+=======
+      placeholder: eg, mycompany
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       hint: This domain will be used if a user logs in without specifying one.
     cert: Certificate
     disabledStatusBitmask: Disabled Status Bitmask
@@ -728,7 +780,11 @@ backupRestoreOperator:
   backupFilename: Backup Filename
   deleteTimeout:
     label: Delete Timeout
+<<<<<<< HEAD
     tip: Seconds to wait for a resource delete to succeed before removing finalizers to force deletion.
+=======
+    tip: Seconds to wait for a resource deletion to succeed before removing finalizers to force deletion.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   deployment:
     rancherNamespace: Rancher ResourceSet Namespace
     size: Size
@@ -745,6 +801,7 @@ backupRestoreOperator:
       storageClass:
         label: Storage Class
       tip: 'Configure a storage location where all backups are saved by default. You will have the option to override this with each backup, but will be limited to using an S3-compatible object store.'
+<<<<<<< HEAD
       warning: 'This {type} does not have its reclaim policy set to "Retain".  Your backups may be lost if the volume is changed or becomes unbound.'
   encryption: Encryption
   encryptionConfigName:
@@ -753,6 +810,16 @@ backupRestoreOperator:
     options:
       none: Store the contents of the backup unencrypted
       secret: 'Encrypt backups using an <a target="_blank" rel="noopener noreferrer nofollow" href="https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/#understanding-the-encryption-at-rest-configuration">Encryption Config Secret</a> (Recommended)'
+=======
+      warning: 'This {type} does not have its reclaim policy set to "Retain". Your backups may be lost if the volume is changed or becomes unbound.'
+  encryption: Encryption
+  encryptionConfigName:
+    backuptip: 'Any secret in the <code>cattle-resource-system</code> namespace that has an <code>encryption-provider-config.yaml</code> key. <br/>The contents of this file are necessary to perform a restore from this backup, and are not stored by Rancher Backup.'
+    label: Encryption Configuration Secret
+    options:
+      none: Store the contents of the backup unencrypted
+      secret: 'Encrypt backups using an <a target="_blank" rel="noopener noreferrer nofollow" href="https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/#understanding-the-encryption-at-rest-configuration">Encryption Configuration Secret</a> (Recommended)'
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     restoretip: 'If the backup was performed with encryption enabled, a secret containing the same encryption-provider-config should be used during restore.'
     warning: 'The contents of this file are necessary to perform a restore from this backup, and are not stored by Rancher Backup.'
   lastBackup: Last Backup
@@ -852,9 +919,15 @@ catalog:
     versionWindowsIncompatible: Linux only version
     header: Charts
     featuredCharts: Featured Charts
+<<<<<<< HEAD
     noCharts: 'There are no charts available, have you added any repos?'
     noWindows: Your repos do not contain any charts capable of being deployed on a cluster with Windows nodes.
     noWindowsAndLinux: Your repos do not contain any charts capable of being deployed on a cluster with both Windows and Linux worker nodes.
+=======
+    noCharts: 'There are no charts available, have you added any repositories?'
+    noWindows: Your repositories do not contain any charts capable of being deployed on a cluster with Windows nodes.
+    noWindowsAndLinux: Your repositories do not contain any charts capable of being deployed on a cluster with both Windows and Linux worker nodes.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     operatingSystems:
       all: All Operating Systems
       linux: Linux
@@ -863,7 +936,11 @@ catalog:
   install:
     action:
       goToUpgrade: Edit/Upgrade
+<<<<<<< HEAD
     appReadmeMissing: This chart doesn't have any additional chart information.
+=======
+    appReadmeMissing: This chart does not have any additional chart information.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     appReadmeTitle: Chart Information (Helm README)
     chart: Chart
     error:
@@ -872,12 +949,21 @@ catalog:
       insufficientCpu: 'This chart requires {need, number} CPU cores, but the cluster only has {have, number} available.'
       insufficientMemory: 'This chart requires {need} of memory, but the cluster only has {have} available.'
       legacy:
+<<<<<<< HEAD
         label: This is a {legacyType} App and it cannot be modified here
         enableLegacy:
           prompt: You will need to enable Legacy Features to edit this App
           goto: Go to Feature Flag settings
         navigate: Navigate to Legacy Apps
         mcmNotSupported: Legacy Multi-cluster Apps can not be managed through this UI
+=======
+        label: This is a {legacyType} application and it cannot be modified here
+        enableLegacy:
+          prompt: You will need to enable Legacy Features to edit this application
+          goto: Go to Feature Flag settings
+        navigate: Navigate to Legacy Applications
+        mcmNotSupported: Legacy Multi-cluster Applications can not be managed through this UI
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         category:
           legacy: Legacy
           mcm: Multi-cluster
@@ -889,8 +975,13 @@ catalog:
       atomic: Atomic
       description:
         label: Description
+<<<<<<< HEAD
         placeholder: e.g. Purpose of helm command
       cleanupOnFail: Cleanup on Failure
+=======
+        placeholder: e.g. Purpose of Helm command
+      cleanupOnFail: Clean up on Failure
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       crds: Apply custom resource definitions
       dryRun: Dry Run
       force: Force
@@ -913,7 +1004,11 @@ catalog:
           }
       wait: Wait
     namespaceIsInProject: "This chart's target namespace, <code>{namespace}</code>, already exists and cannot be added to a different project."
+<<<<<<< HEAD
     project: Install into Project
+=======
+    project: Install Into Project
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     section:
       chartOptions: Edit Options
       valuesYaml: Edit YAML
@@ -931,8 +1026,13 @@ catalog:
           } the {existing, select,
             true { app}
             false { chart}
+<<<<<<< HEAD
           }. Start by setting some basic information used by {vendor} to manage the App.
         nsCreationDescription: "To install the app into a new namespace enter it's name in the Namespace field and select it."
+=======
+          }. Start by setting some basic information used by {vendor} to manage the application.
+        nsCreationDescription: "To install the application into a new namespace, enter the name in the Namespace field and select it."
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         createNamespace: "Namespace <code>{namespace}</code> will be created."
       clusterTplVersion:
         label: Version
@@ -940,6 +1040,7 @@ catalog:
         description: Select a version of the Cluster Template
       clusterTplValues:
         label: Values
+<<<<<<< HEAD
         subtext: Change how the Cluster is defined
         description: Configure Values used by Helm that help define the Cluster.
       helmValues:
@@ -953,6 +1054,21 @@ catalog:
         checkbox: Customize Helm options before install
         label: Helm Options
         subtext: Change how the app is deployed
+=======
+        subtext: Change how the cluster is defined
+        description: Configure Values used by Helm that help define the cluster.
+      helmValues:
+        label: Values
+        subtext: Change how the application works
+        description: Configure values used by Helm that help define the application.
+        chartInfo:
+          button: View Chart Information
+          label: Chart Information
+      helmCli:
+        checkbox: Customize Helm options before installation
+        label: Helm Options
+        subtext: Change how the application is deployed
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         description: Supply additional deployment options
     version: Version
     versions:
@@ -971,7 +1087,11 @@ catalog:
     gitBranch:
       label: Git Branch
       placeholder: e.g. master
+<<<<<<< HEAD
       defaultMessage: 'Will default to "master" if left blank'
+=======
+      defaultMessage: 'The branch will default to "master" if left blank'
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     gitRepo:
       label: Git Repo URL
       placeholder: 'e.g. https://github.com/your-company/charts.git'
@@ -1103,7 +1223,11 @@ cluster:
     rke2-multus: Multus Configuration
   agentEnvVars:
     label: Agent Environment
+<<<<<<< HEAD
     detail: Add additional environment variables to the agent container.  This is most commonly useful for configuring a HTTP proxy.
+=======
+    detail: Add additional environment variables to the agent container. This is most commonly useful for configuring a HTTP proxy.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     keyLabel: Variable Name
   cloudProvider:
     aws:
@@ -1116,7 +1240,11 @@ cluster:
       label: Google
     rancher-vsphere:
       label: vSphere
+<<<<<<< HEAD
       note: '<b>Important:</b> Configure the vSphere Cloud Provider and Storage Provider options in the Add-On Config tab.'
+=======
+      note: '<b>Important:</b> Configure the vSphere Cloud Provider and Storage Provider options in the Add-on Configuration tab.'
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     harvester:
       label: Harvester
   copyConfig: Copy KubeConfig to Clipboard
@@ -1124,10 +1252,17 @@ cluster:
   custom:
     nodeRole:
       label: Node Role
+<<<<<<< HEAD
       detail: Choose what roles the node will have in the cluster.  The cluster needs to have at least one node with each role.
     advanced:
       label: Advanced
       detail: Additional control over how the node will be registered.  These values will often need to be different for each node registered.
+=======
+      detail: Choose what roles the node will have in the cluster. The cluster needs to have at least one node with each role.
+    advanced:
+      label: Advanced
+      detail: Additional control over how the node will be registered. These values will often need to be different for each node registered.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       nodeName: Node Name
       publicIp: Node Public IP
       privateIp: Node Private IP
@@ -1140,14 +1275,23 @@ cluster:
       windowsDetail: Run this command in PowerShell on each of the existing Windows machines you want to register. Windows nodes can only be workers.
       windowsNotReady: The cluster must be up and running with Linux etcd, control plane, and worker nodes before the registration command for adding Windows workers will display.
       windowsWarning: Workload pods, including some deployed by Rancher charts, will be scheduled on both Linux and Windows nodes by default. Edit NodeSelector in the chart to direct them to be placed onto a compatible node.
+<<<<<<< HEAD
       windowsDeprecatedForRKE1: Windows support is being deprecated for RKE1. We suggest migrating to RKE2.
+=======
+      windowsDeprecatedForRKE1: Windows support is being deprecated for RKE1 and RKE1 is soon to be deprecrated. Please migrate to RKE2.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       insecure: "Insecure: Select this to skip TLS verification if your server has a self-signed certificate."
   credential:
     banner:
       createCredential: |-
         {length, plural,
+<<<<<<< HEAD
           =0 {First you'll need to create a credential to talk to the cloud provider}
           other {Ok, Let's create a new credential}
+=======
+          =0 {First, you will need to create a credential to talk to the cloud provider}
+          other {Ok, start to create a new credential}
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         }
     selectExisting:
       label: Select Existing
@@ -1160,7 +1304,11 @@ cluster:
         label: Access Key
         placeholder: Your AWS Access Key
       defaultRegion:
+<<<<<<< HEAD
         help: The default region to use when creating clusters.  Also contacted to verify that this credential works.
+=======
+        help: The default region to use when creating clusters. Also contacted to verify that this credential works.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         label: Default Region
       secretKey:
         label: Secret Key
@@ -1265,7 +1413,11 @@ cluster:
         volume: Volume
         imageVolume: Image Volume
         addVolume: Add Volume
+<<<<<<< HEAD
         addVMImage: Add VM Image
+=======
+        addVMImage: Add Virtual Machine Image
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         storageClass: Storage Class
       sshUser: SSH User
       userData:
@@ -1281,9 +1433,15 @@ cluster:
       installGuestAgent: Install guest agent
   description:
     label: Cluster Description
+<<<<<<< HEAD
     placeholder: Any text you want that better describes this cluster
   harvester:
     importNotice: Import Harvester Clusters via
+=======
+    placeholder: Any text to describe this cluster
+  harvester:
+    importNotice: Import Harvester Clusters Via
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     warning:
       label: This is a Harvester Cluster - enable the Harvester feature flag to manage it
       state: Warning
@@ -1316,11 +1474,19 @@ cluster:
       sshUser:
         placeholder: e.g. ubuntu
         toolTip: SSH user to login with the selected OS image.
+<<<<<<< HEAD
   haveOneOwner: There must be at least one member with the Owner role.
   import:
     warningBanner: 'You should not import a cluster which has already been connected to another instance of Rancher as it will lead to data corruption.'
     commandInstructions: 'Run the <code>kubectl</code> command below on an existing Kubernetes cluster running a supported Kubernetes version to import it into {vendor}:'
     commandInstructionsInsecure: 'If you get a &quot;certificate signed by unknown authority&quot; error, your {vendor} installation has a self-signed or untrusted SSL certificate.  Run the command below instead to bypass the certificate verification:'
+=======
+  haveOneOwner: There must be at least one member with the owner role.
+  import:
+    warningBanner: 'You should not import a cluster which has already been connected to another instance of Rancher as it will lead to data corruption.'
+    commandInstructions: 'Run the <code>kubectl</code> command below on an existing Kubernetes cluster running a supported Kubernetes version to import it into {vendor}:'
+    commandInstructionsInsecure: 'If you get a &quot;certificate signed by unknown authority&quot; error, your {vendor} installation has a self-signed or untrusted SSL certificate. Run the command below instead to bypass the certificate verification:'
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     clusterRoleBindingInstructions: 'If you get permission errors creating some of the resources, your user may not have the <code>cluster-admin</code> role.  Use this command to apply it:'
     clusterRoleBindingCommand: 'kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user <your username from your kubeconfig>'
   explore: Explore
@@ -1333,7 +1499,11 @@ cluster:
     deprecated: (deprecated)
     deprecatedPatches: Show deprecated Kubernetes patch versions
     deprecatedPatchWarning: We recommend using the latest patch version for each minor Kubernetes version. Deprecated patch versions can be useful for migration purposes.
+<<<<<<< HEAD
   toolsTip: Use the new Cluster Tools to manage and install Monitoring, Logging and other tools
+=======
+  toolsTip: Use the new cluster tools to manage and install monitoring, logging and other tools
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   legacyWarning: The legacy feature flag is enabled and not all legacy features are supported in Kubernetes 1.21+.
   log:
     connecting: Connecting…
@@ -1411,6 +1581,7 @@ cluster:
         network: Network
         disks: Disks
       size:
+<<<<<<< HEAD
         label: VM Size
         tooltip: When accelerated networking is enabled, not all sizes are available.
         supportsAcceleratedNetworking: Sizes that Support Accelerated Networking
@@ -1419,6 +1590,16 @@ cluster:
         regionDoesNotSupportAzs: Availability zones are not supported in the selected region. Please select a different region or use an availability set instead.
         regionSupportsAzsButNotThisSize: The selected region does not support availability zones for the selected VM size. Please select a different region or VM size.
         selectedSizeAcceleratedNetworkingWarning: The selected VM size does not support accelerated networking. Please select another VM size or disable accelerated networking.
+=======
+        label: Virtual Machine Size
+        tooltip: When accelerated networking is enabled, not all sizes are available.
+        supportsAcceleratedNetworking: Sizes That Support Accelerated Networking
+        doesNotSupportAcceleratedNetworking: Sizes Without Accelerated Networking
+        availabilityWarning: The selected virtual machine size is not available in the selected region.
+        regionDoesNotSupportAzs: Availability zones are not supported in the selected region. Please select a different region or use an availability set instead.
+        regionSupportsAzsButNotThisSize: The selected region does not support availability zones for the selected virtual machine size. Please select a different region or virtual machine size.
+        selectedSizeAcceleratedNetworkingWarning: The selected virtual machine size does not support accelerated networking. Please select another virtual machine size or disable accelerated networking.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       sshUser:
         label: SSH Username
       storageType:
@@ -1511,7 +1692,11 @@ cluster:
         folder: Folder
         host:
           label: Host
+<<<<<<< HEAD
           note: Specific host to create VM on (leave blank for standalone ESXi or for cluster with DRS)
+=======
+          note: Specific host to create virtual machine on (leave blank for standalone ESXi or for cluster with DRS)
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       instanceOptions:
         label: Instance Options
         description: Choose the size and OS of the virtual machine
@@ -1532,7 +1717,11 @@ cluster:
           label: Cloud Init
           placeholder: e.g. http://my_host/cloud-config.yml
           note: Cloud-init file or url to set in the guestinfo
+<<<<<<< HEAD
         cloudConfigYaml: Cloud Config YAML
+=======
+        cloudConfigYaml: Cloud Configuration YAML
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         os: Operating System
       tags:
         label: Tags
@@ -1608,7 +1797,11 @@ cluster:
       serverOs:
         label: OS
   addOns:
+<<<<<<< HEAD
     dependencyBanner: Add-On Configurations can vary between Kubernetes versions. Changing the Kubernetes version may reset the values below.
+=======
+    dependencyBanner: Add-on configurations can vary between Kubernetes versions. Changing the Kubernetes version may reset the values below.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     additionalManifest:
       title: Additional Manifest
       tooltip: 'Additional Kubernetes Manifest YAML to be applied to the cluster on startup.'
@@ -1627,14 +1820,20 @@ cluster:
       nodeAffinity: Node Affinity
     banners:
       advanced: These are advanced configuration options. Generally, they should be left as-is.
+<<<<<<< HEAD
       tolerations: Additional Pod Tolerations will be added to the default Tolerations applied by Rancher.
       limits: Pod Requests and Limits do not have a default configuration.
+=======
+      tolerations: Additional pod tolerations will be added to the default tolerations applied by Rancher.
+      limits: Pod requests and limits do not have a default configuration.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       windowsCompatibility: "We do not recommended removing the Node Affinity rule that prevents the <b>agent</b> from running on Windows nodes as this is not a supported configuration."
     affinity:
       default: Use default affinity rules defined by Rancher
       custom: Use custom affinity rules
   advanced:
     argInfo:
+<<<<<<< HEAD
       title: Additional Kubelet Args
       machineSelector:
         label: Add Machine Selector
@@ -1650,15 +1849,40 @@ cluster:
         kubeControllerManagerTitle: Additional Controller Manager Args
         kubeApiServerTitle: Additional API Server Args
         kubeSchedulerTitle: Additional Scheduler Args
+=======
+      title: Additional Kubelet Arguments
+      machineSelector:
+        label: Add Machine Selector
+        listLabel: Add Arguments
+        bannerLabel: 'Note: The last selector that matches wins and only arguments from it will be used. Arguments from other matches above will not combined together or merged.'
+        title: 'For machines with labels matching:'
+        subTitle: 'Use the Kubelet arguments:'
+        titleAlt:  |-
+          {count, plural,
+            =1 { For all machines, use the Kubelet arguments: }
+            other { For any machines, use the Kubelet arguments: }
+          }
+        kubeControllerManagerTitle: Additional Controller Manager Arguments
+        kubeApiServerTitle: Additional API Server Arguments
+        kubeSchedulerTitle: Additional Scheduler Arguments
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     agentArgs:
       label: Raise error if kernel parameters are different than the expected kubelet defaults
   banner:
     warning: 'This cluster contains a machineSelectorConfig which this form does not fully support; use the YAML editor to manage the full configuration.'
+<<<<<<< HEAD
     os: 'You are attemping to add a {newOS} worker node to a cluster with one or more {existingOS} worker nodes: some installed apps may need to be upgraded or removed.'
     rke2-k3-reprovisioning: 'Making changes to cluster configuration may result in nodes reprovisioning. For more information see the <a target="blank" href="{docsBase}/cluster-provisioning/rke-clusters/behavior-differences-between-rke1-and-rke2/" target="_blank" rel="noopener nofollow">documentation</a>.'
     desiredNodeGroupWarning: There are 0 nodes available to run the cluster agent. The cluster will not become active until at least one node is available.
     invalidPsps: You have one or more PodSecurityPolicy resource(s) in this cluster. Pod Security Policies are not available in Kubernetes v1.25 and will be automatically removed.
     haveArgInfo: Configuration information is not available for the selected Kubernetes version.  The options available in this screen will be limited, you may want to use the YAML editor.
+=======
+    os: 'You are attemping to add a {newOS} worker node to a cluster with one or more {existingOS} worker nodes: some installed applications may need to be upgraded or removed.'
+    rke2-k3-reprovisioning: 'Making changes to cluster configuration may result in nodes reprovisioning. For more information see the <a target="blank" href="{docsBase}/cluster-provisioning/rke-clusters/behavior-differences-between-rke1-and-rke2/" target="_blank" rel="noopener nofollow">documentation</a>.'
+    desiredNodeGroupWarning: There are 0 nodes available to run the cluster agent. The cluster will not become active until at least one node is available.
+    invalidPsps: You have one or more PodSecurityPolicy resource(s) in this cluster. Pod Security Policies are not available in Kubernetes v1.25 and will be automatically removed.
+    haveArgInfo: Configuration information is not available for the selected Kubernetes version. The options available in this screen will be limited, you may want to use the YAML editor.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     deprecatedPsp: Pod Security Policies are deprecated as of Kubernetes v1.21, and have been removed in Kubernetes v1.25.
     removedPsp: Pod Security Policies have been removed in Kubernetes v1.25, use Pod Security Admission instead.
   rkeTemplateUpgrade: Template revision {name} available for upgrade
@@ -1678,7 +1902,11 @@ cluster:
   machinePool:
     name:
       label: Pool Name
+<<<<<<< HEAD
       placeholder: A random one will be generated by default
+=======
+      placeholder: A random name is generated by default
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     nodeTotals:
       label:
         controlPlane: '{count} Control Plane'
@@ -1695,7 +1923,11 @@ cluster:
           {count, plural,
             =0 { A cluster needs at least one etcd node to be usable. }
             =1 { A cluster with only one etcd node is not fault-tolerant. }
+<<<<<<< HEAD
             =2 { Clusters should have an odd number of nodes.  A cluster with 2 etcd nodes is not fault-tolerant. }
+=======
+            =2 { Clusters should have an odd number of nodes. A cluster with 2 etcd nodes is not fault-tolerant. }
+>>>>>>> b5455bcb (fix: separate used/allocated units)
             =3 {}
             =4 { Clusters should have an odd number of nodes. }
             =5 {}
@@ -1731,7 +1963,11 @@ cluster:
       label: Auto Replace
       toolTip: If greater than 0, nodes that are unreachable for this duration will be automatically deleted and replaced.
       unit: "Seconds"
+<<<<<<< HEAD
   managementTimeout: The cluster to become available. It's possible the cluster was created. We suggest checking the clusters page before trying to create another.
+=======
+  managementTimeout: The cluster to become available. It is possible the cluster was created. We suggest checking the clusters page before trying to create another.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   memberRoles:
     removeMessage: 'Note: Removing a user will not remove their project permissions'
     addClusterMember:
@@ -1807,11 +2043,19 @@ cluster:
       harvester: '{tag}'
   providerGroup:
     create-custom1: Use existing nodes and create a cluster using RKE
+<<<<<<< HEAD
     create-custom2: Use existing nodes and create a cluster using RKE2/K3s
     create-kontainer: Create a cluster in a hosted Kubernetes provider
     register-kontainer: Register an existing cluster in a hosted Kubernetes provider
     create-rke1: Provision new nodes and create a cluster using RKE
     create-rke2: Provision new nodes and create a cluster using RKE2/K3s
+=======
+    create-custom2: Use existing nodes and create a cluster using RKE2 or K3s
+    create-kontainer: Create a cluster in a hosted Kubernetes provider
+    register-kontainer: Register an existing cluster in a hosted Kubernetes provider
+    create-rke1: Provision new nodes and create a cluster using RKE
+    create-rke2: Provision new nodes and create a cluster using RKE2 or K3s
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     create-template: Use a Catalog Template to create a cluster
     register-custom: Import any Kubernetes cluster
   rke2:
@@ -1835,7 +2079,11 @@ cluster:
       label: Container Network
     cloudProvider:
       label: Cloud Provider
+<<<<<<< HEAD
       header: Cloud Provider Config
+=======
+      header: Cloud Provider Configuration
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       defaultValue:
         label: Default - RKE2 Embedded
     security:
@@ -1867,8 +2115,13 @@ cluster:
       toolTip: "This can be either a fixed number of nodes (e.g. 1) at a time or a percentage (e.g. 10%)"
     drain:
       label: Drain Nodes
+<<<<<<< HEAD
       toolTip: Draining preemptively removes the pods on each node so there are no running workloads on the nodes being upgraded.  Upgrading without draining is faster and causes less shuffling around, but pods may still be restarted depending on the upgrade being performed.
     deleteEmptyDir: "By default, pods using emptyDir volumes will be deleted on upgrade. Operations reliant on emptyDir volumes persisting through the pod's lifecycle may be impacted."
+=======
+      toolTip: Draining preemptively removes the pods on each node so there are no running workloads on the nodes being upgraded. Upgrading without draining is faster and causes less shuffling around, but pods may still be restarted depending on the upgrade being performed.
+    deleteEmptyDir: "By default, pods using emptyDir volumes will be deleted on upgrade. Operations reliant on emptyDir volumes persisting through the pods lifecycle may be impacted."
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     truncateHostnames: Truncate hostnames to 15 characters for NetBIOS compatibility.
     address:
       tooltip: Cluster networking values cannot be changed after the cluster is created.
@@ -1912,7 +2165,11 @@ cluster:
       servicelb: 'Klipper Service LB'
       traefik: 'Traefik Ingress'
   selectCredential:
+<<<<<<< HEAD
     genericDescription: "{vendor} has no built-in support for this driver.  We've taken a guess, but consult the driver's documentation for the fields required for authentication."
+=======
+    genericDescription: "{vendor} has no built-in support for this driver. We've taken a guess, but consult the driver's documentation for the fields required for authentication."
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   snapshot:
     successTitle: Snapshot Started
     errorTitle: "Error Snapshotting {name}"
@@ -1930,7 +2187,11 @@ cluster:
       s3: s3
   tabs:
     ace: Authorized Endpoint
+<<<<<<< HEAD
     addons: Add-On Config
+=======
+    addons: Add-on Configuration
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     advanced: Advanced
     agentEnv: Agent Environment Vars
     basic: Basics
@@ -1954,7 +2215,11 @@ cluster:
     v1: RKE1
     v2: RKE2/K3s
   validation:
+<<<<<<< HEAD
     iamInstanceProfileName: If the Amazon cloud provider is selected the "IAM Instance Profile Name" must be defined for each Machine Pool
+=======
+    iamInstanceProfileName: If the Amazon cloud provider is selected the "IAM Instance Profile Name" must be defined for each machine pool
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 clusterIndexPage:
   hardwareResourceGauge:
@@ -2007,7 +2272,11 @@ configmap:
   tabs:
     data:
       label: Data
+<<<<<<< HEAD
       protip: Use this area for anything that's UTF-8 text data
+=======
+      protip: Use this area for anything that contains UTF-8 text data
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     binaryData:
       label: Binary Data
 
@@ -2127,7 +2396,11 @@ fleet:
       notReady: Not Ready
       waitApplied: Wait Applied
   gitRepo:
+<<<<<<< HEAD
     createLocalBanner: When deploying a Git Repo to the Local workspace you are unable to target any specific Cluster or Cluster Groups
+=======
+    createLocalBanner: When deploying a Git Repo to the local workspace you are unable to target any specific cluster or cluster groups
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     tabs:
       resources: Resources
       unready: Non-Ready
@@ -2142,7 +2415,11 @@ fleet:
       label: Paths
       placeholder: e.g. /directory/in/your/repo
       addLabel: Add Path
+<<<<<<< HEAD
       empty: The root of the repo is used by default.  To use one or more different directories, add them here.
+=======
+      empty: The root of the repo is used by default. To use one or more different directories, add it here.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     repo:
       label: Repository URL
       placeholder: e.g. https://github.com/rancher/fleet-examples.git or git@github.com:rancher/fleet-examples.git
@@ -2228,7 +2505,11 @@ fleet:
   workspaces:
     tabs:
       restrictions: Allowed Target Namespaces
+<<<<<<< HEAD
     timeout: Workspace creation timeout. It's possible the workspace was created. We suggest checking the workspace page before trying to create another.
+=======
+    timeout: Workspace creation timeout. It is possible the workspace was created. We suggest checking the workspace page before trying to create another.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   restrictions:
     addTitle: 'allowedTargetNamespaces'
     addLabel: Add
@@ -2401,10 +2682,17 @@ hpa:
     cpu: CPU
     memory: Memory
   warnings:
+<<<<<<< HEAD
     custom: In order to use custom metrics with HPA, you need to deploy the custom metrics server such as prometheus adapter.
     external: In order to use external metrics with HPA, you need to deploy the external metrics server such as prometheus adapter.
     noMetric: In order to use resource metrics with HPA, you need to deploy the metrics server.
     resource: The selected target reference does not have the correct resource requests on the spec. Without this the HPA metric will have no effect.
+=======
+    custom: In order to use custom metrics with HPA, you need to deploy the custom metrics server such as Prometheus adapter.
+    external: In order to use external metrics with HPA, you need to deploy the external metrics server such as Prometheus adapter.
+    noMetric: In order to use resource metrics with HPA, you need to deploy the metrics server.
+    resource: The selected target reference does not have the correct resource requests on the spec. Without this, the HPA metric will have no effect.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   workloadTab:
     current: Current Replicas
     last: Last Scale Time
@@ -2423,7 +2711,11 @@ import:
     }
 
 ingress:
+<<<<<<< HEAD
   description: Ingresses route incoming traffic from the internet to Services within the cluster based on the hostname and path specified in the request. You can expose multiple Services on the same external IP address and port.
+=======
+  description: Ingresses route incoming traffic from the internet to services within the cluster based on the hostname and path specified in the request. You can expose multiple services on the same external IP address and port.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   certificates:
     addCertificate: Add Certificate
     addHost: Add Host
@@ -2450,7 +2742,11 @@ ingress:
     targetService:
       label: Target Service
       doesntExist: The selected service does not exist
+<<<<<<< HEAD
       required: Target Service is required
+=======
+      required: Target service is required
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     warning: "Warning: Default backend is used globally for the entire cluster."
   ingressClass:
     label: Ingress Class
@@ -2476,7 +2772,11 @@ ingress:
       placeholder: e.g. example.com
     target:
       label: Target Service
+<<<<<<< HEAD
       tooltip: If none of the Services in this dropdown select the Pods that you need to expose, you will need to create a Service that selects those Pods first.
+=======
+      tooltip: If none of the services in this drop-down select the pods that you need to expose, you will need to create a service that selects those pods first.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       doesntExist: The selected service does not exist
     title: Rules
   rulesAndCertificates:
@@ -2484,7 +2784,11 @@ ingress:
     defaultCertificate: default
   target:
     default: Default
+<<<<<<< HEAD
   rulesOrBackendSpecified: Either Default Backend or Rules must be specified
+=======
+  rulesOrBackendSpecified: Either the default backend or rules must be specified
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 internalExternalIP:
   none: None
@@ -2496,7 +2800,11 @@ istio:
       description: 'Visualization of services within a service mesh and how they are connected. For Kiali to display data, you need Prometheus installed. If you need a monitoring solution, install <a tabindex="0" href="{link}">{vendor} monitoring</a>.'
     jaeger:
       label: Jaeger
+<<<<<<< HEAD
       description: Monitor and Troubleshoot microservices-based distributed systems.
+=======
+      description: Monitor and troubleshoot microservices-based distributed systems.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     disabled: '{app} is not installed'
   cni: Enable CNI
   customOverlayFile:
@@ -2588,7 +2896,11 @@ istio:
         help: Maximum number of HTTP1 /TCP connections to a destination host.
     outlierDetection:
       label: Outlier Detection
+<<<<<<< HEAD
       detail: Configure eviction of unhealthy hosts from the load balancing pool
+=======
+      detail: Configure eviction of unhealthy hosts from the load balancing pool.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       baseEjectionTime:
         label: Base Ejection Time
         placeholder: e.g. 30s
@@ -2613,7 +2925,11 @@ istio:
       name:
         label: Name
         placeholder: e.g. v1
+<<<<<<< HEAD
         error: Subset Name is required.
+=======
+        error: Subset name is required.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       labels:
         error: Please input at least one label for subset.
     tls:
@@ -2634,11 +2950,19 @@ istio:
       clientCertificate:
         label: Client Certificate
         placeholder: e.g. /etc/certs/myclientcert.pem
+<<<<<<< HEAD
         error: Client Certificate is required.
       privateKey:
         label: Private Key
         placeholder: e.g. /etc/certs/client_private_key.pem
         error: Private Key is required.
+=======
+        error: Client certificate is required.
+      privateKey:
+        label: Private Key
+        placeholder: e.g. /etc/certs/client_private_key.pem
+        error: Private key is required.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       caCertificates:
         label: CA Certificates
         placeholder: e.g. /etc/certs/rootcacerts.pem
@@ -2668,14 +2992,22 @@ istio:
 
 labels:
   addLabel: Add Label
+<<<<<<< HEAD
   addSetLabel: Add/Set Label
+=======
+  addSetLabel: Add or Set Label
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   addTag: Add Tag
   addTaint: Add Taint
   addAnnotation: Add Annotation
   labels:
     title: Labels
     description: Key/value pairs that are attached to objects which specify identifying attributes.
+<<<<<<< HEAD
     fleetClusterTooltip: Label changes are made to the Management Cluster and synchronized to the Fleet Cluster
+=======
+    fleetClusterTooltip: Label changes are made to the management cluster and synchronized to the Fleet cluster.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     show: Show System Label
     hide: Hide System Label
   annotations:
@@ -2726,7 +3058,11 @@ logging:
     noOutputsBanner: There are no cluster outputs in the selected namespace.
   flow:
     clusterOutputs:
+<<<<<<< HEAD
       doesntExistTooltip: This cluster output doesn't exist
+=======
+      doesntExistTooltip: This cluster output does not exist
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       label: Cluster Outputs
     matches:
       banner: Configure which container logs will be pulled from
@@ -2760,7 +3096,11 @@ logging:
     filters:
       label: Filters
     outputs:
+<<<<<<< HEAD
       doesntExistTooltip: This output doesn't exist
+=======
+      doesntExistTooltip: This output does not exist
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       sameNamespaceError: Output must reside in same namespace as the flow.
       label: Outputs
   install:
@@ -2874,7 +3214,11 @@ logging:
     overwriteExistingPath: Overwrite Existing Path
   kinesisStream:
     streamName: Stream Name
+<<<<<<< HEAD
     keyId: Key Id from Secret
+=======
+    keyId: Key ID from Secret
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     secretKey: Secret Key from Secret
   logdna:
     apiKey: API Key
@@ -2883,7 +3227,11 @@ logging:
   logz:
     url: URL
     port: Port
+<<<<<<< HEAD
     token: Api Token from Secret
+=======
+    token: API Token from Secret
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     enableCompression: Enable Compression
   newrelic:
     apiKey: API Key from Secret
@@ -2914,7 +3262,11 @@ logging:
       timekeyWait: Timekey Wait
       timekeyUseUTC: Timekey Use UTC
   s3:
+<<<<<<< HEAD
     keyId: Key Id from Secret
+=======
+    keyId: Key ID from Secret
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     secretKey: Secret Key from Secret
     endpoint: Endpoint
     bucket: Bucket
@@ -2933,7 +3285,11 @@ logging:
       configuration: Configuration
     tips:
       singleProvider: This output is configured with multiple providers. We currently only support a single provider per output. You can view or edit the YAML.
+<<<<<<< HEAD
       multipleProviders: This output is configured with providers we don't support yet. You can view or edit the YAML.
+=======
+      multipleProviders: This output is configured with providers we do not support yet. You can view or edit the YAML.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   outputProviders:
     elasticsearch: Elasticsearch
     opensearch: OpenSearch
@@ -3042,7 +3398,11 @@ members:
   clusterPermissions:
     noDescription: User created - no description
     label: Cluster Permissions
+<<<<<<< HEAD
     description: Controls what access users have to the Cluster
+=======
+    description: Controls what access users have to the cluster
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     createProjects: Create Projects
     manageClusterBackups: Manage Cluster Backups
     manageClusterCatalogs: Manage Cluster Catalogs
@@ -3056,10 +3416,17 @@ members:
     viewNodes: View Nodes
     owner:
       label: Owner
+<<<<<<< HEAD
       description: Owners have full control over the Cluster and all resources inside it.
     member:
       label: Member
       description: Members can manage the resources inside the Cluster but not change the Cluster itself.
+=======
+      description: Owners have full control over the cluster and all the resources inside it.
+    member:
+      label: Member
+      description: Members can manage the resources inside the cluster but not change the cluster itself.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     custom:
       label: Custom
       description: Choose individual roles for this user.
@@ -3079,16 +3446,24 @@ monitoring:
     readOnlyMany: ReadOnlyMany
   aggregateDefaultRoles:
     label: Aggregate to Default Kubernetes Roles
+<<<<<<< HEAD
     tip: 'Adds labels to the ClusterRoles deployed by the Monitoring chart to <a target="_blank" rel="noopener nofollow noreferrer" href="https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles"> aggregate to the corresponding default k8s admin, edit, and view ClusterRoles.</a>'
   alerting:
     config:
       label: Alert Manager Config
+=======
+    tip: 'Adds labels to the ClusterRoles deployed by the monitoring chart to <a target="_blank" rel="noopener nofollow noreferrer" href="https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles"> aggregate to the corresponding default Kubernetes administrator, edit, and view ClusterRoles.</a>'
+  alerting:
+    config:
+      label: Alert Manager Configuration
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     enable:
       label: Deploy Alertmanager
     secrets:
       additional:
         info: Secrets should be mounted at <pre class='inline-block m-0'>/etc/alertmanager/secrets/</pre>
         label: Additional Secrets
+<<<<<<< HEAD
       existing: Choose an existing config secret
       info: |
         <span class="text-bold">Create default config</span>: A Secret containing your Alertmanager Config will be created in the <pre class='inline-block m-0'>cattle-monitoring-system</pre> namespace on deploying this chart under the name <pre class='inline-block m-0'>alertmanager-rancher-monitoring-alertmanager</pre>. By default, this Secret will never be modified on an uninstall or upgrade of this chart. <br />
@@ -3098,6 +3473,17 @@ monitoring:
       new: Create default config
       radio:
         label: Config Secret
+=======
+      existing: Choose an existing configuration secret
+      info: |
+        <span class="text-bold">Create default configuration</span>: A Secret containing your Alertmanager configuration will be created in the <pre class='inline-block m-0'>cattle-monitoring-system</pre> namespace on deploying this chart under the name <pre class='inline-block m-0'>alertmanager-rancher-monitoring-alertmanager</pre>. By default, this secret will never be modified on an uninstall or upgrade of this chart. <br />
+        Once you have deployed this chart, edit the secret via the UI in order to add your custom notification configurations that will be used by Alertmanager to send alerts. <br /> <br />
+        <span class="text-bold">Choose an existing configuration secret</span>: You must specify a secret that exists in the <pre class='inline-block m-0'>cattle-monitoring-system</pre> namespace. If the namespace does not exist, you will not be able to select an existing secret.
+      label: Alertmanager Secret
+      new: Create default configuration
+      radio:
+        label: Configuration Secret
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     validation:
       duplicatedReceiverName: A receiver with the name {name} already exists.
     templates:
@@ -3170,7 +3556,11 @@ monitoring:
       adminApi: Admin API
       evaluation: Evaluation Interval
       ignoreNamespaceSelectors:
+<<<<<<< HEAD
         help: 'Ignoring Namespace Selectors allows Cluster Admins to limit teams from monitoring resources outside of namespaces they have permissions to but can break the functionality of Apps that rely on setting up Monitors that scrape targets across multiple namespaces, such as Istio.'
+=======
+        help: 'Ignoring Namespace Selectors allows cluster admins to limit teams from monitoring resources outside of namespaces they have permissions to but can break the functionality of applications that rely on setting up monitors that scrape targets across multiple namespaces, such as Istio.'
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         label: Namespace Selectors
         radio:
           enforced: 'Use: Monitors can access resources based on namespaces that match the namespace selector field'
@@ -3190,13 +3580,21 @@ monitoring:
       label: Persistent Storage for Prometheus
       mode: Access Mode
       selector: Selector
+<<<<<<< HEAD
       selectorWarning: 'If you are using a dynamic provisioner (e.g. Longhorn), no Selectors should be specified since a PVC with a non-empty selector can''t have a PV dynamically provisioned for it.'
+=======
+      selectorWarning: 'If you are using a dynamic provisioner (e.g. Longhorn), no selectors should be specified since a PVC with a non-empty selector cannot have a PV dynamically provisioned for it.'
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       size: Size
       volumeName: Volume Name
     title: Configure Prometheus
     warningInstalled: |
       Warning: Prometheus Operators are currently deployed. Deploying multiple Prometheus Operators onto one cluster is not currently supported. Please remove all other Prometheus Operator deployments from this cluster before trying to install this chart.
+<<<<<<< HEAD
       If you are migrating from an older version of {vendor} with Monitoring enabled, please disable Monitoring on this cluster completely before attempting to install this chart.
+=======
+      If you are migrating from an older version of {vendor} with monitoring enabled, please disable monitoring on this cluster completely before attempting to install this chart.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   receiver:
     addReceiver: Add Receiver
     fields:
@@ -3212,6 +3610,7 @@ monitoring:
       keyFilePath:
         label: Key File Path
         placeholder: e.g. ./key-file.pfx
+<<<<<<< HEAD
       secretsBanner: The file paths below must be referenced in <pre class="inline-block m-0 p-0 vertical-middle">alertmanager.alertmanagerSpec.secrets</pre> when deploying the Monitoring chart. For more information see our <a href="{docsBase}/monitoring-alerting/" target="_blank" rel="noopener noreferrer nofollow">documentation</a>.
   projectMonitoring:
     detail:
@@ -3222,6 +3621,18 @@ monitoring:
         message: Project Monitoring has not been configured for any projects
         canCreate: Get started by clicking Create to add monitoring to a project
         cannotCreate: Contact the admin to add project monitoring
+=======
+      secretsBanner: The file paths below must be referenced in <pre class="inline-block m-0 p-0 vertical-middle">alertmanager.alertmanagerSpec.secrets</pre> when deploying the monitoring chart. For more information see our <a href="{docsBase}/monitoring-alerting/" target="_blank" rel="noopener noreferrer nofollow">documentation</a>.
+  projectMonitoring:
+    detail:
+      error: "Unable to fetch dashboard values with status: "
+    list:
+      banner: Project monitoring configuration is stored in ProjectHelmChart resources
+      empty:
+        message: Project monitoring has not been configured for any projects
+        canCreate: Get started by clicking create to add monitoring to a project
+        cannotCreate: Contact the administrator to add project monitoring
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   route:
     label: Route
     fields:
@@ -3236,9 +3647,15 @@ monitoring:
   alertmanagerConfig:
     description: Routes and receivers for project alerting and cluster alerting are configured within AlertmanagerConfig resources.
     empty: Alerts have not been configured for any accessible namespaces.
+<<<<<<< HEAD
     getStarted: Get started by clicking Create to configure an alert.
     receiverTooltip: This route will direct alerts to the selected receiver, which must be defined in the same AlertmanagerConfig.
     deprecationWarning: The Route and Receiver resources are deprecated. Going forward, routes and receivers should not be managed as separate Kubernetes resources on this page. They should be configured as YAML fields in an AlertmanagerConfig resource.
+=======
+    getStarted: Get started by clicking create to configure an alert.
+    receiverTooltip: This route will direct alerts to the selected receiver, which must be defined in the same AlertmanagerConfig.
+    deprecationWarning: The route and receiver resources are deprecated. Going forward, routes and receivers should not be managed as separate Kubernetes resources on this page. They should be configured as YAML fields in an AlertmanagerConfig resource.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     routeInfo: This form supports configuring one route that directs traffic to a receiver. Alerts can be directed to more receiver(s) by configuring child routes in YAML.
     receiverFormNames:
       create: Create Receiver in AlertmanagerConfig
@@ -3273,19 +3690,28 @@ monitoring:
       warning2: <a target="blank" href="{docsBase}/monitoring-alerting/guides/migrating/" target='_blank' rel='noopener nofollow'>Learn more</a> about the migration steps to V2 Monitoring.
       promptDescription: <div class="mt-20 mb-20">You are attempting to uninstall V1 Monitoring. Please ensure you have read the migration steps.</div>
       success1: V1 monitoring successfully uninstalled.
+<<<<<<< HEAD
       success2: Press Next to continue
+=======
+      success2: Press next to continue
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   tabs:
     alerting: Alerting
     general: General
     grafana: Grafana
     prometheus: Prometheus
     projectMetrics: Project Metrics
+<<<<<<< HEAD
   v1Warning: 'Monitoring is currently deployed from Cluster Manager. If you are migrating from an older version of {vendor} with monitoring enabled, please disable monitoring in Cluster Manager before attempting to install the new {vendor} Monitoring chart in Cluster Explorer.'
+=======
+  v1Warning: 'Monitoring is currently deployed from cluster manager. If you are migrating from an older version of {vendor} with monitoring enabled, please disable monitoring in cluster manager before attempting to install the new {vendor} monitoring chart in cluster explorer.'
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 monitoringReceiver:
   addButton: Add {type}
   custom:
     label: Custom
+<<<<<<< HEAD
     title: Custom Config
     info: The YAML provided here will be directly appended to your receiver within the Alertmanager Config Secret.
   email:
@@ -3308,6 +3734,30 @@ monitoringReceiver:
     urlTooltip: For some webhooks this a url that points to the service DNS
     modifyNamespace: If <pre class="inline-block m-0 p-0 vertical-middle">rancher-alerting-drivers</pre> default values were changed, please update the url below in the format http://&lt;new_service_name&gt;.&lt;new_namespace&gt.svc.&lt;port&gt/&lt;path&gt
     banner: To use MS Teams or SMS you will need to have at least one instance of <pre class="inline-block m-0 p-0 vertical-middle">rancher-alerting-drivers</pre> installed first.
+=======
+    title: Custom Configuration
+    info: The YAML provided here will be directly appended to your receiver within the Alertmanager configuration secret.
+  email:
+    label: Email
+    title: Email Configuration
+  opsgenie:
+    label: Opsgenie
+    title: Opsgenie Configuration
+  pagerduty:
+    label: PagerDuty
+    title: PagerDuty Configuration
+    info: "You can find additional info on creating an Integration Key for PagerDuty <a href='https://www.pagerduty.com/docs/guides/prometheus-integration-guide/' target='_blank' rel='noopener nofollow' class='flex-right'>here</a>."
+  slack:
+    label: Slack
+    title: Slack Configuration
+    info: "You can find additional info on creating Incoming Webhooks for Slack <a href='https://rancher.slack.com/apps/A0F7XDUAZ-incoming-webhooks' target='_blank' rel='noopener noreferrer nofollow'>here</a> ."
+  webhook:
+    label: Webhook
+    title: Webhook Configuration
+    urlTooltip: For some webhooks this a URL that point to the service DNS
+    modifyNamespace: If <pre class="inline-block m-0 p-0 vertical-middle">rancher-alerting-drivers</pre> default values were changed, please update the URL below in the format http://&lt;new_service_name&gt;.&lt;new_namespace&gt.svc.&lt;port&gt/&lt;path&gt
+    banner: To use MS Teams or SMS, you will need to have at least one instance of <pre class="inline-block m-0 p-0 vertical-middle">rancher-alerting-drivers</pre> installed first.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     add:
       selectWebhookType: Select Webhook Type
       generic: Generic
@@ -3342,7 +3792,11 @@ monitoringReceiver:
       label: Enable send resolved alerts
 
 alertmanagerConfigReceiver:
+<<<<<<< HEAD
   secretKeyId: Key Id from Secret
+=======
+  secretKeyId: Key ID from Secret
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   name: Receiver Name
   addButton: Add Receiver
   receivers: Receivers
@@ -3356,7 +3810,11 @@ monitoringRoute:
     label: Group By
     addGroupByLabel: Labels to Group Alerts By
     groupByTooltip: Add each label as a string in the format key:value. The special label ... will aggregate by all possible labels. If provided, the ... must be the only element in the list.
+<<<<<<< HEAD
   info: This is the top-level Route used by Alertmanager as the default destination for any Alerts that do not match any other Routes. This Route must exist and cannot be deleted.
+=======
+  info: This is the top-level route used by Alertmanager as the default destination for any alerts that do not match any other routes. This route must exist and cannot be deleted.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   interval:
     label: Group Interval
   matching:
@@ -3417,6 +3875,12 @@ namespace:
   selectNamespace: Select Namespace
   createNamespace: Create a New Namespace
   selectOrCreate: Select or Create a Namespace
+<<<<<<< HEAD
+=======
+  snapshots:
+    label: Snapshots
+    totalSnapshotSize: Total Snapshot Size
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   resourceStates:
       success: 'Active'
       info: 'Transitioning'
@@ -3505,7 +3969,11 @@ networkpolicy:
     ruleHint: Incoming traffic is only allowed from the configured sources
     portHint: Incoming traffic is only allowed to connect to the configured ports
   labelsAnnotations:
+<<<<<<< HEAD
     label: Labels & Annotations
+=======
+    label: Labels and Annotations
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   rules:
     pod: Pod
     namespace: Namespace
@@ -3536,12 +4004,20 @@ networkpolicy:
     namespaceSelector:
       label: Namespace Selector
     namespaceAndPodSelector:
+<<<<<<< HEAD
       label: Namespace/Pod Selector
+=======
+      label: Namespace and Pod Selector
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   config:
     label: Configuration
   selectors:
     label: Selectors
+<<<<<<< HEAD
     hint: The NetworkPolicy is applied to the selected Pods
+=======
+    hint: The NetworkPolicy is applied to the selected pods
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     matchingPods:
       matchesSome: |-
         {matched, plural,
@@ -3593,8 +4069,13 @@ node:
         used: Used
         amount: "{used} of {total} {unit}"
         cpu: CPU
+<<<<<<< HEAD
         memory: MEMORY
         pods: PODS
+=======
+        memory: Memory
+        pods: Pods
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       diskPressure: Disk Pressure
       kubelet: kubelet
       memoryPressure: Memory Pressure
@@ -3716,6 +4197,10 @@ persistentVolume:
       file-csi-azure-com: Azure File (CSI)
       driver-longhorn-io: Longhorn (CSI)
       driver-harvesterhci-io: Harvester (CSI)
+<<<<<<< HEAD
+=======
+      lvm-driver-harvesterhci-io: LVM
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       nfs-csi-k8s-io: NFS (CSI)
       ebs-csi-aws-com: AWS Elastic Block Store (CSI)
       rbd-csi-ceph-com: Ceph RBD (CSI)
@@ -3807,7 +4292,11 @@ persistentVolume:
     portals:
       add: Add Portal
   cinder:
+<<<<<<< HEAD
     label: Openstack Cinder Volume (Unsupported)
+=======
+    label: OpenStack Cinder Volume (Unsupported)
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     volumeId:
       label: Volume ID
       placeholder: e.g. vol
@@ -3892,7 +4381,11 @@ persistentVolume:
       label: Path on the Node
       placeholder: /mnt/disks/ssd1
     mustBe:
+<<<<<<< HEAD
       label: The Path on the Node must be
+=======
+      label: The path on the node must be
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       anything: 'Anything: do not check the target path'
       directory: A directory, or create if it does not exist
       file: A file, or create if it does not exist
@@ -3955,8 +4448,13 @@ persistentVolumeClaim:
   source:
     label: Source
     options:
+<<<<<<< HEAD
       new: Use a Storage Class to provision a new Persistent Volume
       existing: Use an existing Persistent Volume
+=======
+      new: Use a storage class to provision a new persistent volume
+      existing: Use an existing persistent volume
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   expand:
     label: Expand
     notSupported: Storage class does not support volume expansion
@@ -3967,8 +4465,13 @@ persistentVolumeClaim:
     requestStorage: Request Storage
     persistentVolume: Persistent Volume
     tooltips:
+<<<<<<< HEAD
       noStorageClass: You don't have permission to list Storage Classes, enter a name manually
       noPersistentVolume: You don't have permission to list Persistent Volumes, enter a name manually
+=======
+      noStorageClass: You do not have permission to list storage classes, enter a name manually
+      noPersistentVolume: You do not have permission to list persistent volumes, enter a name manually
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   customize:
     label: Customize
     accessModes:
@@ -4007,18 +4510,32 @@ plugins:
     installing: Installing ...
     uninstalling: Uninstalling ...
   descriptions:
+<<<<<<< HEAD
     experimental: This Extension is marked as experimental
     third-party: This Extension is provided by a Third-Party
     built-in: This Extension is built-in
     image: This Extension Image has been loaded manually
+=======
+    experimental: This extension is marked as experimental
+    third-party: This extension is provided by a third-party
+    built-in: This extension is built-in
+    image: This extension image has been loaded manually
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   error:
     title: Error loading extension
     message: Could not load extension code
     generic: Extension error
+<<<<<<< HEAD
     api: This Extension is not compatible with the Extensions API
     host: This Extension is not compatible with this application
     version: This Extension is not compatible with this version of Rancher
     load: An error occurred loading the code for this Extension
+=======
+    api: This extension is not compatible with the extension API
+    host: This extension is not compatible with this application
+    version: This extension is not compatible with this version of Rancher
+    load: An error occurred loading the code for this extension
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   success:
     title: Loaded extension {name}
     message: Extension was loaded successfully
@@ -4037,10 +4554,17 @@ plugins:
     requiresVersion: "Requires Rancher {version}"
   empty:
     all: Extensions are neither installed nor available
+<<<<<<< HEAD
     available: No Extensions available
     installed: No Extensions installed
     updates: No updates available for installed Extensions
     images: No Extension Images installed
+=======
+    available: No extension available
+    installed: No extension installed
+    updates: No updates available for installed extension
+    images: No extension images installed
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   loadError: An error occurred loading the code for this extension
   helmError: "An error occurred installing the extension via Helm"
   manageRepos: Manage Repositories
@@ -4051,14 +4575,23 @@ plugins:
     subtitle: Catalogs
     imageLoad:
       load: Import Extension Catalog
+<<<<<<< HEAD
       prompt: An Extension Catalog contains extension assets bundled into an image, importing will take the image and host a Helm repository to act as a catalog for custom built Extensions. 
+=======
+      prompt: An extension catalog contains extension assets bundled into an image, importing will take the image and host a Helm repository to act as a catalog for custom built extensions.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       fields:
         image:
           label: Catalog Image Reference
           placeholder: "e.g. hub.docker.io/example-org/my-image:latest"
         secrets:
+<<<<<<< HEAD
           banner: "If the registry that hosts the Catalog Image requires Pull Secrets, they must be created in the following namespace:<pre>cattle-ui-plugin-system</pre>"
       banner: This will create an Deployment, Service, and Helm repository to serve the extension charts. 
+=======
+          banner: "If the registry that hosts the catalog image requires pull secrets, they must be created in the following namespace:<pre>cattle-ui-plugin-system</pre>"
+      banner: This will create a deployment, service, and Helm repository to serve the extension charts.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       imageVersion:
         title: Image Version Not Found
         message: Unable to determine image version from {image}, defaulting to latest
@@ -4075,7 +4608,11 @@ plugins:
             message: A repository with the name {repo} already exists
       success:
         title: "Imported Extension Catalog from: {name}"
+<<<<<<< HEAD
         message: Extension Catalog image was imported successfully
+=======
+        message: Extension catalog image was imported successfully
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     headers:
       image:
         name: images
@@ -4094,6 +4631,7 @@ plugins:
   install:
     label: Install
     title: Install Extension {name}
+<<<<<<< HEAD
     prompt: "Are you sure that you want to install this Extension?"
     version: Version
     warnNotCertified: Please ensure that you are aware of the risks of installing Extensions from untrusted authors
@@ -4111,6 +4649,25 @@ plugins:
     prompt: "Are you sure that you want to uninstall this Extension?"
     custom: "Are you sure that you want to uninstall this Extension Image? This will also remove any Extensions provided by this image."
   upgradeAvailable: A newer version of this Extension is available
+=======
+    prompt: "Are you sure that you want to install this extension?"
+    version: Version
+    warnNotCertified: Please ensure that you are aware of the risks of installing extensions from untrusted authors
+  update:
+    label: Update
+    title: Update Extension {name}
+    prompt: "Are you sure that you want to update this extension?"
+  rollback:
+    label: Rollback
+    title: Rollback Extension {name}
+    prompt: "Are you sure that you want to rollback this extension?"
+  uninstall:
+    label: Uninstall
+    title: "Uninstall Extension: {name}"
+    prompt: "Are you sure that you want to uninstall this extension?"
+    custom: "Are you sure that you want to uninstall this extension image? This will also remove any extensions provided by this image."
+  upgradeAvailable: A newer version of this extension is available
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   reload: Extensions changed - reload required
   safeMode:
     title: Extensions Safe Mode
@@ -4119,19 +4676,34 @@ plugins:
     title: Extension support is not enabled
     prompt:
       cant: Automatic installation is not available - required Helm Charts could not be found
+<<<<<<< HEAD
       can: You need to install the Extension Operator
     install:
       title: Enable Extension Support?
       prompt: This will install the Helm charts to enable Extension support
       airgap: The Rancher Extensions Repository provides extensions published by Rancher. Un-check if your Rancher installation is air-gapped
+=======
+      can: You need to install the extension operator
+    install:
+      title: Enable Extension Support?
+      prompt: This will install the Helm charts to enable extension support
+      airgap: The Rancher extensions repository provides extensions published by Rancher. De-select if your Rancher installation is air-gapped
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       addRancherRepo: Add the Rancher Extension Repository
     remove:
       label: Disable Extension Support
       title: Disable Extension Support?
+<<<<<<< HEAD
       prompt: This will un-install the Helm charts that enable Extension support
       registry:
         title: Remove the Rancher Extensions Repository
         prompt: The Rancher Extensions Repository provides extensions published by Rancher
+=======
+      prompt: This will un-install the Helm charts that enable extension support
+      registry:
+        title: Remove the Rancher Extensions Repository
+        prompt: The Rancher extension repository provides extensions published by Rancher
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       crd:
         title: Remove the Rancher Extensions Custom Resource Definition
         prompt: There are one or more extensions installed - removing the CRD will require you to manually reinstall these extensions if you subsequently re-enable extensions support.
@@ -4154,7 +4726,11 @@ podSecurityAdmission:
     placeholder: 'Version (default: latest)'
   exemptions:
     title: Exemptions
+<<<<<<< HEAD
     description: Allow the creation of pods for specific Usernames, RuntimeClassNames, and Namespaces that would otherwise be prohibited due to the policies set above.
+=======
+    description: Allow the creation of pods for specific usernames, RuntimeClassNames, and namespaces that would otherwise be prohibited due to the policies set above.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     placeholder: Enter a comma separated list of {psaExemptionsControl}
 prefs:
   title: Preferences
@@ -4192,9 +4768,15 @@ prefs:
   advFeatures:
     title: Advanced Features
     viewInApi: Enable "View in API"
+<<<<<<< HEAD
     allNamespaces: Show system Namespaces managed by Rancher (not intended for editing or deletion)
     themeShortcut: Enable Dark/Light Theme keyboard shortcut toggle (shift+T)
     pluginDeveloper: Enable Extension developer features
+=======
+    allNamespaces: Show system namespaces managed by Rancher (not intended for editing or deletion)
+    themeShortcut: Enable Dark/Light theme keyboard shortcut toggle (shift+T)
+    pluginDeveloper: Enable extension developer features
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   hideDesc:
     label: Hide All Type Descriptions
   helm:
@@ -4250,9 +4832,15 @@ project:
   members:
     label: Members
   containerDefaultResourceLimit: Container Default Resource Limit
+<<<<<<< HEAD
   vmDefaultResourceLimit: VM Default Resource Limit
   resourceQuotas: Resource Quotas
   haveOneOwner: There must be at least one member with the Owner role.
+=======
+  vmDefaultResourceLimit: Virtual Machine Default Resource Limit
+  resourceQuotas: Resource Quotas
+  haveOneOwner: There must be at least one member with the owner role.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   psp:
     default: Cluster Default
     label: Pod Security Policy
@@ -4264,11 +4852,16 @@ projectMembers:
     label: Project
   projectPermissions:
     label: Project Permissions
+<<<<<<< HEAD
     description: Controls what access users have to the Project
+=======
+    description: Controls what access users have to the project
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     noDescription: User created - no description
     searchForMember: Search for a member to provide project access
     owner:
       label: Owner
+<<<<<<< HEAD
       description: Owners have full control over the Project and all resources inside it.
     member:
       label: Member
@@ -4276,11 +4869,24 @@ projectMembers:
     readOnly:
       label: Read Only
       description: Members can only view the resources inside the Project but not change the resources.
+=======
+      description: Owners have full control over the project and all resources inside it.
+    member:
+      label: Member
+      description: Members can manage the resources inside the project but not change the project itself.
+    readOnly:
+      label: Read Only
+      description: Members can only view the resources inside the project but not change the resources.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     custom:
       label: Custom
       description: Choose individual roles for this user.
     createNs: Create Namespaces
+<<<<<<< HEAD
     configmapsManage: Manage Config Maps
+=======
+    configmapsManage: Manage Configuration Maps
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     ingressManage: Manage Ingress
     projectcatalogsManage: Manage Project Catalogs
     projectroletemplatebindingsManage: Manage Project Members
@@ -4289,7 +4895,11 @@ projectMembers:
     servicesManage: Manage Services
     persistentvolumeclaimsManage: Manage Volumes
     workloadsManage: Manage Workloads
+<<<<<<< HEAD
     configmapsView: View Config Maps
+=======
+    configmapsView: View Configuration Maps
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     ingressView: View Ingress
     monitoringUiView: View Monitoring
     projectcatalogsView: View Project Catalogs
@@ -4325,7 +4935,11 @@ prometheusRule:
       summary:
         input: Summary Annotation Value
         label: Summary
+<<<<<<< HEAD
     bannerText: 'When firing alerts, the annotations and labels will be passed to the configured AlertManagers to allow them to construct the notification that will be sent to any configured Receivers.'
+=======
+    bannerText: 'When firing alerts, the annotations and labels will be passed to the configured AlertManagers to allow them to construct the notification that will be sent to any configured receivers.'
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     for:
       label: Wait to fire for
       placeholder: '60'
@@ -4364,14 +4978,22 @@ prometheusRule:
 
 promptForceRemove:
   modalTitle: Are you sure?
+<<<<<<< HEAD
   removeWarning: "There was an issue with deleting underlying infrastructure. If you proceed with this action, the Machine <b>{nameToMatch}</b> will be deleted from Rancher only. It's highly recommended to manually delete any referenced infrastructure."
+=======
+  removeWarning: "There was an issue with deleting underlying infrastructure. If you proceed with this action, the Machine <b>{nameToMatch}</b> will be deleted from Rancher only. We recommend to manually delete any referenced infrastructure."
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   forceDelete: Force Delete
   confirmName: "Enter in the pool name below to confirm:"
   podRemoveWarning: "Force deleting pods does not wait for confirmation that the pod's processes have been terminated. This may result in <strong>data corruption or inconsistencies</strong>"
 
 promptScaleMachineDown:
   attemptingToRemove: "You are attempting to delete {count} {type}"
+<<<<<<< HEAD
   retainedMachine1: At least one Machine must exist for roles Control Plane and Etcd.
+=======
+  retainedMachine1: At least one machine must exist for roles control plane and Etcd.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   retainedMachine2: <b>{ name }</b> will remain
 
 promptRemove:
@@ -4383,7 +5005,11 @@ promptRemove:
     other { and <b>{count} others</b>.}
     }
   attemptingToRemove: "You are attempting to delete the {type}"
+<<<<<<< HEAD
   attemptingToRemoveAuthConfig: "You are attempting to disable this Auth Provider. <br><br> Be aware that cluster role template bindings, project role template bindings, global role bindings, users, tokens will be all deleted. <br><br> Are you sure you want to proceed?"
+=======
+  attemptingToRemoveAuthConfig: "You are attempting to disable this authenticator provider. <br><br> Be aware that cluster role template bindings, project role template bindings, global role bindings, users, tokens will be all deleted. <br><br> Are you sure you want to proceed?"
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   protip: "Tip: Hold the {alternateLabel} key while clicking delete to bypass this confirmation"
   confirmName: "Enter <b>{nameToMatch}</b> below to confirm:"
   deleteAssociatedNamespaces: "Also delete the namespaces in this project:"
@@ -4425,7 +5051,11 @@ promptSaveAsRKETemplate:
 promptRotateEncryptionKey:
   title: Rotate Encryption Keys
   description: The last backup {name} was performed on {date}
+<<<<<<< HEAD
   warning: Before proceeding, ensure a successful ETCD backup of the cluster has been completed.
+=======
+  warning: Before proceeding, ensure a successful etcd backup of the cluster has been completed.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   error: No backup found
 
 rancherAlertingDrivers:
@@ -4525,10 +5155,17 @@ rbac:
         description: Administrators have full control over the entire installation and all resources in all clusters.
       restricted-admin:
         label: Restricted Administrator
+<<<<<<< HEAD
         description: Restricted Admins have full control over all resources in all downstream clusters but no access to the local cluster.
       user:
         label: Standard User
         description: Standard Users can create new clusters and manage clusters and projects they have been granted access to.
+=======
+        description: Restricted administrators have full control over all resources in all downstream clusters but no access to the local cluster.
+      user:
+        label: Standard User
+        description: Standard users can create new clusters and manage clusters and projects they have been granted access to.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       user-base:
         label: User-Base
         description: User-Base users have login-access only.
@@ -4540,10 +5177,17 @@ rbac:
         description: Allows the user to create new RKE cluster templates and become the owner of them.
       authn-manage:
         label: Configure Authentication
+<<<<<<< HEAD
         description: Allows the user to enable, configure, and disable all Authentication provider settings.
       catalogs-manage:
         label: Legacy Configure Catalogs
         description: Allows the user to add, edit, and remove management.cattle.io based catalogs resources.
+=======
+        description: Allows the user to enable, configure, and disable all authentication provider settings.
+      catalogs-manage:
+        label: Legacy Configure Catalogs
+        description: Allows the user to add, edit, and remove management.cattle.io-based catalog resources.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       clusters-manage:
         label: Manage all Clusters
         description: Allows the user to manage all clusters, including ones they are not a member of.
@@ -4558,21 +5202,33 @@ rbac:
         description: Allows the user to enable and disable custom features via feature flag settings.
       nodedrivers-manage:
         label: Configure Node Drivers
+<<<<<<< HEAD
         description: Allows the user to enable, configure, and remove all Node Driver settings.
       nodetemplates-manage:
         label: Manage Node Templates
         description: Allows the user to define, edit, and remove Node Templates.
+=======
+        description: Allows the user to enable, configure, and remove all node driver settings.
+      nodetemplates-manage:
+        label: Manage Node Templates
+        description: Allows the user to define, edit, and remove node templates.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       podsecuritypolicytemplates-manage:
         label: Manage Pod Security Policies (PSPs)
         description: Allows the user to define, edit, and remove PSPs.
       roles-manage:
         label: Manage Roles
+<<<<<<< HEAD
         description: Allows the user to define, edit, and remove Role definitions.
+=======
+        description: Allows the user to define, edit, and remove role definitions.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       settings-manage:
         label: Manage Settings
         description: 'Allows the user to manage {vendor} Settings.'
       users-manage:
         label: Manage Users
+<<<<<<< HEAD
         description: Allows the user to create, remove, and set passwords for all Users.
       catalogs-use:
         label: Use Catalogs
@@ -4583,6 +5239,18 @@ rbac:
       view-rancher-metrics:
         label: 'View {vendor} Metrics'
         description: Allows the user to view Metrics through the API.
+=======
+        description: Allows the user to create, remove, and set passwords for all users.
+      catalogs-use:
+        label: Use Catalogs
+        description: Allows the user to see and deploy templates from the catalog. Standard users have this permission by default.
+      nodetemplates-use:
+        label: Use Node Templates
+        description: Allows the user to deploy new nodes using any existing node templates.
+      view-rancher-metrics:
+        label: 'View {vendor} Metrics'
+        description: Allows the user to view metrics through the API.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       base:
         label: Login Access
       clustertemplaterevisions-create:
@@ -4623,8 +5291,13 @@ resourceDetail:
     age: Age
     restartCount: Pod Restarts
     defaultBannerMessage:
+<<<<<<< HEAD
       error: This resource is currently in an error state, but there isn't a detailed message available.
       transitioning: This resource is currently in a transitioning state, but there isn't a detailed message available.
+=======
+      error: This resource is currently in an error state, but a detailed message is not available.
+      transitioning: This resource is currently in a transitioning state, a detailed message is not available.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     sensitive:
       hide: Hide Sensitive Values
       show: Show Sensitive Values
@@ -4638,7 +5311,11 @@ resourceDetail:
     managedWarning: |-
       This {type} is managed by {hasName, select,
         no {a {managedBy} app}
+<<<<<<< HEAD
         yes {the {managedBy} app {appName}}}; changes made here will likely be overwritten the next time {managedBy} runs.
+=======
+        yes {the {managedBy} app {appName}}}; changes made here can be overwritten the next time {managedBy} runs.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 resourceList:
   head:
     create: Create
@@ -4686,7 +5363,11 @@ resourceTabs:
 
 resourceYaml:
   errors:
+<<<<<<< HEAD
     namespaceRequired: This resource is namespaced, so a namespace must be provided.
+=======
+    namespaceRequired: This resource is namespaced; a namespace must be provided.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   buttons:
     continue: Continue Editing
     edit: Edit YAML
@@ -4757,12 +5438,20 @@ secret:
   relatedWorkloads: Related Workloads
   typeDescriptions:
     custom:
+<<<<<<< HEAD
       description: Create a Secret with a custom type
+=======
+      description: Create a secret with a custom type
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     'kubernetes.io/basic-auth':
       description: 'Authentication with a username and password'
       docLink: https://kubernetes.io/docs/concepts/configuration/secret/#basic-authentication-secret
     'Opaque':
+<<<<<<< HEAD
       description: Default type of Secret using key-value pairs
+=======
+      description: Default type of secret using key-value pairs
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       docLink: https://kubernetes.io/docs/concepts/configuration/secret/#opaque-secrets
     'kubernetes.io/dockerconfigjson':
       description: Authenticated registry for pulling container images
@@ -4831,9 +5520,15 @@ serviceTypes:
   nodeport: Node Port
 
 servicesPage:
+<<<<<<< HEAD
   serviceListDescription: Services allow you to define a logical set of Pods that can be accessed with a single IP address and port.
   targetPorts: The Service will send requests to this port, and the selected Pods are expected to listen on this port.
   listeningPorts: The Service is exposed on this port.
+=======
+  serviceListDescription: Services allow you to define a logical set of pods that can be accessed with a single IP address and port.
+  targetPorts: The service will send requests to this port, and the selected pods are expected to listen on this port.
+  listeningPorts: The service is exposed on this port.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   anyNode: Any Node
   labelsAnnotations:
     label: Labels & Annotations
@@ -4848,7 +5543,11 @@ servicesPage:
       placeholder: e.g. 10800
   externalName:
     define: External Name
+<<<<<<< HEAD
     helpText: "External Name is intended to specify a canonical DNS name. This is a required field. To hardcode an IP address, use a Headless service."
+=======
+    helpText: "External name is intended to specify a canonical DNS name. This is a required field. To hardcode an IP address, use a headless service."
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     label: External Name
     placeholder: e.g. my.database.example.com
     input:
@@ -4893,7 +5592,11 @@ servicesPage:
   serviceTypes:
     clusterIp:
       abbrv: IP
+<<<<<<< HEAD
       description: Expose a set of Pods to other Pods within the cluster. This type of Service is only reachable from within the cluster. This is the default type.
+=======
+      description: Expose a set of pods to other pods within the cluster. This type of service is only reachable from within the cluster. This is the default type.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       label: Cluster IP
     externalName:
       abbrv: EN
@@ -4918,7 +5621,11 @@ setup:
   currentPassword: Bootstrap Password
   confirmPassword: Confirm New Password
   defaultPassword:
+<<<<<<< HEAD
     intro: It looks like this is your first time visiting {vendor}; if you pre-set your own bootstrap password, enter it here.  Otherwise a random one has been generated for you.  To find it:<br/><br/>
+=======
+    intro: It looks like this is your first time visiting {vendor}; if you have pre-set your own bootstrap password, enter it here. Otherwise a random one has been generated for you. To find it:<br/><br/>
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     dockerPrefix: 'For a "docker run" installation:'
     dockerPs: 'Find your container ID with <code>docker ps</code>, then run:'
     dockerSuffix: ""
@@ -5278,7 +5985,11 @@ tableHeaders:
   apiGroup: API Groups
   apikey: API Key
   available: Available
+<<<<<<< HEAD
   attachedVM: Attached VM
+=======
+  attachedVM: Attached Virtual Machine
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
   authRoles:
     globalDefault: New User Default
@@ -5381,7 +6092,11 @@ tableHeaders:
   namespaceName: Name
   namespaceNameUnlinked: Name
   networkType: Type
+<<<<<<< HEAD
   networkVlan: Vlan ID
+=======
+  networkVlan: VLAN ID
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   node: Node
   nodeName: Node Name
   nodesReady: Nodes Ready
@@ -5471,6 +6186,10 @@ tableHeaders:
   targetKind: Target Type
   targetPort: Target
   template: Template
+<<<<<<< HEAD
+=======
+  totalSnapshotQuota: Total Snapshot Quota
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   type: Type
   updated: Updated
   up-to-date: Up To Date
@@ -5549,7 +6268,11 @@ validation:
     name: Cluster name cannot be 'local' or take the form 'c-xxxxx'
   conflict: |-
     This resource has been modified since you started editing it, and some of those modifications conflict with your changes.
+<<<<<<< HEAD
     This screen has been updated to reflect the current values on the cluster. Review and reapply the changes you wanted to make, then Save again.
+=======
+    This screen has been updated to reflect the current values on the cluster. Review and reapply the changes you wanted to make, then save again.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     Conflicting {fieldCount, plural, =1 {field} other {fields}}: {fields}
   custom:
     missing: 'No validator exists for { validatorName }! Does the validator exist in custom-validators? Is the name spelled correctly?'
@@ -5578,7 +6301,11 @@ validation:
     global: Requires "Cluster Output" to be selected.
   output:
     logdna:
+<<<<<<< HEAD
       apiKey: Required an "Api Key" to be set.
+=======
+      apiKey: Required an "API Key" to be set.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   invalidCron: Invalid cron schedule
   k8s:
     name: Must consist of lower case alphanumeric characters or '-', and must start and end with an alphanumeric character (e.g. 'my-name', or '123-abc').
@@ -5618,17 +6345,28 @@ validation:
   port: A port must be a number between 1 and 65535.
   path: '"{key}" must be an absolute path'
   prometheusRule:
+<<<<<<< HEAD
     noEdit: This Prometheus Rule may not be edited due to invalid characters in name.
+=======
+    noEdit: This Prometheus rule may not be edited due to invalid characters in name.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     groups:
       required: At least one rule group is required.
       singleAlert: A rule may contain alert rules or recording rules but not both.
       valid:
         name: 'Name is required for rule group {index}.'
         rule:
+<<<<<<< HEAD
           alertName: 'Rule group {groupIndex} rule {ruleIndex} requires a Alert Name.'
           expr: 'Rule group {groupIndex} rule {ruleIndex} requires a PromQL Expression.'
           labels: 'Rule group {groupIndex} rule {ruleIndex} requires at least one label. Severity is recommended.'
           recordName: 'Rule group {groupIndex} rule {ruleIndex} requires a Time Series Name.'
+=======
+          alertName: 'Rule group {groupIndex} rule {ruleIndex} requires a alert name.'
+          expr: 'Rule group {groupIndex} rule {ruleIndex} requires a PromQL expression.'
+          labels: 'Rule group {groupIndex} rule {ruleIndex} requires at least one label. Severity is recommended.'
+          recordName: 'Rule group {groupIndex} rule {ruleIndex} requires a time series name.'
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         singleEntry: 'At least one alert rule or one recording rule is required in rule group {index}.'
   required: '"{key}" is required'
   invalid: '"{key}" is invalid'
@@ -5637,12 +6375,21 @@ validation:
   roleTemplate:
     roleTemplateRules:
       missingVerb: You must specify at least one verb for each resource grant
+<<<<<<< HEAD
       missingResource: You must specify a Resource for each resource grant
       missingApiGroup: You must specify an API Group for each resource grant
       missingOneResource: You must specify at least one Resource, Non-Resource URL or API Group for each resource grant
   service:
     externalName:
       none: External Name is required on an ExternalName Service.
+=======
+      missingResource: You must specify a resource for each resource grant
+      missingApiGroup: You must specify an API group for each resource grant
+      missingOneResource: You must specify at least one resource, non-resource URL or API group for each resource grant
+  service:
+    externalName:
+      none: External name is required on an ExternalName service.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     ports:
       name:
         required: 'Port Rule [{position}] - Name is required.'
@@ -5670,7 +6417,11 @@ validation:
     missingProjectId: A target must have a project selected.
   monitoring:
     route:
+<<<<<<< HEAD
       match: At least one Match or Match Regex must be selected
+=======
+      match: At least one match or match regex must be selected
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       interval: '"{key}" must be of a format with digits followed by a unit i.e. 1h, 2m, 30s'
   tab: "One or more fields in this tab contain a form validation error"
 
@@ -5762,9 +6513,15 @@ workload:
       initialDelay: Initial Delay
       livenessProbe: Liveness Check
       livenessTip: Containers will be restarted when this check is failing.  Not recommended for most uses.
+<<<<<<< HEAD
       noHealthCheck: "There is not a Readiness Check, Liveness Check or Startup Check configured."
       readinessProbe: Readiness Checks
       readinessTip: Containers will be removed from service endpoints when this check is failing.  Recommended.
+=======
+      noHealthCheck: "There is not a readiness check, liveness check or startup check configured."
+      readinessProbe: Readiness Checks
+      readinessTip: Containers will be removed from service endpoints when this check is failing. Recommended.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       startupProbe: Startup Check
       startupTip: Containers will wait until this check succeeds before attempting other health checks.
       successThreshold: Success Threshold
@@ -5830,9 +6587,15 @@ workload:
     noServiceAccess: You do not have permission to create or manage services
     ports:
       expose: Networking
+<<<<<<< HEAD
       description: 'Define a Service to expose the container, or define a non-functional, named port so that humans will know where the app within the container is expected to run.'
       detailedDescription: If ClusterIP, LoadBalancer, or NodePort is selected, a Service is automatically created that will select the Pods in this workload using labels.
       toolTip: 'For help exposing workloads on Kubernetes, see the official Kubernetes documentation on Services. You can also manually create a Service to expose Pods by selecting their labels, and you can use an Ingress to map HTTP routes to Services.'
+=======
+      description: 'Define a service to expose the container, or define a non-functional, named port so that other users will know where the application within the container is expected to run.'
+      detailedDescription: If ClusterIP, LoadBalancer, or NodePort is selected, a service is automatically created that will select the pods in this workload using labels.
+      toolTip: 'For help exposing workloads on Kubernetes, see the official Kubernetes documentation on services. You can also manually create a service to expose pods by selecting their labels, and you can use an ingress to map HTTP routes to services.'
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       createService: Service Type
       noCreateService: Do not create a service
       containerPort: Private Container Port
@@ -5906,6 +6669,7 @@ workload:
   detail:
     services: Services
     ingresses: Ingresses
+<<<<<<< HEAD
     cannotViewServices: Could not list Services due to lack of permission.
     cannotFindServices: Could not find any Services that select Pods from this workload.
     serviceListCaption: "The following Services select Pods from this workload:"
@@ -5913,6 +6677,15 @@ workload:
     cannotFindIngresses: Could not find any Ingresses that forward traffic to Services that select Pods in this workload.
     ingressListCaption: "The following Ingresses forward traffic to Services that select Pods from this workload:"
     cannotViewIngressesBecauseCannotViewServices: Could not find relevant relevant Ingresses due to lack of permission to view Services.
+=======
+    cannotViewServices: Could not list services due to lack of permission.
+    cannotFindServices: Could not find any services that select pods from this workload.
+    serviceListCaption: "The following services select pods from this workload:"
+    cannotViewIngresses: Could not list ingresses due to lack of permission.
+    cannotFindIngresses: Could not find any ingresses that forward traffic to services that select pods in this workload.
+    ingressListCaption: "The following ingresses forward traffic to services that select pods from this workload:"
+    cannotViewIngressesBecauseCannotViewServices: Could not find relevant relevant ingresses due to lack of permission to view services.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     pods:
       title: Pods
   detailTop:
@@ -6101,7 +6874,11 @@ workload:
     addMount: Add Mount
     addVolume: Add Volume
     selectVolume: Select Volume
+<<<<<<< HEAD
     noVolumes: Volumes will appear here after they are added in the Pod tab
+=======
+    noVolumes: Volumes will appear here after they are added in the pod tab
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     certificate: Certificate
     csi:
       diskName: Disk Name
@@ -6132,12 +6909,21 @@ workload:
     defaultMode: Default Mode
     driver: driver
     hostPath:
+<<<<<<< HEAD
       label: The Path on the Node must be
       options:
         default: 'Anything: do not check the target path'
         directoryOrCreate: A directory, or create if it doesn't exist
         directory: An existing directory
         fileOrCreate: A file, or create if it doesn't exist
+=======
+      label: The Path on the node must be
+      options:
+        default: 'Anything: do not check the target path'
+        directoryOrCreate: A directory, or create if it does not exist
+        directory: An existing directory
+        fileOrCreate: A file, or create if it does not exist
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         file: An existing file
         socket: An existing socket
         charDevice: An existing character device
@@ -6166,11 +6952,19 @@ workload:
         placeholder: "e.g. 300"
   typeDescriptions:
     apps.daemonset: DaemonSets run exactly one pod on every eligible node. When new nodes are added to the cluster, DaemonSets automatically deploy to them. Recommended for system-wide or vertically-scalable workloads that never need more than one pod per node.
+<<<<<<< HEAD
     apps.deployment: Deployments run a scalable number of replicas of a pod distributed among the eligible nodes. Changes are rolled out incrementally and can be rolled back to the previous revision when needed. Recommended for stateless & horizontally-scalable workloads.
     apps.statefulset: StatefulSets manage stateful applications and provide guarantees about the ordering and uniqueness of the pods created. Recommended for workloads with persistent storage or strict identity, quorum, or upgrade order requirements.
     batch.cronjob: CronJobs create Jobs, which then run Pods, on a repeating schedule. The schedule is expressed in standard Unix cron format, and uses the timezone of the Kubernetes control plane (typically UTC).
     batch.job: Jobs create one or more pods to reliably perform a one-time task by running a pod until it exits successfully. Failed pods are automatically replaced until the specified number of completed runs has been reached. Jobs can also run multiple pods in parallel or function as a batch work queue.
     pod: Pods are the smallest deployable units of computing that you can create and manage in Kubernetes. A Pod is a group of one or more containers, with shared storage and network resources, and a specification for how to run the containers.
+=======
+    apps.deployment: Deployments run a scalable number of replicas of a pod distributed among the eligible nodes. Changes are rolled out incrementally and can be rolled back to the previous revision when needed. Recommended for stateless and horizontally-scalable workloads.
+    apps.statefulset: StatefulSets manage stateful applications and provide guarantees about the ordering and uniqueness of the pods created. Recommended for workloads with persistent storage or strict identity, quorum, or upgrade order requirements.
+    batch.cronjob: CronJobs create jobs, which then run pods, on a repeating schedule. The schedule is expressed in standard Unix cron format, and uses the timezone of the Kubernetes control plane (typically UTC).
+    batch.job: Jobs create one or more pods to reliably perform a one-time task by running a pod until it exits successfully. Failed pods are automatically replaced until the specified number of completed runs has been reached. Jobs can also run multiple pods in parallel or function as a batch work queue.
+    pod: Pods are the smallest deployable units of computing that you can create and manage in Kubernetes. A pod is a group of one or more containers, with shared storage and network resources, and a specification for how to run the containers.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   upgrading:
     activeDeadlineSeconds:
       label: Pod Active Deadline
@@ -6179,8 +6973,13 @@ workload:
       label: Concurrency
       options:
         allow: Allow CronJobs to run concurrently
+<<<<<<< HEAD
         forbid: Skip next run if current run hasn't finished
         replace: Replace run if current run hasn't finished
+=======
+        forbid: Skip next run if current run has not finished
+        replace: Replace run if current run has not finished
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     maxSurge:
       label: Max Surge
       tip: The maximum number of pods allowed beyond the desired scale at any given time.
@@ -6202,7 +7001,11 @@ workload:
       labels:
         delete: "On Delete: New pods are only created when old pods are manually deleted."
         recreate: "Recreate: Kill ALL pods, then start new pods."
+<<<<<<< HEAD
         rollingUpdate: "Rolling Update: Create new pods, until max surge is reached, before deleting old pods. Don't stop more pods than max unavailable."
+=======
+        rollingUpdate: "Rolling Update: Create new pods, until max surge is reached, before deleting old pods. Do not stop more pods than max unavailable."
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     terminationGracePeriodSeconds:
       label: Termination Grace Period
       tip: The duration the pod needs to terminate successfully.
@@ -6299,14 +7102,22 @@ typeDescription:
   cis.cattle.io.clusterscanprofile: A profile is the configuration for the CIS scan, which is the benchmark versions to use and any specific tests to skip in that benchmark.
   cis.cattle.io.clusterscan: A scan is created to trigger a CIS scan on the cluster based on the defined profile. A report is created after the scan is completed.
   cis.cattle.io.clusterscanreport: A report is the result of a CIS scan of the cluster.
+<<<<<<< HEAD
   management.cattle.io.feature: Feature Flags allow certain {vendor} features to be toggled on and off.  Features that are off by default should be considered experimental functionality.
   cluster.x-k8s.io.machine: A Machine encapsulates the configuration of a Kubernetes Node. Use this view to see what happens after updating a cluster.
   cluster.x-k8s.io.machinedeployment: A Machine Deployment orchestrates deployments via templates over a collection of Machine Sets (similar to a Deployment). Use this view to see what happens after updating a cluster.
   cluster.x-k8s.io.machineset: A Machine Set ensures the desired number of Machine resources are up and running at all times (similar to a ReplicaSet). Use this view to see what happens after updating a cluster.
+=======
+  management.cattle.io.feature: Feature flags allow certain {vendor} features to be toggled on and off. Features that are off by default should be considered experimental functionality.
+  cluster.x-k8s.io.machine: A machine encapsulates the configuration of a Kubernetes node. Use this view to see what happens after updating a cluster.
+  cluster.x-k8s.io.machinedeployment: A machine deployment orchestrates deployments via templates over a collection of machine sets (similar to a deployment). Use this view to see what happens after updating a cluster.
+  cluster.x-k8s.io.machineset: A machine set ensures the desired number of machine resources are up and running at all times (similar to a ReplicaSet). Use this view to see what happens after updating a cluster.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   resources.cattle.io.backup: A backup is created to perform one-time backups or schedule recurring backups based on a ResourceSet.
   resources.cattle.io.restore: A restore is created to trigger a restore to the cluster based on a backup file.
   resources.cattle.io.resourceset: A resource set defines which CRDs and resources to store in the backup.
   monitoring.coreos.com.servicemonitor: A service monitor defines the group of services and the endpoints that Prometheus will scrape for metrics. This is the most common way to define metrics collection.
+<<<<<<< HEAD
   monitoring.coreos.com.podmonitor: A pod monitor defines the group of pods that Prometheus will scrape for metrics. The common way is to use service monitors, but pod monitors allow you to handle any situation where a service monitor wouldn't work.
   monitoring.coreos.com.prometheusrule: A Prometheus Rule resource defines both recording and/or alert rules. A recording rule can pre-compute values and save the results. Alerting rules allow you to define conditions on when to send notifications to AlertManager.
   monitoring.coreos.com.prometheus: A Prometheus server is a Prometheus deployment whose scrape configuration and rules are determined by selected ServiceMonitors, PodMonitors, and PrometheusRules and whose alerts will be sent to all selected Alertmanagers with the custom resource's configuration.
@@ -6317,6 +7128,18 @@ typeDescription:
   catalog.cattle.io.operation: An operation is the list of recent Helm operations that have been applied to the cluster.
   catalog.cattle.io.app: An installed application is a Helm 3 chart that was installed either via our charts or through the Helm CLI.
   logging.banzaicloud.io.clusterflow: Logs from the cluster will be collected and logged to the selected Cluster Output.
+=======
+  monitoring.coreos.com.podmonitor: A pod monitor defines the group of pods that Prometheus will scrape for metrics. The common way is to use service monitors, but pod monitors allow you to handle any situation where a service monitor would not work.
+  monitoring.coreos.com.prometheusrule: A Prometheus rule resource defines both recording or alert rules. A recording rule can pre-compute values and save the results. Alerting rules allow you to define conditions on when to send notifications to AlertManager.
+  monitoring.coreos.com.prometheus: A Prometheus server is a Prometheus deployment whose scrape configuration and rules are determined by selected ServiceMonitors, PodMonitors, and PrometheusRules and whose alerts will be sent to all selected Alertmanagers with the custom resource's configuration.
+  monitoring.coreos.com.alertmanager: An alert manager is deployment whose configuration will be specified by a secret in the same namespace, which determines which alerts should go to which receiver.
+  node: The base Kubernetes node resource represents a virtual or physical machine which hosts deployments. To manage the machine lifecycle, if available, go to Cluster Management.
+  catalog.cattle.io.clusterrepo: 'A chart repository is a Helm repository or {vendor} git based application catalog. It provides the list of available charts in the cluster.'
+  catalog.cattle.io.clusterrepo.local: 'A chart repository is a Helm repository or {vendor} git based application catalog. It provides the list of available charts in the cluster. Cluster Templates are deployed via Helm charts.'
+  catalog.cattle.io.operation: An operation is the list of recent Helm operations that have been applied to the cluster.
+  catalog.cattle.io.app: An installed application is a Helm 3 chart that was installed either via our charts or through the Helm CLI.
+  logging.banzaicloud.io.clusterflow: Logs from the cluster will be collected and logged to the selected cluster output.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   logging.banzaicloud.io.clusteroutput: A cluster output defines which logging providers that logs can be sent to and is only effective when deployed in the namespace that the logging operator is in.
   logging.banzaicloud.io.flow: A flow defines which logs to collect and filter as well as which output to send the logs. The flow is a namespaced resource, which means logs will only be collected from the namespace that the flow is deployed in.
   logging.banzaicloud.io.output: An output defines which logging providers that logs can be sent to. The output needs to be in the same namespace as the flow that is using it.
@@ -6350,8 +7173,13 @@ typeLabel:
     }
   catalog.cattle.io.app: |-
     {count, plural,
+<<<<<<< HEAD
       one { Installed App }
       other { Installed Apps }
+=======
+      one { Installed Application }
+      other { Installed Applications }
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     }
   catalog.cattle.io.clusterrepo: |-
     {count, plural,
@@ -6360,6 +7188,7 @@ typeLabel:
     }
   catalog.cattle.io.repo: |-
     {count, plural,
+<<<<<<< HEAD
       one { Namespaced Repo }
       other { Namespaced Repos }
     }
@@ -6372,6 +7201,20 @@ typeLabel:
     {count, plural,
       one { App }
       other { Apps }
+=======
+      one { Namespaced Repository }
+      other { Namespaced Repositories }
+    }
+  chartinstallaction: |-
+    {count, plural,
+      one { Application }
+      other { Applications }
+    }
+  chartupgradeaction: |-
+    {count, plural,
+      one { Application }
+      other { Applications }
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     }
   cloudcredential: |-
     {count, plural,
@@ -6395,8 +7238,13 @@ typeLabel:
     }
   fleet.cattle.io.gitrepo: |-
     {count, plural,
+<<<<<<< HEAD
       one { Git Repo }
       other {Git Repos }
+=======
+      one { Git Repository }
+      other {Git Repositories }
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     }
   management.cattle.io.authconfig: |-
     {count, plural,
@@ -6501,8 +7349,13 @@ typeLabel:
     }
   'management.cattle.io.cluster': |-
     {count, plural,
+<<<<<<< HEAD
       one { Mgmt Cluster }
       other { Mgmt Clusters }
+=======
+      one { Manaagement Cluster }
+      other { Management Clusters }
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     }
   'cluster.x-k8s.io.cluster': |-
     {count, plural,
@@ -6681,8 +7534,13 @@ typeLabel:
     }
   harvesterhci.io.cloudtemplate: |-
     {count, plural,
+<<<<<<< HEAD
       one { Cloud Config Template }
       other { Cloud Config Templates }
+=======
+      one { Cloud Configuration Template }
+      other { Cloud Configuration Templates }
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     }
   fleet.cattle.io.content: |-
     {count, plural,
@@ -6701,8 +7559,13 @@ typeLabel:
     }
   k3s.cattle.io.addon: |-
     {count, plural,
+<<<<<<< HEAD
       one { Addon }
       other { Addons }
+=======
+      one { Add-on }
+      other { Add-ons }
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     }
   management.cattle.io.apiservice: |-
     {count, plural,
@@ -6801,8 +7664,13 @@ typeLabel:
     }
   management.cattle.io.rkeaddon: |-
     {count, plural,
+<<<<<<< HEAD
       one { RkeAddon }
       other { RkeAddons }
+=======
+      one { RKEAddon }
+      other { RKEAddons }
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     }
   management.cattle.io.rkek8sserviceoption: |-
     {count, plural,
@@ -6811,8 +7679,13 @@ typeLabel:
     }
   management.cattle.io.rkek8ssystemimage: |-
     {count, plural,
+<<<<<<< HEAD
       one { RkeK8sSystemImage }
       other { RkeK8sSystemImages }
+=======
+      one { RKEK8sSystemImage }
+      other { RKEK8sSystemImages }
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     }
   rbac.authorization.k8s.io.clusterrolebinding: |-
     {count, plural,
@@ -6880,6 +7753,10 @@ action:
   viewYaml: View YAML
   activate: Activate
   deactivate: Deactivate
+<<<<<<< HEAD
+=======
+  editQuota: Edit Quota
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   show: Show
   hide: Hide
   copy: Copy
@@ -6917,11 +7794,19 @@ podAffinity:
 keyValue:
   keyPlaceholder: e.g. foo
   valuePlaceholder: e.g. bar
+<<<<<<< HEAD
   protip: 'Paste lines of <em>key=value</em> or <em>key: value</em> into any key field for easy bulk entry'
 
 registryMirror:
   header: Mirrors
   toolTip: 'Mirrors can be used to redirect requests for images from one registry to come from a list of endpoints you specify instead.  For example docker.io could redirect to your internal registry instead of ever going to DockerHub.'
+=======
+  protip: 'Paste lines of <em>key=value</em> or <em>key:value</em> into any key field for easy bulk entry'
+
+registryMirror:
+  header: Mirrors
+  toolTip: 'Mirrors can be used to redirect requests for images from one registry to come from a list of endpoints you specify instead. For example docker.io could redirect to your internal registry instead of ever going to DockerHub.'
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   addLabel: Add Mirror
   description: Mirrors define the names and endpoints for private registries. The endpoints are tried one by one, and the first working one is used.
   hostnameLabel: Registry Hostname
@@ -6950,7 +7835,11 @@ registryConfig:
 
 advancedSettings:
   label: Settings
+<<<<<<< HEAD
   subtext: Typical users will not need to change these. Proceed with caution, incorrect values can break your {appName} installation. Settings which have been customized from default settings are tagged 'Modified'.
+=======
+  subtext: Users will not need to change these settings. Proceed with caution as incorrect values can break your {appName} installation. Settings that have been customized from default settings are tagged with 'Modified'.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   show: Show
   hide: Hide
   none: None
@@ -6969,12 +7858,21 @@ advancedSettings:
     'cluster-defaults': 'Override RKE Defaults when creating new clusters.'
     'engine-install-url': 'Default Docker engine installation URL (for most node drivers).'
     'engine-iso-url': 'Default OS installation URL (for vSphere driver).'
+<<<<<<< HEAD
     'engine-newest-version': 'The newest supported version of Docker at the time of this release.  A Docker version that does not satisfy supported docker range but is newer than this will be marked as untested.'
     'engine-supported-range': 'Semver range for supported Docker engine versions.  Versions which do not satisfy this range will be marked unsupported in the UI.'
     'ingress-ip-domain': 'Wildcard DNS domain to use for automatically generated Ingress hostnames. <ingress-name>.<namespace-name>.<ip address of ingress controller> will be added to the domain.'
     'server-url': 'Default {appName} install url. Must be HTTPS. All nodes in your cluster must be able to reach this.'
     'system-default-registry': 'Private registry to be used for all Rancher System Container Images. If no value is specified, the default registry for the container runtime is used. For Docker and containerd, the default is `docker.io`.'
     'ui-index': 'HTML index location for the Cluster Manager UI.'
+=======
+    'engine-newest-version': 'The newest supported version of Docker at the time of this release. A Docker version that does not satisfy supported docker range but is newer than this will be marked as untested.'
+    'engine-supported-range': 'Semver range for supported Docker engine versions. Versions which do not satisfy this range will be marked unsupported in the UI.'
+    'ingress-ip-domain': 'Wildcard DNS domain to use for automatically generated ingress hostnames. <ingress-name>.<namespace-name>.<ip address of ingress controller> will be added to the domain.'
+    'server-url': 'Default {appName} install url. Must be HTTPS. All nodes in your cluster must be able to reach this.'
+    'system-default-registry': 'Private registry to be used for all Rancher system container images. If no value is specified, the default registry for the container runtime is used. For Docker and containerd, the default is `docker.io`.'
+    'ui-index': 'HTML index location for the cluster manager UI.'
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     'ui-dashboard-index': 'HTML index location for the {appName} UI.'
     'ui-offline-preferred': 'Controls whether UI assets are served locally by the server container or from the remote URL defined in the ui-index and ui-dashboard-index settings. The `Dynamic` option will use local assets in production builds of {appName}.'
     'ui-pl': 'Private-Label company name.'
@@ -7039,19 +7937,33 @@ performance:
     label: Incremental Loading
     setting: You can configure the threshold above which incremental loading will be used.
     description: |-
+<<<<<<< HEAD
       When enabled, resources will appear more quickly, but it may take slightly longer to load the entire set of resources. This setting only applies to resources that come from the Kubernetes API
     checkboxLabel: Enable incremental loading
     inputLabel: Resource Threshold
     incompatibleDescription: "Incremental Loading is incomaptible with Namespace/Project filtering. Enabling this will disable it."
+=======
+      When enabled, resources will appear more quickly, but it may take slightly longer to load the entire set of resources. This setting only applies to resources that come from the Kubernetes API.
+    checkboxLabel: Enable incremental loading
+    inputLabel: Resource Threshold
+    incompatibleDescription: "Incremental Loading is incomaptible with namespace or project filtering. Enabling this will disable it."
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   manualRefresh:
     label: Manual Refresh
     setting: You can configure a threshold above which manual refresh will be enabled.
     buttonTooltip: Refresh list
     description: |-
+<<<<<<< HEAD
       When enabled, list data will not auto-update but instead the user must manually trigger a list-view refresh. This setting only applies to resources that come from the Kubernetes API
     checkboxLabel: Enable manual refresh of data for lists
     inputLabel: Resource Threshold
     incompatibleDescription: "Manual Refresh is incomaptible with Namespace/Project filtering. Enabling this will disable it."
+=======
+      When enabled, list data will not auto-update but instead the user must manually trigger a list-view refresh. This setting only applies to resources that come from the Kubernetes API.
+    checkboxLabel: Enable manual refresh of data for lists
+    inputLabel: Resource Threshold
+    incompatibleDescription: "Manual Refresh is incomaptible with namespace or project filtering. Enabling this will disable it."
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   websocketNotification:
     label: Websocket Notifications
     description: |-
@@ -7059,7 +7971,11 @@ performance:
     checkboxLabel: Disable websocket notifications
   gc:
     label: Resource Garbage Collection
+<<<<<<< HEAD
     description: The UI will cache kuberentes resources locally to avoid having to re-fetch them. In some cases this can lead to a large amount of data stored in the browser. Enable this setting to periodically remove them.
+=======
+    description: The UI will cache Kubernetes resources locally to avoid having to re-fetch them. In some cases, this can lead to a large amount of data stored in the browser. Enable this setting to periodically remove them.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     checkboxLabel: Enable Garbage Collection
     whenRun:
       description: Update when garbage collection runs
@@ -7073,25 +7989,42 @@ performance:
     howRun:
       description: Update how garbage collection runs
       age:
+<<<<<<< HEAD
         description: "Resource types musn't have been accessed within this period to be considered for garbage collection."
+=======
+        description: "Resource types must not have been accessed within this period to be considered for garbage collection."
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         inputLabel: Resource Age
       count:
         description: Resource types must exceed this amount to be considered for garbage collection.
         inputLabel: Resource Count
   nsFiltering:
     label: Require Namespace / Project Filtering
+<<<<<<< HEAD
     description: Require the user to select namespaces and/or projects. This restricts the number of resources fetched when viewing lists and should help the responsiveness of the UI in systems with a lot of resources.
     checkboxLabel: Enable Required Namespace / Project Filtering
     incompatibleDescription: "Required Namespace / Project Filtering is incomaptible with Manual Refresh and Incremental Loading. Enabling this will disable them."
   advancedWorker:
     label: Websocket Web Worker
     description: Updates to resources pushed to the UI come via WebSocket and are handled in the UI thread. Enable this option to handle cluster WebSocket updates in a Web Worker in a separate thread. This should help the responsiveness of the UI in systems where resources change often.
+=======
+    description: Require the user to select namespaces or projects. This restricts the number of resources fetched when viewing lists and should help the responsiveness of the UI in systems with a lot of resources.
+    checkboxLabel: Enable Required Namespace or Project Filtering
+    incompatibleDescription: "Required namespace or project filtering is incomaptible with manual refresh and incremental Loading. Enabling this will disable them."
+  advancedWorker:
+    label: Websocket Web Worker
+    description: Updates to resources pushed to the UI come via WebSocket and are handled in the UI thread. Enable this option to handle cluster WebSocket updates in a web worker in a separate thread. This should help the responsiveness of the UI in systems where resources change often.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     checkboxLabel: Enable Advanced Websocket Web Worker
   inactivity:
     title: Inactivity
     checkboxLabel: Enable inactivity session expiration
     inputLabel: Inactivity timeout (minutes)
+<<<<<<< HEAD
     information: To change the automatic logout behaviour, edit the authorisation and/or session token timeout values (<code>auth-user-session-ttl-minutes</code> and <code>auth-token-max-ttl-minutes</code>) in the Settings page.
+=======
+    information: To change the automatic log out behaviour, edit the authorisation and session token timeout values (<code>auth-user-session-ttl-minutes</code> and <code>auth-token-max-ttl-minutes</code>) in the settings page.
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     description: When enabled and the user is inactive past the specified timeout, the UI will no longer fresh page content and the user must reload the page to continue.
     authUserTTL: This timeout cannot be higher than the user session timeout auth-user-session-ttl-minutes, which is currently {current} minutes.
 
@@ -7178,7 +8111,11 @@ resourceQuota:
   helpText: Configure how much of the resources the namespace as a whole can consume.
   helpTextDetail: The amount of resources the namespace as a whole can consume.
   helpTextHarvester: VMs need to reserve additional memory overhead.
+<<<<<<< HEAD
   configMaps: Config Maps
+=======
+  configMaps: Configuration Maps
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   limitsCpu: CPU Limit
   limitsMemory: Memory Limit
   persistentVolumeClaims: Persistent Volume Claims
@@ -7262,8 +8199,13 @@ support:
       text: Login to SUSE Customer Center to access support for your subscription
       action: SUSE Customer Center
       aws:
+<<<<<<< HEAD
         generateConfig: Generate Support Config
         text: 'Login to SUSE Customer Center to access support for your subscription. Need to open a new support case? Download a support config file below.'
+=======
+        generateConfig: Generate Support Configuration
+        text: 'Login to SUSE Customer Center to access support for your subscription. Need to open a new support case? Download a support configuration file below.'
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   promos:
     one:
       title: 24x7 Support
@@ -7297,7 +8239,11 @@ legacy:
   alerts: Alerts
   apps: Apps
   catalogs: Catalogs
+<<<<<<< HEAD
   configMaps: Config Maps
+=======
+  configMaps: Configuration Maps
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   configuration: Configuration
   globalDnsEntries: Global DNS Entries
   globalDnsProviders: Global DNS Providers
@@ -7308,7 +8254,11 @@ legacy:
 
   project:
     label: Project
+<<<<<<< HEAD
     select: "Use the Project/Namespace filter at the top of the page to select a Project in order to see legacy Project features."
+=======
+    select: "Use the namespace or project filter at the top of the page to select a project in order to see legacy project features."
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 serverUpgrade:
   title: "{vendor} Server Changed"

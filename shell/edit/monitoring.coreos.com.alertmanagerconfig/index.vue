@@ -13,6 +13,10 @@ import RouteConfig from './routeConfig';
 import ResourceTable from '@shell/components/ResourceTable';
 import ActionMenu from '@shell/components/ActionMenu';
 import { _CREATE, _EDIT, _VIEW, _CONFIG } from '@shell/config/query-params';
+<<<<<<< HEAD
+=======
+import { fetchAlertManagerConfigSpecs } from '@shell/utils/alertmanagerconfig';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 export default {
   components: {
@@ -32,11 +36,23 @@ export default {
     const inStore = this.$store.getters['currentProduct'].inStore;
     const alertmanagerConfigId = this.value.id;
 
+<<<<<<< HEAD
+=======
+    const { receiverSchema, routeSchema } = await fetchAlertManagerConfigSpecs(this.$store);
+
+    this.receiverSchema = receiverSchema;
+    this.routeSchema = routeSchema;
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     const alertmanagerConfigResource = await this.$store.dispatch(`${ inStore }/find`, { type: MONITORING.ALERTMANAGERCONFIG, id: alertmanagerConfigId });
 
     this.alertmanagerConfigId = alertmanagerConfigId;
     this.alertmanagerConfigResource = alertmanagerConfigResource;
+<<<<<<< HEAD
     this.alertmanagerConfigDetailRoute = alertmanagerConfigResource._detailLocation;
+=======
+    this.alertmanagerConfigDetailRoute = alertmanagerConfigResource?._detailLocation;
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
     const alertmanagerConfigActions = alertmanagerConfigResource.availableActions;
     const receiverActions = alertmanagerConfigResource.getReceiverActions(alertmanagerConfigActions);
@@ -48,8 +64,11 @@ export default {
     this.value.applyDefaults();
 
     const defaultReceiverValues = {};
+<<<<<<< HEAD
     const receiverSchema = this.$store.getters['cluster/schemaFor'](MONITORING.SPOOFED.ALERTMANAGERCONFIG_RECEIVER_SPEC);
     const routeSchema = this.$store.getters['cluster/schemaFor'](MONITORING.SPOOFED.ALERTMANAGERCONFIG_ROUTE_SPEC);
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     const receiverOptions = (this.value?.spec?.receivers || []).map(receiver => receiver.name);
 
     return {
@@ -82,8 +101,11 @@ export default {
       receiverActions:      [],
       receiverOptions,
       receiverTypes:        RECEIVERS_TYPES,
+<<<<<<< HEAD
       routeSchema,
       receiverSchema,
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       selectedReceiverName: '',
       selectedRowValue:     null,
       view:                 _VIEW,

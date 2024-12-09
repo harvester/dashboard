@@ -36,14 +36,24 @@ export default class PCIDevice extends SteveModel {
         icon:       'icon icon-fw icon-dot',
         label:      'Enable Passthrough',
         bulkable:   true,
+<<<<<<< HEAD
         bulkAction: 'enablePassthroughBulk'
+=======
+        bulkAction: 'enablePassthroughBulk',
+        weight:     1
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       },
       {
         action:   'disablePassthrough',
         enabled:  this.isEnabling && this.claimedByMe,
         icon:     'icon icon-fw icon-dot-open',
         label:    'Disable Passthrough',
+<<<<<<< HEAD
         bulkable: true
+=======
+        bulkable: true,
+        weight:   0
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       },
     );
 
@@ -135,7 +145,11 @@ export default class PCIDevice extends SteveModel {
   enablePassthroughBulk(resources = this) {
     this.$dispatch('promptModal', {
       resources,
+<<<<<<< HEAD
       component: 'EnablePassthrough'
+=======
+      component: 'EnablePciPassthrough'
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     });
   }
 

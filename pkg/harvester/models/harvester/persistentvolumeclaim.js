@@ -2,7 +2,11 @@ import Vue from 'vue';
 import { _CLONE } from '@shell/config/query-params';
 import pick from 'lodash/pick';
 import { HCI, VOLUME_SNAPSHOT } from '../../types';
+<<<<<<< HEAD
 import { PV, LONGHORN } from '@shell/config/types';
+=======
+import { PV, LONGHORN, STORAGE_CLASS } from '@shell/config/types';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 import { DESCRIPTION } from '@shell/config/labels-annotations';
 import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 import { findBy } from '@shell/utils/array';
@@ -10,8 +14,18 @@ import { get, clone } from '@shell/utils/object';
 import { colorForState } from '@shell/plugins/dashboard-store/resource-class';
 import HarvesterResource from '../harvester';
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../../config/harvester';
+<<<<<<< HEAD
 
 const DEGRADED_ERROR = 'replica scheduling failed';
+=======
+import { LVM_DRIVER } from './storage.k8s.io.storageclass';
+import { LONGHORN_DRIVER } from '@shell/models/persistentvolume';
+
+const DEGRADED_ERRORS = ['replica scheduling failed', 'precheck new replica failed'];
+
+export const DATA_ENGINE_V1 = 'v1';
+export const DATA_ENGINE_V2 = 'v2';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 export default class HciPv extends HarvesterResource {
   applyDefaults(_, realMode) {
@@ -31,6 +45,10 @@ export default class HciPv extends HarvesterResource {
 
   get availableActions() {
     const out = super._availableActions;
+<<<<<<< HEAD
+=======
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     const clone = out.find(action => action.action === 'goToClone');
 
     if (clone) {
@@ -40,22 +58,38 @@ export default class HciPv extends HarvesterResource {
     return [
       {
         action:  'exportImage',
+<<<<<<< HEAD
         enabled: this.hasAction('export'),
+=======
+        enabled: this.hasAction('export') && !this.isEncrypted,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         icon:    'icon icon-copy',
         label:   this.t('harvester.action.exportImage')
       },
       {
+<<<<<<< HEAD
         action:  'cancelExpand',
         enabled: this.hasAction('cancelExpand'),
         icon:    'icon icon-backup',
         label:   this.t('harvester.action.cancelExpand')
       },
       {
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         action:  'snapshot',
         enabled: this.hasAction('snapshot'),
         icon:    'icon icon-backup',
         label:   this.t('harvester.action.snapshot'),
       },
+<<<<<<< HEAD
+=======
+      {
+        action:  'cancelExpand',
+        enabled: this.hasAction('cancelExpand'),
+        icon:    'icon icon-backup',
+        label:   this.t('harvester.action.cancelExpand')
+      },
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       ...out
     ];
   }
@@ -94,21 +128,39 @@ export default class HciPv extends HarvesterResource {
     this.metadata.annotations = pick(this.metadata.annotations, keys);
   }
 
+<<<<<<< HEAD
+=======
+  get storageClass() {
+    const inStore = this.$rootGetters['currentProduct'].inStore;
+
+    return this.$rootGetters[`${ inStore }/all`](STORAGE_CLASS).find(sc => sc.name === this.spec.storageClassName);
+  }
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   get canUpdate() {
     return this.hasLink('update');
   }
 
   get stateDisplay() {
+<<<<<<< HEAD
     const ownedBy = this?.metadata?.annotations?.[HCI_ANNOTATIONS.OWNED_BY];
     const volumeError = this.relatedPV?.metadata?.annotations?.[HCI_ANNOTATIONS.VOLUME_ERROR];
     const degradedVolume = volumeError === DEGRADED_ERROR;
+=======
+    const volumeError = this.relatedPV?.metadata?.annotations?.[HCI_ANNOTATIONS.VOLUME_ERROR];
+    const degradedVolume = DEGRADED_ERRORS.includes(volumeError);
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     const status = this?.status?.phase === 'Bound' && !volumeError && this.isLonghornVolumeReady ? 'Ready' : 'Not Ready';
 
     const conditions = this?.status?.conditions || [];
 
     if (findBy(conditions, 'type', 'Resizing')?.status === 'True') {
       return 'Resizing';
+<<<<<<< HEAD
     } else if (ownedBy && !volumeError) {
+=======
+    } else if (!!this.attachVM && !volumeError) {
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       return 'In-use';
     } else if (degradedVolume) {
       return 'Degraded';
@@ -120,7 +172,11 @@ export default class HciPv extends HarvesterResource {
   // state is similar with stateDisplay, the reason we keep this property is the status of In-use should not be displayed on vm detail page
   get state() {
     const volumeError = this.relatedPV?.metadata?.annotations?.[HCI_ANNOTATIONS.VOLUME_ERROR];
+<<<<<<< HEAD
     const degradedVolume = volumeError === DEGRADED_ERROR;
+=======
+    const degradedVolume = DEGRADED_ERRORS.includes(volumeError);
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     let status = this?.status?.phase === 'Bound' && !volumeError ? 'Ready' : 'Not Ready';
 
     const conditions = this?.status?.conditions || [];
@@ -180,6 +236,7 @@ export default class HciPv extends HarvesterResource {
   }
 
   get attachVM() {
+<<<<<<< HEAD
     const allVMs = this.$rootGetters['harvester/all'](HCI.VM);
     const ownedBy =
       get(this, `metadata.annotations."${ HCI_ANNOTATIONS.OWNED_BY }"`) || '';
@@ -191,6 +248,21 @@ export default class HciPv extends HarvesterResource {
     const ownedId = JSON.parse(ownedBy)[0]?.refs?.[0];
 
     return allVMs.find(D => D.id === ownedId);
+=======
+    const allVMs = this.$rootGetters['harvester/all'](HCI.VM) || [];
+
+    const findAttachVM = (vm) => {
+      const attachVolumes = vm.spec.template?.spec?.volumes || [];
+
+      if (vm.namespace === this.namespace && attachVolumes.length > 0) {
+        return attachVolumes.find(vol => vol.persistentVolumeClaim?.claimName === this.name);
+      }
+
+      return null;
+    };
+
+    return allVMs.find(findAttachVM);
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   }
 
   get isAvailable() {
@@ -215,6 +287,13 @@ export default class HciPv extends HarvesterResource {
     return false;
   }
 
+<<<<<<< HEAD
+=======
+  get isEncrypted() {
+    return this.relatedPV?.spec.csi.volumeAttributes.encrypted === 'true';
+  }
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   get longhornVolume() {
     const inStore = this.$rootGetters['currentProduct'].inStore;
 
@@ -279,6 +358,29 @@ export default class HciPv extends HarvesterResource {
     return this.$rootGetters['harvester/all'](PV).find(pv => pv.metadata?.name === this.spec?.volumeName);
   }
 
+<<<<<<< HEAD
+=======
+  get volumeProvider() {
+    return this.relatedPV?.spec.csi?.driver;
+  }
+
+  get dataEngine() {
+    return this.relatedPV?.spec.csi?.volumeAttributes?.dataEngine;
+  }
+
+  get isLvm() {
+    return this.volumeProvider === LVM_DRIVER;
+  }
+
+  get isLonghorn() {
+    return this.volumeProvider === LONGHORN_DRIVER;
+  }
+
+  get isLonghornV2() {
+    return this.dataEngine === DATA_ENGINE_V2;
+  }
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   get resourceExternalLink() {
     const host = window.location.host;
     const { params } = this.currentRoute();

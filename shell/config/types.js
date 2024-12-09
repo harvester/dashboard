@@ -4,7 +4,14 @@
 
 // Steve-specific virtual types
 // Base: /v1
+<<<<<<< HEAD
 export const STEVE = { PREFERENCE: 'userpreference' };
+=======
+export const STEVE = {
+  PREFERENCE:        'userpreference',
+  SCHEMA_DEFINITION: 'schemaDefinition'
+};
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 // Old APIs via Norman
 // Base: /v3
@@ -126,6 +133,7 @@ export const MONITORING = {
   SERVICEMONITOR:     'monitoring.coreos.com.servicemonitor',
   THANOSRULER:        'monitoring.coreos.com.thanosruler',
   SPOOFED:            {
+<<<<<<< HEAD
     RECEIVER:                         'monitoring.coreos.com.receiver',
     RECEIVER_SPEC:                    'monitoring.coreos.com.receiver.spec',
     RECEIVER_EMAIL:                   'monitoring.coreos.com.receiver.email',
@@ -139,6 +147,19 @@ export const MONITORING = {
     ROUTE_SPEC:                       'monitoring.coreos.com.route.spec',
     ALERTMANAGERCONFIG_RECEIVER_SPEC: 'monitoring.coreos.com.v1alpha1.alertmanagerconfig.spec.receivers',
     ALERTMANAGERCONFIG_ROUTE_SPEC:    'monitoring.coreos.com.v1alpha1.alertmanagerconfig.spec.route'
+=======
+    RECEIVER:             'monitoring.coreos.com.receiver',
+    RECEIVER_SPEC:        'monitoring.coreos.com.receiver.spec',
+    RECEIVER_EMAIL:       'monitoring.coreos.com.receiver.email',
+    RECEIVER_SLACK:       'monitoring.coreos.com.receiver.slack',
+    RECEIVER_WEBHOOK:     'monitoring.coreos.com.receiver.webhook',
+    RECEIVER_PAGERDUTY:   'monitoring.coreos.com.receiver.pagerduty',
+    RECEIVER_OPSGENIE:    'monitoring.coreos.com.receiver.opsgenie',
+    RECEIVER_HTTP_CONFIG: 'monitoring.coreos.com.receiver.httpconfig',
+    RESPONDER:            'monitoring.coreos.com.receiver.responder',
+    ROUTE:                'monitoring.coreos.com.route',
+    ROUTE_SPEC:           'monitoring.coreos.com.route.spec',
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   }
 };
 
@@ -290,6 +311,10 @@ export const HCI = {
   DASHBOARD:        'harvesterhci.io.dashboard',
   IMAGE:            'harvesterhci.io.virtualmachineimage',
   SETTING:          'harvesterhci.io.setting',
+<<<<<<< HEAD
+=======
+  RESOURCE_QUOTA:   'harvesterhci.io.resourcequota',
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   HARVESTER_CONFIG: 'rke-machine-config.cattle.io.harvesterconfig',
 };
 

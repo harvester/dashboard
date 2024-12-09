@@ -74,7 +74,11 @@ export default {
             'growl/success',
             {
               title:   this.t('generic.notification.title.succeed'),
+<<<<<<< HEAD
               message: this.t('harvester.modal.vmSnapshot.success', { name: this.snapshotName })
+=======
+              message: this.t('harvester.modal.vmSnapshot.message.success', { name: this.snapshotName })
+>>>>>>> b5455bcb (fix: separate used/allocated units)
             },
             { root: true }
           );
@@ -118,8 +122,29 @@ export default {
     />
 
     <template #body>
+<<<<<<< HEAD
       <LabeledInput v-model="actionResource.metadata.namespace" :disabled="true" :label="t('generic.namespace')" />
       <LabeledInput v-model="snapshotName" class="mt-20" :label="t('generic.name')" required />
+=======
+      <template v-if="actionResource?.longhornV2Volumes.length > 0">
+        <Banner color="warning">
+          <t k="harvester.modal.vmSnapshot.message.support.longhorn" :raw="true" />
+        </Banner>
+      </template>
+      <template v-else>
+        <LabeledInput
+          v-model="actionResource.metadata.namespace"
+          :disabled="true"
+          :label="t('generic.namespace')"
+        />
+        <LabeledInput
+          v-model="snapshotName"
+          class="mt-20"
+          :label="t('generic.name')"
+          required
+        />
+      </template>
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     </template>
 
     <div slot="actions" class="actions">
@@ -128,7 +153,16 @@ export default {
           {{ t('generic.cancel') }}
         </button>
 
+<<<<<<< HEAD
         <AsyncButton mode="create" :disabled="!snapshotName" @click="save" />
+=======
+        <AsyncButton
+          v-if="!actionResource?.longhornV2Volumes.length"
+          mode="create"
+          :disabled="!snapshotName"
+          @click="save"
+        />
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       </div>
 
       <Banner v-for="(err, i) in errors" :key="i" color="error" :label="err" />

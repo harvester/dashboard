@@ -2,6 +2,10 @@ import { indent as _indent } from '@shell/utils/string';
 import { addObject, findBy, removeObject, removeObjects } from '@shell/utils/array';
 import jsyaml from 'js-yaml';
 import { cleanUp, isEmpty } from '@shell/utils/object';
+<<<<<<< HEAD
+=======
+import { parseType } from '@shell/models/schema';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 export const SIMPLE_TYPES = [
   'string',
@@ -83,6 +87,7 @@ export function createYaml(
   depth = 0,
   path = '',
   rootType = null,
+<<<<<<< HEAD
   dataOptions = {}
 ) {
   const schema = findBy(schemas, 'id', type);
@@ -98,11 +103,52 @@ export function createYaml(
   data = data || {};
 
   if ( depth === 0 ) {
+=======
+  dataOptions = {},
+) {
+  data = data || {};
+
+  let schema, rootSchema, schemaDefinitions, schemaResourceFields;
+
+  if (depth === 0) {
+    // `type` is a schema id
+    schema = findBy(schemas, 'id', type);
+
+    if ( !schema ) { // schema is only needed at the root level.
+      return `Error loading schema for ${ type }`;
+    }
+
+    rootSchema = schema;
+
+    schemaDefinitions = rootSchema.schemaDefinitions;
+    schemaResourceFields = rootSchema.resourceFields;
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     const attr = schema.attributes || {};
 
     // Default to data.apiVersion/kind to accommodate spoofed types that aggregate multiple types
     data.apiVersion = (attr.group ? `${ attr.group }/${ attr.version }` : attr.version) || data.apiVersion;
     data.kind = attr.kind || data.kind;
+<<<<<<< HEAD
+=======
+  } else {
+    rootSchema = findBy(schemas, 'id', rootType);
+
+    if (rootSchema.requiresResourceFields) { // See `requiresResourceFields` definition
+      schemaDefinitions = rootSchema.schemaDefinitions;
+      schemaResourceFields = schemaDefinitions[type]?.resourceFields;
+    } else {
+      schema = findBy(schemas, 'id', type);
+      if ( !schema ) { // schema is only needed at the root level.
+        return `Error loading schema for ${ type }`;
+      }
+      schemaResourceFields = schema.resourceFields;
+    }
+  }
+
+  if ( !rootType ) {
+    rootType = type;
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   }
 
   const regularFields = [];
@@ -127,14 +173,22 @@ export function createYaml(
       const key = parts[parts.length - 1];
       const prefix = parts.slice(0, -1).join('.');
 
+<<<<<<< HEAD
       if ( prefix === path && schema.resourceFields && schema.resourceFields[key] ) {
+=======
+      if ( prefix === path && schemaResourceFields && schemaResourceFields[key] ) {
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         addObject(regularFields, key);
       }
     }
   }
 
   // Include all fields in schema's resourceFields as comments
+<<<<<<< HEAD
   const commentFields = Object.keys(schema.resourceFields || {});
+=======
+  const commentFields = Object.keys(schemaResourceFields || {});
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
   commentFields.forEach((key) => {
     if ( typeof data[key] !== 'undefined' || (depth === 0 && key === '_type') ) {
@@ -166,7 +220,11 @@ export function createYaml(
     const key = parts[parts.length - 1];
     const prefix = parts.slice(0, -1).join('.');
 
+<<<<<<< HEAD
     if ( prefix === path && schema.resourceFields && schema.resourceFields[key] ) {
+=======
+    if ( prefix === path && schemaResourceFields && schemaResourceFields[key] ) {
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       removeObject(commentFields, key);
     }
   }
@@ -178,8 +236,11 @@ export function createYaml(
   const comments = commentFields.map((k) => {
     // Don't add a namespace comment for types that aren't namespaced.
     if ( path === 'metadata' && k === 'namespace' ) {
+<<<<<<< HEAD
       const rootSchema = findBy(schemas, 'id', rootType);
 
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       if ( rootSchema && !rootSchema.attributes?.namespaced ) {
         return null;
       }
@@ -198,7 +259,11 @@ export function createYaml(
   // ---------------
 
   function stringifyField(key) {
+<<<<<<< HEAD
     const field = schema.resourceFields?.[key];
+=======
+    const field = schemaResourceFields?.[key];
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     let out = `${ key }:`;
 
     // '_type' in steve maps to kubernetes 'type' field; show 'type' field in yaml
@@ -229,8 +294,13 @@ export function createYaml(
     }
 
     const type = typeMunge(field.type);
+<<<<<<< HEAD
     const mapOf = typeRef('map', type);
     const arrayOf = typeRef('array', type);
+=======
+    const mapOf = typeRef('map', type, field);
+    const arrayOf = typeRef('array', type, field);
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     const referenceTo = typeRef('reference', type);
 
     // type == map[mapOf]
@@ -250,7 +320,11 @@ export function createYaml(
       if ( SIMPLE_TYPES.includes(mapOf) ) {
         out += `#  key: ${ mapOf }`;
       } else {
+<<<<<<< HEAD
         // If not a simple type ie some sort of object/array, recusively build out commented fields (note data = null here) per the type's (mapOf's) schema
+=======
+        // If not a simple type ie some sort of object/array, recursively build out commented fields (note data = null here) per the type's (mapOf's) schema
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         const chunk = createYaml(schemas, mapOf, null, processAlwaysAdd, depth + 1, (path ? `${ path }.${ key }` : key), rootType, dataOptions);
         let indented = indent(chunk);
 
@@ -275,7 +349,11 @@ export function createYaml(
             out += `\n${ indent(parsedData.trim()) }`;
           }
         } catch (e) {
+<<<<<<< HEAD
           console.error(`Error: Unale to parse array data for yaml of type: ${ type }`, e); // eslint-disable-line no-console
+=======
+          console.error(`Error: Unable to parse array data for yaml of type: ${ type }`, e); // eslint-disable-line no-console
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         }
       }
 
@@ -331,7 +409,11 @@ export function createYaml(
       }
     }
 
+<<<<<<< HEAD
     const subDef = findBy(schemas, 'id', type);
+=======
+    const subDef = schemaDefinitions?.[type] || findBy(schemas, 'id', type);
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
     if ( subDef) {
       let chunk;
@@ -407,12 +489,28 @@ function getBlockIndentation(blockHeader) {
   return indentation?.[0] || '';
 }
 
+<<<<<<< HEAD
 export function typeRef(type, str) {
   const re = new RegExp(`^${ type }\\[(.*)\\]$`);
   const match = str.match(re);
 
   if ( match ) {
     return typeMunge(match[1]);
+=======
+/**
+ * Check for a specific type and if valid return it's sub type or self
+ * @param {string} type required type
+ * @param {string} str actual type
+ * @param {ResourceField} field resourceField entry to the actual type
+ *
+ * @returns the sub type, or if not found the type
+ */
+export function typeRef(type, str, field = null) {
+  const [foundType, foundSubType] = parseType(str, field);
+
+  if (type === foundType) {
+    return typeMunge(foundSubType || foundType);
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   }
 }
 

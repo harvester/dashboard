@@ -4,15 +4,30 @@ import UnitInput from '@shell/components/form/UnitInput';
 import InputOrDisplay from '@shell/components/InputOrDisplay';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
+<<<<<<< HEAD
 
 import { PVC, STORAGE_CLASS } from '@shell/config/types';
 import { formatSi, parseSi } from '@shell/utils/units';
 import { VOLUME_TYPE, InterfaceOption } from '../../../../config/harvester-map';
+=======
+import { PVC, STORAGE_CLASS } from '@shell/config/types';
+import { formatSi, parseSi } from '@shell/utils/units';
+import { VOLUME_TYPE, InterfaceOption } from '../../../../config/harvester-map';
+import { _VIEW } from '@shell/config/query-params';
+import LabelValue from '@shell/components/LabelValue';
+import { ucFirst } from '@shell/utils/string';
+import { LVM_DRIVER } from '../../../../models/harvester/storage.k8s.io.storageclass';
+import { DATA_ENGINE_V2 } from '../../../../models/harvester/persistentvolumeclaim';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 export default {
   name:       'HarvesterEditVolume',
   components: {
+<<<<<<< HEAD
     InputOrDisplay, Loading, LabeledInput, LabeledSelect, UnitInput,
+=======
+    InputOrDisplay, Loading, LabeledInput, LabeledSelect, UnitInput, LabelValue
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   },
 
   props: {
@@ -58,6 +73,23 @@ export default {
   },
 
   computed: {
+<<<<<<< HEAD
+=======
+    encryptionValue() {
+      return ucFirst(String(this.value.isEncrypted));
+    },
+
+    readyToUse() {
+      const val = String(this.value.volumeBackups?.readyToUse || false);
+
+      return ucFirst(val);
+    },
+
+    isView() {
+      return this.mode === _VIEW;
+    },
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     pvcsResource() {
       const allPVCs = this.$store.getters['harvester/all'](PVC) || [];
 
@@ -68,10 +100,19 @@ export default {
       return !this.value.newCreateId && this.isEdit && this.isVirtualType;
     },
 
+<<<<<<< HEAD
     storageClassOptions() {
       const storages = this.$store.getters[`harvester/all`](STORAGE_CLASS) || [];
 
       const out = storages.filter(s => !s.parameters?.backingImage).map((s) => {
+=======
+    storageClasses() {
+      return this.$store.getters[`harvester/all`](STORAGE_CLASS) || [];
+    },
+
+    storageClassOptions() {
+      return this.storageClasses.filter(s => !s.parameters?.backingImage).map((s) => {
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         const label = s.isDefault ? `${ s.name } (${ this.t('generic.default') })` : s.name;
 
         return {
@@ -79,12 +120,30 @@ export default {
           value: s.name,
         };
       }) || [];
+<<<<<<< HEAD
 
       return out;
     },
   },
 
   watch: {
+=======
+    },
+
+    isLonghornV2() {
+      return this.value.pvc?.isLonghornV2 || this.value.pvc?.storageClass?.isLonghornV2;
+    }
+  },
+
+  watch: {
+    'value.storageClassName': {
+      immediate: true,
+      handler(neu) {
+        this.value.accessMode = this.getAccessMode(neu);
+      }
+    },
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     'value.type'(neu) {
       if (neu === 'cd-rom') {
         this.$set(this.value, 'bus', 'sata');
@@ -113,6 +172,21 @@ export default {
   },
 
   methods: {
+<<<<<<< HEAD
+=======
+    getAccessMode(storageClassName) {
+      const storageClass = this.storageClasses.find(sc => sc.name === storageClassName);
+
+      let readWriteOnce = this.value.pvc?.isLvm || this.value.pvc?.isLonghornV2;
+
+      if (storageClass) {
+        readWriteOnce = storageClass.provisioner === LVM_DRIVER || storageClass.parameters?.dataEngine === DATA_ENGINE_V2;
+      }
+
+      return readWriteOnce ? 'ReadWriteOnce' : 'ReadWriteMany';
+    },
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     update() {
       this.$emit('update');
     },
@@ -203,16 +277,27 @@ export default {
             :mode="mode"
             :required="validateRequired"
             :label="t('harvester.fields.size')"
+<<<<<<< HEAD
+=======
+            :disabled="isLonghornV2"
+>>>>>>> b5455bcb (fix: separate used/allocated units)
             @input="update"
           />
         </InputOrDisplay>
       </div>
     </div>
+<<<<<<< HEAD
 
     <div class="row mb-20">
       <div
         data-testid="input-hev-bus"
         class="col span-3"
+=======
+    <div class="row mb-20">
+      <div
+        data-testid="input-hev-bus"
+        class="col span-6"
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       >
         <InputOrDisplay :name="t('harvester.virtualMachine.volume.bus')" :value="value.bus" :mode="mode">
           <LabeledSelect
@@ -225,6 +310,26 @@ export default {
           />
         </InputOrDisplay>
       </div>
+<<<<<<< HEAD
+=======
+      <div
+        v-if="isView"
+        class="col span-6"
+      >
+        <LabelValue
+          :name="t('harvester.virtualMachine.volume.encryption')"
+          :value="encryptionValue"
+        />
+      </div>
+    </div>
+    <div class="row mb-20">
+      <div v-if="value.volumeBackups && isView" class="col span-3">
+        <LabelValue
+          :name="t('harvester.virtualMachine.volume.readyToUse')"
+          :value="readyToUse"
+        />
+      </div>
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     </div>
   </div>
 </template>

@@ -130,7 +130,11 @@ export default {
   },
 
   computed: {
+<<<<<<< HEAD
     ...mapGetters({ t: 'i18n/t' }),
+=======
+    ...mapGetters({ t: 'i18n/t', hasMultipleLocales: 'i18n/hasMultipleLocales' }),
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
     nonLocalPrompt() {
       if (this.singleProvider) {
@@ -474,7 +478,14 @@ export default {
               {{ nonLocalPrompt }}
             </a>
           </div>
+<<<<<<< HEAD
           <div class="locale-elector">
+=======
+          <div
+            v-if="hasMultipleLocales"
+            class="locale-elector"
+          >
+>>>>>>> b5455bcb (fix: separate used/allocated units)
             <LocaleSelector mode="login" />
           </div>
         </template>

@@ -90,6 +90,13 @@ export default {
       }, { root: true }),
     };
 
+<<<<<<< HEAD
+=======
+    if (getters['schemaFor'](HCI.RESOURCE_QUOTA)) {
+      hash.resourceQuota = dispatch('findAll', { type: HCI.RESOURCE_QUOTA });
+    }
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     if (getters['schemaFor'](HCI.UPGRADE)) {
       hash.upgrades = dispatch('findAll', { type: HCI.UPGRADE });
     }
@@ -101,6 +108,10 @@ export default {
     commit('updateNamespaces', {
       filters: [],
       all:     getters.filterNamespace(),
+<<<<<<< HEAD
+=======
+      getters
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     }, { root: true });
 
     // Solve compatibility with Rancher v2.6.x, fell remove these codes after not support v2.6.x

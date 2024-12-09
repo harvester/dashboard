@@ -11,6 +11,10 @@ export const HCI = {
   SETTING:            'harvesterhci.io.setting',
   UPGRADE:            'harvesterhci.io.upgrade',
   UPGRADE_LOG:        'harvesterhci.io.upgradelog',
+<<<<<<< HEAD
+=======
+  SCHEDULE_VM_BACKUP: 'harvesterhci.io.schedulevmbackup',
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   BACKUP:             'harvesterhci.io.virtualmachinebackup',
   RESTORE:            'harvesterhci.io.virtualmachinerestore',
   NODE_NETWORK:       'network.harvesterhci.io.nodenetwork',
@@ -31,12 +35,21 @@ export const HCI = {
   FLOW:               'harvesterhci.io.logging.flow',
   OUTPUT:             'harvesterhci.io.logging.output',
   STORAGE:            'harvesterhci.io.storage',
+<<<<<<< HEAD
+=======
+  RESOURCE_QUOTA:     'harvesterhci.io.resourcequota',
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   KSTUNED:            'node.harvesterhci.io.ksmtuned',
   PCI_DEVICE:         'devices.harvesterhci.io.pcidevice',
   PCI_CLAIM:          'devices.harvesterhci.io.pcideviceclaim',
   SR_IOV:             'devices.harvesterhci.io.sriovnetworkdevice',
   VGPU_DEVICE:        'devices.harvesterhci.io.vgpudevice',
   SR_IOVGPU_DEVICE:   'devices.harvesterhci.io.sriovgpudevice',
+<<<<<<< HEAD
+=======
+  USB_DEVICE:         'devices.harvesterhci.io.usbdevice',
+  USB_CLAIM:          'devices.harvesterhci.io.usbdeviceclaim',
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   VLAN_CONFIG:        'network.harvesterhci.io.vlanconfig',
   VLAN_STATUS:        'network.harvesterhci.io.vlanstatus',
   ADD_ONS:            'harvesterhci.io.addon',
@@ -46,6 +59,10 @@ export const HCI = {
   LB:                 'loadbalancer.harvesterhci.io.loadbalancer',
   IP_POOL:            'loadbalancer.harvesterhci.io.ippool',
   HARVESTER_CONFIG:   'rke-machine-config.cattle.io.harvesterconfig',
+<<<<<<< HEAD
+=======
+  LVM_VOLUME_GROUP:   'harvesterhci.io.lvmvolumegroup'
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 };
 
 export const VOLUME_SNAPSHOT = 'snapshot.storage.k8s.io.volumesnapshot';

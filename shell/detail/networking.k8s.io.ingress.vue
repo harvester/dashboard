@@ -17,8 +17,14 @@ export default {
   mixins: [CreateEditView],
   async fetch() {
     const hash = await allHash({
+<<<<<<< HEAD
       secrets:  this.$store.dispatch('cluster/findAll', { type: SECRET }),
       services: this.$store.dispatch('cluster/findAll', { type: SERVICE }),
+=======
+      secrets:        this.$store.dispatch('cluster/findAll', { type: SECRET }),
+      services:       this.$store.dispatch('cluster/findAll', { type: SERVICE }),
+      resourceFields: this.schema.fetchResourceFields(),
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     });
 
     this.allServices = hash.services;
@@ -57,6 +63,7 @@ export default {
 };
 </script>
 <template>
+<<<<<<< HEAD
   <ResourceTabs
     v-model="value"
     mode="view"
@@ -72,6 +79,23 @@ export default {
         :mode="mode"
         :service-targets="serviceTargets"
         :certificates="certificates"
+=======
+  <ResourceTabs
+    v-model="value"
+    mode="view"
+    class="mt-20"
+  >
+    <Tab
+      :label="t('ingress.rules.title')"
+      name="rules"
+      :weight="1"
+    >
+      <Rules
+        v-model="value"
+        :mode="mode"
+        :service-targets="serviceTargets"
+        :certificates="certificates"
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       />
     </Tab>
   </ResourceTabs>

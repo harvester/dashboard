@@ -46,6 +46,10 @@ export default {
           labelKey: 'tableHeaders.hostIp',
           search:   ['internalIp'],
           value:    'internalIp',
+<<<<<<< HEAD
+=======
+          sort:     ['internalIp'],
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         },
         AGE,
       ];

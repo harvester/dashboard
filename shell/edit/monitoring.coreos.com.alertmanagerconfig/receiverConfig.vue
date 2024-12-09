@@ -1,5 +1,8 @@
 <script>
+<<<<<<< HEAD
 import { MONITORING } from '@shell/config/types';
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 import ArrayListGrouped from '@shell/components/form/ArrayListGrouped';
 import Loading from '@shell/components/Loading';
 import { Banner } from '@components/Banner';
@@ -13,6 +16,10 @@ import jsyaml from 'js-yaml';
 import ButtonDropdown from '@shell/components/ButtonDropdown';
 import { _CREATE, _VIEW } from '@shell/config/query-params';
 import FormValidation from '@shell/mixins/form-validation';
+<<<<<<< HEAD
+=======
+import { fetchAlertManagerConfigSpecs } from '@shell/utils/alertmanagerconfig';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 export const RECEIVERS_TYPES = [
   {
@@ -103,6 +110,7 @@ export default {
 
   mixins: [CreateEditView, FormValidation],
 
+<<<<<<< HEAD
   data(props) {
     const currentReceiver = {};
     const mode = this.$route.query.mode;
@@ -115,6 +123,9 @@ export default {
       });
     }
 
+=======
+  async fetch() {
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     /**
      * example receiver value:
      * {
@@ -122,6 +133,7 @@ export default {
      *   slackConfigs: [...]
      * }
      */
+<<<<<<< HEAD
     const receiverSchema = this.$store.getters[`${ inStore }/schemaFor`](MONITORING.SPOOFED.ALERTMANAGERCONFIG_RECEIVER_SPEC);
 
     if (!receiverSchema) {
@@ -130,6 +142,15 @@ export default {
 
     const expectedFields = Object.keys(receiverSchema.resourceFields);
 
+=======
+    const { receiverSchema } = await fetchAlertManagerConfigSpecs(this.$store);
+
+    if (!receiverSchema) {
+      throw new Error("Can't render the form because the AlertmanagerConfig schema, or it's definitions, is not loaded yet.");
+    }
+
+    const expectedFields = Object.keys(receiverSchema.resourceFields);
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     const suffix = {};
 
     Object.keys(this.value).forEach((key) => {
@@ -144,6 +165,7 @@ export default {
       suffixYaml = '';
     }
 
+<<<<<<< HEAD
     return {
       create:         _CREATE,
       EDITOR_MODES,
@@ -151,6 +173,27 @@ export default {
       fileFound:      false,
       receiverTypes:  RECEIVERS_TYPES,
       suffixYaml,
+=======
+    this.expectedFields = expectedFields;
+    this.suffixYaml = suffixYaml;
+  },
+
+  data(props) {
+    const currentReceiver = {};
+    const mode = this.$route.query.mode;
+
+    if (mode === _CREATE) {
+      RECEIVERS_TYPES.forEach((receiverType) => {
+        this.$set(currentReceiver, receiverType.key, currentReceiver[receiverType.key] || []);
+      });
+    }
+
+    return {
+      create:         _CREATE,
+      EDITOR_MODES,
+      fileFound:      false,
+      receiverTypes:  RECEIVERS_TYPES,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       view:           _VIEW,
       yamlError:      '',
       fvFormRuleSets: [

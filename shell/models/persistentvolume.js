@@ -108,6 +108,11 @@ export const VOLUME_PLUGINS = [
 ];
 
 export const LONGHORN_DRIVER = 'driver.longhorn.io';
+<<<<<<< HEAD
+=======
+export const LONGHORN_VERSION_V1 = 'LonghornV1';
+export const LONGHORN_VERSION_V2 = 'LonghornV2';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 export const LONGHORN_PLUGIN = VOLUME_PLUGINS.find(plugin => plugin.value === 'longhorn');
 

@@ -2,7 +2,11 @@ import { ActionLocation, CardLocation, ExtensionPoint } from '@shell/core/types'
 import { isMac } from '@shell/utils/platform';
 import { ucFirst, randomStr } from '@shell/utils/string';
 import { _EDIT, _CONFIG, _DETAIL, _LIST } from '@shell/config/query-params';
+<<<<<<< HEAD
 import { getProductFromRoute } from '@shell/middleware/authenticated';
+=======
+import { getProductFromRoute } from '@shell/utils/router';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 function checkRouteProduct({ name, params, query }, locationConfigParam) {
   const product = getProductFromRoute({

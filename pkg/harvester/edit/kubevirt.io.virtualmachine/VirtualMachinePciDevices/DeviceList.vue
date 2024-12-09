@@ -78,7 +78,10 @@ export default {
         label: 'Claimed By',
         value: 'passthroughClaim.userName',
         sort:  ['passthroughClaim.userName'],
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       });
     }
 

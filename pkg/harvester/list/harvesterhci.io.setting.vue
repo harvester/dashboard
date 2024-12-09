@@ -138,7 +138,11 @@ export default {
   <div v-else>
     <Banner color="warning" class="settings-banner">
       <div>
+<<<<<<< HEAD
         {{ t('advancedSettings.subtext') }}
+=======
+        {{ t('harvester.setting.modifiedMessage') }}
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       </div>
     </Banner>
 

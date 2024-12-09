@@ -1,22 +1,52 @@
 <script>
+<<<<<<< HEAD
+=======
+import { allHash } from '@shell/utils/promise';
+import { CSI_DRIVER, LONGHORN } from '@shell/config/types';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 import { LabeledInput } from '@components/Form/LabeledInput';
 import LabelValue from '@shell/components/LabelValue';
 import { BadgeState } from '@components/BadgeState';
 import { Banner } from '@components/Banner';
+<<<<<<< HEAD
+=======
+import LabeledSelect from '@shell/components/form/LabeledSelect';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 import { RadioGroup, RadioButton } from '@components/Form/Radio';
 import HarvesterDisk from '../../mixins/harvester-disk';
 import Tags from '../../components/DiskTags';
 import { HCI } from '../../types';
+<<<<<<< HEAD
 import { LONGHORN_SYSTEM } from './index';
+=======
+import { HCI as HCI_LABELS_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
+import { LONGHORN_SYSTEM } from './index';
+import { LONGHORN_DRIVER, LONGHORN_VERSION_V1, LONGHORN_VERSION_V2 } from '@shell/models/persistentvolume';
+import { LVM_DRIVER } from '../../models/harvester/storage.k8s.io.storageclass';
+import ModalWithCard from '@shell/components/ModalWithCard';
+import { randomStr } from '@shell/utils/string';
+import { LONGHORN_V2_DATA_ENGINE } from './index.vue';
+import { _EDIT } from '@shell/config/query-params';
+
+const _NEW = '_NEW';
+>>>>>>> b5455bcb (fix: separate used/allocated units)
 
 export default {
   components: {
     LabeledInput,
+<<<<<<< HEAD
+=======
+    LabeledSelect,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     LabelValue,
     BadgeState,
     Banner,
     RadioGroup,
     RadioButton,
+<<<<<<< HEAD
+=======
+    ModalWithCard,
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     Tags,
   },
 
@@ -35,11 +65,21 @@ export default {
       type:    Array,
       default: () => [],
     },
+<<<<<<< HEAD
+=======
+    node: {
+      type:    Object,
+      default: () => {
+        return {};
+      },
+    },
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     mode: {
       type:    String,
       default: 'edit',
     },
   },
+<<<<<<< HEAD
   data() {
     return {};
   },
@@ -47,6 +87,86 @@ export default {
     targetDisk() {
       return this.disks.find(disk => disk.name === this.value.name);
     },
+=======
+
+  async fetch() {
+    const inStore = this.$store.getters['currentProduct'].inStore;
+
+    await allHash({
+      csiDrivers:      this.$store.dispatch(`${ inStore }/findAll`, { type: CSI_DRIVER }),
+      lvmVolumeGroups: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.LVM_VOLUME_GROUP }),
+    });
+  },
+
+  data() {
+    let provisioner = `${ this.value.provisioner || LONGHORN_DRIVER }`;
+
+    if (provisioner === LONGHORN_DRIVER) {
+      provisioner = `${ provisioner }_${ this.value.provisionerVersion || LONGHORN_VERSION_V1 }`;
+    }
+
+    return {
+      provisioner,
+      volumeGroupDialog: null,
+      randomStr:         randomStr(10).toLowerCase(),
+      isOpen:            false
+    };
+  },
+
+  computed: {
+    provisioners() {
+      const out = [];
+
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const csiDrivers = this.$store.getters[`${ inStore }/all`](CSI_DRIVER) || [];
+
+      csiDrivers.forEach(({ name }) => {
+        switch (name) {
+        case LONGHORN_DRIVER:
+          out.push({
+            label: `harvester.host.disk.storage.longhorn.${ LONGHORN_VERSION_V1 }.label`,
+            value: `${ name }_${ LONGHORN_VERSION_V1 }`,
+          });
+
+          if (this.longhornSystemVersion === LONGHORN_VERSION_V2 || this.value.provisionerVersion === LONGHORN_VERSION_V2) {
+            out.push({
+              label:    `harvester.host.disk.storage.longhorn.${ LONGHORN_VERSION_V2 }.label`,
+              value:    `${ name }_${ LONGHORN_VERSION_V2 }`,
+              disabled: this.forceLonghornV1
+            });
+          }
+          break;
+        case LVM_DRIVER:
+          out.push({
+            label: 'harvester.host.disk.storage.lvm.label',
+            value: name,
+          });
+          break;
+        }
+      });
+
+      return out;
+    },
+
+    lvmVolumeGroups() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const lvmVolumeGroups = this.$store.getters[`${ inStore }/all`](HCI.LVM_VOLUME_GROUP) || [];
+
+      const out = lvmVolumeGroups.filter(group => group.spec.nodeName === this.node.name).map(g => g.spec.vgName);
+
+      out.unshift({
+        label: this.t('harvester.host.disk.lvmVolumeGroup.create'),
+        value: _NEW,
+      });
+
+      return out;
+    },
+
+    targetDisk() {
+      return this.disks.find(disk => disk.name === this.value.name);
+    },
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     schedulableTooltipMessage() {
       const { name, path } = this.value;
 
@@ -56,6 +176,10 @@ export default {
         return this.schedulableCondition.message;
       }
     },
+<<<<<<< HEAD
+=======
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     allowSchedulingOptions() {
       return [{
         label: this.t('generic.enabled'),
@@ -87,7 +211,11 @@ export default {
     },
 
     isProvisioned() {
+<<<<<<< HEAD
       return this.blockDevice?.spec.fileSystem.provisioned;
+=======
+      return this.blockDevice?.isProvisioned;
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     },
 
     forceFormattedDisabled() {
@@ -153,8 +281,88 @@ export default {
     isFormatting() {
       return this.blockDevice.isFormatting;
     },
+<<<<<<< HEAD
   },
   methods: {
+=======
+
+    longhornSystemVersion() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const v2DataEngine = this.$store.getters[`${ inStore }/byId`](LONGHORN.SETTINGS, LONGHORN_V2_DATA_ENGINE) || {};
+
+      return v2DataEngine.value === 'true' ? LONGHORN_VERSION_V2 : LONGHORN_VERSION_V1;
+    },
+
+    forceLonghornV1() {
+      return this.node?.labels[HCI_LABELS_ANNOTATIONS.DISABLE_LONGHORN_V2_ENGINE] === 'true';
+    },
+
+    isLvm() {
+      return this.value.provisioner === LVM_DRIVER;
+    },
+
+    isLonghorn() {
+      return this.value.provisioner === LONGHORN_DRIVER;
+    },
+
+    isLonghornV1() {
+      return this.isLonghorn && this.value.provisionerVersion === LONGHORN_VERSION_V1;
+    },
+
+    provisionerTooltip() {
+      if (
+        this.mode === _EDIT &&
+        this.isLonghorn &&
+        this.longhornSystemVersion === LONGHORN_VERSION_V2 &&
+        this.forceLonghornV1
+      ) {
+        return this.t('harvester.storage.storageClass.longhorn.versionTooltip');
+      }
+
+      return null;
+    }
+  },
+
+  watch: {
+    provisioner(value) {
+      this.randomStr = randomStr(10).toLowerCase();
+
+      const [provisioner, provisionerVersion] = value?.split('_');
+
+      this.value.provisioner = provisioner;
+
+      if (provisioner === LONGHORN_DRIVER) {
+        this.value.provisionerVersion = provisionerVersion || LONGHORN_VERSION_V1;
+      } else {
+        this.value.provisionerVersion = undefined;
+      }
+    },
+
+    'value.lvmVolumeGroup'(neu) {
+      if (neu === _NEW) {
+        this.value.lvmVolumeGroup = null;
+        this.showCreateVolumeGroup();
+      }
+    }
+  },
+
+  methods: {
+    showCreateVolumeGroup() {
+      this.volumeGroupDialog = null;
+      this.isOpen = true;
+    },
+
+    hideCreateVolumeGroup() {
+      this.isOpen = false;
+    },
+
+    saveCreateVolumeGroup(buttonCb) {
+      buttonCb(true);
+      this.value.lvmVolumeGroup = this.volumeGroupDialog;
+      this.hideCreateVolumeGroup();
+    },
+
+>>>>>>> b5455bcb (fix: separate used/allocated units)
     update() {
       this.$emit('input', this.value);
     },
@@ -176,7 +384,11 @@ export default {
       :label="t('harvester.host.disk.fileSystem.formatting')"
     />
     <Banner
+<<<<<<< HEAD
       v-else-if="isFormatted && !isCorrupted"
+=======
+      v-else-if="isFormatted && isLonghornV1 && !isCorrupted"
+>>>>>>> b5455bcb (fix: separate used/allocated units)
       color="info"
       :label="formattedBannerLabel"
     />
@@ -256,8 +468,27 @@ export default {
         />
       </div>
     </div>
+<<<<<<< HEAD
     <div v-if="(value.isNew && !isFormatted) || isCorrupted" class="row mt-10">
       <div class="col span-6">
+=======
+
+    <div class="row mt-10">
+      <div :class="`col span-${ value.isNew ? '6': '12' }`">
+        <LabeledSelect
+          v-model="provisioner"
+          :mode="mode"
+          label-key="harvester.host.disk.provisioner"
+          :localized-label="true"
+          :searchable="true"
+          :options="provisioners"
+          :disabled="isProvisioned || !value.isNew"
+          :tooltip="provisionerTooltip"
+          @keydown.native.enter.prevent="()=>{}"
+        />
+      </div>
+      <div v-if="(value.isNew && isLonghornV1 && !isFormatted) || isCorrupted" class="col span-6">
+>>>>>>> b5455bcb (fix: separate used/allocated units)
         <RadioGroup
           v-model="value.forceFormatted"
           :mode="mode"
@@ -279,7 +510,48 @@ export default {
           </template>
         </RadioGroup>
       </div>
+<<<<<<< HEAD
     </div>
+=======
+      <div v-if="value.isNew && isLvm" class="col span-6">
+        <LabeledSelect
+          v-model="value.lvmVolumeGroup"
+          :mode="mode"
+          label-key="harvester.host.disk.lvmVolumeGroup.label"
+          :localized-label="true"
+          :searchable="false"
+          :taggable="true"
+          :multiple="false"
+          :required="true"
+          :disabled="isProvisioned"
+          :options="lvmVolumeGroups"
+          @keydown.native.enter.prevent="()=>{}"
+        />
+      </div>
+    </div>
+    <ModalWithCard
+      v-if="isOpen"
+      :ref="randomStr"
+      :name="randomStr"
+      width="30%"
+      @finish="saveCreateVolumeGroup"
+      @close="hideCreateVolumeGroup"
+    >
+      <template #title>
+        {{ t('harvester.host.disk.lvmVolumeGroup.label') }}
+      </template>
+
+      <template #content>
+        <LabeledInput
+          v-model="volumeGroupDialog"
+          :label="t('generic.name')"
+          class="mb-20"
+          required
+          @keydown.native.enter.prevent="()=>{}"
+        />
+      </template>
+    </ModalWithCard>
+>>>>>>> b5455bcb (fix: separate used/allocated units)
   </div>
 </template>
 
