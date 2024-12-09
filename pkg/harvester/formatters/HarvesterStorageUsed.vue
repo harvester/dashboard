@@ -72,17 +72,23 @@ export default {
       return stats;
     },
 
-    units() {
+    allocatedUnits() {
+      const exponent = exponentNeeded(this.storageStats.total, 1024);
+
+      return `${ UNITS[exponent] }iB`;
+    },
+
+    usedUnits() {
       const exponent = exponentNeeded(this.storageStats.maximum, 1024);
 
       return `${ UNITS[exponent] }iB`;
     },
 
-    used() {
+    formatUsed() {
       let out = this.formatter(this.storageStats.used);
 
       if (!Number.parseFloat(out) > 0) {
-        out = this.formatter(this.storageStats.used, { canRoundToZero: false });
+        out = this.formatter(this.storageStats.used, { canRoundToZero: true });
       }
 
       return out;
@@ -92,7 +98,7 @@ export default {
       let out = this.formatter(this.storageStats.scheduled);
 
       if (!Number.parseFloat(out) > 0) {
-        out = this.formatter(this.storageStats.scheduled, { canRoundToZero: false });
+        out = this.formatter(this.storageStats.scheduled, { canRoundToZero: true });
       }
 
       return out;
@@ -100,9 +106,9 @@ export default {
 
     usedAmountTemplateValues() {
       return {
-        used:  this.used,
+        used:  this.formatUsed,
         total: this.formatter(this.storageStats.maximum),
-        unit:  this.units,
+        unit:  this.usedUnits,
       };
     },
 
@@ -110,7 +116,7 @@ export default {
       return {
         used:  this.formatAllocated,
         total: this.formatter(this.storageStats.total),
-        unit:  this.units,
+        unit:  this.allocatedUnits,
       };
     },
   },
@@ -141,7 +147,7 @@ export default {
       <ConsumptionGauge
         :capacity="storageStats.total"
         :used="storageStats.scheduled"
-        :units="units"
+        :units="allocatedUnits"
         :number-formatter="formatter"
         :resource-name="resourceName"
       >
@@ -161,7 +167,7 @@ export default {
     <ConsumptionGauge
       :capacity="storageStats.maximum"
       :used="storageStats.used"
-      :units="units"
+      :units="usedUnits"
       :number-formatter="formatter"
       :resource-name="showAllocated ? '' : resourceName"
       :class="{
