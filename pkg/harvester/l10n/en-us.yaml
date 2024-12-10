@@ -739,6 +739,10 @@ harvester:
         inNamespaces: "Workloads in these namespaces"
       namespaces:
         label: Namespaces
+    labels:
+      description: ""
+    instanceLabels:
+      description: These labels are automatically synchronized to the Virtual Machine instance.
 
   volume:
     label: Volumes
