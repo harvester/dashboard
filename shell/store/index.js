@@ -746,6 +746,11 @@ export const actions = {
       const isRancherInHarvester = (rancherManagerSupport?.value || rancherManagerSupport?.default) === 'true';
 
       commit('isRancherInHarvester', isRancherInHarvester);
+      // standalone harvester cluster needs to subscribe rancher socket to get latest token data update
+      if (getters['isSingleProduct']) {
+        console.log('Detect standalone harvester, subscribe rancher socket'); // eslint-disable-line no-console
+        await dispatch('rancher/subscribe');
+      }
     }
 
     const pl = res.settings?.find(x => x.id === 'ui-pl')?.value;
