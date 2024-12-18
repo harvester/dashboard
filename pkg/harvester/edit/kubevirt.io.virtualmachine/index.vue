@@ -812,6 +812,53 @@ export default {
           </span>
         </Banner>
       </Tab>
+
+      <Tab
+        name="labels"
+        :label="t('generic.labels')"
+        :weight="-98"
+      >
+        <KeyValue
+          key="labels"
+          :value="value.labels"
+          :add-label="t('labels.addLabel')"
+          :mode="mode"
+          :read-allowed="false"
+          :value-can-be-empty="true"
+          :description="t(`harvester.virtualMachine.labels.description`)"
+          @input="value.setLabels($event)"
+        />
+      </Tab>
+
+      <Tab
+        name="instanceLabel"
+        :label="t('harvester.tab.instanceLabel')"
+        :weight="-99"
+      >
+        <Labels
+          :default-container-class="'labels-and-annotations-container'"
+          :value="value"
+          :mode="mode"
+          :display-side-by-side="false"
+          :show-annotations="false"
+          :show-label-title="false"
+          :label-description="t(`harvester.virtualMachine.instanceLabels.description`)"
+        >
+          <template #labels="{toggler}">
+            <KeyValue
+              key="labels"
+              :value="value.instanceLabels"
+              :protected-keys="value.systemLabels || []"
+              :toggle-filter="toggler"
+              :add-label="t('labels.addLabel')"
+              :mode="mode"
+              :read-allowed="false"
+              :value-can-be-empty="true"
+              @input="value.setInstanceLabels($event)"
+            />
+          </template>
+        </Labels>
+      </Tab>
     </Tabbed>
 
     <RestartVMDialog
