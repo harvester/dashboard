@@ -93,7 +93,11 @@ export default {
     devices: {
       handler(v) {
         this.rows = v;
-        this.filterRows = this.rows;
+        if (this.parentSriov) {
+          this.filterRows = this.rows.filter(row => row.labels[this.parentSriovLabel] === this.parentSriov);
+        } else {
+          this.filterRows = this.rows;
+        }
       },
       immediate: true,
     },
