@@ -1,7 +1,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import AsyncButton from '@shell/components/AsyncButton';
-import AppModal from '@shell/components/AppModal';
+import AppModal from '@pkg/harvester/components/AppModal';
 import { Card } from '@components/Card';
 import { Banner } from '@components/Banner';
 import { exceptionToErrorsArray } from '@shell/utils/error';
