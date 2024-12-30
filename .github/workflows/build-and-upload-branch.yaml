@@ -3,7 +3,7 @@ name: Build Dashboard (Branch)
 on:
   push:
     branches:
-      - master
+#      - master // harvester latest build will be generated from harvester-ui-extension main branch 
       - 'release-harvester-v*'
       - '*-dev'
 
