@@ -6,7 +6,7 @@ import { LabeledInput } from '@components/Form/LabeledInput';
 import AsyncButton from '@shell/components/AsyncButton';
 import GraphCircle from '@shell/components/graph/Circle';
 import { Banner } from '@components/Banner';
-import AppModal from '@shell/components/AppModal';
+import AppModal from '@pkg/harvester/components/AppModal';
 
 export default {
   name: 'SupportBundle',
