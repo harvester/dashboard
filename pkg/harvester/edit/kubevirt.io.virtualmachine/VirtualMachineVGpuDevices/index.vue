@@ -46,10 +46,13 @@ export default {
       this[key] = res[key];
     }
 
-    uniq([
+    const vGpus = this.vm.isOff ? [
       ...(this.value?.domain?.devices?.gpus || []).map(({ name }) => name),
+    ] : [
       ...Object.values(this.vm?.provisionedVGpus).reduce((acc, gpus) => [...acc, ...gpus], [])
-    ]).forEach((name) => {
+    ];
+
+    uniq(vGpus).forEach((name) => {
       if (this.enabledDevices.find(device => device?.metadata?.name === name)) {
         this.selectedDevices.push(name);
       }
