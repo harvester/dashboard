@@ -59,7 +59,7 @@ EOF
   fi
 fi
 
-if [ -d ~/.local/share/verdaccio/storage/@rancher ]; then 
+if [ -d ~/.local/share/verdaccio/storage/@rancher ]; then
   rm -rf ~/.local/share/verdaccio/storage/@rancher/*
 else
   rm -rf ~/.config/verdaccio/storage/@rancher/*
@@ -104,6 +104,11 @@ if [ "${SKIP_STANDALONE}" == "false" ]; then
 
   yarn create @rancher/app test-app
   pushd test-app
+  # Ref: https://github.com/rancher/dashboard/pull/13002/files#diff-db9788488d135137b802e4987bf5a4e0d3b9f14b4d4b6d613a26116c7432b6af
+  jq '.resolutions += {
+    "@aws-sdk/types": "3.714.0",
+    "@aws-sdk/util-locate-window": "3.693.0"
+  }' package.json > package.tmp.json && mv package.tmp.json package.json
   yarn install
 
   echo "Building skeleton app"
