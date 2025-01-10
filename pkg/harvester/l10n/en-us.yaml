@@ -534,6 +534,9 @@ harvester:
     console:
       novnc: Open in WebVNC
       serial: Open in Serial Console
+    vncConsole:
+      reconnecting:
+        message: Web VNC console reconnection attempt
     promptRemove:
       title: 'Select the volume you want to delete:'
       deleteAll: Delete All
@@ -850,14 +853,14 @@ harvester:
       doc: Read the <a href="{url}" target="_blank">documentation</a> before starting the upgrade process. Ensure that you complete procedures that are relevant to your environment and the version you are upgrading to.
       tip: Unmet system requirements and incorrectly performed procedures may cause complete upgrade failure and other issues that require manual workarounds.
       moreNotes: For more details about the release notes, please visit -
-     
+
   schedule:
     label: Virtual Machine Schedules
     createTitle: Create Schedule
     createButtonText: Create Schedule
     scheduleType: Virtual Machine Schedule Type
     cron: Cron Schedule
-    detail: 
+    detail:
       namespace: Namespace
       sourceVM: Source Virtual Machine
     tabs:
@@ -867,12 +870,12 @@ harvester:
     message:
       noSetting:
         suffix: before creating a backup schedule
-    retain: 
+    retain:
       label: Retain
       count: Count
-      tooltip: Number of up-to-date VM backups to retain. Maximum to 250, minimum to 2. 
+      tooltip: Number of up-to-date VM backups to retain. Maximum to 250, minimum to 2.
     maxFailure:
-      label: Max Failure 
+      label: Max Failure
       count: Count
       tooltip: Max number of consecutive failed backups that could be tolerated. If reach this threshold, Harvester controller will suspend the schedule job. This value should less than retain count
     virtualMachine:
