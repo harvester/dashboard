@@ -17,7 +17,7 @@
       <main class="main-layout">
         <div class="text-center">
           <h2 class="text-secondary mt-20">
-            {{ t('vncConsole.reconnecting.message') }}：{{ retryTimes }} of {{ maximumRetryTimes }}
+            {{ t('harvester.virtualMachine.vncConsole.reconnecting.message') }}：{{ retryTimes }} of {{ maximumRetryTimes }}
           </h2>
         </div>
       </main>

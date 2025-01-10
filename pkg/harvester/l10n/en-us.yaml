@@ -212,7 +212,7 @@ harvester:
     ipv4Address: IPv4 Address
     filterLabels: Filter Labels
     storageClass: Storage Class
-    dockerImage: Docker Image 
+    dockerImage: Docker Image
   pci:
     available: Available Devices
     compatibleNodes: Compatible Nodes
@@ -372,7 +372,7 @@ harvester:
         standard: Standard
         high: High-Perfomanace
         customized: Customized
-      parameters: 
+      parameters:
         title: Ksmtuned Parameters
         boost: Boost
         decay: Decay
@@ -424,7 +424,7 @@ harvester:
         addLabel: Add Disk Tag
       conditions: Conditions
       storageAvailable:
-        label: Storage Available 
+        label: Storage Available
       storageScheduled:
         label: Storage Scheduled
       storageMaximum:
@@ -473,6 +473,9 @@ harvester:
     console:
       novnc: Open in Web VNC
       serial: Open in Serial Console
+    vncConsole:
+      reconnecting:
+        message: Web VNC console reconnection attempt
     promptRemove:
       title: 'Select the volume you want to delete:'
       deleteAll: Delete All
@@ -756,7 +759,7 @@ harvester:
       warning: WARNING
       doc: Read the <a href="https://docs.harvesterhci.io/v1.3/upgrade/index" target="_blank">documentation</a> before starting the upgrade process. Ensure that you complete procedures that are relevant to your environment and the version you are upgrading to.
       tip: Unmet system requirements and incorrectly performed procedures may cause complete upgrade failure and other issues that require manual workarounds.
-      moreNotes: For more details about the release notes, please visit - 
+      moreNotes: For more details about the release notes, please visit -
 
   backup:
     label: VM Backups
@@ -789,7 +792,7 @@ harvester:
       virtualMachineName: Virtual Machine Name
       keepMacAddress: Keep MAC Address
     matchTarget: The current backup target does not match the existing one.
-    progress: 
+    progress:
       details: Volume details
       tooltip:
         starting: Backup initiating
@@ -933,7 +936,7 @@ harvester:
     templateType: Template Type
     userData: User Data
     networkData: Network Data
- 
+
   support:
     title: Harvester Support
     kubeconfig:
@@ -971,7 +974,7 @@ harvester:
       label: Protocols
     ciphers:
       label: Ciphers
-  
+
   monitoring:
     configuration:
       label: Configuration
@@ -1079,7 +1082,7 @@ harvester:
         validate:
           available: NIC "{nic}" is not available on the selected nodes
       linkAttributes:
-        mtu: 
+        mtu:
           label: MTU
       bondOptions:
         mode:
@@ -1099,7 +1102,7 @@ harvester:
   vlanStatus:
     vlanConfig:
       label: Network Config
-  
+
   clusterNetwork:
     title: Cluster Networks/Configs
     create:
@@ -1109,7 +1112,7 @@ harvester:
     mgmt: mgmt is a built-in cluster management network and does not support any additional network configurations.
     notExist: 'Cluster Network "{ clusterNetwork }" does not exist'
     notReady: 'Cluster Network "{ clusterNetwork }" is not ready'
-  
+
   addons:
     descriptions:
       'harvester-system/vm-import-controller': vm-import-controller is an addon to help migrate VM workloads from other source clusters to an existing Harvester cluster.
@@ -1226,7 +1229,7 @@ harvester:
       addLabel: Add CIDR
     range:
       addLabel: Add Range
-      
+
   service:
     healthCheckPort:
       label: Health Check Port
@@ -1287,15 +1290,15 @@ harvester:
     deviceInTheSameHost: 'You can only select devices on the same host.'
 
   harvesterVlanConfigMigrateDialog:
-    targetClusterNetwork: 
+    targetClusterNetwork:
       label: Target Cluster Network
       placeholder: Choose Target Cluster Network
 
   seeder:
     banner:
       enable:
-        prefix: Addon "harvester-seeder" is disabled now, 
-        middle: click here 
+        prefix: Addon "harvester-seeder" is disabled now,
+        middle: click here
         suffix: to enable it.
       noAccess: Please contact system admin to enable the Out-of-Band Access first.
       noAddon: Addon "harvester-seeder" is not exist, please check if it is installed.
