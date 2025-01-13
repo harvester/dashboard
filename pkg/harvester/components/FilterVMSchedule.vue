@@ -23,6 +23,9 @@ export default {
 
       return Array.from(new Set(options));
     },
+    enableButton() {
+      return this.rows.some(r => r.sourceSchedule !== undefined);
+    }
   },
 
   methods: {
@@ -73,7 +76,7 @@ export default {
       placement="bottom-end"
     >
       <slot name="header">
-        <button ref="actionDropDown" class="btn bg-primary mr-10">
+        <button ref="actionDropDown" class="btn bg-primary mr-10" :disabled="!enableButton">
           <slot name="title">
             {{ t('harvester.fields.filterSchedule') }}
           </slot>
