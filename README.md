@@ -1,3 +1,6 @@
+# IMPORTANT NOTE
+> This repo only keeps to maintain harvester dashboard v1.3.x and v1.4.x bug fix and enhancement. No new feature will be implemented here. Please refer [harvester ui extension](https://github.com/harvester/harvester-ui-extension) for future release.
+
 # Harvester Dashboard
 
 Harvester Dashboard UI, Harvester is an open-source hyper-converged infrastructure (HCI) software built on Kubernetes.
