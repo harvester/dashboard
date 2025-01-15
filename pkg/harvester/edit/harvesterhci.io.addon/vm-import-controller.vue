@@ -1,34 +1,31 @@
 <script>
+import merge from 'lodash/merge';
+import jsyaml from 'js-yaml';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import Tabbed from '@shell/components/Tabbed';
 import Tab from '@shell/components/Tabbed/Tab';
 import { RadioGroup } from '@components/Form/Radio';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
-
 import CreateEditView from '@shell/mixins/create-edit-view';
-
 import { STORAGE_CLASS } from '@shell/config/types';
 import { allHash } from '@shell/utils/promise';
-import { set, get, clone } from '@shell/utils/object';
-
-const VALUES_YAML_KEYS = [
-  'resources.requests.cpu',
-  'resources.requests.memory',
-  'resources.limits.cpu',
-  'resources.limits.memory',
-  'pvcClaim.enabled',
-  'pvcClaim.size',
-  'pvcClaim.storageClassName',
-];
 
 const DEFAULT_VALUES = {
-  'resources.requests.cpu':    '0.5',
-  'resources.requests.memory': '2Gi',
-  'resources.limits.cpu':      '2',
-  'resources.limits.memory':   '4Gi',
-  'pvcClaim.enabled':          false,
-  'pvcClaim.size':             '200Gi',
-  'pvcClaim.storageClassName': '',
+  resources: {
+    requests: {
+      cpu:    '0.5',
+      memory: '2Gi'
+    },
+    limits: {
+      cpu:    '2',
+      memory: '4Gi'
+    }
+  },
+  pvcClaim: {
+    enabled:          false,
+    size:             '200Gi',
+    storageClassName: ''
+  }
 };
 
 export default {
@@ -64,19 +61,7 @@ export default {
   },
 
   data() {
-    let valuesObj = {};
-
-    try {
-      valuesObj = JSON.parse(this.value?.spec?.valuesContent || '{}');
-    } catch (err) {}
-
-    const valuesContent = clone(valuesObj);
-
-    VALUES_YAML_KEYS.map((key) => {
-      if (!get(valuesObj, key)) {
-        set(valuesContent, key, DEFAULT_VALUES[key]);
-      }
-    });
+    const valuesContent = this.parseValuesContent();
 
     return { valuesContent };
   },
@@ -100,8 +85,21 @@ export default {
   },
 
   methods: {
+    parseValuesContent() {
+      try {
+        return merge({}, DEFAULT_VALUES, jsyaml.load(this.value.spec.valuesContent));
+      } catch (err) {
+        this.$store.dispatch('growl/fromError', {
+          title: this.$store.getters['i18n/t']('generic.notification.title.error'),
+          err:   err.data || err,
+        }, { root: true });
+
+        return DEFAULT_VALUES;
+      }
+    },
+
     update() {
-      set(this.value, 'spec.valuesContent', JSON.stringify(this.valuesContent));
+      this.value.spec.valuesContent = jsyaml.dump(this.valuesContent);
     },
 
     setDefaultClassName() {
