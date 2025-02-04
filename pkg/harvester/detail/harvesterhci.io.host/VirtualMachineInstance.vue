@@ -24,35 +24,24 @@ export default {
   },
 
   async fetch() {
-    const hash = await allHash({
+    await allHash({
       vms:               this.$store.dispatch('harvester/findAll', { type: HCI.VM }),
       vmis:              this.$store.dispatch('harvester/findAll', { type: HCI.VMI }),
       allClusterNetwork: this.$store.dispatch('harvester/findAll', { type: HCI.CLUSTER_NETWORK }),
     });
-    const instanceMap = {};
-
-    (hash.vmis || []).forEach((vmi) => {
-      const vmiUID = vmi?.metadata?.ownerReferences?.[0]?.uid;
-
-      if (vmiUID) {
-        instanceMap[vmiUID] = vmi;
-      }
-    });
-
-    this.allClusterNetwork = hash.allClusterNetwork;
-    this.rows = hash.vms.filter((row) => {
-      return instanceMap[row.metadata?.uid]?.status?.nodeName === this.node?.metadata?.labels?.[HOSTNAME];
-    });
-  },
-
-  data() {
-    return {
-      rows:              [],
-      allClusterNetwork: []
-    };
   },
 
   computed: {
+    allClusterNetwork() {
+      return this.$store.getters['harvester/all'](HCI.CLUSTER_NETWORK);
+    },
+
+    rows() {
+      const vms = this.$store.getters['harvester/all'](HCI.VM);
+
+      return vms.filter(vm => vm.vmi?.status?.nodeName === this.node?.metadata?.labels?.[HOSTNAME]);
+    },
+
     headers() {
       return [
         STATE,
@@ -87,8 +76,6 @@ export default {
       ];
     },
   },
-
-  methods: {}
 };
 </script>
 
