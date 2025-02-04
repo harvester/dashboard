@@ -7139,7 +7139,7 @@ branding:
   directoryName: Brand Asset Directory Name
   logos:
     label: Logo
-    tip: 'Upload a logo to replace the Rancher logo in the top-level navigation header. Image height should be 21 pixels with a max width of 200 pixels. Max file size is 20KB. Accepted formats: JPEG, PNG, SVG.'
+    tip: 'Upload a logo to replace the Harvester logo in the top-level navigation header. Image height should be 21 pixels with a max width of 200 pixels. Max file size is 20KB. Accepted formats: JPEG, PNG, SVG.'
     lightPreview: Light Theme Preview
     darkPreview: Dark Theme Preview
     uploadLight: Upload Light Logo
@@ -7147,7 +7147,7 @@ branding:
     useCustom: Use a Custom Logo
   favicon:
     label: Favicon
-    tip: 'Upload an icon to replace the Rancher favicon in the browser tab. Max file size is 20KB'
+    tip: 'Upload an icon to replace the Harvester favicon in the browser tab. Max file size is 20KB'
     preview: Favicon Preview
     upload: Upload Favicon
     useCustom: Use a Custom Favicon
