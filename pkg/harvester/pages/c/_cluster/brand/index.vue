@@ -162,7 +162,7 @@ export default {
     <h1 class="mb-20">
       {{ t('branding.label') }}
     </h1>
-    <TypeDescription resource="branding" />
+    <TypeDescription resource="harvester" />
     <div>
       <div class="row mb-20">
         <div class="col span-6">
@@ -178,7 +178,7 @@ export default {
         {{ t('branding.logos.label') }}
       </h3>
       <label class="text-label">
-        {{ t('branding.logos.tip', {}, true) }}
+        {{ t('harvester.branding.logos.tip', {}, true) }}
       </label>
       <div class="row mt-10 mb-20">
         <Checkbox
@@ -242,7 +242,7 @@ export default {
         {{ t('branding.favicon.label') }}
       </h3>
       <label class="text-label">
-        {{ t('branding.favicon.tip', {}, true) }}
+        {{ t('harvester.branding.favicon.tip', {}, true) }}
       </label>
       <div class="row mt-10 mb-20">
         <Checkbox
