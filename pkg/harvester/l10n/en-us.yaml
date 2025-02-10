@@ -34,6 +34,11 @@ asyncButton:
     waiting: Restarting&hellip;
 
 harvester:
+  branding:
+    logos:
+      tip: 'Upload a logo to replace the Harvester logo in the top-level navigation header. Image height should be 21 pixels with a max width of 200 pixels. Max file size is 20KB. Accepted formats: JPEG, PNG, SVG.'
+    favicon:
+      tip: 'Upload an icon to replace the Harvester favicon in the browser tab. Max file size is 20KB'
   productLabel: 'Harvester'
   modal:
     backup:
@@ -1504,6 +1509,14 @@ harvester:
     addLabel: Add Workload Selector
     topologyKey:
       placeholder: 'topology.kubernetes.io/zone'
+
+typeDescription:
+  # Map of
+  # type: Description to be shown on the top of list view describing the type.
+  #       Should fit on one line.
+  #       If you link to anything external, it MUST have
+  #       target="_blank" rel="noopener noreferrer nofollow"
+  harvester: "Branding allows administrators to globally re-brand the UI by customizing the Harvester product name, logos and color scheme."
 
 advancedSettings:
   experimental: 'Experimental features allow users to test and evaluate early-access functionality prior to official supported releases'
