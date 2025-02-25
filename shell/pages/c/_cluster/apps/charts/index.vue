@@ -178,12 +178,12 @@ export default {
     },
 
     /**
-     * Filter valid charts (alll filters minus user provided ones) by whether they are featured or not
+     * Filter valid charts (all filters minus user provided ones) by whether they are featured or not
      *
      * This will power the carousel
      */
-    featuredCharts() {
-      const filteredCharts = this.filterCharts({});
+    getFeaturedCharts() {
+      const filteredCharts = this.filteredCharts || [];
       const featuredCharts = filteredCharts.filter(value => value.featured).sort((a, b) => a.featured - b.featured);
 
       return featuredCharts.slice(0, 5);
