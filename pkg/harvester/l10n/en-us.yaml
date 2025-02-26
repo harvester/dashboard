@@ -898,6 +898,9 @@ harvester:
     label: Virtual Machine Backups
     createText: Restore Backup
     title: Restore Virtual Machine
+    refreshInterval:
+      label: Refresh Interval
+      tip: The interval for the backup target to sync data to harvester cluster. Set to 0 to disable refresh mechanism.
     backupTargetTip: The endpoint used to access the backupstore. NFS and S3 are supported.
     message:
       noSetting:
