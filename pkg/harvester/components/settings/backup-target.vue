@@ -6,12 +6,13 @@ import MessageLink from '@shell/components/MessageLink';
 import CreateEditView from '@shell/mixins/create-edit-view';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
+import UnitInput from '@shell/components/form/UnitInput';
 
 export default {
   name: 'HarvesterEditBackupTarget',
 
   components: {
-    LabeledInput, LabeledSelect, Tip, Password, MessageLink
+    LabeledInput, LabeledSelect, Tip, Password, MessageLink, UnitInput
   },
 
   mixins: [CreateEditView],
@@ -22,7 +23,9 @@ export default {
     try {
       parseDefaultValue = JSON.parse(this.value.value);
     } catch (error) {
-      parseDefaultValue = { type: '', endpoint: '' };
+      parseDefaultValue = {
+        type: '', endpoint: '', refreshIntervalInSeconds: 0
+      };
     }
 
     if (!parseDefaultValue.type) {
@@ -77,7 +80,9 @@ export default {
         try {
           parseDefaultValue = JSON.parse(neu.value);
         } catch (err) {
-          parseDefaultValue = { type: '', endpoint: '' };
+          parseDefaultValue = {
+            type: '', endpoint: '', refreshIntervalInSeconds: 0
+          };
         }
 
         this.$set(this, 'parseDefaultValue', parseDefaultValue);
@@ -112,7 +117,9 @@ export default {
     },
 
     useDefault() {
-      const parseDefaultValue = { type: '', endpoint: '' };
+      const parseDefaultValue = {
+        type: '', endpoint: '', refreshIntervalInSeconds: 0
+      };
 
       this.$set(this, 'parseDefaultValue', parseDefaultValue);
     }
@@ -124,7 +131,21 @@ export default {
   <div class="row" @input="update">
     <div class="col span-12">
       <LabeledSelect v-model="parseDefaultValue.type" class="mb-20" :label="t('harvester.fields.type')" :options="typeOption" @input="update" />
-
+      <UnitInput
+        v-model="parseDefaultValue.refreshIntervalInSeconds"
+        :suffix="parseDefaultValue.refreshIntervalInSeconds <= 1 ? 'Second' : 'Seconds'"
+        :label="t('harvester.backup.refreshInterval.label')"
+        :mode="mode"
+        :positive="true"
+        class="mb-5"
+        required
+        @input="update"
+      />
+      <Tip
+        class="mb-20"
+        icon="icon icon-info"
+        :text="t('harvester.backup.refreshInterval.tip')"
+      />
       <LabeledInput v-model="parseDefaultValue.endpoint" class="mb-5" :placeholder="endpointPlaceholder" :mode="mode" label="Endpoint" />
       <Tip class="mb-20" icon="icon icon-info" :text="t('harvester.backup.backupTargetTip')" />
 
