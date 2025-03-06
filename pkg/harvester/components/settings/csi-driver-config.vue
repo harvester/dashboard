@@ -138,7 +138,7 @@ export default {
             errors.push(this.t('validation.required', { key: this.t('harvester.setting.csiDriverConfig.volumeSnapshotClassName') }, true));
           }
 
-          if (!config.value.backupVolumeSnapshotClassName) {
+          if (config.key === LONGHORN_DRIVER && !config.value.backupVolumeSnapshotClassName) {
             errors.push(this.t('validation.required', { key: this.t('harvester.setting.csiDriverConfig.backupVolumeSnapshotClassName') }, true));
           }
         });
@@ -218,7 +218,7 @@ export default {
             v-model="driver.value.backupVolumeSnapshotClassName"
             :mode="mode"
             required
-            :disabled="disableEdit(driver.key)"
+            disabled
             :options="getVolumeSnapshotOptions(driver.key)"
             :label="t('harvester.setting.csiDriverConfig.backupVolumeSnapshotClassName')"
             @keydown.native.enter.prevent="()=>{}"
