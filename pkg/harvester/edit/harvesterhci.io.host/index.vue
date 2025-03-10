@@ -1,4 +1,5 @@
 <script>
+import { isEqual } from 'lodash';
 import { mapGetters } from 'vuex';
 import Tabbed from '@shell/components/Tabbed';
 import Tab from '@shell/components/Tabbed/Tab';
@@ -31,7 +32,6 @@ import HarvesterSeeder from './HarvesterSeeder';
 import Tags from '../../components/DiskTags';
 import { LONGHORN_DRIVER, LONGHORN_VERSION_V1, LONGHORN_VERSION_V2 } from '@shell/models/persistentvolume';
 import { LVM_DRIVER } from '../../models/harvester/storage.k8s.io.storageclass';
-import isEqual from 'lodash/isEqual';
 
 export const LONGHORN_SYSTEM = 'longhorn-system';
 
@@ -101,6 +101,7 @@ export default {
           provisioner:        d?.spec?.provisioner?.lvm ? LVM_DRIVER : LONGHORN_DRIVER,
           provisionerVersion: d?.spec?.provisioner?.longhorn?.engineVersion || LONGHORN_VERSION_V1,
           lvmVolumeGroup:     d?.spec?.provisioner?.lvm?.vgName,
+          tags:               d?.spec?.tags || [],
         };
       });
 
@@ -342,6 +343,7 @@ export default {
         provisioner:        LONGHORN_DRIVER,
         provisionerVersion: LONGHORN_VERSION_V1,
         lvmVolumeGroup:     null,
+        tags:               []
       });
     },
 
@@ -349,9 +351,14 @@ export default {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const addDisks = this.newDisks.filter(d => d.isNew);
       const removeDisks = this.disks.filter(d => !findBy(this.newDisks, 'name', d.name) && d.blockDevice);
+      let tagDisks = [];
 
       if (addDisks.length === 0 && removeDisks.length === 0) {
-        return Promise.resolve();
+        tagDisks = this.newDisks.filter(d => d.blockDevice && !isEqual(d.blockDevice.spec.tags, d.tags));
+
+        if (tagDisks.length === 0) {
+          return Promise.resolve();
+        }
       } else if (addDisks.length !== 0 && removeDisks.length === 0) {
         const updatedDisks = addDisks.filter((d) => {
           const blockDevice = this.$store.getters[`${ inStore }/byId`](HCI.BLOCK_DEVICE, `${ LONGHORN_SYSTEM }/${ d.name }`);
@@ -372,6 +379,7 @@ export default {
 
           blockDevice.spec.provision = true;
           blockDevice.spec.fileSystem.forceFormatted = d.forceFormatted;
+          blockDevice.spec.tags = d.tags;
 
           switch (d.provisioner) {
           case LONGHORN_DRIVER:
@@ -389,6 +397,14 @@ export default {
           const blockDevice = this.$store.getters[`${ inStore }/byId`](HCI.BLOCK_DEVICE, `${ LONGHORN_SYSTEM }/${ d.name }`);
 
           blockDevice.spec.provision = false;
+
+          return blockDevice.save();
+        }));
+
+        await Promise.all(tagDisks.map((d) => {
+          const blockDevice = this.$store.getters[`${ inStore }/byId`](HCI.BLOCK_DEVICE, `${ LONGHORN_SYSTEM }/${ d.name }`);
+
+          blockDevice.spec.tags = d.tags;
 
           return blockDevice.save();
         }));
@@ -503,17 +519,19 @@ export default {
     async saveLonghornNode() {
       const inStore = this.$store.getters['currentProduct'].inStore;
 
-      const disks = this.longhornNode?.spec?.disks || {};
+      const storageTags = clone(this.longhornNode?.spec?.tags);
 
-      // update each disk tags and scheduling
-      this.newDisks.map((disk) => {
-        (disks[disk.name] || {}).tags = disk.tags;
-        (disks[disk.name] || {}).allowScheduling = disk.allowScheduling;
-      });
       let count = 0;
 
       const retrySave = async() => {
         try {
+          this.longhornNode.spec.tags = storageTags;
+
+          this.newDisks.forEach((disk) => {
+            (this.longhornNode?.spec?.disks?.[disk.name] || {}).tags = disk.tags;
+            (this.longhornNode?.spec?.disks?.[disk.name] || {}).allowScheduling = disk.allowScheduling;
+          });
+
           await this.longhornNode.save();
         } catch (err) {
           if ((err.status === 409 || err.status === 403) && count < 3) {
