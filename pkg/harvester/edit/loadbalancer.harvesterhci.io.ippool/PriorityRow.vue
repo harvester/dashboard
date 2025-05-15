@@ -28,6 +28,11 @@ export default {
       type:     Number,
       required: true,
     },
+
+    uniqNamespaceOptions: {
+      type:     Array,
+      required: true,
+    },
   },
 
   data() {
@@ -199,7 +204,7 @@ export default {
       <Select
         v-else
         v-model="row.namespace"
-        :options="namespaceOptions"
+        :options="showProjectAndCluster ? namespaceOptions : uniqNamespaceOptions"
         @input="update"
       />
     </div>
