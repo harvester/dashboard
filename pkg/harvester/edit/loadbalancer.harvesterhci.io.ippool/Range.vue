@@ -27,7 +27,7 @@ export default {
     const rows = (this.value || []).map((row) => {
       let type = 'cidr';
 
-      if (row.rangeStart && row.rangeEnd) {
+      if (row.rangeStart || row.rangeEnd) {
         type = 'range';
       }
 
